@@ -22,7 +22,7 @@
         </p>
     </div>
 
-    <div id="soal" class="hidden">
+    <div id="soal" class="">
         <div class="mb-2">
             <p class="text-lg font-bold mb-2">Pola Terpisah :</p>
             <div class="text-center h-28">
@@ -39,30 +39,11 @@
 
         <div class="w-full text-center">
             <div class="inline-block">
-                <button class="bg-blue-500 hover:bg-blue-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('A')">
-                    <p>A</p>
-                    <i v-if="jawaban[noSoal-1]==='A'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
-                </button>
-                
-                <button class="bg-gray-400 hover:bg-gray-600 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('B')">
-                    <p>B</p>
-                    <i v-if="jawaban[noSoal-1]==='B'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
-                </button>
-
-                <button class="bg-yellow-500 hover:bg-yellow-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('C')">
-                    <p>C</p>
-                    <i v-if="jawaban[noSoal-1]==='C'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
-                </button>
-
-                <button class="bg-green-500 hover:bg-green-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('D')">
-                    <p>D</p>
-                    <i v-if="jawaban[noSoal-1]==='D'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
-                </button>
-
-                <button class="bg-red-500 hover:bg-red-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl relative" @click.prevent="choose('E')">
-                    <p>E</p>
-                    <i v-if="jawaban[noSoal-1]==='E'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
-                </button>
+                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="'A'" :warna="'bg-blue-500 hover:bg-blue-700'" />
+                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="'B'" :warna="'bg-gray-400 hover:bg-gray-600'" />
+                <AnswerButton :jawaban = jawaban :noSoal = srde :label="'C'" :warna="'bg-yellow-500 hover:bg-yellow-700'" />
+                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="'D'" :warna="'bg-green-500 hover:bg-green-700'" />
+                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="'E'" :warna="'bg-red-500 hover:bg-red-700'"/>
             </div>
         </div>
     </div>
@@ -76,7 +57,11 @@
     </div>
 </template>
 <script>
+import AnswerButton from '../components/answerButton.vue'
 export default {
+    components: {
+        AnswerButton
+    },
     data () {
         return {
             noSoal: 1,
@@ -124,25 +109,26 @@ export default {
             }
         },
         choose(id){
+            console.log(id)
             this.jawaban[this.noSoal-1] = id
         },
     },
 
     created () {
-        this.countdownTimer = setInterval(() => {
-            var element = document.getElementById("counter")
-            if(this.countdown<4 && this.countdown>0){
-                element.innerHTML = this.countdown
-            }else if(this.countdown==0){
-                element.innerHTML = "GO!!!"
-            }else if(this.countdown==-1){
-                element.classList.add("hidden")
-                document.getElementById("bg").classList.add("hidden")
-                document.getElementById("counterDiv").classList.add("hidden")
-                document.getElementById("bg").classList.remove("z-50")
-                document.getElementById("soal").classList.remove("hidden")
+        // this.countdownTimer = setInterval(() => {
+        //     var element = document.getElementById("counter")
+        //     if(this.countdown<4 && this.countdown>0){
+        //         element.innerHTML = this.countdown
+        //     }else if(this.countdown==0){
+        //         element.innerHTML = "GO!!!"
+        //     }else if(this.countdown==-1){
+        //         element.classList.add("hidden")
+        //         document.getElementById("bg").classList.add("hidden")
+        //         document.getElementById("counterDiv").classList.add("hidden")
+        //         document.getElementById("bg").classList.remove("z-50")
+        //         document.getElementById("soal").classList.remove("hidden")
                 
-                clearInterval(this.countdownTimer)
+        //         clearInterval(this.countdownTimer)
                 this.waktu = setInterval(() => {
                     this.detik--
                     if (this.detik<0){
@@ -156,9 +142,9 @@ export default {
                         clearInterval(this.waktu)
                     } 
                 }, 1000)
-            }
-            this.countdown--
-        },1000)
+        //     }
+        //     this.countdown--
+        // },1000)
     },
 
     beforeDestroy() {

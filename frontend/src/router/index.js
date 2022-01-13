@@ -1,11 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
-import imgMatch from '/src/components/imgMatch.vue'
+import imgMatch from '/src/views/imgMatch.vue'
+import masterImgMatch from '/src/views/masterImgMatch.vue'
+import AddImgMatch from '/src/views/addImgMatch.vue'
+import index from '/src/views/index.vue'
 
 const routes = [
+    {
+        path: '/',
+        name: 'index',
+        component: index,
+    },
     {
         path: '/soalImage',
         name: 'imgMatch',
         component: imgMatch,
+    },
+    {
+        path: '/masterImage',
+        name: 'masterImgMatch',
+        component: masterImgMatch,
+    },
+    {
+        path: '/addSoalImage',
+        name: 'AddImgMatch',
+        component: AddImgMatch,
     },
 
     // {
