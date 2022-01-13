@@ -22,47 +22,57 @@
         </p>
     </div>
 
-    <div class="mb-2">
-        <p class="text-lg font-bold mb-2">Pola Terpisah :</p>
-        <div class="text-center h-28">
-            <img src="../assets/soal1.png" alt="" class="inline-block h-full">
+    <div id="soal" class="hidden">
+        <div class="mb-2">
+            <p class="text-lg font-bold mb-2">Pola Terpisah :</p>
+            <div class="text-center h-28">
+                <img src="../assets/soal1.png" alt="" class="inline-block h-full">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <p class="text-lg font-bold mb-2">Pilihan Jawaban :</p>
+            <div class="text-center h-32">
+                <img src="../assets/jawaban1.png" alt="" class="inline-block h-full">
+            </div>
+        </div>
+
+        <div class="w-full text-center">
+            <div class="inline-block">
+                <button class="bg-blue-500 hover:bg-blue-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('A')">
+                    <p>A</p>
+                    <i v-if="jawaban[noSoal-1]==='A'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
+                </button>
+                
+                <button class="bg-gray-400 hover:bg-gray-600 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('B')">
+                    <p>B</p>
+                    <i v-if="jawaban[noSoal-1]==='B'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
+                </button>
+
+                <button class="bg-yellow-500 hover:bg-yellow-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('C')">
+                    <p>C</p>
+                    <i v-if="jawaban[noSoal-1]==='C'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
+                </button>
+
+                <button class="bg-green-500 hover:bg-green-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('D')">
+                    <p>D</p>
+                    <i v-if="jawaban[noSoal-1]==='D'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
+                </button>
+
+                <button class="bg-red-500 hover:bg-red-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl relative" @click.prevent="choose('E')">
+                    <p>E</p>
+                    <i v-if="jawaban[noSoal-1]==='E'" class="fa fa-check absolute right-2 bottom-2 pilihan"></i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="mb-3">
-        <p class="text-lg font-bold mb-2">Pilihan Jawaban :</p>
-        <div class="text-center h-32">
-            <img src="../assets/jawaban1.png" alt="" class="inline-block h-full">
-        </div>
-    </div>
+    <!-- Transparent Overlay -->
+    <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div>
 
-    <div class="w-full text-center">
-        <div class="inline-block">
-            <button class="bg-blue-500 hover:bg-blue-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('chooseA')">
-                <p>A</p>
-                <i class="fa fa-check absolute right-2 bottom-2 pilihan hidden" id="chooseA"></i>
-            </button>
-            
-            <button class="bg-gray-400 hover:bg-gray-600 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('chooseB')">
-                <p>B</p>
-                <i class="fa fa-check absolute right-2 bottom-2 pilihan hidden" id="chooseB"></i>
-            </button>
-
-            <button class="bg-yellow-500 hover:bg-yellow-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('chooseC')">
-                <p>C</p>
-                <i class="fa fa-check absolute right-2 bottom-2 pilihan hidden" id="chooseC"></i>
-            </button>
-
-            <button class="bg-green-500 hover:bg-green-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl mr-3 relative" @click.prevent="choose('chooseD')">
-                <p>D</p>
-                <i class="fa fa-check absolute right-2 bottom-2 pilihan hidden" id="chooseD"></i>
-            </button>
-
-            <button class="bg-red-500 hover:bg-red-700 duration-200 py-10 px-20 text-3xl font-bold rounded-xl relative" @click.prevent="choose('chooseE')">
-                <p>E</p>
-                <i class="fa fa-check absolute right-2 bottom-2 pilihan hidden" id="chooseE"></i>
-            </button>
-        </div>
+    <!-- Countdown -->
+    <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
+        <p id="counter">Ready???</p>
     </div>
 </template>
 <script>
@@ -70,9 +80,12 @@ export default {
     data () {
         return {
             noSoal: 1,
-            menit: 0,
-            detik: 10,
-            waktu: null
+            menit: 6,
+            detik: 0,
+            waktu: null,
+            countdownTimer: null,
+            countdown: 4,
+            jawaban: []
         }
     },
     methods: {
@@ -111,36 +124,46 @@ export default {
             }
         },
         choose(id){
-            document.getElementById(id).classList.toggle("hidden");
-
-            var list = document.getElementsByClassName("pilihan");
-            for (var i = 0; i < list.length; i++) {
-                var item = list[i];
-                if (!item.classList.contains('hidden') && item.id!=id) {
-                    item.classList.add('hidden');
-                }
-            }
+            this.jawaban[this.noSoal-1] = id
         },
     },
 
     created () {
-        this.waktu = setInterval(() => {
-            this.detik--
-            if (this.detik<0){
-                this.detik = 59
-                this.menit--
+        this.countdownTimer = setInterval(() => {
+            var element = document.getElementById("counter")
+            if(this.countdown<4 && this.countdown>0){
+                element.innerHTML = this.countdown
+            }else if(this.countdown==0){
+                element.innerHTML = "GO!!!"
+            }else if(this.countdown==-1){
+                element.classList.add("hidden")
+                document.getElementById("bg").classList.add("hidden")
+                document.getElementById("counterDiv").classList.add("hidden")
+                document.getElementById("bg").classList.remove("z-50")
+                document.getElementById("soal").classList.remove("hidden")
+                
+                clearInterval(this.countdownTimer)
+                this.waktu = setInterval(() => {
+                    this.detik--
+                    if (this.detik<0){
+                        this.detik = 59
+                        this.menit--
+                    }
+                    
+                    if (this.menit<0){
+                        this.detik = 0
+                        this.menit = 0
+                        clearInterval(this.waktu)
+                    } 
+                }, 1000)
             }
-            
-            if (this.menit<0){
-                this.detik = 0
-                this.menit = 0
-                clearInterval(this.waktu)
-            } 
-        }, 1000)
+            this.countdown--
+        },1000)
     },
 
     beforeDestroy() {
         clearInterval(this.waktu)
+        clearInterval(this.countdownTimer)
     },
 }
     
