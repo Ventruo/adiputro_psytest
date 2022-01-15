@@ -3,12 +3,18 @@ import imgMatch from '/src/views/imgMatch.vue'
 import masterImgMatch from '/src/views/masterImgMatch.vue'
 import AddImgMatch from '/src/views/addImgMatch.vue'
 import index from '/src/views/index.vue'
+import preExam from '/src/views/preExam.vue'
 
 const routes = [
     {
         path: '/',
         name: 'index',
         component: index,
+    },
+    {
+        path: '/preExam',
+        name: 'preExam',
+        component: preExam,
     },
     {
         path: '/soalImage',
