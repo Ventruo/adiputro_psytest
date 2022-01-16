@@ -22,9 +22,12 @@
         </p>
     </div>
 
-    <div id="soal" class="">
-        <ImageQuestion :label="'Pola Terpisah :'" />
-        <ImageAnswer :jawaban = jawaban :noSoal = noSoal />
+    <div id="soal" class="hidden">
+        <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
+        <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" />
+        <!-- <ImageAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
+        <mChoiceAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />
+        <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
     </div>
 
     <!-- Transparent Overlay -->
@@ -38,9 +41,13 @@
 <script>
 import ImageQuestion from '../components/views/imageQuestion.vue'
 import ImageAnswer from '../components/views/imageAnswer.vue'
+import TextQuestion from '../components/views/textQuestion.vue'
+import TextAnswer from '../components/views/textAnswer.vue'
+import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
+
 export default {
     components: {
-        ImageQuestion, ImageAnswer
+        ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer, TextAnswer
     },
     data () {
         return {
@@ -50,8 +57,11 @@ export default {
             detik: 0,
             waktu: null,
             countdownTimer: null,
-            countdown: 3,
+            countdown: 2,
             jawaban: [],
+            pilihanJawaban: [
+                'A. Mangkuk', 'B. Ikan', 'C. Aquarium', 'D. Merah'
+            ]
         }
     },
     methods: {
@@ -73,8 +83,27 @@ export default {
                     }
                     ctr++
                 }
+                this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }else{
-                window.location = '/'
+                Swal.fire({
+                    title: 'Submit This Task?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Submitted!',
+                            'Task Successfully Submitted.',
+                            'success'
+                        )
+                        .then(function(){
+                            window.location = '/'
+                        })
+                    }
+                });
             }
         },
         prevSoal(){
@@ -93,6 +122,7 @@ export default {
                     }
                     ctr++
                 }
+                this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
         }
     },

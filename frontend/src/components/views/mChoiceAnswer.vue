@@ -1,12 +1,5 @@
 <template>
-    <div class="mb-3">
-        <p class="text-lg font-bold mb-2">Pilihan Jawaban :</p>
-        <div class="text-center h-28">
-            <img src="../../assets/jawaban1.png" alt="" class="inline-block h-full">
-        </div>
-    </div>
-
-    <div class="w-full text-center">
+    <div class="w-full text-center mt-5">
         <div class="inline-block w-full">
             <div class="w-full mb-2">
                 <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[0]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />

@@ -1,5 +1,5 @@
 <template>
-    <button id="label" :class="[warna]" class="duration-200 py-2 w-5/12 text-xl font-bold rounded-full mr-3 relative" @click.prevent="choose(label)">
+    <button id="label" :class="[warna]" class="duration-200 py-2 w-5/12 text-xl rounded-full mr-3 relative" @click.prevent="choose(label)">
         <p>{{label}}</p>
         <i v-if="jawaban[noSoal-1]===label" class="fa fa-check absolute right-3 bottom-2.5 pilihan"></i>
         <!-- {{console.log(warna)}} -->
