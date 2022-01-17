@@ -1,11 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { app } = require('../setup/express');
+const { app } = require("../setup/express");
 
-const userRouter = require('./express_routers/user_route');
+const ExamSessionRouter = require("./express_routers/exam_session_route");
+const QuestionRouter = require("./express_routers/question_route");
+const QuestionResultRouter = require("./express_routers/question_result_route");
+const RegistrantRouter = require("./express_routers/registrant_route");
+const SectionRouter = require("./express_routers/section_route");
+const SectionResultRouter = require("./express_routers/section_result_route");
 
 // Routers
-router.use('/user', userRouter);
-
+router.use("/exam_session", ExamSessionRouter);
+router.use("/question", QuestionRouter);
+router.use("/question_result", QuestionResultRouter);
+router.use("/registrant", RegistrantRouter);
+router.use("/section", SectionRouter);
+router.use("/section_result", SectionResultRouter);
 
 app.use(process.env.BASE_PATH, router);
