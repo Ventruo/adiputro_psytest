@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import dashboard from '/src/views/dashboard.vue'
 import imgMatch from '/src/views/imgMatch.vue'
 import masterImgMatch from '/src/views/masterImgMatch.vue'
 import AddImgMatch from '/src/views/addImgMatch.vue'
@@ -10,6 +11,11 @@ const routes = [
         path: '/',
         name: 'index',
         component: index,
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: dashboard,
     },
     {
         path: '/preExam',

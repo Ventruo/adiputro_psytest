@@ -1,41 +1,43 @@
 <template>
-    <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
-        <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-        <div class="flex gap-2">
-            <button class="bg-blue-600 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="prevSoal">Prev</button>
-            <button id="nextBtn" class="bg-blue-600 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="nextSoal">Next</button>
+    <div class="h-full w-9/12 m-auto text-white relative mt-3">
+        <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
+            <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+            <div class="flex gap-2">
+                <button class="bg-blue-600 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="prevSoal">Prev</button>
+                <button id="nextBtn" class="bg-blue-600 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="nextSoal">Next</button>
+            </div>
         </div>
-    </div>
 
-    <div class="relative w-full mb-2">
-        <div class="h-8 bg-primary-600 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
-        <div class="h-8 bg-primary-400 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
-        <div class="w-full text-center absolute top-0">
-            <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
+        <div class="relative w-full mb-2">
+            <div class="h-8 bg-primary-600 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
+            <div class="h-8 bg-primary-400 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="w-full text-center absolute top-0">
+                <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
+            </div>
         </div>
-    </div>
 
-    <div class="h-auto bg-primary-500 py-2 px-3 rounded-xl mb-2">
-        <p class="text-xl font-bold mb-1">Petunjuk :</p>
-        <p>
-            Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 
-        </p>
-    </div>
+        <div class="h-auto bg-primary-500 py-2 px-3 rounded-xl mb-2">
+            <p class="text-xl font-bold mb-1">Petunjuk :</p>
+            <p>
+                Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 
+            </p>
+        </div>
 
-    <div id="soal" class="hidden">
-        <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
-        <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" />
-        <!-- <ImageAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
-        <mChoiceAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />
-        <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
-    </div>
+        <div id="soal" class="hidden">
+            <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
+            <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" />
+            <!-- <ImageAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
+            <mChoiceAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />
+            <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
+        </div>
 
-    <!-- Transparent Overlay -->
-    <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div>
+        <!-- Transparent Overlay -->
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div>
 
-    <!-- Countdown -->
-    <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
-        <p id="counter">3</p>
+        <!-- Countdown -->
+        <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
+            <p id="counter">3</p>
+        </div>
     </div>
 </template>
 <script>
