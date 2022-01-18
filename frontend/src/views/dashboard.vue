@@ -3,8 +3,8 @@
         <div class="w-9/12 h-auto min-h-screen pt-16 px-5">
             <h1 class="text-2xl font-bold mt-3">Belum Diselesaikan</h1>
             <div class="w-auto h-auto mt-2">
-                <div class="h-56 w-48 mb-2 mr-2 inline-block align-top relative" v-for="i in 7" :key="i">
-                    <div class="w-full h-24 bg-primary-500 px-2 py-1 hover:h-56 duration-500 group">
+                <div class="h-56 w-48 mb-2 mr-2 inline-block align-top relative overflow-hidden" v-for="i in 7" :key="i">
+                    <div class="w-full h-24 bg-primary-600 px-2 py-1 hover:h-56 duration-500 group">
                         <div class="mb-1">
                             <i class="fas fa-file-alt mr-2"></i>
                             <span class="text-lg font-bold">Tes {{i}}</span>
@@ -30,8 +30,8 @@
                     </div>
                 </div>
 
-                <div class="h-56 w-48 mb-2 mr-2 inline-block align-top relative">
-                    <div class="w-full h-24 bg-primary-600 px-2 py-1 hover:h-56 duration-500 group">
+                <div class="h-56 w-48 mb-2 mr-2 inline-block align-top relative overflow-hidden">
+                    <div class="w-full h-24 bg-primary-700 px-2 py-1 hover:h-56 duration-500 group">
                         <div class="mb-1">
                             <i class="fas fa-file-alt mr-2"></i>
                             <span class="text-lg font-bold">Biodata</span>
@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-600 pt-20 pb-5 px-5">
+        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-700 pt-20 pb-5 px-5">
             <div class="flex justify-between text-sm font-bold">
                 <div class="text-right mb-2">
                     <p>Waktu Lokal : </p>
@@ -63,7 +63,7 @@
             <hr>
             <h1 class="text-xl font-bold mt-3">Tes Yang Sudah Selesai</h1>
             <div class="w-auto mt-2 overflow-x-hidden overflow-y-auto no-scrollbar">
-                <div class="w-full mr-2 h-auto bg-primary-500 inline-block mb-2 px-2 py-1" v-for="i in 3" :key="i">
+                <div class="w-full mr-2 h-auto bg-primary-600 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in 3" :key="i">
                     <div class="flex items-center">
                         <i class="fas fa-file-alt mr-3"></i>
                         <div>
@@ -81,6 +81,7 @@
 export default {
     data() {
         return {
+            judulHalaman: 'Dashboard',
             timestamp: '',
             tenggat: 'Senin, 17 Januari 2022 23:59:59',
             timerWaktu: null,
@@ -101,6 +102,9 @@ export default {
             const dateTime = date + ' ' + time
             this.timestamp = dateTime
         }
+    },
+    created(){
+        this.$emit('updateJudul', this.judulHalaman)
     }
 }
 </script>

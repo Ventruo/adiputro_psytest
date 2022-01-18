@@ -1,18 +1,18 @@
 <template>
-    <div class="h-full w-9/12 m-auto text-white relative mt-3">
+    <div class="h-full w-9/12 m-auto text-white relative mt-5">
         <div>
             <div class="flex justify-between mb-3">
                 <h1 class="text-3xl font-bold">Image Matching Test List</h1>
                 <div class="flex">
                     <p class="text-xl font-bold mr-2">Number of Questions: 20</p>
-                    <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full px-5 h-auto w-auto text-base" 
+                    <button class="bg-primary-800 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full px-5 h-auto w-auto text-base" 
                         @click="this.$router.push({path: '/addSoalImage'})">
                         <i class="fa fa-plus mr-2"></i>   
                         <span>Add Question</span>
                     </button>
                 </div>
             </div>
-            <div class="overflow-auto w-full no-scrollbar mt-8" style="height: 34rem;">
+            <div class="overflow-auto w-full no-scrollbar mt-5" style="height: 34rem;">
                 <table class="table-fixed border-collapse border border-primary-200 w-full">
                     <thead class="bg-primary-800 divide-y divide-primary-200">
                         <tr>
@@ -53,10 +53,16 @@
 
 <script>
 export default {
-    data () {
+    data(){
         return {
-            
+            judulHalaman: 'Master',
         }
+    },
+    methods: {
+        
+    },
+    created(){
+        this.$emit('updateJudul', this.judulHalaman)
     }
 }
 </script>

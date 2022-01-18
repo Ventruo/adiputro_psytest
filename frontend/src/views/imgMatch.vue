@@ -9,8 +9,8 @@
         </div>
 
         <div class="relative w-full mb-2">
-            <div class="h-8 bg-primary-600 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
-            <div class="h-8 bg-primary-400 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="h-8 bg-primary-700 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
+            <div class="h-8 bg-primary-500 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
             <div class="w-full text-center absolute top-0">
                 <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
             </div>
@@ -26,7 +26,7 @@
         <div id="soal" class="hidden">
             <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
             <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" />
-            <!-- <ImageAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
+            <!-- <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
             <mChoiceAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />
             <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
         </div>
@@ -53,6 +53,7 @@ export default {
     },
     data () {
         return {
+            judulHalaman: 'Image Matching',
             noSoal: 1,
             jumSoal: 5,
             menit: 6,
@@ -130,6 +131,7 @@ export default {
     },
 
     created () {
+        this.$emit('updateJudul', this.judulHalaman)
         this.countdownTimer = setInterval(() => {
             var element = document.getElementById("counter")
             if(this.countdown<4 && this.countdown>0){

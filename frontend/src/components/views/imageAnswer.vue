@@ -1,8 +1,14 @@
 <template>
     <div class="mb-3">
-        <p class="text-lg font-bold mb-2">Pilihan Jawaban :</p>
+        <div class="flex">
+            <p class="text-lg font-bold mb-2 mr-3">{{judul}}</p>
+            <div v-if="jenis === 'add'">
+                <input type="file" name="imgJawaban" id="" class="mb-2" @change="jawabanChange"> <br>
+            </div>
+        </div>
         <div class="text-center h-28">
-            <img src="../../assets/jawaban1.png" alt="" class="inline-block h-full">
+            <img v-if="jenis === 'add'" :src="urlJawaban" class="inline-block h-full" alt="" id="imgJawaban">
+            <img v-else src="../../assets/jawaban1.png" alt="" id="imgJawaban" class="inline-block h-full">
         </div>
     </div>
 
@@ -29,15 +35,38 @@ export default {
     components: {
         AnswerButton
     },
+    emits: ["updateUrl"],
     props: {
+        "judul": { type: String, default: '' },
         "jawaban": { type: Array, default: [], required: true },
         "noSoal": { type: Number, default: 1, required: true },
         "numberOfChoices": { type: Number, default: 4, required: true },
         "choices": { type: Array, required: true },
+        "jenis": { type: String, default: "" },
+        "urlJawaban": { type: String, default: "" },
+    },
+    data() {
+        return{
+            url: this.urlJawaban,
+        }
     },
     methods: {
         choose(id){
             this.jawaban[this.noSoal-1] = id
+        },
+        jawabanChange(e){
+            var input = e.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                    this.url = e.target.result;
+                }
+                this.image=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+                
+                var updatedUrl = URL.createObjectURL(this.image);
+                this.$emit('updateUrl', updatedUrl)
+            }
         },
     }
 }

@@ -1,10 +1,6 @@
 <template>
-    <div class="h-full w-9/12 m-auto text-white relative">
+    <!-- <div class="h-full w-9/12 m-auto text-white relative">
         <div class="mt-5">
-            <div class="flex justify-between mb-5">
-                <h1 class="text-3xl font-bold">Add New Question</h1>
-                <p class="text-3xl font-bold">Image Matching</p>
-            </div>
             <form action="" enctype="multipart/form-data">
                 <div class="flex justify-between mb-3">
                     <div>
@@ -48,20 +44,60 @@
                 </div>
             </form>
         </div>
+    </div> -->
+    <div class="h-full w-9/12 m-auto text-white relative mt-3">
+        <div class="flex justify-between mb-2">
+            <h1 class="text-xl font-bold">Add New Question</h1>
+            <p class="text-xl font-bold">Image Matching</p>
+        </div>
+
+        <div class="relative w-full mb-2">
+            <div class="h-8 bg-primary-700 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
+            <div class="h-8 bg-primary-500 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="w-full text-center absolute top-0">
+                <p class="text-center py-1">Soal {{noSoal}}/{{noSoal}}</p> 
+            </div>
+        </div>
+
+        <div class="h-auto bg-primary-500 py-2 px-3 rounded-xl mb-2" @click="a">
+            <p class="text-xl font-bold mb-1">Petunjuk :</p>
+            <p>
+                Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 
+            </p>
+        </div>
+
+        <div id="soal">
+            <form action="" enctype="multipart/form-data">
+                <!-- <ImageQuestion :label="'Pola Terpisah :'" :jenis="'add'" :urlSoal="urlSoal" @updateUrl="updateUrlSoal" /> -->
+                <TextQuestion :jenis="'add'" @updateQuestion="updateQuestion" />
+                <ImageAnswer :judul="'Pilihan Jawaban :'" :jenis="'add'" :urlJawaban="urlJawaban" :jawaban = jawaban 
+                            :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban @updateUrl="updateUrlJawaban" />
+                <!-- <mChoiceAnswer :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban /> -->
+            </form>
+        </div>
     </div>
-    
 </template>
 
 <script>
 import Radiobutton from '../components/radiobutton.vue'
+import ImageQuestion from '../components/views/imageQuestion.vue'
+import ImageAnswer from '../components/views/imageAnswer.vue'
+import TextQuestion from '../components/views/textQuestion.vue'
+import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
 export default {
     components: {
-        Radiobutton
+        Radiobutton, ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer
     },
     data () {
         return {
+            judulHalaman: 'Tambah Soal',
+            noSoal: 21,
+            jawaban: [],
+            numberOfChoices: 5,
+            pilihanJawaban: ['A','B','C','D','E'],
             urlSoal: null,
-            urlJawaban: null
+            urlJawaban: null,
+            question: ''
         }
     },
     methods: {
@@ -87,7 +123,22 @@ export default {
                 reader.readAsDataURL(input.files[0]);
             }
         },
+        updateUrlSoal(url){
+            this.urlSoal = url
+        },
+        updateUrlJawaban(url){
+            this.urlJawaban = url
+        },
+        updateQuestion(question){
+            this.question = question
+        },
+        a(){
+            alert(this.question)
+        }
     },
+    created(){
+        this.$emit('updateJudul', this.judulHalaman)
+    }
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <div class="h-full w-9/12 m-auto text-white relative">
         <div class="fixed top-0 inset-x-0 w-screen h-screen flex justify-center items-center">
-            <div class="bg-primary-300 h-2/3 w-1/3 px-5 py-7 rounded-xl">
+            <div class="bg-primary-500 h-2/3 w-1/3 px-5 py-7 rounded-xl">
                 <h1 class="text-2xl font-bold mb-3">Image Matching Test</h1>
                 <div>
                     <hr>
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="text-center bottom-5 w-full mt-5 text-right">
-                        <button class="bg-primary-900 hover:bg-primary-100 hover:text-primary-900 
+                        <button class="bg-primary-800 hover:bg-primary-200 hover:text-primary-900 
                                 duration-300 text-xl font-bold rounded-xl w-1/3 py-2"
                                 @click="this.$router.push({path: '/soalImage'})"> Start! </button>
                     </div>
@@ -38,7 +38,14 @@
 
 <script>
 export default {
-
+    data(){
+        return{
+            judulHalaman: 'Persiapan Tes'
+        }
+    },
+    created(){
+        this.$emit('updateJudul', this.judulHalaman)
+    }
 }
 </script>
 

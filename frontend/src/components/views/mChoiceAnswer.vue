@@ -1,16 +1,17 @@
 <template>
     <div class="w-full text-center mt-5">
+        <p class="text-lg font-bold mb-2 text-left">{{judul}}</p>
         <div class="inline-block w-full">
             <div class="w-full mb-2">
-                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[0]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[1]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                <AnswerButton :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :label="choices[0]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                <AnswerButton :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :label="choices[1]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
             </div>
             <div class="w-full mb-2">
-                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[2]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                <AnswerButton v-if="numberOfChoices>3" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                <AnswerButton :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :label="choices[2]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                <AnswerButton v-if="numberOfChoices>3" :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
             </div>
             <div class="w-full" v-if="numberOfChoices>4">
-                <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[4]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                <AnswerButton :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :label="choices[4]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
             </div>
         </div>
     </div>
@@ -23,6 +24,8 @@ export default {
         AnswerButton
     },
     props: {
+        "judul": { type: String, default: '' },
+        "jenis": { type: String, default: '' },
         "jawaban": { type: Array, default: [], required: true },
         "noSoal": { type: Number, default: 1, required: true },
         "numberOfChoices": { type: Number, default: 4, required: true },
