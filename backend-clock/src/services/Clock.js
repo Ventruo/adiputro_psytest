@@ -1,4 +1,4 @@
-class Timer {
+export default class Clock {
   expectedTime = 0;
   timeout;
   callback;
@@ -33,4 +33,3 @@ class Timer {
     this.timeout = setTimeout(this.round, this.interval - drift);
   };
 }
-module.exports = Timer;

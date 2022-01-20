@@ -1,17 +1,20 @@
-// init env file
-const dotenv = require("dotenv");
-dotenv.config();
+import fetch from "node-fetch";
 
-// timer
-const Timer = require("./Timer");
+// clock
+import Clock from "./Clock.js";
 
 async function initService() {
-  const timer = new Timer(update, 500);
-  timer.start();
+  const clock = new Clock(update, 500);
+  clock.start();
 }
 
 async function update() {
-  console.log("hello");
+  fetch(
+    process.env.EXPRESS_URL + "/clock/update?token=" + process.env.CLOCK_TOKEN
+  ).then((response) => console.log("Clock Ticking"));
+  // .then((response) => console.log("Clock Update Response\n", response))
+  // .then((data) => console.log("data\n", data))
+  // .catch((error) => console.log("ERROR TICK", error));
 }
 
-module.exports = { initService };
+export default initService;

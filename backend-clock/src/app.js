@@ -1,8 +1,8 @@
 // Init dot env process file
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
-const { initService } = require("./services/service");
+import initService from "./services/service.js";
 
 // init all application
 console.log("=== THIS IS THE MAIN CLOCK INTANCE ===");
