@@ -68,8 +68,8 @@
 
         <div id="soal">
             <form action="" enctype="multipart/form-data">
-                <!-- <ImageQuestion :label="'Pola Terpisah :'" :jenis="'add'" :urlSoal="urlSoal" @updateUrl="updateUrlSoal" /> -->
-                <TextQuestion :jenis="'add'" @updateQuestion="updateQuestion" />
+                <ImageQuestion :label="'Pola Terpisah :'" :jenis="'add'" :urlSoal="urlSoal" @updateUrl="updateUrlSoal" />
+                <!-- <TextQuestion :jenis="'add'" @updateQuestion="updateQuestion" /> -->
                 <ImageAnswer :judul="'Pilihan Jawaban :'" :jenis="'add'" :urlJawaban="urlJawaban" :jawaban = jawaban 
                             :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban @updateUrl="updateUrlJawaban" />
                 <!-- <mChoiceAnswer :jenis="'add'" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban /> -->

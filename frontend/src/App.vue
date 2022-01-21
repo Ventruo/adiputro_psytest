@@ -8,7 +8,8 @@
         <img src="./assets/logo.png" alt="" class="h-16" @click="$router.push({path: '/'})">
       </div>
     </header>
-    <router-view @updateJudul="updateJudul"/>
+    <router-view />
+    <!-- @updateJudul="updateJudul" -->
   </div>
 </template>
 <script>

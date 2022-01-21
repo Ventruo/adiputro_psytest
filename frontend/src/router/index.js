@@ -5,12 +5,18 @@ import masterImgMatch from '/src/views/masterImgMatch.vue'
 import AddImgMatch from '/src/views/addImgMatch.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
+import carousel from '/src/views/carousel.vue'
 
 const routes = [
     {
         path: '/',
         name: 'index',
         component: index,
+    },
+    {
+        path: '/c',
+        name: 'carousel',
+        component: carousel,
     },
     {
         path: '/dashboard',

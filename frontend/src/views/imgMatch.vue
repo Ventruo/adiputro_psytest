@@ -24,10 +24,10 @@
         </div>
 
         <div id="soal" class="hidden">
-            <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
-            <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" />
-            <!-- <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
-            <mChoiceAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />
+            <ImageQuestion :label="'Pola Terpisah :'" />
+            <!-- <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" /> -->
+            <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
+            <!-- <mChoiceAnswer :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban /> -->
             <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
         </div>
 
