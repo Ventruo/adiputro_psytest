@@ -14,12 +14,12 @@ app.use(express.json());
 //   url = process.env.EXPRESS_URL || "http://127.0.0.1:3000";
 // }
 
-// app.use(
-//   cors({
-//     origin: [url, "http://localhost:5050"],
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL],
+    credentials: true,
+  })
+);
 
 const initExpress = () => {
   app.listen(PORT, () => {
