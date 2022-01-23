@@ -20,7 +20,10 @@
             <div class="w-7/12 h-full bg-primary-700  flex justify-center items-center">
                 <div class="w-full h-auto text-center">
                     <h1 class="font-bold text-4xl">Login</h1>
-                    <form action="" class="text-left px-5 mt-5">
+                    <div>
+                        {{ info }}
+                    </div>
+                    <!-- <form action="" class="text-left px-5 mt-5">
                         <label for="userEmail">Email</label>
                         <input type="email" name="email" id="userEmail" class="w-full mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
                         <label for="userToken">Test Token</label>
@@ -28,7 +31,7 @@
                         <button type="submit" class="w-full mt-5 px-3 py-2 font-bold rounded-full ring-2 ring-inset ring-primary-300
                                                     hover:text-primary-800 hover:bg-primary-300 duration-300"
                                                     @click="this.$router.push({path: '/dashboard'})">Login</button>
-                    </form>
+                    </form> -->
                 </div>
             </div>
         </div>
@@ -36,10 +39,15 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    components: {
+        axios
+    },
     data(){
         return {
             judulHalaman: 'Login',
+            info: null,
         }
     },
     methods: {
@@ -47,6 +55,11 @@ export default {
     },
     created(){
         this.$emit('updateJudul', this.judulHalaman)
+    },
+    mounted () {
+        axios
+        .get('http://127.0.0.1:8888/api/test/1')
+        .then(({data}) => (this.info = data))
     }
 }
 </script>

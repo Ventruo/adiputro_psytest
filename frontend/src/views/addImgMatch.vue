@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Radiobutton from '../components/radiobutton.vue'
 import ImageQuestion from '../components/views/imageQuestion.vue'
 import ImageAnswer from '../components/views/imageAnswer.vue'
@@ -86,7 +87,7 @@ import TextQuestion from '../components/views/textQuestion.vue'
 import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
 export default {
     components: {
-        Radiobutton, ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer
+        Radiobutton, ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer, axios
     },
     data () {
         return {
