@@ -3,10 +3,11 @@ const {
   missing_param_response,
   success_response,
 } = require("../helpers/ResponseHelper");
+const { validate_required_columns } = require("../helpers/ValidationHelper");
 
 class TestController {
   async getOne(req, res) {
-    console.log("Getting Test Index...");
+    console.log("Getting Test...");
 
     if (!req.params.id) {
       missing_param_response(res);
@@ -14,12 +15,12 @@ class TestController {
     }
 
     Test.findOne({ where: { id: req.params.id } }).then((test) => {
-      success_response(res, test, "Get All Data Successful!");
+      success_response(res, test, "Get One Data Successful!");
     });
   }
 
   async getAll(req, res) {
-    console.log("Getting all Available Tests...");
+    console.log("Getting All Available Tests...");
 
     Test.findAll({ where: { status: 1 } }).then((tests) => {
       success_response(res, tests, "Get All Data Successful!");
@@ -29,7 +30,7 @@ class TestController {
   async create(req, res) {
     console.log("Creating A New Test...");
 
-    if (!req.body.name || !req.body.type) {
+    if (!validate_required_columns(req, Test, ["status"])) {
       missing_param_response(res);
       return;
     }
@@ -45,7 +46,7 @@ class TestController {
   async update(req, res) {
     console.log("Updating A Test...");
 
-    if (!req.body.updating_id || !req.body.name || !req.body.type) {
+    if (!validate_required_columns(req, Test, ["status"], ["updating_id"])) {
       missing_param_response(res);
       return;
     }
