@@ -1,6 +1,7 @@
 const { getDB } = require("../setup/sequelize");
 const sequelize = getDB();
 const { Model, DataTypes } = require("sequelize");
+const Section = require("./Section");
 
 class Question extends Model {}
 Question.init(
@@ -68,5 +69,6 @@ Question.init(
     tableName: "question",
   }
 );
+Question.belongsTo(Section, { foreignKey: "section_id" });
 
 module.exports = Question;
