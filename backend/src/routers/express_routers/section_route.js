@@ -4,13 +4,9 @@ const router = express.Router();
 
 let controller = new SectionController();
 router.get("/", controller.index);
+router.get("/all", controller.getAll);
 
 router.post("/create", controller.create.bind(controller));
-
-router
-  .route("/:id")
-  .get((req, res) => {})
-  .post((req, res) => {})
-  .delete((req, res) => {});
+router.post("/update", controller.update.bind(controller));
 
 module.exports = router;

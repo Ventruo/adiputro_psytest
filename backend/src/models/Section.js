@@ -11,6 +11,10 @@ Section.init(
       allowNull: false,
       autoIncrement: true,
     },
+    test_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
     instruction: {
       type: DataTypes.STRING,
       allowNull: false,
