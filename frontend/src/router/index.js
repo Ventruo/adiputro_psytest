@@ -5,7 +5,7 @@ import masterImgMatch from '/src/views/masterImgMatch.vue'
 import AddImgMatch from '/src/views/addImgMatch.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
-import carousel from '/src/views/carousel.vue'
+import biodata from '/src/views/biodata.vue'
 
 const routes = [
     {
@@ -14,9 +14,9 @@ const routes = [
         component: index,
     },
     {
-        path: '/c',
-        name: 'carousel',
-        component: carousel,
+        path: '/biodata',
+        name: 'biodata',
+        component: biodata,
     },
     {
         path: '/dashboard',

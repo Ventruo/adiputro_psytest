@@ -1,8 +1,8 @@
 <template>
     <div class="absolute top-0 z-0 w-full h-full flex text-white">
         <div class="w-9/12 h-auto min-h-screen pt-16 px-5">
-            <!-- <Skippable /> -->
-            <Continous />
+            <Skippable />
+            <!-- <Continous /> -->
         </div>
         <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-700 pt-20 pb-5 px-5">
             <div class="flex justify-between text-sm font-bold">

@@ -41,7 +41,7 @@
                 <div class="text-center mt-2">
                     <button class="ring-2 ring-inset ring-white hover:bg-primary-800 hover:ring-primary-800 
                                     duration-200 px-3 py-2 rounded-full"
-                                    @click="this.$router.push({path: '/preExam'})">Isi Biodata</button>
+                                    @click="this.$router.push({path: '/biodata'})">Isi Biodata</button>
                 </div>
             </div>
         </div>

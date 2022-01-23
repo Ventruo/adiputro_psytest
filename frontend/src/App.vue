@@ -1,5 +1,5 @@
 <template>
-  <div class="h-auto min-h-screen bg-primary-1000">
+  <div class="h-screen bg-primary-1000 flex flex-col">
     <header class="bg-primary-300 flex justify-between px-8 relative z-10">
       <div class="flex items-center">
         <p class="text-2xl font-bold text-primary-900">{{judulHalaman}}</p>
