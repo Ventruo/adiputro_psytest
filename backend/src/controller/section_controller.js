@@ -1,39 +1,47 @@
 const Section = require("../models/Section");
+const {
+  missing_param_response,
+  success_response,
+} = require("../helpers/ResponseHelper");
+const { validate_required_columns } = require("../helpers/ValidationHelper");
 
 class SectionController {
-  //TODO : get one item from id
-  async index(req, res) {
-    console.log("Getting Section Index...");
+  async getOne(req, res) {
+    console.log("Getting Section...");
 
-    Section.findOne({ where: { id: 1 } }).then((section) => {
-      res.send(section);
-      console.log("Get All Data Successful!");
+    if (!req.params.id) {
+      missing_param_response(res);
+      return;
+    }
+
+    Section.findOne({ where: { id: req.params.id } }).then((section) => {
+      success_response(res, section, "Get One Data Successful!");
     });
   }
 
   async getAll(req, res) {
-    console.log("Getting all Available Sections...");
+    console.log("Getting All Available Sections...");
 
-    if (!req.query.test_id) {
-      res.status(422);
-      res.send("Missing Required Parameters");
-      console.log("Missing Required Parameters");
-      return;
+    if (!req.params.test_id) {
+      Section.findAll({ where: { status: 1 } }).then((sections) => {
+        success_response(res, sections, "Get All Data Successful!");
+      });
+    } else {
+      Section.findAll({
+        where: { status: 1, test_id: req.params.test_id },
+      }).then((sections) => {
+        success_response(res, sections, "Get All Data Successful!");
+      });
     }
-
-    Section.findAll({ where: { status: 1, test_id: req.query.test_id } }).then(
-      (sections) => {
-        res.status(200);
-        res.send(sections);
-        console.log("Get All Data Successful!");
-      }
-    );
   }
 
   async create(req, res) {
     console.log("Creating A New Section...");
 
-    if (!this.check_section_data(req, res)) return;
+    if (!validate_required_columns(req, Section, ["status"])) {
+      missing_param_response(res);
+      return;
+    }
 
     const new_section = await Section.create({
       test_id: req.body.test_id,
@@ -43,20 +51,14 @@ class SectionController {
       option_num: req.body.option_num,
     });
 
-    res.status(200);
-    res.send(new_section.toJSON());
-    console.log("Create Successful!");
+    success_response(res, new_section.toJSON(), "Create Successful!");
   }
 
   async update(req, res) {
-    console.log("Updating A Test...");
+    console.log("Updating A Section...");
 
-    if (!this.check_section_data(req, res)) return;
-
-    if (!req.body.updating_id) {
-      res.status(422);
-      res.send("Missing Required Parameters");
-      console.log("Missing Required Parameters");
+    if (!validate_required_columns(req, Section, ["status"], ["updating_id"])) {
+      missing_param_response(res);
       return;
     }
 
@@ -70,27 +72,8 @@ class SectionController {
       });
       section.save();
 
-      res.status(200);
-      res.send(section.toJSON());
-      console.log("Update successful!");
+      success_response(res, section.toJSON(), "Update Successful!");
     });
-  }
-
-  check_section_data(req, res) {
-    if (
-      !req.body.test_id ||
-      !req.body.instruction ||
-      !req.body.duration ||
-      !req.body.type ||
-      !req.body.option_num
-    ) {
-      res.status(422);
-      res.send("Missing Required Parameters");
-      console.log("Missing Required Parameters");
-      return false;
-    }
-
-    return true;
   }
 }
 
