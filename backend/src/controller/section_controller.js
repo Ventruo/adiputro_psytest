@@ -1,6 +1,7 @@
 const Section = require("../models/Section");
 
 class SectionController {
+  //TODO : get one item from id
   async index(req, res) {
     console.log("Getting Section Index...");
 

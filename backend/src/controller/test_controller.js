@@ -1,12 +1,20 @@
 const Test = require("../models/Test");
+const {
+  missing_param_response,
+  success_response,
+} = require("../helpers/ResponseHelper");
 
 class TestController {
-  async index(req, res) {
+  async getOne(req, res) {
     console.log("Getting Test Index...");
 
-    Test.findOne({ where: { id: 1 } }).then((test) => {
-      res.send(test);
-      console.log("Get All Data Successful!");
+    if (!req.params.id) {
+      missing_param_response(res);
+      return;
+    }
+
+    Test.findOne({ where: { id: req.params.id } }).then((test) => {
+      success_response(res, test, "Get All Data Successful!");
     });
   }
 
@@ -14,9 +22,7 @@ class TestController {
     console.log("Getting all Available Tests...");
 
     Test.findAll({ where: { status: 1 } }).then((tests) => {
-      res.status(200);
-      res.send(tests);
-      console.log("Get All Data Successful!");
+      success_response(res, tests, "Get All Data Successful!");
     });
   }
 
@@ -24,9 +30,7 @@ class TestController {
     console.log("Creating A New Test...");
 
     if (!req.body.name || !req.body.type) {
-      res.status(422);
-      res.send("Missing Required Parameters");
-      console.log("Missing Required Parameters");
+      missing_param_response(res);
       return;
     }
 
@@ -35,18 +39,14 @@ class TestController {
       type: req.body.type,
     });
 
-    res.status(200);
-    res.send(new_test.toJSON());
-    console.log("Create Successful!");
+    success_response(res, new_test.toJSON(), "Create Successful!");
   }
 
   async update(req, res) {
     console.log("Updating A Test...");
 
     if (!req.body.updating_id || !req.body.name || !req.body.type) {
-      res.status(422);
-      res.send("Missing Required Parameters");
-      console.log("Missing Required Parameters");
+      missing_param_response(res);
       return;
     }
 
@@ -57,9 +57,7 @@ class TestController {
       });
       test.save();
 
-      res.status(200);
-      res.send(test.toJSON());
-      console.log("Update successful!");
+      success_response(res, test?.toJSON(), "Update successful!");
     });
   }
 }
