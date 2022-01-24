@@ -3,14 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 let controller = new ExamSessionController();
-router.get("/", controller.index);
+router.get("/all", controller.getAll);
 
 router.post("/create", controller.create.bind(controller));
+router.post("/update", controller.update.bind(controller));
 
-router
-  .route("/:id")
-  .get((req, res) => {})
-  .post((req, res) => {})
-  .delete((req, res) => {});
+router.get("/:id", controller.getOne);
+router.get("/getbyemail/:email", controller.getByEmail);
 
 module.exports = router;
