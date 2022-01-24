@@ -31,13 +31,13 @@
                             <td>A</td>
                             <td>
                                 <button class="bg-green-800 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-200 hover:text-primary-900 
-                                                duration-200 rounded-full px-5 h-auto w-auto text-base px-5 py-2 mr-1" 
+                                                duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
                                     @click="this.$router.push({path: '/'})"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
                                 </button>
                                 <button class="bg-red-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-200 hover:text-primary-900 
-                                                duration-200 rounded-full px-5 h-auto w-auto text-base px-5 py-2" 
+                                                duration-200 rounded-full h-auto w-auto text-base px-5 py-2" 
                                     @click="this.$router.push({path: '/'})"> 
                                     <i class="fa fa-trash-alt mr-2"></i>
                                     <span>Delete</span>

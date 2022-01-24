@@ -120,10 +120,46 @@
                 </div>
             </div>
             
-            <div>
+            <div class="mb-2">
                 <div class="flex mb-2">
                     <p class="mr-2">19.</p>
                     <p>PENDIDIKAN TERAKHIR</p>
+                </div>
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-2/12">TINGKAT/GELAR</th>
+                                <th class="font-semibold w-2/12">JURUSAN</th>
+                                <th class="font-semibold w-3/12">NAMA SEKOLAH</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">TAHUN KELULUSAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in pendidikanCount" :key="i">
+                                <InputTable :modelValue="''" :nama="'pendidikan[][tingkat]'" :placeHolder="'Tingkat / Gelar'" />
+                                <InputTable :modelValue="''" :nama="'pendidikan[][jurusan]'" :placeHolder="'Jurusan'" />
+                                <InputTable :modelValue="''" :nama="'pendidikan[][sekolah]'" :placeHolder="'Nama Sekolah'" />
+                                <InputTable :modelValue="''" :nama="'pendidikan[][kota]'" :placeHolder="'Kota'" />
+                                <InputTable :modelValue="''" :nama="'pendidikan[][tahun]'" :placeHolder="'Tahun Kelulusan'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end mt-2">
+                        <button @click.prevent="subPendidikanCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="pendidikanCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
                 </div>
             </div>
 
@@ -137,17 +173,207 @@
                 </div>
             </div>
 
-            <div>
+            <div class="mb-2">
                 <div class="flex mb-2">
                     <p class="mr-2">21.</p>
                     <p>KELUARGA</p>
                 </div>
+
+                <!-- orang tua -->
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-3/12">NAMA ORANG TUA</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in keluargaCount[0]" :key="i">
+                                <InputTable :modelValue="''" :nama="'orangTua[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable :modelValue="''" :nama="'orangTua[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable :modelValue="''" :nama="'orangTua[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable :modelValue="''" :nama="'orangTua[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable :modelValue="''" :nama="'orangTua[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end my-2">
+                        <button @click.prevent="subKeluargaCount(0)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="keluargaCount[0]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
+                </div>
+
+                <!-- istri/suami -->
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-3/12">NAMA ISTRI/SUAMI</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in keluargaCount[1]" :key="i">
+                                <InputTable :modelValue="''" :nama="'pasangan[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable :modelValue="''" :nama="'pasangan[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable :modelValue="''" :nama="'pasangan[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable :modelValue="''" :nama="'pasangan[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable :modelValue="''" :nama="'pasangan[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end my-2">
+                        <button @click.prevent="subKeluargaCount(1)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="keluargaCount[1]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
+                </div>
+
+                <!-- anak kandung -->
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-3/12">NAMA ANAK KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in keluargaCount[2]" :key="i">
+                                <InputTable :modelValue="''" :nama="'anak[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable :modelValue="''" :nama="'anak[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable :modelValue="''" :nama="'anak[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable :modelValue="''" :nama="'anak[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable :modelValue="''" :nama="'anak[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end my-2">
+                        <button @click.prevent="subKeluargaCount(2)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="keluargaCount[2]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
+                </div>
+
+                <!-- saudara kandung -->
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-3/12">NAMA SAUDARA KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in keluargaCount[3]" :key="i">
+                                <InputTable :modelValue="''" :nama="'saudara[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable :modelValue="''" :nama="'saudara[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable :modelValue="''" :nama="'saudara[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable :modelValue="''" :nama="'saudara[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable :modelValue="''" :nama="'saudara[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end my-2">
+                        <button @click.prevent="subKeluargaCount(3)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="keluargaCount[3]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-2">
-                <div class="flex">
+                <div class="flex mb-2">
                     <p class="mr-2">22.</p>
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
+                </div>
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-2/12">DARI TGL/TAHUN</th>
+                                <th class="font-semibold w-2/12">SAMPAI</th>
+                                <th class="font-semibold w-3/12">NAMA PERUSAHAAN</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">BID. USAHA</th>
+                                <th class="font-semibold w-2/12">JABATAN/BAGIAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in riwayatCount" :key="i">
+                                <InputTable :modelValue="''" :nama="'riwayatKerja[][dari]'" :placeHolder="'Tgl/Tahun'" />
+                                <InputTable :modelValue="''" :nama="'riwayatKerja[][sampai]'" :placeHolder="'Tgl/Tahun'" />
+                                <InputTable :modelValue="''" :nama="'riwayatKerja[][perusahaan]'" :placeHolder="'Nama Perusahaan'" />
+                                <InputTable :modelValue="''" :nama="'riwayatKerja[][kota]'" :placeHolder="'Kota'" />
+                                <InputTable :modelValue="''" :nama="'riwayatKerja[][usaha]'" :placeHolder="'Bidang Usaha'" />
+                                <InputTable :modelValue="''" :nama="'riwayatKerja[][jabatan]'" :placeHolder="'Jabatan/Bagian'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end mt-2">
+                        <button @click.prevent="subRiwayatCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="riwayatCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
                 </div>
                 <div class="ml-7">
                     <p>Apabila Anda pernah bekerja di tempat lain coba sebutkan gaji yang anda peroleh? </p>
@@ -159,24 +385,131 @@
                 </div>
             </div>
 
-            <div>
+            <div class="mb-2">
                 <div class="flex mb-2">
                     <p class="mr-2">23.</p>
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-3/12">MATERI</th>
+                                <th class="font-semibold w-3/12">PENYELENGGARA</th>
+                                <th class="font-semibold w-2/12">TAHUN</th>
+                                <th class="font-semibold w-2/12">TEMPAT</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in trainingCount" :key="i">
+                                <InputTable :modelValue="''" :nama="'training[][materi]'" :placeHolder="'Materi'" />
+                                <InputTable :modelValue="''" :nama="'training[][penyelenggara]'" :placeHolder="'Penyelenggara'" />
+                                <InputTable :modelValue="''" :nama="'training[][tahun]'" :placeHolder="'Tahun'" />
+                                <InputTable :modelValue="''" :nama="'training[][tempat]'" :placeHolder="'Tempat'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end mt-2">
+                        <button @click.prevent="subTrainingCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="trainingCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
+                </div>
             </div>
 
-            <div>
+            <div class="mb-2">
                 <div class="flex mb-2">
                     <p class="mr-2">24.</p>
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th class="font-semibold w-3/12">ORGANISASI</th>
+                                <th class="font-semibold w-3/12">TEMPAT</th>
+                                <th class="font-semibold w-2/12">MASA</th>
+                                <th class="font-semibold w-2/12">JABATAN</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in organisasiCount" :key="i">
+                                <InputTable :modelValue="''" :nama="'organisasi[][organisasi]'" :placeHolder="'Organisasi'" />
+                                <InputTable :modelValue="''" :nama="'organisasi[][tempat]'" :placeHolder="'Tempat'" />
+                                <InputTable :modelValue="''" :nama="'organisasi[][masa]'" :placeHolder="'Masa'" />
+                                <InputTable :modelValue="''" :nama="'organisasi[][jabatan]'" :placeHolder="'Jabatan'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end mt-2">
+                        <button @click.prevent="subOrganisasiCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="organisasiCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
+                </div>
             </div>
 
-            <div>
+            <div class="mb-2">
                 <div class="flex mb-2">
                     <p class="mr-2">25.</p>
                     <p>BAHASA YANG DIKUASAI:</p>
+                </div>
+                <div class="ml-7">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800 divide-y divide-primary-200">
+                            <tr>
+                                <th rowspan="2" class="font-semibold w-3/12">BAHASA</th>
+                                <th class="font-semibold w-2/12">BERBICARA</th>
+                                <th class="font-semibold w-2/12">MENDENGAR</th>
+                                <th class="font-semibold w-2/12">MENULIS</th>
+                            </tr>
+                            <tr>
+                                <th class="font-normal text-sm w-3/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-600 divide-y divide-primary-500" id="user-table">
+                            <tr class="text-center" v-for="i in bahasaCount" :key="i">
+                                <InputTable :modelValue="''" :nama="'bahasa[][bahasa]'" :placeHolder="'Bahasa'" />
+                                <InputTable :modelValue="''" :nama="'bahasa[][berbicara]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                                <InputTable :modelValue="''" :nama="'bahasa[][mendengar]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                                <InputTable :modelValue="''" :nama="'bahasa[][menulis]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end mt-2">
+                        <button @click.prevent="subBahasaCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi Baris</span>
+                                                </button>
+                        <button @click.prevent="bahasaCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
+                                                text-base px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah Baris</span>
+                                                </button>
+                    </div>
                 </div>
             </div>
 
@@ -372,7 +705,7 @@
                 </div>
             </div>
 
-            <p class="font-bold mt-10 mb-20">Bahwa segala biodata yang saya isi di atas adalah benar adanya. </p>
+            <p class="font-bold text-xl mt-10 mb-20">Bahwa segala biodata yang saya isi di atas adalah benar adanya. </p>
             <div class="flex justify-end font-bold">
                 <div>
                     <div class="flex mb-2">
@@ -384,7 +717,12 @@
                     </div>
                     <p class="mb-2 text-center">Pelamar,</p>
                     <div class="text-center">
-                        <img :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
+                        <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
+                        <div v-else class="h-32 w-32 mb-2 inline-block bg-primary-600">
+                            <div class="flex justify-center items-center h-full">
+                                <p>Tanda Tangan</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="text-center mb-2">
                         <input type="file" name="imgSign" id="files" class="hidden" @change="signChange">
@@ -396,21 +734,35 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mt-10 mb-5 flex justify-end">
+                <button class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full text-lg px-10 py-2">
+                                Submit
+                                </button>
+            </div>
         </form>
     </div>
 </template>
 
 <script>
 import InputBio from '../components/input.vue'
+import InputTable from '../components/table_input.vue'
 import TextArea from '../components/textarea.vue'
 import Radio from '../components/radiobutton.vue'
 export default {
     components: {
-        InputBio, TextArea, Radio
+        InputBio, InputTable, TextArea, Radio
     },
     data(){
         return{
-            url: null
+            url: null,
+            pendidikanCount: 1,
+            keluargaCount:[1,1,1,1],
+            riwayatCount: 1,
+            trainingCount: 1,
+            organisasiCount: 1,
+            bahasaCount: 1,
         }
     },
     methods: {
@@ -425,6 +777,15 @@ export default {
                 reader.readAsDataURL(input.files[0]);
             }
         },
+        subPendidikanCount(){ if (this.pendidikanCount>1) this.pendidikanCount-- },
+        subKeluargaCount(idx){ 
+            console.log(this.keluargaCount)
+            if (this.keluargaCount[idx]>1) this.keluargaCount[idx]-- 
+        },
+        subRiwayatCount(){ if (this.riwayatCount>1) this.riwayatCount-- },
+        subTrainingCount(){ if (this.trainingCount>1) this.trainingCount-- },
+        subOrganisasiCount(){ if (this.organisasiCount>1) this.organisasiCount-- },
+        subBahasaCount(){ if (this.bahasaCount>1) this.bahasaCount-- },
     },
     mounted() {
         $('#menikah').on("click", function() { $('#sudahMenikah').removeClass('hidden'); });
