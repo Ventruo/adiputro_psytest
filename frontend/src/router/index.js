@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import dashboard from '/src/views/dashboard.vue'
 import imgMatch from '/src/views/imgMatch.vue'
-import masterImgMatch from '/src/views/masterImgMatch.vue'
 import AddImgMatch from '/src/views/addImgMatch.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
+import testResult from '/src/views/testResult.vue'
+
+import masterImgMatch from '/src/views/masterImgMatch.vue'
+import masterTestResult from '/src/views/masterTestResult.vue'
 
 const routes = [
     {
@@ -42,6 +45,16 @@ const routes = [
         path: '/addSoalImage',
         name: 'AddImgMatch',
         component: AddImgMatch,
+    },
+    {
+        path: '/masterTestResult',
+        name: 'masterTestResult',
+        component: masterTestResult,
+    },
+    {
+        path: '/testResult',
+        name: 'testResult',
+        component: testResult,
     },
 
     // {

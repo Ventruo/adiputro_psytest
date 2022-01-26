@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-primary-1000 flex flex-col">
+  <div class="h-auto min-h-screen bg-primary-1000 flex flex-col">
     <header class="bg-primary-300 flex justify-between px-8 relative z-10">
       <div class="flex items-center">
         <p class="text-2xl font-bold text-primary-900">{{judulHalaman}}</p>
@@ -8,8 +8,7 @@
         <img src="./assets/logo.png" alt="" class="h-16" @click="$router.push({path: '/'})">
       </div>
     </header>
-    <router-view />
-    <!-- @updateJudul="updateJudul" -->
+    <router-view @updateJudul="updateJudul" />
   </div>
 </template>
 <script>

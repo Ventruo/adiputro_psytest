@@ -756,6 +756,7 @@ export default {
     },
     data(){
         return{
+            judulHalaman: 'Biodata',
             url: null,
             pendidikanCount: 1,
             keluargaCount:[1,1,1,1],
@@ -798,6 +799,9 @@ export default {
         $('#kenalanTidak').on("click", function() { $('#adaKenalan').addClass('hidden'); });
         
     },
+    created(){
+        this.$emit('updateJudul', this.judulHalaman)
+    }
 }
 </script>
 
