@@ -1,6 +1,8 @@
 const { getDB } = require("../setup/sequelize");
 const sequelize = getDB();
 const { Model, DataTypes } = require("sequelize");
+const Test = require("./Test");
+const ExamSession = require("./ExamSession");
 
 class TestResult extends Model {}
 TestResult.init(
@@ -12,6 +14,10 @@ TestResult.init(
       autoIncrement: true,
     },
     test_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    exam_session: {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
@@ -36,5 +42,7 @@ TestResult.init(
     tableName: "test_result",
   }
 );
+TestResult.belongsTo(Test, { foreignKey: "test_id" });
+TestResult.belongsTo(ExamSession, { foreignKey: "exam_session" });
 
 module.exports = TestResult;
