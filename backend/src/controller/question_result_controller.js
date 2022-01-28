@@ -12,7 +12,7 @@ const Test = require("../models/Test");
 
 class QuestionResultController {
   async getOne(req, res) {
-    console.log("Getting Question...");
+    console.log("Getting Question Result...");
 
     if (!req.params.id) {
       missing_param_response(res);
@@ -106,7 +106,7 @@ class QuestionResultController {
   }
 
   async getByTest(req, res) {
-    console.log("Getting Question Result By Section...");
+    console.log("Getting Question Result By Test...");
 
     if (!req.params.test_id) {
       missing_param_response(res);
