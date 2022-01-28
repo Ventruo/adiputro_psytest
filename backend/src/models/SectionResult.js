@@ -1,6 +1,8 @@
 const { getDB } = require("../setup/sequelize");
 const sequelize = getDB();
 const { Model, DataTypes } = require("sequelize");
+const ExamSession = require("./ExamSession");
+const Section = require("./Section");
 
 class SectionResult extends Model {}
 SectionResult.init(
@@ -40,5 +42,7 @@ SectionResult.init(
     tableName: "section_result",
   }
 );
+SectionResult.belongsTo(Section, { foreignKey: "section_id" });
+SectionResult.belongsTo(ExamSession, { foreignKey: "exam_session" });
 
 module.exports = SectionResult;
