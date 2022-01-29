@@ -10,14 +10,9 @@ Registrant.init(
       primaryKey: true,
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING,
+    biodata: {
+      type: DataTypes.TEXT,
       allowNull: false,
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      comment: "male, female",
     },
     status: {
       type: DataTypes.INTEGER,
