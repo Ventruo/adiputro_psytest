@@ -2,6 +2,7 @@ const Question = require("../models/Question");
 const Section = require("../models/Section");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -16,6 +17,11 @@ class QuestionController {
     }
 
     Question.findOne({ where: { id: req.params.id } }).then((question) => {
+      if (!question) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, question, "Get One Data Successful!");
     });
   }
@@ -34,8 +40,13 @@ class QuestionController {
             },
           },
         ],
-      }).then((question) => {
-        res.send(question);
+      }).then((questions) => {
+        if (questions.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, questions, "Get All Data Successful!");
       });
     } else if (req.query.section_id) {
       // Get From Section ID
@@ -43,6 +54,11 @@ class QuestionController {
         where: { status: 1, section_id: req.query.section_id },
         include: Section,
       }).then((questions) => {
+        if (questions.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
         success_response(res, questions, "Get All Data Successful!");
       });
     } else {
@@ -51,6 +67,11 @@ class QuestionController {
         where: { status: 1 },
         include: Section,
       }).then((questions) => {
+        if (questions.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
         success_response(res, questions, "Get All Data Successful!");
       });
     }
@@ -92,6 +113,11 @@ class QuestionController {
 
     Question.findOne({ where: { id: req.body.updating_id } }).then(
       (question) => {
+        if (!question) {
+          data_not_found_response(res);
+          return;
+        }
+
         question.set({
           question: req.body.question,
           section_id: req.body.section_id,

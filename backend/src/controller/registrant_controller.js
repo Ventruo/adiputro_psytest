@@ -1,6 +1,8 @@
 const Registrant = require("../models/Registrant");
 const {
   missing_param_response,
+  unique_id_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -16,6 +18,11 @@ class RegistrantController {
 
     Registrant.findOne({ where: { email: req.params.email } }).then(
       (registrant) => {
+        if (!registrant) {
+          data_not_found_response(res);
+          return;
+        }
+
         registrant.biodata = JSON.parse(registrant.biodata);
         success_response(res, registrant, "Get One Data Successful!");
       }
@@ -26,6 +33,11 @@ class RegistrantController {
     console.log("Getting All Registrant Data...");
 
     Registrant.findAll({ where: { status: 1 } }).then((registrants) => {
+      if (registrants.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
       for (const key in registrants) {
         registrants[key].biodata = JSON.parse(registrants[key].biodata);
       }
@@ -41,12 +53,19 @@ class RegistrantController {
       return;
     }
 
-    const new_registrant = await Registrant.create({
-      email: req.body.email,
-      biodata: JSON.stringify(req.body.biodata),
-    });
+    this.isIdUnique(req.body.email).then(async (isUnique) => {
+      if (!isUnique) {
+        unique_id_response(res);
+        return;
+      }
 
-    success_response(res, new_registrant.toJSON(), "Create Successful!");
+      const new_registrant = await Registrant.create({
+        email: req.body.email,
+        biodata: JSON.stringify(req.body.biodata),
+      });
+
+      success_response(res, new_registrant.toJSON(), "Create Successful!");
+    });
   }
 
   async update(req, res) {
@@ -66,6 +85,11 @@ class RegistrantController {
 
     Registrant.findOne({ where: { email: req.body.updating_email } }).then(
       (registrant) => {
+        if (!registrant) {
+          data_not_found_response(res);
+          return;
+        }
+
         registrant.set({
           biodata: JSON.stringify(req.body.biodata),
         });
@@ -74,6 +98,15 @@ class RegistrantController {
         success_response(res, registrant?.toJSON(), "Update successful!");
       }
     );
+  }
+
+  async isIdUnique(email) {
+    return Registrant.count({ where: { email: email } }).then((count) => {
+      if (count != 0) {
+        return false;
+      }
+      return true;
+    });
   }
 }
 

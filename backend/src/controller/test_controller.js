@@ -1,6 +1,7 @@
 const Test = require("../models/Test");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -15,6 +16,11 @@ class TestController {
     }
 
     Test.findOne({ where: { id: req.params.id } }).then((test) => {
+      if (!test) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, test, "Get One Data Successful!");
     });
   }
@@ -23,6 +29,11 @@ class TestController {
     console.log("Getting All Available Tests...");
 
     Test.findAll({ where: { status: 1 } }).then((tests) => {
+      if (tests.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, tests, "Get All Data Successful!");
     });
   }
@@ -52,6 +63,11 @@ class TestController {
     }
 
     Test.findOne({ where: { id: req.body.updating_id } }).then((test) => {
+      if (!test) {
+        data_not_found_response(res);
+        return;
+      }
+
       test.set({
         name: req.body.name,
         type: req.body.type,

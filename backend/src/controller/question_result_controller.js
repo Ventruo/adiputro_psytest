@@ -1,6 +1,7 @@
 const QuestionResult = require("../models/QuestionResult");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -20,6 +21,11 @@ class QuestionResultController {
     }
 
     QuestionResult.findOne({ where: { id: req.params.id } }).then((result) => {
+      if (!result) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, result, "Get One Data Successful!");
     });
   }
@@ -34,8 +40,13 @@ class QuestionResultController {
 
     if (!req.query.email) {
       QuestionResult.findAll({ where: { question_id: req.params.q_id } }).then(
-        (result) => {
-          success_response(res, result, "Get Data Successful!");
+        (results) => {
+          if (results.length == 0) {
+            data_not_found_response(res);
+            return;
+          }
+
+          success_response(res, results, "Get Data Successful!");
         }
       );
     } else {
@@ -54,8 +65,19 @@ class QuestionResultController {
             ],
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        let results2 = [];
+        for (let i in results) {
+          if (results[i].sectionresult) {
+            results2.push(results[i]);
+          }
+        }
+        if (results2.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results2, "Get Data Successful!");
       });
     }
   }
@@ -78,8 +100,19 @@ class QuestionResultController {
             },
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        let results2 = [];
+        for (let i in results) {
+          if (results[i].sectionresult) {
+            results2.push(results[i]);
+          }
+        }
+        if (results2.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results2, "Get Data Successful!");
       });
     } else {
       QuestionResult.findAll({
@@ -99,8 +132,19 @@ class QuestionResultController {
             ],
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        let results2 = [];
+        for (let i in results) {
+          if (results[i].sectionresult) {
+            results2.push(results[i]);
+          }
+        }
+        if (results2.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     }
   }
@@ -128,14 +172,19 @@ class QuestionResultController {
             ],
           },
         ],
-      }).then((result) => {
-        let result2 = [];
-        for (let i in result) {
-          if (result[i].sectionresult) {
-            result2.push(result[i]);
+      }).then((results) => {
+        let results2 = [];
+        for (let i in results) {
+          if (results[i].sectionresult) {
+            results2.push(results[i]);
           }
         }
-        success_response(res, result2, "Get Data Successful!");
+        if (results2.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results2, "Get Data Successful!");
       });
     } else {
       QuestionResult.findAll({
@@ -158,14 +207,19 @@ class QuestionResultController {
             ],
           },
         ],
-      }).then((result) => {
-        let result2 = [];
-        for (let i in result) {
-          if (result[i].sectionresult) {
-            result2.push(result[i]);
+      }).then((results) => {
+        let results2 = [];
+        for (let i in results) {
+          if (results[i].sectionresult) {
+            results2.push(results[i]);
           }
         }
-        success_response(res, result2, "Get Data Successful!");
+        if (results2.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results2, "Get Data Successful!");
       });
     }
   }
@@ -174,6 +228,11 @@ class QuestionResultController {
     console.log("Getting All Available Question Results...");
 
     QuestionResult.findAll({ where: { status: 1 } }).then((results) => {
+      if (results.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, results, "Get All Data Successful!");
     });
   }
@@ -225,8 +284,18 @@ class QuestionResultController {
 
     QuestionResult.findOne({ where: { id: req.body.updating_id } }).then(
       (result) => {
+        if (!result) {
+          data_not_found_response(res);
+          return;
+        }
+
         Question.findOne({ where: { id: req.body.question_id } }).then(
           (question) => {
+            if (!question) {
+              data_not_found_response(res);
+              return;
+            }
+
             let status_correct = false;
             if (question.answer == req.body.answer) status_correct = true;
 

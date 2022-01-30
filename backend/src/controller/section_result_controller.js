@@ -1,6 +1,7 @@
 const SectionResult = require("../models/SectionResult");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -17,6 +18,11 @@ class SectionResultController {
     }
 
     SectionResult.findOne({ where: { id: req.params.id } }).then((result) => {
+      if (!result) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, result, "Get One Data Successful!");
     });
   }
@@ -25,6 +31,11 @@ class SectionResultController {
     console.log("Getting All Available Section Results...");
 
     SectionResult.findAll({ where: { status: 1 } }).then((results) => {
+      if (results.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, results, "Get All Data Successful!");
     });
   }
@@ -42,8 +53,13 @@ class SectionResultController {
         where: {
           section_id: req.params.section_id,
         },
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        if (results.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     } else {
       SectionResult.findAll({
@@ -58,8 +74,13 @@ class SectionResultController {
             },
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        if (results.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     }
   }
@@ -82,8 +103,13 @@ class SectionResultController {
             },
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        if (results.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     } else {
       SectionResult.findAll({
@@ -101,8 +127,13 @@ class SectionResultController {
             },
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        if (results.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     }
   }
@@ -142,6 +173,11 @@ class SectionResultController {
 
     SectionResult.findOne({ where: { id: req.body.updating_id } }).then(
       (result) => {
+        if (!result) {
+          data_not_found_response(res);
+          return;
+        }
+
         result.set({
           section_id: req.body.section_id,
           exam_session: req.body.exam_session,

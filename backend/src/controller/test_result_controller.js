@@ -1,6 +1,7 @@
 const TestResult = require("../models/TestResult");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -16,6 +17,11 @@ class TestResultController {
     }
 
     TestResult.findOne({ where: { id: req.params.id } }).then((result) => {
+      if (!result) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, result, "Get One Data Successful!");
     });
   }
@@ -24,6 +30,11 @@ class TestResultController {
     console.log("Getting All Available Test Results...");
 
     TestResult.findAll({ where: { status: 1 } }).then((results) => {
+      if (results.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, results, "Get All Data Successful!");
     });
   }
@@ -41,8 +52,13 @@ class TestResultController {
         where: {
           test_id: req.params.test_id,
         },
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        if (results.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     } else {
       TestResult.findAll({
@@ -57,8 +73,13 @@ class TestResultController {
             },
           },
         ],
-      }).then((result) => {
-        success_response(res, result, "Get Data Successful!");
+      }).then((results) => {
+        if (results.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, results, "Get Data Successful!");
       });
     }
   }
@@ -93,6 +114,11 @@ class TestResultController {
 
     TestResult.findOne({ where: { id: req.body.updating_id } }).then(
       (result) => {
+        if (!result) {
+          data_not_found_response(res);
+          return;
+        }
+
         result.set({
           test_id: req.body.test_id,
           exam_session: req.body.exam_session,

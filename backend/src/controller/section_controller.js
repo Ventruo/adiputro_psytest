@@ -1,6 +1,7 @@
 const Section = require("../models/Section");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -15,6 +16,11 @@ class SectionController {
     }
 
     Section.findOne({ where: { id: req.params.id } }).then((section) => {
+      if (!section) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, section, "Get One Data Successful!");
     });
   }
@@ -24,12 +30,22 @@ class SectionController {
 
     if (!req.params.test_id) {
       Section.findAll({ where: { status: 1 } }).then((sections) => {
+        if (sections.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
         success_response(res, sections, "Get All Data Successful!");
       });
     } else {
       Section.findAll({
         where: { status: 1, test_id: req.params.test_id },
       }).then((sections) => {
+        if (sections.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
         success_response(res, sections, "Get All Data Successful!");
       });
     }
@@ -63,6 +79,11 @@ class SectionController {
     }
 
     Section.findOne({ where: { id: req.body.updating_id } }).then((section) => {
+      if (!section) {
+        data_not_found_response(res);
+        return;
+      }
+
       section.set({
         test_id: req.body.test_id,
         instruction: req.body.instruction,

@@ -1,6 +1,7 @@
 const ExamSession = require("../models/ExamSession");
 const {
   missing_param_response,
+  data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
@@ -15,6 +16,11 @@ class ExamSessionController {
     }
 
     ExamSession.findOne({ where: { id: req.params.id } }).then((session) => {
+      if (!session) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, session, "Get One Data Successful!");
     });
   }
@@ -29,6 +35,11 @@ class ExamSessionController {
 
     ExamSession.findOne({ where: { email: req.params.email } }).then(
       (session) => {
+        if (!session) {
+          data_not_found_response(res);
+          return;
+        }
+
         success_response(res, session, "Get One Data Successful!");
       }
     );
@@ -38,6 +49,11 @@ class ExamSessionController {
     console.log("Getting All Active Sessions...");
 
     ExamSession.findAll({ where: { status: 1 } }).then((sessions) => {
+      if (sessions.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
       success_response(res, sessions, "Get All Data Successful!");
     });
   }
@@ -78,6 +94,11 @@ class ExamSessionController {
 
     ExamSession.findOne({ where: { id: req.body.updating_id } }).then(
       (session) => {
+        if (!session) {
+          data_not_found_response(res);
+          return;
+        }
+
         session.set({
           email: req.body.email,
           start_date: req.body.start_date,
