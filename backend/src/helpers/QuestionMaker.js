@@ -71,7 +71,7 @@ const dummy_question = [
     question_type: 1,
   },
   {
-    question: "Pilihlah 1 kata yang artinya paling berbeda (ini soalnya)",
+    question: "Pilihlah 1 kata yang artinya paling berbeda",
     section_id: 8,
     option_a: "Jurusan",
     option_b: "Timur",
