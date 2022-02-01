@@ -4,7 +4,7 @@
             <Skippable />
             <!-- <Continous /> -->
         </div>
-        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-700 pt-20 pb-5 px-5">
+        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-20 pb-5 px-5">
             <div class="flex justify-between text-sm font-bold">
                 <div class="text-right mb-2">
                     <p>Waktu Lokal : </p>

@@ -46,20 +46,20 @@
         </div>
     </div> -->
     <div class="h-full w-9/12 m-auto text-white relative mt-3">
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between mb-2 text-primary-900">
             <h1 class="text-xl font-bold">Add New Question</h1>
             <p class="text-xl font-bold">Image Matching</p>
         </div>
 
         <div class="relative w-full mb-2">
-            <div class="h-8 bg-primary-700 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
+            <div class="h-8 bg-primary-800 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
             <div class="h-8 bg-primary-500 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
             <div class="w-full text-center absolute top-0">
                 <p class="text-center py-1">Soal {{noSoal}}/{{noSoal}}</p> 
             </div>
         </div>
 
-        <div class="h-auto bg-primary-500 py-2 px-3 rounded-xl mb-2" @click="a">
+        <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2" @click="a">
             <p class="text-xl font-bold mb-1">Petunjuk :</p>
             <p>
                 Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 

@@ -11,13 +11,13 @@
     </div> -->
     <div class="absolute top-0 z-0 w-full h-full flex text-white justify-center items-center">
         <div class="w-1/2 h-3/4 flex rounded-xl overflow-hidden">
-            <div class="w-5/12 h-full bg-primary-300 flex justify-center items-center">
+            <div class="w-5/12 h-full bg-primary-1000 flex justify-center items-center">
                 <div class="text-center">
-                   <img src="../assets/logo2.png" alt="" class="h-28 inline-block">
+                   <img src="../assets/logo2.png" alt="" class="h-64 inline-block">
                    <!-- <img src="../assets/psychotest.png" alt=""> -->
                 </div>
             </div>
-            <div class="w-7/12 h-full bg-primary-700  flex justify-center items-center">
+            <div class="w-7/12 h-full bg-primary-800  flex justify-center items-center">
                 <div class="w-full h-auto text-center">
                     <h1 class="font-bold text-4xl">Login</h1>
                     <!-- <div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full text-center mt-5">
+    <div class="w-full text-center mt-5 bg-primary-800 rounded-xl py-2">
         <p class="text-lg font-bold mb-2 text-left">{{judul}}</p>
         <div class="inline-block w-full">
             <div class="w-full mb-2">

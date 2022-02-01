@@ -1,10 +1,10 @@
 <template>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <div>
-        <h1 class="text-2xl font-bold mt-3">Belum Diselesaikan</h1>
+        <h1 class="text-2xl font-bold mt-3 text-primary-900">Belum Diselesaikan</h1>
         <div class="carousel">
             <a class="carousel-item">
-                <div class="w-64 h-64 bg-primary-600 text-white p-2 rounded-xl">
+                <div class="w-64 h-64 bg-primary-800 text-white p-2 rounded-xl">
                     <div class="mb-1">
                     <i class="fas fa-file-alt mr-2"></i>
                     <span class="text-lg font-bold">Tes 1</span>
@@ -32,7 +32,7 @@
             </a>
 
             <a class="carousel-item">
-                <div class="w-64 h-64 bg-primary-600 text-white p-2 rounded-xl">
+                <div class="w-64 h-64 bg-primary-800 text-white p-2 rounded-xl">
                     <div class="mb-1">
                     <i class="fas fa-file-alt mr-2"></i>
                     <span class="text-lg font-bold">Tes 2</span>
@@ -59,7 +59,7 @@
             </a>
 
             <a class="carousel-item" v-for="i in 5" :key="i">
-                <div class="w-64 h-64 bg-primary-600 text-white p-2 rounded-xl">
+                <div class="w-64 h-64 bg-primary-800 text-white p-2 rounded-xl">
                     <div class="mb-1">
                     <i class="fas fa-file-alt mr-2"></i>
                     <span class="text-lg font-bold">Tes {{i+2}}</span>

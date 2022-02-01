@@ -1,31 +1,31 @@
 <template>
     <div class="h-full w-9/12 m-auto text-white relative mt-3">
         <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
-            <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+            <p class="text-primary-900">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
             <div class="flex gap-2">
-                <button class="bg-blue-600 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="prevSoal">Prev</button>
-                <button id="nextBtn" class="bg-blue-600 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="nextSoal">Next</button>
+                <button class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="prevSoal">Prev</button>
+                <button id="nextBtn" class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="nextSoal">Next</button>
             </div>
         </div>
 
         <div class="relative w-full mb-2">
-            <div class="h-8 bg-primary-700 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
-            <div class="h-8 bg-primary-500 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="h-8 bg-primary-800 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
+            <div class="h-8 bg-primary-600 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
             <div class="w-full text-center absolute top-0">
                 <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
             </div>
         </div>
 
-        <div class="h-auto bg-primary-500 py-2 px-3 rounded-xl mb-2">
+        <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
             <p class="text-xl font-bold mb-1">Petunjuk :</p>
             <p>
                 Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 
             </p>
         </div>
 
-        <div id="soal" class="hidden">
+        <div id="soal" class="hidden" v-if="pertanyaan!=null">
             <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
-            <TextQuestion :question="'Nuri : Burung  = Sepat : ?'" />
+            <TextQuestion :question="pertanyaan[noSoal-1]['question']" />
             <!-- <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
             <mChoiceAnswer :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />        
             <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
@@ -41,6 +41,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import ImageQuestion from '../components/views/imageQuestion.vue'
 import ImageAnswer from '../components/views/imageAnswer.vue'
 import TextQuestion from '../components/views/textQuestion.vue'
@@ -49,7 +50,7 @@ import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
 
 export default {
     components: {
-        ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer, TextAnswer
+        axios,ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer, TextAnswer
     },
     data () {
         return {
@@ -62,9 +63,8 @@ export default {
             countdownTimer: null,
             countdown: 2,
             jawaban: [],
-            pilihanJawaban: [
-                'A. Mangkuk', 'B. Ikan', 'C. Aquarium', 'D. Merah'
-            ]
+            pertanyaan: null,
+            pilihanJawaban: null,
         }
     },
     methods: {
@@ -86,32 +86,45 @@ export default {
                     }
                     ctr++
                 }
-                this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+                // this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }else{
-                Swal.fire({
-                    title: 'Submit This Task?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            'Submitted!',
-                            'Task Successfully Submitted.',
-                            'success'
-                        )
-                        .then(function(){
-                            window.location = '/'
-                        })
-                    }
-                });
+                var isi = 0
+                this.jawaban.forEach(e => { if (e != null) isi++; });
+                if(isi!=this.jumSoal){
+                    Swal.fire({
+                        title: 'Jawab Dulu Semua Pertanyaan!',
+                        icon: 'warning',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'Back'
+                    })
+                }else{
+                    Swal.fire({
+                        title: 'Submit This Task?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                'Submitted!',
+                                'Task Successfully Submitted.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/dashboard'
+                            })
+                        }
+                    });
+                }
             }
+            // this.gantiPilihanJawaban()
         },
         prevSoal(){
             if (this.noSoal>1){
                 this.noSoal--
+                if(this.noSoal<this.jumSoal) $('#nextBtn').text('Next')
                 const elements = document.getElementById("progress")
                 var interval = setInterval(frame, 50)
                 var ctr = 0
@@ -125,8 +138,35 @@ export default {
                     }
                     ctr++
                 }
-                this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+                // this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
+            // this.gantiPilihanJawaban()
+        },
+        gantiPilihanJawaban(){
+            this.pilihanJawaban = [
+                'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
+                'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
+                'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
+                'D. '+this.pertanyaan[this.noSoal-1]['option_d']
+            ]
+        },
+        ready(){
+            const elements = document.getElementById("progress")
+            var interval = setInterval(frame, 50)
+            var ctr = 0
+            var tambahan = ((1/this.jumSoal)*100)/5
+            function frame() {
+                var width = parseInt(elements.style.width.replace(/px/,""))+tambahan
+                if (ctr == 5) {
+                    clearInterval(interval)
+                } else {
+                    elements.style.width = width +'%'
+                }
+                ctr++
+            }
+
+            this.jawaban = Array(this.jumSoal)
+            console.log(this.jawaban)
         }
     },
 
@@ -170,19 +210,15 @@ export default {
     },
 
     mounted(){
-        const elements = document.getElementById("progress")
-        var interval = setInterval(frame, 50)
-        var ctr = 0
-        var tambahan = ((1/this.jumSoal)*100)/5
-        function frame() {
-            var width = parseInt(elements.style.width.replace(/px/,""))+tambahan
-            if (ctr == 5) {
-                clearInterval(interval)
-            } else {
-                elements.style.width = width +'%'
-            }
-            ctr++
-        }
+        axios
+        .get('http://127.0.0.1:8888/api/question/all?section_id=8')
+        .then(({data}) => (
+            this.pertanyaan = data,
+            this.menit = this.pertanyaan[0]["section"]["duration"],
+            this.jumSoal = this.pertanyaan.length,
+            this.gantiPilihanJawaban(),
+            this.ready()
+        ))
     }
 }
     

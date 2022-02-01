@@ -1,9 +1,9 @@
 <template>
     <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3">
-        <h1 class="text-3xl font-bold mb-3">Test Result</h1>
+        <h1 class="text-3xl font-bold mb-3 text-primary-900">Test Result</h1>
         <div class="w-full h-auto">
             <div class="relative">
-                <div class="w-5/12 flex text-xl mb-3">
+                <div class="w-5/12 flex text-xl mb-3 text-primary-900">
                     <div class="text-right mr-5">
                         <p>Email :</p>
                         <p>Nama :</p>
@@ -21,9 +21,14 @@
                 </div>
                 <div class="absolute right-0 bottom-0">
                     <button class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                    hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full text-lg px-10 py-2">
+                                    hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full text-lg px-10 py-2 mr-2">
                                     <i class="fa fa-print mr-2"></i>
-                                    <span>Print</span>
+                                    <span>Print PDF</span>
+                                    </button>
+                    <button class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
+                                    hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full text-lg px-10 py-2">
+                                    <i class="fa fa-download mr-2"></i>
+                                    <span>Download Excel</span>
                                     </button>
                 </div>
             </div>
@@ -31,6 +36,145 @@
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
                 <div class="flex gap-2 justify-center w-full h-full">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black" id="pdf">
+                        <div class="flex justify-center">
+                            <img src="../assets/logo.png" alt="" class="w-1/4">
+                        </div>
+                        
+                        <hr style="border-top: 2px solid black;">
+
+                        <div class="flex relative">
+                            <div class="font-bold">
+                                <p>Nama</p>
+                                <p>Jenis Kelamin (L/P)</p>
+                                <p>Pendidikan</p>
+                            </div>
+                            <div class="ml-3">
+                                <p>: Achmad Sawaludin</p>
+                                <p>: L</p>
+                                <p>: S1</p>
+                            </div>
+                        </div>
+
+                        <div class="grow text-sm mt-2">
+                            <table class="table-fixed border-collapse border border-primary-200 w-full text-white mb-2">
+                                <thead class="bg-primary-900">
+                                    <tr>
+                                        <th class="font-semibold w-3/12">Persoalan</th>
+                                        <th class="font-semibold w-3/12">Nilai</th>
+                                        <th class="font-semibold w-3/12">Norma</th>
+                                        <th class="font-semibold w-3/12">Tintum</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-primary-500 divide-y divide-primary-400">
+                                    <tr class="text-center">
+                                        <td>1</td>
+                                        <td>12</td>
+                                        <td>11</td>
+                                        <td>C</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>2</td>
+                                        <td>22</td>
+                                        <td>11</td>
+                                        <td>C</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>3</td>
+                                        <td>31</td>
+                                        <td>14</td>
+                                        <td>B</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>4</td>
+                                        <td>11</td>
+                                        <td>8</td>
+                                        <td>HC</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>5</td>
+                                        <td>8</td>
+                                        <td>7</td>
+                                        <td>HC</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>6</td>
+                                        <td>16</td>
+                                        <td>11</td>
+                                        <td>HC</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>7</td>
+                                        <td>6</td>
+                                        <td>7</td>
+                                        <td>HC</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>8</td>
+                                        <td>9</td>
+                                        <td>9</td>
+                                        <td>C</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>9</td>
+                                        <td>7</td>
+                                        <td>8</td>
+                                        <td>HC</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>10</td>
+                                        <td>27</td>
+                                        <td>3</td>
+                                        <td>K</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="flex justify-end mr-2">
+                                <div class="text-right mr-2 font-bold">
+                                    <p>Total :</p>
+                                    <p>Total/10 :</p>
+                                    <p>IQ :</p>
+                                </div>
+                                <div>
+                                    <p>89</p>
+                                    <p>8,9</p>
+                                    <p>100</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-xs">
+                            <div class="w-full">
+                                <p class="font-bold">PT. Adiputro Wirasejati</p>
+                                <div class="flex justify-between relative w-full">
+                                    <div>
+                                        <div>
+                                            <p>Jl. Raya Balearjosari no. 35</p>
+                                            <p>Malang, Jawa Timur - Indonesia 65126</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <div class="flex gap-2">
+                                                <p class="font-bold">T</p>
+                                                <p>+62 (0) 341 491 139</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex gap-2">
+                                                <p class="font-bold">F</p>
+                                                <p>+62 (0) 341 491 904</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-end">
+                                        <p class="font-bold">Adiputroproup.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black" id="pdf">
                         <div class="flex justify-center">
                             <img src="../assets/logo.png" alt="" class="w-1/4">
                         </div>
@@ -379,7 +523,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

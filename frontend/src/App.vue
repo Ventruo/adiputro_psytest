@@ -1,11 +1,11 @@
 <template>
-  <div class="h-auto min-h-screen bg-primary-1000 flex flex-col">
-    <header class="bg-primary-300 flex justify-between px-8 relative z-10">
+  <div class="h-auto min-h-screen bg-primary-200 flex flex-col">
+    <header class="bg-primary-900 flex justify-between px-8 py-2 relative z-10">
       <div class="flex items-center">
-        <p class="text-2xl font-bold text-primary-900">{{judulHalaman}}</p>
+        <p class="text-2xl font-bold text-white">{{judulHalaman}}</p>
       </div>
       <div>
-        <img src="./assets/logo.png" alt="" class="h-16" @click="$router.push({path: '/'})">
+        <img src="./assets/logo.png" alt="" class="h-14" @click="$router.push({path: '/'})">
       </div>
     </header>
     <router-view @updateJudul="updateJudul" />

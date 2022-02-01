@@ -1,6 +1,6 @@
 <template>
     <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden">
-        <h1 class="text-3xl text-center font-bold mb-3">BIODATA</h1>
+        <h1 class="text-primary-1000 text-3xl text-center font-bold mb-3">BIODATA</h1>
         <form method="" action="" autocomplete="off" class="bg-primary-900 w-full h-full overflow-y-auto no-scrollbar py-2 px-5">
             <div class="flex mb-5">
                 <div class="w-1/12">
@@ -709,11 +709,11 @@
             <div class="flex justify-end font-bold">
                 <div>
                     <div class="flex mb-2">
-                        <input type="text" name="" id="" class="text-black w-36 inline-block px-3 py-1 rounded-xl text-center outline-none" placeholder="Kota">
+                        <input type="text" name="" id="" class="w-36 inline-block px-3 py-1 rounded-xl text-center outline-none bg-primary-600 placeholder-gray-300" placeholder="Kota">
                         <span class="ml-1 mr-2">, </span>
-                        <input type="text" name="" id="" class="text-black w-36 inline-block px-3 py-1 rounded-xl text-center outline-none" placeholder="Tanggal Bulan">
+                        <input type="text" name="" id="" class="w-36 inline-block px-3 py-1 rounded-xl text-center outline-none bg-primary-600 placeholder-gray-300" placeholder="Tanggal Bulan">
                         <span class="ml-2 mr-1">20</span>
-                        <input type="text" name="" id="" class="text-black w-10 inline-block px-3 py-1 rounded-xl text-center outline-none" placeholder="22">
+                        <input type="text" name="" id="" class="w-10 inline-block px-3 py-1 rounded-xl text-center outline-none bg-primary-600 placeholder-gray-300" placeholder="22">
                     </div>
                     <p class="mb-2 text-center">Pelamar,</p>
                     <div class="text-center">
@@ -730,7 +730,7 @@
                                                     duration-200 rounded-xl py-1 px-5">Upload Tanda Tangan</label>
                     </div>
                     <div class="text-center">
-                        <input type="text" name="" id="" class="text-black w-1/2 inline-block px-3 py-1 my-1 rounded-xl text-center outline-none" placeholder="Nama Lengkap">
+                        <input type="text" name="" id="" class="w-1/2 inline-block px-3 py-1 my-1 rounded-xl text-center outline-none bg-primary-600 placeholder-gray-300" placeholder="Nama Lengkap">
                     </div>
                 </div>
             </div>
