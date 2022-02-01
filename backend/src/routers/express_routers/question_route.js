@@ -6,6 +6,7 @@ let controller = new QuestionController();
 router.get("/all", controller.getAll);
 
 router.post("/create", controller.create.bind(controller));
+router.post("/createFromExcel", controller.createFromExcel.bind(controller));
 router.post("/update", controller.update.bind(controller));
 
 router.get("/:id", controller.getOne);

@@ -6,6 +6,7 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
+const { populateQuestion } = require("../helpers/QuestionMaker");
 
 class QuestionController {
   async getOne(req, res) {
@@ -134,6 +135,16 @@ class QuestionController {
 
         success_response(res, question.toJSON(), "Update Successful!");
       }
+    );
+  }
+
+  async createFromExcel(req, res) {
+    populateQuestion(
+      "./src/data/JAWABAN TES TINTUM.xlsx",
+      req.body.sheet_name,
+      req.body.section,
+      Question,
+      res
     );
   }
 }
