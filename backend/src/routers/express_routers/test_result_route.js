@@ -8,6 +8,8 @@ router.get("/all", controller.getAll);
 router.post("/create", controller.create.bind(controller));
 router.post("/update", controller.update.bind(controller));
 
+router.post("/calculateresult", controller.calculate_result.bind(controller));
+
 router.get("/:id", controller.getOne);
 router.get("/getbytest/:test_id", controller.getByTest);
 

@@ -1,11 +1,39 @@
 const TestResult = require("../models/TestResult");
+const ExamSession = require("../models/ExamSession");
 const {
   missing_param_response,
   data_not_found_response,
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
-const ExamSession = require("../models/ExamSession");
+const xlsxFile = require("read-excel-file/node");
+const SectionResult = require("../models/SectionResult");
+const Test = require("../models/Test");
+const Section = require("../models/Section");
+
+const tintum_lookup = {
+  0: "K",
+  5: "HC",
+  9: "C",
+  12: "CB",
+  14: "B",
+};
+
+const iq_lookup = {
+  4: 85,
+  5: 88,
+  6: 91,
+  7: 94,
+  8: 97,
+  9: 100,
+  10: 103,
+  11: 106,
+  12: 109,
+  13: 112,
+  14: 115,
+  15: 118,
+  16: 121,
+};
 
 class TestResultController {
   async getOne(req, res) {
@@ -130,6 +158,150 @@ class TestResultController {
         success_response(res, result?.toJSON(), "Update successful!");
       }
     );
+  }
+
+  async calculate_result(req, res) {
+    TestResult.findOne({
+      where: { test_id: req.body.test_id },
+      include: [
+        {
+          model: ExamSession,
+          where: {
+            email: req.body.email,
+          },
+        },
+      ],
+    }).then((testres) => {
+      SectionResult.findAll({ where: { test_result_id: testres.id } }).then(
+        (sectionsres) => {
+          Section.findAndCountAll({ where: { test_id: testres.test_id } }).then(
+            (sections) => {
+              let correct_data = [];
+              sectionsres.sort((a, b) => {
+                return a.section_id - b.section_id;
+              });
+              sectionsres.forEach((section) => {
+                correct_data.push(section.num_correct);
+              });
+
+              correct_data = correct_data.concat(
+                Array(sections.count - correct_data.length).fill(0)
+              );
+
+              this.calculate_full(
+                res,
+                "./src/data/NORMA TINTUM.xlsx",
+                "Sheet1",
+                testres,
+                correct_data
+              );
+            }
+          );
+        }
+      );
+    });
+  }
+
+  async calculate_full(res, excel_path, sheet, testres, correct_data) {
+    // Read Norms from Excel
+    xlsxFile(excel_path, {
+      sheet: sheet,
+    }).then(async (rows) => {
+      console.log("Correct Data: ", correct_data);
+
+      let norms_lookup = [];
+      let norms_value = [];
+      for (let i = 1; i <= 11; i++) {
+        let norm = [];
+        for (let j = 1; j <= 21; j++) {
+          norm.push(rows[j][i]);
+        }
+        if (i == 11) norms_value = norm;
+        else norms_lookup.push(norm);
+      }
+      console.log(norms_lookup);
+      console.log(norms_value);
+
+      //   Calculate Norms
+      let norms_result = [];
+      for (let i = 0; i < correct_data.length; i++) {
+        let j = 0;
+        while (norms_lookup[i][++j] <= correct_data[i]);
+
+        norms_result.push(norms_value[--j]);
+      }
+      console.log("Values: ", correct_data);
+      console.log("Norms: ", norms_result);
+
+      //   Calculate Tintum
+      let tintum_result = [];
+      for (let i = 0; i < norms_result.length; i++) {
+        let tintum = 0;
+
+        for (const key in tintum_lookup) {
+          if (key >= norms_result[i]) {
+            let tintum_keys = Object.keys(tintum_lookup);
+            let loc = tintum_keys.indexOf(key);
+
+            if (key == norms_result[i]) tintum = tintum_lookup[key];
+            else tintum = tintum_lookup[tintum_keys[loc - 1]];
+
+            break;
+          }
+        }
+
+        tintum_result.push(tintum);
+      }
+      console.log("Tintum: ", tintum_result);
+
+      //   Calculate IQ
+      let norms_sum = norms_result.reduce((a, b) => a + b, 0);
+      console.log("Norms Sum: ", norms_sum);
+      let norms_div = norms_sum / 10;
+      let norms_rounded = Math.floor(norms_div);
+
+      let iq = -999;
+      for (const key in iq_lookup) {
+        if (key >= norms_div) {
+          let iq_keys = Object.keys(iq_lookup);
+          let loc = iq_keys.indexOf(key);
+
+          if (key == norms_div) iq = iq_lookup[key];
+          else if (loc != 0) iq = iq_lookup[iq_keys[loc - 1]];
+          else iq = 0;
+
+          break;
+        }
+      }
+
+      if (!(norms_div - norms_rounded < 0.3)) {
+        iq = iq + Math.floor((norms_div - norms_rounded) / 0.3);
+      }
+      console.log("IQ: ", iq);
+
+      let results = {};
+      results.section_result_id = 1;
+      results.norms_sum = norms_sum;
+      results.iq = iq;
+      let temp = [];
+      for (let i = 0; i < correct_data.length; i++) {
+        let object = {};
+        object.num_correct = correct_data[i];
+        object.norm = norms_result[i];
+        object.tintum = tintum_result[i];
+
+        temp.push(object);
+      }
+      results.data = temp;
+      console.log("Result JSON: ", results);
+
+      testres.set({
+        result: JSON.stringify(results),
+      });
+      testres.save();
+
+      success_response(res, testres?.toJSON(), "Update successful!");
+    });
   }
 }
 
