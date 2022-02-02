@@ -1,6 +1,7 @@
 const { getDB } = require("../setup/sequelize");
 const sequelize = getDB();
 const { Model, DataTypes } = require("sequelize");
+const Question = require("./Question");
 
 class Section extends Model {}
 Section.init(
