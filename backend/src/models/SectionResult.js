@@ -13,6 +13,10 @@ SectionResult.init(
       allowNull: false,
       autoIncrement: true,
     },
+    test_result_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
     section_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -28,6 +32,11 @@ SectionResult.init(
     finish_date: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    num_correct: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
     },
     status: {
       type: DataTypes.INTEGER,

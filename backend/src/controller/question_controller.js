@@ -87,7 +87,7 @@ class QuestionController {
     }
 
     const new_question = await Question.create({
-      question: req.body.question,
+      instruction: req.body.instruction,
       section_id: req.body.section_id,
       option_a: req.body.option_a,
       option_b: req.body.option_b,
@@ -96,7 +96,7 @@ class QuestionController {
       option_e: req.body.option_e,
       answer: req.body.answer,
       option_type: req.body.option_type,
-      question_type: req.body.question_type,
+      instruction_type: req.body.instruction_type,
     });
 
     success_response(res, new_question.toJSON(), "Create Successful!");

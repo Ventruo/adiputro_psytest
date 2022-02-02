@@ -12,7 +12,7 @@ Question.init(
       allowNull: false,
       autoIncrement: true,
     },
-    question: {
+    instruction: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -50,7 +50,7 @@ Question.init(
       defaultValue: 1,
       comment: "1: text, 2: image",
     },
-    question_type: {
+    instruction_type: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,

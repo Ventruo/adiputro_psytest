@@ -267,6 +267,56 @@ class QuestionResultController {
     );
   }
 
+  async createmultiple(req, res) {
+    console.log("Creating A New Question Result...");
+
+    if (
+      !validate_required_columns(
+        req,
+        QuestionResult,
+        ["status", "status_correct", "question_id", "answer"],
+        ["data"]
+      )
+    ) {
+      missing_param_response(res);
+      return;
+    }
+
+    let results = [];
+    let ctr_correct = 0;
+    for (const data of req.body.data) {
+      await Question.findOne({ where: { id: data.question_id } }).then(
+        async (question) => {
+          let status_correct = false;
+          if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
+            status_correct = true;
+            ctr_correct++;
+          }
+
+          const new_result = await QuestionResult.create({
+            section_result_id: req.body.section_result_id,
+            question_id: data.question_id,
+            answer: data.answer,
+            status_correct: status_correct,
+          });
+
+          results.push(new_result);
+        }
+      );
+    }
+
+    SectionResult.findOne({ where: { id: req.body.section_result_id } }).then(
+      (secres) => {
+        secres.set({
+          num_correct: ctr_correct,
+        });
+        secres.save();
+
+        success_response(res, results, "Create Multiple Successful!");
+      }
+    );
+  }
+
   async update(req, res) {
     console.log("Updating A Question Result...");
 

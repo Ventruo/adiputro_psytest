@@ -141,12 +141,16 @@ class SectionResultController {
   async create(req, res) {
     console.log("Creating A New Section Result...");
 
-    if (!validate_required_columns(req, SectionResult, ["status"])) {
+    // TODO COUNT NUM CORRECT AUTOMATICALLY
+    if (
+      !validate_required_columns(req, SectionResult, ["status", "num_correct"])
+    ) {
       missing_param_response(res);
       return;
     }
 
     const new_result = await SectionResult.create({
+      test_result_id: req.body.test_result_id,
       section_id: req.body.section_id,
       exam_session: req.body.exam_session,
       start_date: req.body.start_date,
@@ -163,7 +167,7 @@ class SectionResultController {
       !validate_required_columns(
         req,
         SectionResult,
-        ["status"],
+        ["status", "num_correct"],
         ["updating_id"]
       )
     ) {
@@ -171,6 +175,7 @@ class SectionResultController {
       return;
     }
 
+    // TODO COUNT NUM CORRECT AUTOMATICALLY
     SectionResult.findOne({ where: { id: req.body.updating_id } }).then(
       (result) => {
         if (!result) {
@@ -179,6 +184,7 @@ class SectionResultController {
         }
 
         result.set({
+          test_result_id: req.body.test_result_id,
           section_id: req.body.section_id,
           exam_session: req.body.exam_session,
           start_date: req.body.start_date,

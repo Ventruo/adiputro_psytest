@@ -29,6 +29,10 @@ TestResult.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    result: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,

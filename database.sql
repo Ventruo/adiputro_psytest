@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
-  `question` varchar(1000) NOT NULL,
+  `instruction` varchar(1000) NOT NULL,
   `section_id` bigint(20) NOT NULL,
   `option_a` varchar(255) DEFAULT NULL,
   `option_b` varchar(255) DEFAULT NULL,
@@ -58,16 +58,16 @@ CREATE TABLE `question` (
   `option_e` varchar(255) DEFAULT NULL,
   `answer` varchar(10) NOT NULL,
   `option_type` int(10) NOT NULL DEFAULT 1 COMMENT '1: text,  2: image',
-  `question_type` int(10) NOT NULL DEFAULT 1 COMMENT '1: text,  2: image',
+  `instruction_type` int(10) NOT NULL DEFAULT 1 COMMENT '1: text,  2: image',
   `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=598 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=599 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `question` */
 
-insert  into `question`(`id`,`question`,`section_id`,`option_a`,`option_b`,`option_c`,`option_d`,`option_e`,`answer`,`option_type`,`question_type`,`status`,`createdAt`,`updatedAt`) values 
+insert  into `question`(`id`,`instruction`,`section_id`,`option_a`,`option_b`,`option_c`,`option_d`,`option_e`,`answer`,`option_type`,`instruction_type`,`status`,`createdAt`,`updatedAt`) values 
 (308,'Safir adalah …',2,'Pengembara','Gurun','Ahli filsafat','Batu-batuan','-','B',1,1,1,'2022-02-01 10:38:45','2022-02-01 10:38:45'),
 (309,'Safir adalah …',2,'Pengembara','Gurun','Ahli filsafat','Batu-batuan','-','B',1,1,1,'2022-02-01 10:38:45','2022-02-01 10:38:45'),
 (310,'Safir adalah …',2,'Pengembara','Gurun','Ahli filsafat','Batu-batuan','-','C',1,1,1,'2022-02-01 10:38:45','2022-02-01 10:38:45'),
@@ -373,7 +373,7 @@ CREATE TABLE `question_result` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `question_result` */
 
@@ -385,7 +385,12 @@ insert  into `question_result`(`id`,`section_result_id`,`question_id`,`answer`,`
 (5,1,2,'2022-01-25',0,1,'2022-01-28 16:28:54','2022-01-28 16:28:54'),
 (6,1,2,'c',0,1,'2022-01-28 16:29:18','2022-01-28 16:29:18'),
 (7,1,2,'a',1,1,'2022-01-28 16:29:21','2022-01-30 13:14:22'),
-(8,1,2,'a',1,1,'2022-01-30 13:11:15','2022-01-30 13:11:15');
+(8,1,2,'a',1,1,'2022-01-30 13:11:15','2022-01-30 13:11:15'),
+(19,1,308,'a',0,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
+(20,1,309,'b',1,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
+(21,1,310,'c',1,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
+(22,1,311,'d',0,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
+(23,1,312,'e',0,1,'2022-02-02 07:48:12','2022-02-02 07:48:12');
 
 /*Table structure for table `registrant` */
 
@@ -447,23 +452,27 @@ DROP TABLE IF EXISTS `section_result`;
 CREATE TABLE `section_result` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `section_id` bigint(20) NOT NULL,
+  `test_result_id` bigint(20) NOT NULL,
   `exam_session` bigint(20) NOT NULL,
   `start_date` datetime NOT NULL,
   `finish_date` datetime NOT NULL,
+  `num_correct` int(20) NOT NULL DEFAULT 0,
   `status` int(20) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `section_result` */
 
-insert  into `section_result`(`id`,`section_id`,`exam_session`,`start_date`,`finish_date`,`status`,`createdAt`,`updatedAt`) values 
-(1,3,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',1,'2022-01-30 19:23:37','2022-01-30 12:28:14'),
-(2,1,2,'2022-01-23 19:23:29','2022-01-30 19:23:32',1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
-(3,2,3,'2022-01-23 19:23:29','2022-01-30 19:23:32',1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
-(4,2,1,'2022-01-23 19:23:29','2022-01-30 19:23:32',1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
-(5,3,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',1,'2022-01-30 12:27:40','2022-01-30 12:27:40');
+insert  into `section_result`(`id`,`section_id`,`test_result_id`,`exam_session`,`start_date`,`finish_date`,`num_correct`,`status`,`createdAt`,`updatedAt`) values 
+(1,3,0,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',2,1,'2022-01-30 19:23:37','2022-02-02 07:48:12'),
+(2,1,0,2,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
+(3,2,0,3,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
+(4,2,0,1,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
+(5,3,0,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',0,1,'2022-01-30 12:27:40','2022-01-30 12:27:40'),
+(11,3,1,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',0,1,'2022-02-01 16:29:10','2022-02-01 16:29:10'),
+(12,3,1,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',0,1,'2022-02-01 16:29:53','2022-02-01 16:29:53');
 
 /*Table structure for table `test` */
 
@@ -477,12 +486,13 @@ CREATE TABLE `test` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `test` */
 
 insert  into `test`(`id`,`name`,`type`,`status`,`createdAt`,`updatedAt`) values 
-(1,'Test 1','2',1,'2022-01-22 22:40:20','2022-01-23 06:49:35');
+(1,'Test 1','2',1,'2022-01-22 22:40:20','2022-01-23 06:49:35'),
+(9,'Test 2','2',1,'2022-01-22 22:40:20','2022-01-23 06:49:35');
 
 /*Table structure for table `test_result` */
 
@@ -494,6 +504,7 @@ CREATE TABLE `test_result` (
   `exam_session` bigint(20) NOT NULL,
   `start_date` datetime NOT NULL,
   `finish_date` datetime NOT NULL,
+  `result` longtext DEFAULT NULL,
   `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
@@ -502,12 +513,12 @@ CREATE TABLE `test_result` (
 
 /*Data for the table `test_result` */
 
-insert  into `test_result`(`id`,`test_id`,`exam_session`,`start_date`,`finish_date`,`status`,`createdAt`,`updatedAt`) values 
-(1,1,1,'2022-01-15 23:50:21','2022-01-22 23:50:32',1,'2022-01-22 23:55:40','2022-01-22 23:55:40'),
-(2,3,2,'2022-01-15 23:50:21','2022-01-22 23:50:32',1,'2022-01-22 23:55:40','2022-01-22 23:55:40'),
-(3,2,3,'2022-01-28 08:00:00','2022-01-28 11:00:00',1,'2022-01-22 23:55:40','2022-01-28 17:17:36'),
-(4,1,3,'2022-01-15 23:50:21','2022-01-22 23:50:32',1,'2022-01-22 23:55:40','2022-01-22 23:55:40'),
-(5,3,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',1,'2022-01-28 17:16:38','2022-01-28 17:16:38');
+insert  into `test_result`(`id`,`test_id`,`exam_session`,`start_date`,`finish_date`,`result`,`status`,`createdAt`,`updatedAt`) values 
+(1,1,1,'2022-01-15 23:50:21','2022-01-22 23:50:32','{\"section_result_id\":1,\"norms_sum\":5,\"iq\":1,\"data\":[{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":1,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":2,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":2,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"}]}',1,'2022-01-22 23:55:40','2022-02-02 07:29:47'),
+(2,3,2,'2022-01-15 23:50:21','2022-01-22 23:50:32','',1,'2022-01-22 23:55:40','2022-01-22 23:55:40'),
+(3,2,3,'2022-01-28 08:00:00','2022-01-28 11:00:00','',1,'2022-01-22 23:55:40','2022-01-28 17:17:36'),
+(4,2,1,'2022-01-15 23:50:21','2022-01-22 23:50:32','{\"section_result_id\":1,\"norms_sum\":0,\"iq\":0,\"data\":[]}',1,'2022-01-22 23:55:40','2022-02-02 07:32:30'),
+(5,3,1,'2022-01-28 08:00:00','2022-01-28 11:00:00','',1,'2022-01-28 17:16:38','2022-01-28 17:16:38');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -6,6 +6,7 @@ let controller = new QuestionResultController();
 router.get("/all", controller.getAll);
 
 router.post("/create", controller.create.bind(controller));
+router.post("/createmultiple", controller.createmultiple.bind(controller));
 router.post("/update", controller.update.bind(controller));
 
 router.get("/:id", controller.getOne);
