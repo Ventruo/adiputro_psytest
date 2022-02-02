@@ -1,7 +1,7 @@
 <template>
     <div class="absolute top-0 z-0 w-full h-full flex text-white">
         <div class="w-9/12 h-auto min-h-screen pt-16 px-5">
-            <Skippable />
+            <Skippable v-if="this.section!=null" :sectionList="this.section"/>
             <!-- <Continous /> -->
         </div>
         <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-20 pb-5 px-5">
@@ -33,12 +33,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Continous from '../components/views/continousTest.vue'
 import Skippable from '../components/views/skippableTest.vue'
 
 export default {
     components: {
-        Continous, Skippable
+        axios, Continous, Skippable
     },
     data() {
         return {
@@ -48,6 +49,7 @@ export default {
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"],
+            section: null
         }
     },
     data() {
@@ -74,6 +76,14 @@ export default {
             const dateTime = date + ' ' + time
             this.timestamp = dateTime
         }
+    },
+    mounted(){
+        axios
+        .get('http://127.0.0.1:8888/api/section/all/1')
+        .then(({data}) => (
+            this.section = data,
+            console.log(this.section)
+        ))
     },
 }
 </script>

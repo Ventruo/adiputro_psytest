@@ -27,7 +27,7 @@
             <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
             <TextQuestion :question="pertanyaan[noSoal-1]['question']" />
             <!-- <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
-            <mChoiceAnswer :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 4 :choices = pilihanJawaban />        
+            <mChoiceAnswer :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
             <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
         </div>
 
@@ -57,6 +57,7 @@ export default {
             judulHalaman: 'Image Matching',
             noSoal: 1,
             jumSoal: 5,
+            jumChoice: 5,
             menit: 6,
             detik: 0,
             waktu: null,
@@ -147,7 +148,8 @@ export default {
                 'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
                 'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
                 'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
-                'D. '+this.pertanyaan[this.noSoal-1]['option_d']
+                'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
+                'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
             ]
         },
         ready(){
@@ -166,7 +168,6 @@ export default {
             }
 
             this.jawaban = Array(this.jumSoal)
-            console.log(this.jawaban)
         }
     },
 
@@ -218,6 +219,12 @@ export default {
             this.jumSoal = this.pertanyaan.length,
             this.gantiPilihanJawaban(),
             this.ready()
+        ))
+
+        axios
+        .get('http://127.0.0.1:8888/api/section/'+this.$route.query.current_section)
+        .then(({data}) => (
+            this.jumChoice = data.option_num
         ))
     }
 }
