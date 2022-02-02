@@ -1,4 +1,7 @@
 const Section = require("../models/Section");
+const Question = require("../models/Question");
+const { getDB } = require("../setup/sequelize");
+const sequelize = getDB();
 const {
   missing_param_response,
   data_not_found_response,
@@ -15,11 +18,16 @@ class SectionController {
       return;
     }
 
-    Section.findOne({ where: { id: req.params.id } }).then((section) => {
+    Section.findOne({ where: { id: req.params.id } }).then(async (section) => {
       if (!section) {
         data_not_found_response(res);
         return;
       }
+      
+      await Question.findAndCountAll({ where: { section_id: section.id }}).then((question) => {
+        section.setDataValue('question_num', question.count);
+      });
+      console.log(section)
 
       success_response(res, section, "Get One Data Successful!");
     });
@@ -29,24 +37,33 @@ class SectionController {
     console.log("Getting All Available Sections...");
 
     if (!req.params.test_id) {
+
       Section.findAll({ where: { status: 1 } }).then((sections) => {
         if (sections.length == 0) {
           data_not_found_response(res);
           return;
         }
-
+        
+        console.log('heee');
         success_response(res, sections, "Get All Data Successful!");
       });
     } else {
       Section.findAll({
         where: { status: 1, test_id: req.params.test_id },
-      }).then((sections) => {
+      }).then(async (sections) => {
         if (sections.length == 0) {
           data_not_found_response(res);
           return;
         }
 
-        success_response(res, sections, "Get All Data Successful!");
+        for (const key in sections) {
+          await Question.findAndCountAll({ where: { section_id: sections[key].id }}).then((question) => {
+            sections[key].setDataValue('question_num', question.count);
+          });
+        }
+
+        console.log(sections);
+          success_response(res, sections, "Get All Data Successful!");
       });
     }
   }
