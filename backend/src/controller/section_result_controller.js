@@ -7,6 +7,7 @@ const {
 const { validate_required_columns } = require("../helpers/ValidationHelper");
 const ExamSession = require("../models/ExamSession");
 const Section = require("../models/Section");
+const QuestionResult = require("../models/QuestionResult");
 
 class SectionResultController {
   async getOne(req, res) {
@@ -157,7 +158,8 @@ class SectionResultController {
       finish_date: req.body.finish_date,
     });
 
-    success_response(res, new_result.toJSON(), "Create Successful!");
+    // this.updateCorrectQuestion(new_result, res);
+    success_response(res, new_result, "Create Multiple Successful!");
   }
 
   async update(req, res) {
@@ -196,6 +198,25 @@ class SectionResultController {
       }
     );
   }
+
+  // async updateCorrectQuestion(section_result, res) {
+  //   let ctr_correct = 0;
+  //   QuestionResult.findAll({
+  //     where: { section_result_id: section_result.id },
+  //   }).then((results) => {
+  //     results.forEach((result) => {
+  //       if (result.status_correct) ctr_correct++;
+  //     });
+
+  //     section_result.set({
+  //       num_correct: ctr_correct,
+  //     });
+  //     section_result.save();
+  //     console.log(ctr_correct);
+
+  //     success_response(res, results, "Create Multiple Successful!");
+  //   });
+  // }
 }
 
 module.exports = SectionResultController;
