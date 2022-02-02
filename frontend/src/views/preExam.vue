@@ -35,7 +35,7 @@
                     <div class="text-center bottom-5 w-full mt-5 text-right">
                         <button class="bg-primary-200 text-primary-900 hover:bg-primary-600 hover:text-white
                                 duration-300 text-xl font-bold rounded-xl w-1/3 py-2"
-                                @click="this.$router.push({path: '/soalImage', query: {current_section: section.id}}';')"> Start! </button>
+                                @click="this.$router.push({path: '/soalImage', query: {current_section: section.id}})"> Start! </button>
                     </div>
                 </div>
             </div>

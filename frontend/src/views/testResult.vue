@@ -36,8 +36,8 @@
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
                 <div class="flex gap-2 justify-center w-full h-full">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black" id="pdf">
-                        <div class="flex justify-center">
-                            <img src="../assets/logo.png" alt="" class="w-1/4">
+                        <div class="flex justify-center bg-primary-900 py-2 rounded-xl mb-1 w-32">
+                            <img src="../assets/logo.png" alt="" class="w-20">
                         </div>
                         
                         <hr style="border-top: 2px solid black;">
@@ -55,7 +55,7 @@
                             </div>
                         </div>
 
-                        <div class="grow text-sm mt-2">
+                        <div v-if="data!=null" class="grow text-sm mt-2">
                             <table class="table-fixed border-collapse border border-primary-200 w-full text-white mb-2">
                                 <thead class="bg-primary-900">
                                     <tr>
@@ -66,65 +66,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-primary-500 divide-y divide-primary-400">
-                                    <tr class="text-center">
-                                        <td>1</td>
-                                        <td>12</td>
-                                        <td>11</td>
-                                        <td>C</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>2</td>
-                                        <td>22</td>
-                                        <td>11</td>
-                                        <td>C</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>3</td>
-                                        <td>31</td>
-                                        <td>14</td>
-                                        <td>B</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>4</td>
-                                        <td>11</td>
-                                        <td>8</td>
-                                        <td>HC</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>5</td>
-                                        <td>8</td>
-                                        <td>7</td>
-                                        <td>HC</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>6</td>
-                                        <td>16</td>
-                                        <td>11</td>
-                                        <td>HC</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>7</td>
-                                        <td>6</td>
-                                        <td>7</td>
-                                        <td>HC</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>8</td>
-                                        <td>9</td>
-                                        <td>9</td>
-                                        <td>C</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>9</td>
-                                        <td>7</td>
-                                        <td>8</td>
-                                        <td>HC</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                        <td>10</td>
-                                        <td>27</td>
-                                        <td>3</td>
-                                        <td>K</td>
+                                    <tr class="text-center" v-for="(report, idx) in data.data" :key="idx">
+                                        <td>{{idx+1}}</td>
+                                        <td>{{report.num_correct}}</td>
+                                        <td>{{report.norm}}</td>
+                                        <td>{{report.tintum}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -136,9 +82,9 @@
                                     <p>IQ :</p>
                                 </div>
                                 <div>
-                                    <p>89</p>
-                                    <p>8,9</p>
-                                    <p>100</p>
+                                    <p>{{data.norms_sum}}</p>
+                                    <p>{{data.norms_sum/10}}</p>
+                                    <p>{{data.iq}}</p>
                                 </div>
                             </div>
                         </div>
@@ -531,8 +477,28 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-
+    components: { 
+        axios 
+    },
+    data () {
+        return {
+            judulHalaman: 'Test Result',
+            data: null,
+        }
+    },
+    created(){
+        this.$emit('updateJudul', this.judulHalaman)
+    },
+    mounted(){
+        axios
+        .get('http://127.0.0.1:8888/api/test_result/2')
+        .then(({data}) => (
+            this.data = JSON.parse(data.result)
+        ))
+    }
+    
 }
 </script>
 

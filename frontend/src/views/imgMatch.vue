@@ -64,8 +64,10 @@ export default {
             countdownTimer: null,
             countdown: 2,
             jawaban: [],
+            jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
+            section_id: this.$route.query.current_section,
         }
     },
     methods: {
@@ -108,14 +110,7 @@ export default {
                         confirmButtonText: 'Yes'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            Swal.fire(
-                                'Submitted!',
-                                'Task Successfully Submitted.',
-                                'success'
-                            )
-                            .then(function(){
-                                window.location = '/dashboard'
-                            })
+                            this.submitJawaban()
                         }
                     });
                 }
@@ -168,6 +163,41 @@ export default {
             }
 
             this.jawaban = Array(this.jumSoal)
+        },
+        submitJawaban(){
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanFinal[i] = []
+                this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
+                this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
+                this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
+            }
+
+            let formData = {
+                section_result_id: 2,
+                data: this.jawabanFinal
+            }
+
+            axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
+            .then((response) => {
+                axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
+                    test_id: 1,
+                    email: "update@ganti.com"
+                })
+                .then((response) => {
+                    Swal.fire(
+                        'Submitted!',
+                        'Task Successfully Submitted.',
+                        'success'
+                    )
+                    .then(function(){
+                        window.location = '/dashboard'
+                    })
+                }).catch( error => { 
+                    console.log('error: ' + error); 
+                });
+            }).catch( error => { 
+                console.log('error: ' + error); 
+            });
         }
     },
 
@@ -222,7 +252,7 @@ export default {
         ))
 
         axios
-        .get('http://127.0.0.1:8888/api/section/'+this.$route.query.current_section)
+        .get('http://127.0.0.1:8888/api/section/'+this.section_id)
         .then(({data}) => (
             this.jumChoice = data.option_num
         ))
