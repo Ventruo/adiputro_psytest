@@ -177,16 +177,17 @@ class TestResultController {
           Section.findAndCountAll({ where: { test_id: testres.test_id } }).then(
             (sections) => {
               let correct_data = [];
+              
+              correct_data = correct_data.concat(
+                Array(sections.count).fill(0)
+              );
+
               sectionsres.sort((a, b) => {
                 return a.section_id - b.section_id;
               });
               sectionsres.forEach((section) => {
-                correct_data.push(section.num_correct);
+                correct_data[section.section_number] = section.num_correct;
               });
-
-              correct_data = correct_data.concat(
-                Array(sections.count - correct_data.length).fill(0)
-              );
 
               this.calculate_full(
                 res,
@@ -236,7 +237,7 @@ class TestResultController {
       //   Calculate Tintum
       let tintum_result = [];
       for (let i = 0; i < norms_result.length; i++) {
-        let tintum = 0;
+        let tintum = tintum_lookup[Object.keys(tintum_lookup)[Object.keys(tintum_lookup).length-1]];
 
         for (const key in tintum_lookup) {
           if (key >= norms_result[i]) {
@@ -260,7 +261,7 @@ class TestResultController {
       let norms_div = norms_sum / 10;
       let norms_rounded = Math.floor(norms_div);
 
-      let iq = -999;
+      let iq = iq_lookup[Object.keys(iq_lookup-1)];
       for (const key in iq_lookup) {
         if (key >= norms_div) {
           let iq_keys = Object.keys(iq_lookup);
