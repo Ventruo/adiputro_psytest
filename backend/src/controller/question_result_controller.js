@@ -274,47 +274,61 @@ class QuestionResultController {
       !validate_required_columns(
         req,
         QuestionResult,
-        ["status", "status_correct", "question_id", "answer"],
-        ["data"]
+        [
+          "status",
+          "status_correct",
+          "question_id",
+          "answer",
+          "section_result_id",
+        ],
+        ["data", "exam_session", "section_id"]
       )
     ) {
       missing_param_response(res);
       return;
     }
 
-    let results = [];
-    let ctr_correct = 0;
-    for (const data of req.body.data) {
-      await Question.findOne({ where: { id: data.question_id } }).then(
-        async (question) => {
-          let status_correct = false;
-          if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
-            status_correct = true;
-            ctr_correct++;
-          }
-
-          const new_result = await QuestionResult.create({
-            section_result_id: req.body.section_result_id,
-            question_id: data.question_id,
-            answer: data.answer,
-            status_correct: status_correct,
-          });
-
-          results.push(new_result);
-        }
-      );
-    }
-
-    SectionResult.findOne({ where: { id: req.body.section_result_id } }).then(
-      (secres) => {
-        secres.set({
-          num_correct: ctr_correct,
-        });
-        secres.save();
-
-        success_response(res, results, "Create Multiple Successful!");
+    SectionResult.findOne({
+      where: {
+        exam_session: req.body.exam_session,
+        section_id: req.body.section_id,
+      },
+    }).then(async (secres) => {
+      if (!secres) {
+        data_not_found_response(res);
+        return;
       }
-    );
+
+      let results = [];
+      let ctr_correct = 0;
+      for (const data of req.body.data) {
+        await Question.findOne({ where: { id: data.question_id } }).then(
+          async (question) => {
+            let status_correct = false;
+            if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
+              status_correct = true;
+              ctr_correct++;
+            }
+
+            const new_result = await QuestionResult.create({
+              section_result_id: secres.id,
+              question_id: data.question_id,
+              answer: data.answer,
+              status_correct: status_correct,
+            });
+
+            results.push(new_result);
+          }
+        );
+      }
+
+      secres.set({
+        num_correct: ctr_correct,
+      });
+      secres.save();
+
+      success_response(res, results, "Create Multiple Successful!");
+    });
   }
 
   async update(req, res) {
