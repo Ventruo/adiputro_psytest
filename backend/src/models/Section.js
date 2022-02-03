@@ -16,6 +16,11 @@ Section.init(
       type: DataTypes.BIGINT,
       allowNull: false,
     },
+    section_number: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: "in minutes",
+    },
     instruction: {
       type: DataTypes.STRING,
       allowNull: false,

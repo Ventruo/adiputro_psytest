@@ -40,8 +40,7 @@ insert  into `exam_session`(`id`,`email`,`start_date`,`finish_date`,`duration`,`
 (1,'a@a.com','2022-01-17 15:00:00','2022-01-17 16:00:00',60,'abc',0,1,'2022-01-17 16:50:42','2022-01-17 16:50:42'),
 (2,'update@ganti.com','2022-01-15 00:00:00','2022-01-16 00:00:00',60,'aaa',0,0,'2022-01-25 00:07:41','2022-01-24 17:19:13'),
 (3,'coba@coba.com','2022-01-24 17:07:41','2022-01-24 17:07:41',60,'asbce',0,1,'2022-01-24 17:17:52','2022-01-24 17:17:52'),
-(4,'coba@coba.com','2022-01-25 00:00:00','2022-01-25 00:00:00',60,'asbce',0,1,'2022-01-24 17:18:02','2022-01-24 17:18:02'),
-(5,'coba@coba.com','2022-01-25 00:00:00','2022-01-25 00:00:00',60,'asbce',0,1,'2022-01-29 17:49:05','2022-01-29 17:49:05');
+(4,'coba@coba.com','2022-01-25 00:00:00','2022-01-25 00:00:00',60,'asbce',0,1,'2022-01-24 17:18:02','2022-01-24 17:18:02');
 
 /*Table structure for table `question` */
 
@@ -373,7 +372,7 @@ CREATE TABLE `question_result` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `question_result` */
 
@@ -390,7 +389,12 @@ insert  into `question_result`(`id`,`section_result_id`,`question_id`,`answer`,`
 (20,1,309,'b',1,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
 (21,1,310,'c',1,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
 (22,1,311,'d',0,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
-(23,1,312,'e',0,1,'2022-02-02 07:48:12','2022-02-02 07:48:12');
+(23,1,312,'e',0,1,'2022-02-02 07:48:12','2022-02-02 07:48:12'),
+(24,1,308,'a',0,1,'2022-02-03 15:49:17','2022-02-03 15:49:17'),
+(25,1,309,'b',1,1,'2022-02-03 15:49:17','2022-02-03 15:49:17'),
+(26,1,310,'c',1,1,'2022-02-03 15:49:17','2022-02-03 15:49:17'),
+(27,1,311,'d',0,1,'2022-02-03 15:49:18','2022-02-03 15:49:18'),
+(28,1,312,'e',0,1,'2022-02-03 15:49:19','2022-02-03 15:49:19');
 
 /*Table structure for table `registrant` */
 
@@ -421,6 +425,7 @@ DROP TABLE IF EXISTS `section`;
 CREATE TABLE `section` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `test_id` bigint(20) NOT NULL,
+  `section_number` int(20) NOT NULL,
   `instruction` varchar(1000) NOT NULL,
   `duration` int(10) NOT NULL COMMENT 'in minutes',
   `type` varchar(255) NOT NULL COMMENT '1: essay, 2 : multiple choice',
@@ -429,21 +434,21 @@ CREATE TABLE `section` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `section` */
 
-insert  into `section`(`id`,`test_id`,`instruction`,`duration`,`type`,`option_num`,`status`,`createdAt`,`updatedAt`) values 
-(1,1,'Di persoalan pertama sudah terdapat 10 nomer. Tugas anda adalah menjawab dengan JELAS, SINGKAT, TETAPI LENGKAP. silahkan jabawannya anda tuliskan di lembar jawaban yang sudah disediakan',10,'1',0,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
-(2,1,'Untuk persoalan berikutnya. sudah terdapat 40 soal. Di tiap soal sudah disediakan pilihan jawabannya. Tugas anda tinggal memilih satu yang paling benar',7,'2',4,1,'2022-01-23 14:06:16','2022-01-23 16:06:32'),
-(3,1,'Di persoalan ke 3 sudah terdapat 40 soal. Di tiap soal juga sudah disediakan pilihan jawabannya. Tugas anda adalah memilih PASANGAN KATA YANG SESUAI DENGAN POLA PASANGAN KATA YANG ADA DI DEPANNYA.',5,'2',4,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
-(4,1,'Di persoalan berikutnya, sudah terdapat 20 soal. Di tiap soal sudah di sediakan pilihan jawabannya. Tugas anda tinggal memilih 1 yang paling benar.',3,'2',3,1,'2022-01-23 07:32:48','2022-01-23 07:32:48'),
-(5,1,'Di persoalan ke 5 merupakan soal cerita hitungan. Nanti silahkan di baca, dihitung, dan di tulis jawbannya di lembar jawaban yang sudah disediakan. silahkan di tulis angkanya saja, satuannya tidak perlu.',7,'1',0,1,'2022-01-23 07:33:13','2022-01-23 07:33:13'),
-(6,1,'Sudah terdapat 30 soal deret hitung. Dimana setiap soal terdiri dari deretan angka. Tugas anda adalah melanjutkan angka tersebut akan menjadi angka berapa dan berapa.',10,'1',0,1,'2022-01-23 07:36:53','2022-01-23 07:36:53'),
-(7,1,'Di persoalan berrikutnya sudah terdapat 20 soal. Di setiap soal sudah disediakan pilihan jawabannya. Tugas anda tinggal memilih 1 yang paling benar',5,'2',5,1,'2022-01-23 14:40:14','2022-01-23 14:40:14'),
-(8,1,'Di tiap nomer sudah terdapat 5 kata. Tugas anda adalah memilih 1 kata yang artinya paling berbeda. kita ke contoh no 1. di sana sudah terdpaat jurusan, timur, perjalanan, arah dan selatan. 1 kata yang artinya paling berbeda yang mana? ya benar jawabannya adalah PERJALANAN. karena jurusan, timur, arah dan selatan menunjukkan suatu arah.',6,'2',5,1,'2022-01-23 14:40:22','2022-01-23 14:40:22'),
-(9,1,'Nanti di atas sudah terdapat 5 gambar, itu merupakan pilihan jawabannya. Sedangkan pola pola yang terpisah di dalam kotak merupakan soalnya.',6,'2',5,1,'2022-02-01 18:03:14','2022-02-01 18:03:14'),
-(10,1,'Nanti di setiap nomer sudah terdapat 2 gambar. Tugas anda adalah membandingkan apakah keduanya sama persis atau tidak. silahkan di liat dari bentuknya, arsirannya, maupun bila posisinya di ubah.',7,'2',2,1,'2022-02-01 18:03:42','2022-02-01 18:03:42');
+insert  into `section`(`id`,`test_id`,`section_number`,`instruction`,`duration`,`type`,`option_num`,`status`,`createdAt`,`updatedAt`) values 
+(1,1,1,'Di persoalan pertama sudah terdapat 10 nomer. Tugas anda adalah menjawab dengan JELAS, SINGKAT, TETAPI LENGKAP. silahkan jabawannya anda tuliskan di lembar jawaban yang sudah disediakan',10,'1',0,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
+(2,1,2,'Untuk persoalan berikutnya. sudah terdapat 40 soal. Di tiap soal sudah disediakan pilihan jawabannya. Tugas anda tinggal memilih satu yang paling benar',7,'2',4,1,'2022-01-23 14:06:16','2022-01-23 16:06:32'),
+(3,1,3,'Di persoalan ke 3 sudah terdapat 40 soal. Di tiap soal juga sudah disediakan pilihan jawabannya. Tugas anda adalah memilih PASANGAN KATA YANG SESUAI DENGAN POLA PASANGAN KATA YANG ADA DI DEPANNYA.',5,'2',4,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
+(4,1,4,'Di persoalan berikutnya, sudah terdapat 20 soal. Di tiap soal sudah di sediakan pilihan jawabannya. Tugas anda tinggal memilih 1 yang paling benar.',3,'2',3,1,'2022-01-23 07:32:48','2022-01-23 07:32:48'),
+(5,1,5,'Di persoalan ke 5 merupakan soal cerita hitungan. Nanti silahkan di baca, dihitung, dan di tulis jawbannya di lembar jawaban yang sudah disediakan. silahkan di tulis angkanya saja, satuannya tidak perlu.',7,'1',0,1,'2022-01-23 07:33:13','2022-01-23 07:33:13'),
+(6,1,6,'Sudah terdapat 30 soal deret hitung. Dimana setiap soal terdiri dari deretan angka. Tugas anda adalah melanjutkan angka tersebut akan menjadi angka berapa dan berapa.',10,'1',0,1,'2022-01-23 07:36:53','2022-01-23 07:36:53'),
+(7,1,7,'Di persoalan berrikutnya sudah terdapat 20 soal. Di setiap soal sudah disediakan pilihan jawabannya. Tugas anda tinggal memilih 1 yang paling benar',5,'2',5,1,'2022-01-23 14:40:14','2022-01-23 14:40:14'),
+(8,1,8,'Di tiap nomer sudah terdapat 5 kata. Tugas anda adalah memilih 1 kata yang artinya paling berbeda. kita ke contoh no 1. di sana sudah terdpaat jurusan, timur, perjalanan, arah dan selatan. 1 kata yang artinya paling berbeda yang mana? ya benar jawabannya adalah PERJALANAN. karena jurusan, timur, arah dan selatan menunjukkan suatu arah.',6,'2',5,1,'2022-01-23 14:40:22','2022-01-23 14:40:22'),
+(9,1,9,'Nanti di atas sudah terdapat 5 gambar, itu merupakan pilihan jawabannya. Sedangkan pola pola yang terpisah di dalam kotak merupakan soalnya.',6,'2',5,1,'2022-02-01 18:03:14','2022-02-01 18:03:14'),
+(10,1,10,'Nanti di setiap nomer sudah terdapat 2 gambar. Tugas anda adalah membandingkan apakah keduanya sama persis atau tidak. silahkan di liat dari bentuknya, arsirannya, maupun bila posisinya di ubah.',7,'2',2,1,'2022-02-01 18:03:42','2022-02-01 18:03:42');
 
 /*Table structure for table `section_result` */
 
@@ -471,8 +476,8 @@ insert  into `section_result`(`id`,`section_id`,`test_result_id`,`exam_session`,
 (3,2,0,3,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
 (4,2,0,1,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
 (5,3,0,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',0,1,'2022-01-30 12:27:40','2022-01-30 12:27:40'),
-(11,3,1,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',0,1,'2022-02-01 16:29:10','2022-02-01 16:29:10'),
-(12,3,1,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',0,1,'2022-02-01 16:29:53','2022-02-01 16:29:53');
+(11,1,1,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',5,1,'2022-02-01 16:29:10','2022-02-01 16:29:10'),
+(12,8,1,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',19,1,'2022-02-01 16:29:53','2022-02-01 16:29:53');
 
 /*Table structure for table `test` */
 
@@ -514,7 +519,7 @@ CREATE TABLE `test_result` (
 /*Data for the table `test_result` */
 
 insert  into `test_result`(`id`,`test_id`,`exam_session`,`start_date`,`finish_date`,`result`,`status`,`createdAt`,`updatedAt`) values 
-(1,1,1,'2022-01-15 23:50:21','2022-01-22 23:50:32','{\"section_result_id\":1,\"norms_sum\":5,\"iq\":1,\"data\":[{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":1,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":2,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":2,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"}]}',1,'2022-01-22 23:55:40','2022-02-02 07:29:47'),
+(1,1,1,'2022-01-15 23:50:21','2022-01-22 23:50:32','{\"section_result_id\":1,\"norms_sum\":24,\"iq\":1,\"data\":[{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":5,\"norm\":3,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":1,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":2,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"},{\"num_correct\":19,\"norm\":18,\"tintum\":\"B\"},{\"num_correct\":0,\"norm\":0,\"tintum\":\"K\"}]}',1,'2022-01-22 23:55:40','2022-02-03 17:07:30'),
 (2,3,2,'2022-01-15 23:50:21','2022-01-22 23:50:32','',1,'2022-01-22 23:55:40','2022-01-22 23:55:40'),
 (3,2,3,'2022-01-28 08:00:00','2022-01-28 11:00:00','',1,'2022-01-22 23:55:40','2022-01-28 17:17:36'),
 (4,2,1,'2022-01-15 23:50:21','2022-01-22 23:50:32','{\"section_result_id\":1,\"norms_sum\":0,\"iq\":0,\"data\":[]}',1,'2022-01-22 23:55:40','2022-02-02 07:32:30'),

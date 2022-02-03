@@ -23,11 +23,13 @@ class SectionController {
         data_not_found_response(res);
         return;
       }
-      
-      await Question.findAndCountAll({ where: { section_id: section.id }}).then((question) => {
-        section.setDataValue('question_num', question.count);
+
+      await Question.findAndCountAll({
+        where: { section_id: section.id },
+      }).then((question) => {
+        section.setDataValue("question_num", question.count);
       });
-      console.log(section)
+      console.log(section);
 
       success_response(res, section, "Get One Data Successful!");
     });
@@ -37,14 +39,13 @@ class SectionController {
     console.log("Getting All Available Sections...");
 
     if (!req.params.test_id) {
-
       Section.findAll({ where: { status: 1 } }).then((sections) => {
         if (sections.length == 0) {
           data_not_found_response(res);
           return;
         }
-        
-        console.log('heee');
+
+        console.log("heee");
         success_response(res, sections, "Get All Data Successful!");
       });
     } else {
@@ -57,13 +58,15 @@ class SectionController {
         }
 
         for (const key in sections) {
-          await Question.findAndCountAll({ where: { section_id: sections[key].id }}).then((question) => {
-            sections[key].setDataValue('question_num', question.count);
+          await Question.findAndCountAll({
+            where: { section_id: sections[key].id },
+          }).then((question) => {
+            sections[key].setDataValue("question_num", question.count);
           });
         }
 
         console.log(sections);
-          success_response(res, sections, "Get All Data Successful!");
+        success_response(res, sections, "Get All Data Successful!");
       });
     }
   }
@@ -78,6 +81,7 @@ class SectionController {
 
     const new_section = await Section.create({
       test_id: req.body.test_id,
+      section_number: req.body.section_number,
       instruction: req.body.instruction,
       duration: req.body.duration,
       type: req.body.type,
@@ -103,6 +107,7 @@ class SectionController {
 
       section.set({
         test_id: req.body.test_id,
+        section_number: req.body.section_number,
         instruction: req.body.instruction,
         duration: req.body.duration,
         type: req.body.type,

@@ -177,17 +177,17 @@ class TestResultController {
           Section.findAndCountAll({ where: { test_id: testres.test_id } }).then(
             (sections) => {
               let correct_data = [];
-              
-              correct_data = correct_data.concat(
-                Array(sections.count).fill(0)
-              );
+              correct_data = correct_data.concat(Array(sections.count).fill(0));
 
-              sectionsres.sort((a, b) => {
-                return a.section_id - b.section_id;
-              });
-              sectionsres.forEach((section) => {
-                correct_data[section.section_number] = section.num_correct;
-              });
+              for (let i = 0; i < sections.count; i++) {
+                for (let j = 0; j < sectionsres.length; j++) {
+                  if (sectionsres[j].section_id == sections.rows[i].id) {
+                    correct_data[sections.rows[i].section_number] =
+                      sectionsres[j].num_correct;
+                    break;
+                  }
+                }
+              }
 
               this.calculate_full(
                 res,
@@ -220,8 +220,8 @@ class TestResultController {
         if (i == 11) norms_value = norm;
         else norms_lookup.push(norm);
       }
-      console.log(norms_lookup);
-      console.log(norms_value);
+      // console.log(norms_lookup);
+      // console.log(norms_value);
 
       //   Calculate Norms
       let norms_result = [];
@@ -237,7 +237,10 @@ class TestResultController {
       //   Calculate Tintum
       let tintum_result = [];
       for (let i = 0; i < norms_result.length; i++) {
-        let tintum = tintum_lookup[Object.keys(tintum_lookup)[Object.keys(tintum_lookup).length-1]];
+        let tintum =
+          tintum_lookup[
+            Object.keys(tintum_lookup)[Object.keys(tintum_lookup).length - 1]
+          ];
 
         for (const key in tintum_lookup) {
           if (key >= norms_result[i]) {
@@ -261,7 +264,8 @@ class TestResultController {
       let norms_div = norms_sum / 10;
       let norms_rounded = Math.floor(norms_div);
 
-      let iq = iq_lookup[Object.keys(iq_lookup-1)];
+      let iq =
+        iq_lookup[Object.keys(iq_lookup)[Object.keys(iq_lookup).length - 1]];
       for (const key in iq_lookup) {
         if (key >= norms_div) {
           let iq_keys = Object.keys(iq_lookup);
@@ -301,7 +305,7 @@ class TestResultController {
       });
       testres.save();
 
-      success_response(res, testres?.toJSON(), "Update successful!");
+      success_response(res, testres?.toJSON(), "Calculate successful!");
     });
   }
 }
