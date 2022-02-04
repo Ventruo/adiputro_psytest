@@ -36,8 +36,8 @@
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
                 <div class="flex gap-2 justify-center w-full h-full">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black" id="pdf">
-                        <div class="flex justify-center bg-primary-900 py-2 rounded-xl mb-1 w-32">
-                            <img src="../assets/logo.png" alt="" class="w-20">
+                        <div class="flex justify-center mb-1">
+                            <img src="../assets/logo.png" alt="" class="w-32 bg-primary-900 py-2 px-3 rounded-xl">
                         </div>
                         
                         <hr style="border-top: 2px solid black;">

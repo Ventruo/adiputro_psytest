@@ -25,7 +25,7 @@
 
         <div id="soal" class="hidden" v-if="pertanyaan!=null">
             <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
-            <TextQuestion :question="pertanyaan[noSoal-1]['question']" />
+            <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" />
             <!-- <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
             <mChoiceAnswer :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
             <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
