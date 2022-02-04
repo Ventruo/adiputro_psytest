@@ -68,6 +68,7 @@ export default {
             pertanyaan: null,
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
+            test_id: null
         }
     },
     methods: {
@@ -173,14 +174,15 @@ export default {
             }
 
             let formData = {
-                section_result_id: 2,
+                exam_session: 2,
+                section_id: this.section_id,
                 data: this.jawabanFinal
             }
 
             axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
             .then((response) => {
                 axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
-                    test_id: 1,
+                    test_id: this.test_id,
                     email: "update@ganti.com"
                 })
                 .then((response) => {
@@ -254,7 +256,8 @@ export default {
         axios
         .get('http://127.0.0.1:8888/api/section/'+this.section_id)
         .then(({data}) => (
-            this.jumChoice = data.option_num
+            this.jumChoice = data.option_num,
+            this.test_id = data.test_id
         ))
     }
 }
