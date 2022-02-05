@@ -182,7 +182,7 @@ class TestResultController {
               for (let i = 0; i < sections.count; i++) {
                 for (let j = 0; j < sectionsres.length; j++) {
                   if (sectionsres[j].section_id == sections.rows[i].id) {
-                    correct_data[sections.rows[i].section_number] =
+                    correct_data[sections.rows[i].section_number-1] =
                       sectionsres[j].num_correct;
                     break;
                   }
@@ -280,7 +280,7 @@ class TestResultController {
       }
 
       if (!(norms_div - norms_rounded < 0.3)) {
-        iq = iq + Math.floor((norms_div - norms_rounded) / 0.3);
+        iq = iq + Math.floor(((norms_div - norms_rounded)+0.000001) / 0.3);
       }
       console.log("IQ: ", iq);
 
