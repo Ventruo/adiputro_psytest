@@ -49,7 +49,7 @@
                                 <p>Pendidikan</p>
                             </div>
                             <div class="ml-3">
-                                <p>: Achmad Sawaludin</p>
+                                <p>: Hasil Tes Kedua</p>
                                 <p>: L</p>
                                 <p>: S1</p>
                             </div>
@@ -493,7 +493,7 @@ export default {
     },
     mounted(){
         axios
-        .get('http://127.0.0.1:8888/api/test_result/2')
+        .get('http://127.0.0.1:8888/api/test_result/3')
         .then(({data}) => (
             this.data = JSON.parse(data.result)
         ))

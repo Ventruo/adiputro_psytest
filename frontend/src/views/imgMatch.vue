@@ -24,11 +24,12 @@
         </div>
 
         <div id="soal" class="hidden" v-if="pertanyaan!=null">
-            <!-- <ImageQuestion :label="'Pola Terpisah :'" /> -->
-            <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" />
-            <!-- <ImageAnswer :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban /> -->
-            <mChoiceAnswer :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
-            <!-- <TextAnswer ref="textAnswer" :jawaban = jawaban :noSoal = noSoal /> -->
+            <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
+            <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
+            
+            <ImageAnswer v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
+            <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
+            <mChoiceAnswer v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
         </div>
 
         <!-- Transparent Overlay -->
@@ -68,7 +69,8 @@ export default {
             pertanyaan: null,
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
-            test_id: null
+            test_id: null,
+            exam_session: 3
         }
     },
     methods: {
@@ -90,10 +92,12 @@ export default {
                     }
                     ctr++
                 }
-                // this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+                if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
+                    this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }else{
                 var isi = 0
                 this.jawaban.forEach(e => { if (e != null) isi++; });
+                // isi = this.jumSoal;
                 if(isi!=this.jumSoal){
                     Swal.fire({
                         title: 'Jawab Dulu Semua Pertanyaan!',
@@ -135,7 +139,8 @@ export default {
                     }
                     ctr++
                 }
-                // this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+                if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
+                    this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
             // this.gantiPilihanJawaban()
         },
@@ -169,36 +174,51 @@ export default {
             for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
-                this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
+                if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i];
+                else if(this.jumChoice==2)
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(3,4):'';
+                else
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
 
             let formData = {
-                exam_session: 2,
+                exam_session: this.exam_session,
                 section_id: this.section_id,
                 data: this.jawabanFinal
             }
 
-            axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
+            axios.post('http://127.0.0.1:8888/api/section_result/create',{
+                "test_result_id": 3,
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "start_date": "2022-01-28 15:00:00",
+                "finish_date": "2022-01-28 18:00:00"
+            })
             .then((response) => {
-                axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
-                    test_id: this.test_id,
-                    email: "update@ganti.com"
-                })
+                axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
                 .then((response) => {
-                    Swal.fire(
-                        'Submitted!',
-                        'Task Successfully Submitted.',
-                        'success'
-                    )
-                    .then(function(){
-                        window.location = '/dashboard'
+                    axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
+                        test_id: this.test_id,
+                        email: "coba@coba.com"
                     })
-                }).catch( error => { 
-                    console.log('error: ' + error); 
-                });
+                    .then((response) => {
+                        Swal.fire(
+                            'Submitted!',
+                            'Task Successfully Submitted.',
+                            'success'
+                        )
+                        .then(function(){
+                            window.location = '/dashboard'
+                        })
+                    })
+                    // .catch( error => 
+                    //     console.log('error: ' + error) 
+                    // })
+                })
             }).catch( error => { 
-                console.log('error: ' + error); 
+                console.log('error: ' + error) 
             });
         }
     },
@@ -244,7 +264,7 @@ export default {
 
     mounted(){
         axios
-        .get('http://127.0.0.1:8888/api/question/all?section_id=8')
+        .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
             this.menit = this.pertanyaan[0]["section"]["duration"],
