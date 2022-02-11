@@ -1,6 +1,6 @@
 <template>
   <div class="h-auto min-h-screen bg-primary-200 flex flex-col">
-    <header class="bg-primary-900 flex justify-between px-8 py-2 relative z-10">
+    <header class="bg-primary-900 flex justify-between px-8 py-2 z-10" id="main-header">
       <div class="flex items-center">
         <p class="text-2xl font-bold text-white">{{judulHalaman}}</p>
       </div>
@@ -9,6 +9,7 @@
       </div>
     </header>
     <router-view @updateJudul="updateJudul" />
+    <div class="h-20 hidden" id="hidden-bottom"></div>
   </div>
 </template>
 <script>

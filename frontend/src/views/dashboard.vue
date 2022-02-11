@@ -1,10 +1,10 @@
 <template>
-    <div class="absolute top-0 z-0 w-full h-full flex text-white">
-        <div class="w-9/12 h-auto min-h-screen pt-16 px-5">
+    <div class="top-0 z-0 w-full h-full flex text-white">
+        <div class="w-9/12 h-auto min-h-screen px-5">
             <Skippable v-if="this.section!=null" :sectionList="this.section"/>
             <!-- <Continous v-if="this.section!=null" :sectionList="this.section"/> -->
         </div>
-        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-20 pb-5 px-5">
+        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-4 pb-5 px-5">
             <div class="flex justify-between text-sm font-bold">
                 <div class="text-right mb-2">
                     <p>Waktu Lokal : </p>
@@ -81,8 +81,8 @@ export default {
         axios
         .get('http://127.0.0.1:8888/api/section/all/1')
         .then(({data}) => (
-            this.section = data,
-            console.log(this.section)
+            this.section = data
+            // console.log(this.section)
         ))
     },
 }
