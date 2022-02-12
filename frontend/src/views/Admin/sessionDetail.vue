@@ -1,8 +1,9 @@
 <template>
     <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3">
-        <h1 class="text-3xl font-bold mb-3 text-primary-900">Test Result</h1>
         <div class="w-full h-auto">
             <div class="relative">
+                
+                <h1 class="text-3xl font-bold mb-3 text-primary-900">Test Result</h1>
                 <div class="w-5/12 flex text-xl mb-3 text-primary-900">
                     <div class="text-right mr-5">
                         <p>Email :</p>
@@ -19,7 +20,44 @@
                         <p>25 Januari 2022</p>
                     </div>
                 </div>
-                <div class="absolute right-0 bottom-0">
+
+                <div class="overflow-auto w-full h-full no-scrollbar mt-2 mb-5">
+                    <table class="table-fixed border-collapse border border-primary-200 w-full">
+                        <thead class="bg-primary-800">
+                            <tr>
+                                <th class="font-semibold w-2/12">Section No.</th>
+                                <th class="font-semibold w-1/12">Answer Type</th>
+                                <th class="font-semibold w-1/12">Start</th>
+                                <th class="font-semibold w-1/12">Finish</th>
+                                <th class="font-semibold w-1/12">Correct</th>
+                                <th class="font-semibold w-2/12">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="i in 10" :key="i">
+                                <td>{{i}}</td>
+                                <td>
+                                    <span v-if="i==1">Essay</span>
+                                    <span v-else>Multiple Choice</span>
+                                </td>
+                                <td>12/02/2022 08:05</td>
+                                <td>12/02/2022 08:10</td>
+                                <td>17/20</td>
+                                <td class="h-12">
+                                    <button v-if="i==1" class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
+                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
+                                        @click="this.$router.push({path: '/'})"> 
+                                        <i class="fa fa-info-circle mr-2"></i>
+                                        <span>Review Answer</span>
+                                    </button>
+                                    <span v-else>-</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-right mb-2">
                     <button class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
                                     hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full text-lg px-10 py-2 mr-2"
                                     @click="makePDF">
@@ -56,14 +94,14 @@
 import axios from 'axios'
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
-import Tintum from "../components/report/tintum.vue"
+import Tintum from "../../components/report/tintum.vue"
 export default {
     components: { 
         axios, Tintum
     },
     data () {
         return {
-            judulHalaman: 'Test Result',
+            judulHalaman: 'Session Detail',
             data: null,
         }
     },

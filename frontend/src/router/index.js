@@ -5,13 +5,16 @@ import AddImgMatch from '/src/views/addImgMatch.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
-import testResult from '/src/views/testResult.vue'
 
 import admin from '/src/views/Admin/master.vue'
 import dashboardAdmin from '/src/views/Admin/dashboard.vue'
 import registrant from '/src/views/Admin/registrant.vue'
+import test from '/src/views/Admin/test.vue'
+import session from '/src/views/Admin/session.vue'
+import sessionDetail from '/src/views/Admin/sessionDetail.vue'
+
 import masterImgMatch from '/src/views/masterImgMatch.vue'
-import masterTestResult from '/src/views/masterTestResult.vue'
+import masterTestResult from '/src/views/Admin/masterTestResult.vue'
 
 const routes = [
     {
@@ -62,7 +65,15 @@ const routes = [
             {
                 path: '/admin/registrant',
                 component: registrant,
-            }
+            },
+            {
+                path: '/admin/test',
+                component: test,
+            },
+            {
+                path: '/admin/session',
+                component: session,
+            },
         ]
     },
     {
@@ -71,9 +82,9 @@ const routes = [
         component: masterTestResult,
     },
     {
-        path: '/testResult',
-        name: 'testResult',
-        component: testResult,
+        path: '/sessionDetail',
+        name: 'sessionDetail',
+        component: sessionDetail,
     },
 
     // {
