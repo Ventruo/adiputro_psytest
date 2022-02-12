@@ -1,20 +1,20 @@
 <template>
-    <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3">
+    <div class="w-9/12 h-full m-auto text-white relative bottom-44 mt-3 flex flex-col flex-grow pb-3">
         <div class="w-full h-auto">
             <div class="relative">
                 
-                <h1 class="text-3xl font-bold mb-3 text-primary-900">Test Result</h1>
+                <h1 class="text-3xl font-bold mb-3 text-white">Test Result</h1>
                 <div class="w-5/12 flex text-xl mb-3 text-primary-900">
                     <div class="text-right mr-5">
-                        <p>Email :</p>
-                        <p>Nama :</p>
+                        <p class="text-white">Email :</p>
+                        <p class="text-white">Nama :</p>
                         <p>Test :</p>
                         <p>Start Date :</p>
                         <p>Finish Date :</p>
                     </div>
                     <div class="text-left">
-                        <p>abc@gmail.com</p>
-                        <p>Widean Nagari</p>
+                        <p class="text-white">abc@gmail.com</p>
+                        <p class="text-white">Widean Nagari</p>
                         <p>Test ABC</p>
                         <p>25 Januari 2022</p>
                         <p>25 Januari 2022</p>
@@ -25,10 +25,10 @@
                     <table class="table-fixed border-collapse border border-primary-200 w-full">
                         <thead class="bg-primary-800">
                             <tr>
-                                <th class="font-semibold w-2/12">Section No.</th>
+                                <th class="font-semibold w-1/12">Section No.</th>
                                 <th class="font-semibold w-1/12">Answer Type</th>
-                                <th class="font-semibold w-1/12">Start</th>
-                                <th class="font-semibold w-1/12">Finish</th>
+                                <th class="font-semibold w-2/12">Start</th>
+                                <th class="font-semibold w-2/12">Finish</th>
                                 <th class="font-semibold w-1/12">Correct</th>
                                 <th class="font-semibold w-2/12">Action</th>
                             </tr>
@@ -46,7 +46,7 @@
                                 <td class="h-12">
                                     <button v-if="i==1" class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
                                                     duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
-                                        @click="this.$router.push({path: '/'})"> 
+                                        @click="this.$router.push({path: '/admin/reviewEssay'})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Review Answer</span>
                                     </button>
@@ -117,7 +117,7 @@ export default {
         }
     },
     created(){
-        this.$emit('updateJudul', this.judulHalaman)
+        this.$emit('updateHeader', this.judulHalaman)
     },
     mounted(){
         axios

@@ -12,6 +12,7 @@ import registrant from '/src/views/Admin/registrant.vue'
 import test from '/src/views/Admin/test.vue'
 import session from '/src/views/Admin/session.vue'
 import sessionDetail from '/src/views/Admin/sessionDetail.vue'
+import reviewEssay from '/src/views/Admin/reviewEssay.vue'
 
 import masterImgMatch from '/src/views/masterImgMatch.vue'
 import masterTestResult from '/src/views/Admin/masterTestResult.vue'
@@ -74,17 +75,22 @@ const routes = [
                 path: '/admin/session',
                 component: session,
             },
+            {
+                path: '/admin/sessionDetail',
+                name: 'sessionDetail',
+                component: sessionDetail,
+            },
+            {
+                path: '/admin/reviewEssay',
+                name: 'reviewEssay',
+                component: reviewEssay,
+            },
         ]
     },
     {
         path: '/masterTestResult',
         name: 'masterTestResult',
         component: masterTestResult,
-    },
-    {
-        path: '/sessionDetail',
-        name: 'sessionDetail',
-        component: sessionDetail,
     },
 
     // {
