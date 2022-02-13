@@ -45,8 +45,8 @@
             </form>
         </div>
     </div> -->
-    <div class="h-full w-9/12 m-auto text-white relative mt-3">
-        <div class="flex justify-between mb-2 text-primary-900">
+    <div class="relative bottom-48 h-full w-9/12 m-auto text-white relative mt-3">
+        <div class="flex justify-between mb-2 text-white">
             <h1 class="text-xl font-bold">Add New Question</h1>
             <p class="text-xl font-bold">Image Matching</p>
         </div>
@@ -80,18 +80,18 @@
 
 <script>
 import axios from 'axios'
-import Radiobutton from '../components/radiobutton.vue'
-import ImageQuestion from '../components/views/imageQuestion.vue'
-import ImageAnswer from '../components/views/imageAnswer.vue'
-import TextQuestion from '../components/views/textQuestion.vue'
-import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
+import Radiobutton from '../../components/radiobutton.vue'
+import ImageQuestion from '../../components/views/imageQuestion.vue'
+import ImageAnswer from '../../components/views/imageAnswer.vue'
+import TextQuestion from '../../components/views/textQuestion.vue'
+import mChoiceAnswer from '../../components/views/mChoiceAnswer.vue'
 export default {
     components: {
         Radiobutton, ImageQuestion, ImageAnswer, TextQuestion, mChoiceAnswer, axios
     },
     data () {
         return {
-            judulHalaman: 'Tambah Soal',
+            judulHalaman: 'Add Question',
             noSoal: 21,
             jawaban: [],
             numberOfChoices: 5,
@@ -138,7 +138,7 @@ export default {
         }
     },
     created(){
-        this.$emit('updateJudul', this.judulHalaman)
+        this.$emit('updateHeader', this.judulHalaman)
     }
 }
 </script>

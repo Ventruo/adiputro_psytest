@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import dashboard from '/src/views/dashboard.vue'
 import imgMatch from '/src/views/imgMatch.vue'
-import AddImgMatch from '/src/views/addImgMatch.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
@@ -11,8 +10,9 @@ import dashboardAdmin from '/src/views/Admin/dashboard.vue'
 import registrant from '/src/views/Admin/registrant.vue'
 import test from '/src/views/Admin/test.vue'
 import session from '/src/views/Admin/session.vue'
-import sessionDetail from '/src/views/Admin/sessionDetail.vue'
+import registrantDetail from '/src/views/Admin/registrantDetail.vue'
 import reviewEssay from '/src/views/Admin/reviewEssay.vue'
+import addQuestion from '/src/views/Admin/addQuestion.vue'
 
 import masterImgMatch from '/src/views/masterImgMatch.vue'
 import masterTestResult from '/src/views/Admin/masterTestResult.vue'
@@ -49,12 +49,6 @@ const routes = [
         component: masterImgMatch,
     },
     {
-        path: '/addSoalImage',
-        name: 'AddImgMatch',
-        component: AddImgMatch,
-    },
-
-    {
         path: '/admin',
         name: 'admin',
         component: admin,
@@ -76,14 +70,22 @@ const routes = [
                 component: session,
             },
             {
-                path: '/admin/sessionDetail',
-                name: 'sessionDetail',
-                component: sessionDetail,
+                path: '/admin/registrantDetail',
+                name: 'registrantDetail',
+                component: registrantDetail,
             },
             {
                 path: '/admin/reviewEssay',
                 name: 'reviewEssay',
                 component: reviewEssay,
+            },
+            {
+                path: '/admin/question/add',
+                component: addQuestion,
+            },
+            {
+                path: '/admin/question/update',
+                component: addQuestion,
             },
         ]
     },

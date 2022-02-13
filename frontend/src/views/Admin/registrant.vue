@@ -18,11 +18,11 @@
                             </span>
                         </td>
                         <td>
-                            <button class="bg-primary-600 ring-2 ring-inset ring-primary-200 hover:bg-primary-800
+                            <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
                                             duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
-                                @click="this.$router.push({path: '/'})"> 
+                                @click="this.$router.push({path: '/admin/registrantDetail'})"> 
                                 <i class="fa fa-info-circle mr-2"></i>
-                                <span>Details</span>
+                                <span>Detail</span>
                             </button>
                             <button class="bg-primary-600 ring-2 ring-inset ring-primary-200 hover:bg-primary-800
                                             duration-200 rounded-full h-auto w-auto text-base px-5 py-2" 

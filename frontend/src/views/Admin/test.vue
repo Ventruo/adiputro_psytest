@@ -16,7 +16,8 @@
                             <th class="font-semibold w-1/12">Section Number</th>
                             <th class="font-semibold w-2/12">Instruction</th>
                             <th class="font-semibold w-1/12">Duration</th>
-                            <th class="font-semibold w-1/12">Type</th>
+                            <th class="font-semibold w-1/12">Question Type</th>
+                            <th class="font-semibold w-1/12">Option Type</th>
                             <th class="font-semibold w-1/12">Option Number</th>
                             <th class="font-semibold w-2/12">Action</th>
                         </tr>
@@ -27,7 +28,12 @@
                             <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo facere cupiditate illo quae exercitationem excepturi quo esse rem consectetur nostrum? Et qui odit deleniti enim libero molestiae ullam voluptatem velit.</td>
                             <td>7 Minutes</td>
                             <td>
-                                <span v-if="i%2==1">Essay</span>
+                                <span v-if="i%2==0">Teks</span>
+                                <span v-else>Gambar</span>
+                            </td>
+                            <td>
+                                <span v-if="i%3==0">Essay</span>
+                                <span v-else-if="i%3==1">Gambar</span>
                                 <span v-else>Pilihan Ganda</span>
                             </td>
                             <td>
@@ -43,7 +49,7 @@
                                 </button>
                                 <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
                                                 duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
-                                    @click="this.$router.push({path: '/'})"> 
+                                    @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
                                 </button>
@@ -56,7 +62,7 @@
             <div class="flex justify-end">
                 <button class="bg-primary-700 text-white ring-2 ring-inset hover:bg-sky-100 hover:text-primary-900 
                                 duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
-                    @click="this.$router.push({path: '/addSoalImage'})">
+                    id="btnCreateSection">
                     <i class="fa fa-feather fa-lg mr-2"></i>   
                     <span>Add New Section</span>
                 </button>
@@ -64,17 +70,15 @@
 
             <div v-show="questionId!=0">
                 <h1 class="font-bold text-primary-900 text-4xl mt-5">Question</h1>
-                <div class="overflow-auto w-full h-full no-scrollbar mt-3">
+                <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
                     <table class="table-fixed border-collapse border border-primary-200 w-full">
                         <thead class="bg-primary-800">
                             <tr>
                                 <th class="font-semibold w-1/12">Question No.</th>
-                                <th class="font-semibold w-2/12">Question</th>
-                                <th class="font-semibold w-2/12">Option Choices</th>
+                                <th class="font-semibold w-3/12">Question</th>
+                                <th class="font-semibold w-3/12">Option Choices</th>
                                 <th class="font-semibold w-1/12">Answer Key</th>
-                                <th class="font-semibold w-1/12">Question Type</th>
-                                <th class="font-semibold w-1/12">Option Type</th>
-                                <th class="font-semibold w-2/12">Action</th>
+                                <th class="font-semibold w-1/12">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,24 +88,9 @@
                                 <td>A. Meja, B. Kursi, C. Lemari, D. Laci, E. Bantal</td>
                                 <td>A</td>
                                 <td>
-                                    <span v-if="i%2==1">Text</span>
-                                    <span v-else>Image</span>
-                                </td>
-                                <td>
-                                    <span v-if="i%3==1">Multiple Choice</span>
-                                    <span v-else-if="i%3==2">Image</span>
-                                    <span v-else>Essay</span>
-                                </td>
-                                <td>
                                     <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
                                                     duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
-                                        @click="this.$router.push({path: '/'})"> 
-                                        <i class="fa fa-info-circle mr-2"></i>
-                                        <span>Detail</span>
-                                    </button>
-                                    <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
-                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
-                                        @click="this.$router.push({path: '/'})"> 
+                                        @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Update</span>
                                     </button>
@@ -114,18 +103,81 @@
                 <div class="flex justify-end">
                     <button class="bg-primary-700 text-white ring-2 ring-inset hover:bg-sky-100 hover:text-primary-900 
                                     duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
-                        @click="this.$router.push({path: '/addSoalImage'})">
+                        @click="this.$router.push({path: '/admin/question/add'})">
                         <i class="fa fa-feather fa-lg mr-2"></i>   
                         <span>Add New Question</span>
                     </button>
                 </div>
             </div>
         </div>
+        
+        <!-- Transparent Overlay -->
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+
+        <!-- Create New Session Modal -->
+        <div id="modalSection" class="fixed left-1/3 bg-primary-1000 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
+            <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
+                <button id="closeNewSection" class="relative inline-block">
+                    <i class="fa fa-times fa-lg"></i>
+                </button>
+                <p class="font-bold text-lg text-right inline-block relative" style="width: 96%">{{headerModal}}</p>
+            </div>
+
+            <div class="text-white p-5 h-5/6 relative">
+                <label for="instruction">Instruction</label><br>
+                <textarea name="instruction" id="instruction" placeholder="Section Instruction"
+                    class="rounded-lg py-2 px-3 w-full h-1/3 my-2 bg-primary-600 outline-none placeholder-gray-300"></textarea><br>
+                
+                <div class="flex">
+                    <div class="w-1/3">
+                        <p class="mt-4 mb-3">Duration</p>
+                        <p class="mb-3">Question Type</p>
+                        <p class="mb-4">Answer Type</p>
+                        <p class="hidden non-essay">Option Number</p>
+                    </div>
+                    <div>
+                        <p class="mt-4 mb-3">:</p>
+                        <p class="mb-3">:</p>
+                        <p class="mb-4">:</p>
+                        <p class="hidden non-essay">:</p>
+                    </div>
+                    <div class="grow ml-2">
+                        <div>
+                            <input type="number" name="duration" id="duration" placeholder="0-9"
+                                class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
+                            <label for="duration"> Minutes</label><br>
+                        </div>
+                        <div class="flex gap-2 mb-2">
+                            <Radio :values="'question_text'" :names="'Question_Type'" :id="'question_text'" :label="'Text'"/>
+                            <Radio :values="'question_Image'" :names="'Question_Type'" :id="'question_Image'" :label="'Image'"/>
+                        </div>
+                        <div class="flex gap-2">
+                            <Radio :values="'answer_text'" :names="'Answer_Type'" :id="'answer_text'" :label="'Text'"/>
+                            <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Multiple Choice'"/>
+                            <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Image'"/>
+                        </div>
+                        <div class="flex hidden non-essay">
+                            <input type="number" name="option_number" id="option_number" placeholder="2-5"
+                                class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                    </div>
+                </div>
+                
+
+                <button id="submit_new_section" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
+                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">Create</button>
+
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import Radio from '../../components/radiobutton.vue'
 export default {
+    components: {
+        Radio
+    },
     data() {
         return {
             testList: [
@@ -136,13 +188,18 @@ export default {
                 'Tes 5',
             ],
             questionId: 0,
+            headerModal: "Create A New Section"
         }
     },
     created() {
         this.$emit('updateHeader', 'Test')
     },
     methods: {
-        
+        openModal(){
+            this.headerModal = "Update A Section";
+            $('#modalSection').fadeIn("slow");
+            $('#bg').fadeIn("slow");
+        },
     },
     mounted(){
         $('.menu').removeClass('bg-primary-200')
@@ -151,6 +208,21 @@ export default {
         $('#menu-test').removeClass('hover:bg-primary-800')
         $('#menu-test').addClass('bg-primary-200')
         $('#menu-test').addClass('text-primary-900')
+
+        $('#answer_multiple').on("click", function() { $('.non-essay').removeClass('hidden'); });
+        $('#answer_image').on("click", function() { $('.non-essay').removeClass('hidden'); });
+        $('#answer_text').on("click", function() { $('.non-essay').addClass('hidden'); });
+
+        let this2 = this;
+        $('#btnCreateSection').click(function(){
+            this2.headerModal = "Create A New Section";
+            $('#modalSection').fadeIn("slow");
+            $('#bg').fadeIn("slow");
+        });
+        $('#closeNewSection').click(function(){
+            $('#modalSection').fadeOut("fast");
+            $('#bg').fadeOut("slow");
+        });
     }
 }
 </script>

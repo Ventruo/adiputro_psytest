@@ -101,7 +101,7 @@ export default {
     },
     data () {
         return {
-            judulHalaman: 'Session Detail',
+            judulHalaman: 'Registrant Detail',
             data: null,
         }
     },
