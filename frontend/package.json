@@ -16,7 +16,9 @@
     "jspdf": "^2.5.1",
     "vue": "^3.2.25",
     "vue-carousel-3d": "^1.0.1",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue3-cookies": "^1.0.6",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",

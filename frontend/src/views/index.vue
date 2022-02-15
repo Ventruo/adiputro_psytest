@@ -23,14 +23,16 @@
                     <!-- <div>
                         {{ info }}
                     </div> -->
-                    <form action="" class="text-left px-5 mt-5">
+                    <form @submit.prevent="login" class="text-left px-5 mt-5">
                         <label for="userEmail">Email</label>
                         <input type="email" name="email" id="userEmail" class="w-full mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
+
                         <label for="userToken">Test Token</label>
                         <input type="text" name="token" id="userToken" class="w-full mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
+
                         <button type="submit" class="w-full mt-5 px-3 py-2 font-bold rounded-full ring-2 ring-inset ring-primary-300
                                                     hover:text-primary-800 hover:bg-primary-300 duration-300"
-                                                    @click="this.$router.push({path: '/dashboard'})">Login</button>
+                                                    >Login</button>
                     </form>
                 </div>
             </div>
@@ -51,15 +53,40 @@ export default {
         }
     },
     methods: {
+        login(submitEvent) {
+            let elements = submitEvent.target.elements;
         
+            (async() => {
+                try {
+                    await axios.post('http://127.0.0.1:8888/api/auth/login',{
+                        email: elements.email.value,
+                        test_token: elements.token.value
+                    })
+                    .then((response) => {
+                        let access_token = response.data.access_token;
+                        let refresh_token = response.data.refresh_token;
+                        this.$store.commit('change_access_token', access_token);
+                        this.$cookies.set('refresh_token', refresh_token);
+
+                        window.location = '/dashboard'
+                    });
+                } catch (err) {
+                    Swal.fire({
+                        title: err.response.data,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })();
+        }
     },
     created(){
-        this.$emit('updateJudul', this.judulHalaman)
+        this.$emit('updateJudul', this.judulHalaman);
     },
     mounted () {
-        axios
-        .get('http://127.0.0.1:8888/api/test/1')
-        .then(({data}) => (this.info = data))
+        
     }
 }
 </script>
