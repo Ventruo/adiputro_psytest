@@ -28,7 +28,11 @@ ExamSession.init(
       allowNull: false,
       comment: "in minutes",
     },
-    token: {
+    test_token: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    auth_token: {
       type: DataTypes.STRING,
       allowNull: false,
     },

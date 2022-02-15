@@ -5,6 +5,7 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
+const short = require("short-uuid");
 
 class ExamSessionController {
   async getOne(req, res) {
@@ -61,17 +62,27 @@ class ExamSessionController {
   async create(req, res) {
     console.log("Creating A New Exam Session...");
 
-    if (!validate_required_columns(req, ExamSession, ["is_logged", "status"])) {
+    if (
+      !validate_required_columns(req, ExamSession, [
+        "is_logged",
+        "status",
+        "test_token",
+        "auth_token",
+      ])
+    ) {
       missing_param_response(res);
       return;
     }
 
+    const test_key = short.generate();
+    const user_key = short.generate();
     const new_session = await ExamSession.create({
       email: req.body.email,
       start_date: req.body.start_date,
       finish_date: req.body.finish_date,
       duration: req.body.duration,
-      token: req.body.token,
+      test_token: test_key,
+      auth_token: user_key,
     });
 
     success_response(res, new_session.toJSON(), "Create Successful!");
@@ -84,7 +95,7 @@ class ExamSessionController {
       !validate_required_columns(
         req,
         ExamSession,
-        ["is_logged", "status"],
+        ["is_logged", "status", "test_token", "auth_token"],
         ["updating_id"]
       )
     ) {
@@ -104,13 +115,36 @@ class ExamSessionController {
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
           duration: req.body.duration,
-          token: req.body.token,
         });
         session.save();
 
         success_response(res, session?.toJSON(), "Update successful!");
       }
     );
+  }
+
+  async refresh_test_token(req, res) {
+    console.log("Refreshing Exam Session Test Token...");
+
+    if (!req.body.id) {
+      missing_param_response(res);
+      return;
+    }
+
+    ExamSession.findOne({ where: { id: req.body.id } }).then((session) => {
+      if (!session) {
+        data_not_found_response(res);
+        return;
+      }
+
+      const test_key = short.generate();
+      session.set({
+        test_token: test_key,
+      });
+      session.save();
+
+      success_response(res, session?.toJSON(), "Refresh Token successful!");
+    });
   }
 }
 
