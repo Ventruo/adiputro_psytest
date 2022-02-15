@@ -12,6 +12,7 @@ const TestRouter = require("./express_routers/test_route");
 const TestResultRouter = require("./express_routers/test_result_route");
 
 const ClockRouter = require("./express_routers/clock_route");
+const AuthRouter = require("./express_routers/auth_route");
 
 // Routers
 router.use("/exam_session", ExamSessionRouter);
@@ -23,5 +24,6 @@ router.use("/section_result", SectionResultRouter);
 router.use("/test", TestRouter);
 router.use("/test_result", TestResultRouter);
 router.use("/clock", ClockRouter);
+router.use("/auth", AuthRouter);
 
 app.use(process.env.BASE_PATH, router);
