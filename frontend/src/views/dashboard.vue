@@ -66,7 +66,7 @@ export default {
         this.$emit('updateJudul', this.judulHalaman)
         this.timerWaktu = setInterval(() => {
             this.getNow()
-            console.log(this.$store.state.access_token);
+            // console.log(this.$store.state.access_token);
         }, 1000)
     },
     methods: {

@@ -59,8 +59,8 @@ export default {
             noSoal: 1,
             jumSoal: 5,
             jumChoice: 5,
-            menit: 6,
-            detik: 0,
+            menit: 0,
+            detik: 10,
             waktu: null,
             countdownTimer: null,
             countdown: 2,
@@ -84,7 +84,7 @@ export default {
                 var ctr = 0
                 var tambahan = ((1/this.jumSoal)*100)/5
                 function frame() {
-                    var width = parseInt(elements.style.width.replace(/px/,""))+tambahan
+                    var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
                     if (ctr == 5) {
                         clearInterval(interval)
                     } else {
@@ -100,11 +100,17 @@ export default {
                 // isi = this.jumSoal;
                 if(isi!=this.jumSoal){
                     Swal.fire({
-                        title: 'Jawab Dulu Semua Pertanyaan!',
+                        title: 'Ada Pertanyaan yang Belum Dijawab!',
                         icon: 'warning',
-                        confirmButtonColor: '#d33',
-                        confirmButtonText: 'Back'
-                    })
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Tetap Submit'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
                 }else{
                     Swal.fire({
                         title: 'Submit This Task?',
@@ -131,7 +137,7 @@ export default {
                 var ctr = 0
                 var tambahan = ((1/this.jumSoal)*100)/5
                 function frame() {
-                    var width = parseInt(elements.style.width.replace(/px/,""))-tambahan
+                    var width = parseFloat(elements.style.width.replace(/px/,""))-tambahan
                     if (ctr == 5) {
                         clearInterval(interval)
                     } else {
@@ -159,7 +165,7 @@ export default {
             var ctr = 0
             var tambahan = ((1/this.jumSoal)*100)/5
             function frame() {
-                var width = parseInt(elements.style.width.replace(/px/,""))+tambahan
+                var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
                 if (ctr == 5) {
                     clearInterval(interval)
                 } else {
@@ -250,6 +256,17 @@ export default {
                         this.detik = 0
                         this.menit = 0
                         clearInterval(this.waktu)
+                        
+                        Swal.fire({
+                            title: 'Waktu Habis...',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Kembali ke Dashboard'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.submitJawaban()
+                            }
+                        });
                     } 
                 }, 1000)
             }
@@ -267,7 +284,7 @@ export default {
         .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
-            this.menit = this.pertanyaan[0]["section"]["duration"],
+            // this.menit = this.pertanyaan[0]["section"]["duration"],
             this.jumSoal = this.pertanyaan.length,
             this.gantiPilihanJawaban(),
             this.ready()

@@ -28,7 +28,19 @@ export default {
                 this.jawaban[this.noSoal-1] = $('#answer').val()
         },
         resetText(answer){
-            $('#answer').val(answer)
+            if(this.jumlahJawaban>1){
+                if(answer!=null){
+                    var temp = answer.split("&")
+                    $('#answer').val(temp[0])
+                    $('#answer2').val(temp[1])
+                }else{
+                    $('#answer').val("")
+                    $('#answer2').val("")
+                }
+            }
+            else
+                $('#answer').val(answer)
+            
             $('#answer').focus()
         }
     }
