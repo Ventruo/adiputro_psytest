@@ -3,13 +3,14 @@
         <div class="w-5/6 h-full">
             <div class="flex">
                 <label class="text-xl font-bold w-32">Test Name : </label>
-                <select name="" id="" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl appearance-none" >
-                    <option value="" v-for="i in testList" :key="i">{{i}}</option>
+                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl appearance-none"
+                    @change="gantiTes($event)">
+                    <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
             </div>
 
             <h1 class="font-bold text-primary-900 text-4xl mt-5">Section</h1>
-            <div class="overflow-auto w-full h-96 no-scrollbar mt-2">
+            <div class="overflow-auto w-full h-96 no-scrollbar mt-2" v-if="this.sectionList!=null">
                 <table class="table-fixed border-collapse border border-primary-200 w-full">
                     <thead class="bg-primary-800">
                         <tr>
@@ -23,27 +24,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="i in 10" :key="i">
-                            <td>{{i}}</td>
-                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo facere cupiditate illo quae exercitationem excepturi quo esse rem consectetur nostrum? Et qui odit deleniti enim libero molestiae ullam voluptatem velit.</td>
-                            <td>7 Minutes</td>
+                        <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="i in this.sectionList" :key="i">
+                            <td>{{i.section_number}}</td>
+                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
+                            <td>{{i.duration}} Minutes</td>
                             <td>
                                 <span v-if="i%2==0">Teks</span>
                                 <span v-else>Gambar</span>
                             </td>
                             <td>
-                                <span v-if="i%3==0">Essay</span>
-                                <span v-else-if="i%3==1">Gambar</span>
-                                <span v-else>Pilihan Ganda</span>
+                                <span v-if="i.type==1">Essay</span>
+                                <span v-else-if="i.type==2">Pilihan Ganda</span>
                             </td>
-                            <td>
-                                <span v-if="i%2==1">-</span>
-                                <span v-else>{{Math.floor(Math.random()*4+2)}}</span>
-                            </td>
+                            <td>{{i.option_num}}</td>
                             <td>
                                 <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
                                                 duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
-                                    @click.prevent="questionId=i"> 
+                                    @click.prevent="gantiSection(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
@@ -68,13 +65,13 @@
                 </button>
             </div>
 
-            <div v-show="questionId!=0">
+            <div v-show="this.questionList!=null">
                 <h1 class="font-bold text-primary-900 text-4xl mt-5">Question</h1>
                 <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
                     <table class="table-fixed border-collapse border border-primary-200 w-full">
                         <thead class="bg-primary-800">
                             <tr>
-                                <th class="font-semibold w-1/12">Question No.</th>
+                                <th class="font-semibold w-1/12">Question No</th>
                                 <th class="font-semibold w-3/12">Question</th>
                                 <th class="font-semibold w-3/12">Option Choices</th>
                                 <th class="font-semibold w-1/12">Answer Key</th>
@@ -82,11 +79,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="i in 10" :key="i">
-                                <td>{{i}}</td>
-                                <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo facere cupiditate illo quae exercitationem excepturi quo esse rem consectetur nostrum? Et qui odit deleniti enim libero molestiae ullam voluptatem velit.</td>
-                                <td>A. Meja, B. Kursi, C. Lemari, D. Laci, E. Bantal</td>
-                                <td>A</td>
+                            <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="(i,idx) in this.questionList" :key="idx">
+                                <td>{{idx+1}}</td>
+                                <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
+                                <td>{{optionToString(i)}}</td>
+                                <td>{{i.answer}}</td>
                                 <td>
                                     <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
                                                     duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
@@ -171,22 +168,20 @@
         </div>
     </div>
 </template>
-
 <script>
 import Radio from '../../components/radiobutton.vue'
+import axios from 'axios'
 export default {
     components: {
-        Radio
+        Radio,
+        axios
     },
     data() {
         return {
-            testList: [
-                'Tes Tintum',
-                'Tes EPPS',
-                'Tes 3',
-                'Tes 4',
-                'Tes 5',
-            ],
+            testList: [],
+            sectionList: null,
+            questionList: null,
+            test: null,
             questionId: 0,
             headerModal: "Create A New Section"
         }
@@ -200,6 +195,42 @@ export default {
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
+        dataInit(){
+            for (let i = 0; i < this.test.length; i++) {
+                this.testList[i] = this.test[i].name
+            }
+
+            axios
+            .get('http://127.0.0.1:8888/api/section/all/'+this.test[0].id)
+            .then(({data}) => (
+                this.sectionList = data
+            ))
+        },
+        gantiTes(event){
+            this.questionList = null
+            axios
+            .get('http://127.0.0.1:8888/api/section/all/'+event.target.value)
+            .then(({data}) => (
+                this.sectionList = data
+            ))
+        },
+        gantiSection(id){
+            axios
+            .get('http://127.0.0.1:8888/api/question/all?section_id='+id)
+            .then(({data}) => (
+                this.questionList = data
+            ))
+        },
+        optionToString(question){
+            var hasil = "-"
+            if(question.option_a!="-") hasil = "A. "+question.option_a
+            if(question.option_b!="-") hasil += ", B. "+question.option_b
+            if(question.option_c!="-") hasil += ", C. "+question.option_c
+            if(question.option_d!="-") hasil += ", D. "+question.option_d
+            if(question.option_e!="-") hasil += ", E. "+question.option_e
+
+            return hasil
+        }
     },
     mounted(){
         $('.menu').removeClass('bg-primary-200')
@@ -223,6 +254,13 @@ export default {
             $('#modalSection').fadeOut("fast");
             $('#bg').fadeOut("slow");
         });
+
+        axios
+        .get('http://127.0.0.1:8888/api/test/all')
+        .then(({data}) => (
+            this.test = data,
+            this.dataInit()
+        ))
     }
 }
 </script>

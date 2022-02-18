@@ -24,6 +24,12 @@ export default {
             this.judulHalaman = judul
         }
     },
+     mounted() {
+        $('.carousel.carousel-slider').carousel({
+            // fullWidth: true,
+            indicators: true
+        });
+  }
 }
 </script>
 <style>

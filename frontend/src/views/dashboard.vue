@@ -1,8 +1,8 @@
 <template>
     <div class="top-0 z-0 w-full h-full flex text-white">
         <div class="w-9/12 h-auto min-h-screen px-5">
-            <Skippable v-if="this.section!=null" :sectionList="this.section"/>
-            <!-- <Continous v-if="this.section!=null" :sectionList="this.section"/> -->
+            <!-- <Skippable v-if="this.section!=null" :sectionList="this.section"/> -->
+            <Continous v-if="this.section!=null" :sectionList="this.section"/>
         </div>
         <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-4 pb-5 px-5">
             <div class="flex justify-between text-sm font-bold">
@@ -59,7 +59,7 @@ export default {
             tenggat: 'Jumat, 21 Januari 2022 23:59:59',
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
-            day: ["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"],
+            day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
         }
     },
     created() {
@@ -72,7 +72,7 @@ export default {
     methods: {
         getNow() {
             const today = new Date()
-            const date = this.day[today.getDay()-1] + ", " + ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
+            const date = this.day[today.getDay()] + ", " + ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
             const time = ('00'+today.getHours()).slice(-2) + ":" + ('00'+today.getMinutes()).slice(-2) + ":" + ('00'+today.getSeconds()).slice(-2)
             const dateTime = date + ' ' + time
             this.timestamp = dateTime
