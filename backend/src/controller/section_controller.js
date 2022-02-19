@@ -84,7 +84,8 @@ class SectionController {
       section_number: req.body.section_number,
       instruction: req.body.instruction,
       duration: req.body.duration,
-      type: req.body.type,
+      section_type: req.body.section_type,
+      question_type: req.body.question_type,
       option_num: req.body.option_num,
     });
 
@@ -110,7 +111,8 @@ class SectionController {
         section_number: req.body.section_number,
         instruction: req.body.instruction,
         duration: req.body.duration,
-        type: req.body.type,
+        section_type: req.body.section_type,
+        question_type: req.body.question_type,
         option_num: req.body.option_num,
       });
       section.save();

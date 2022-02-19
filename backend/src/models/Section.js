@@ -30,10 +30,15 @@ Section.init(
       allowNull: false,
       comment: "in minutes",
     },
-    type: {
+    section_type: {
       type: DataTypes.STRING,
       allowNull: false,
       comment: "1: essay, 2 : multiple choice",
+    },
+    question_type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      comment: "1: text,  2: image",
     },
     option_num: {
       type: DataTypes.INTEGER,
