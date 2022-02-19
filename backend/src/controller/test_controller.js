@@ -48,7 +48,8 @@ class TestController {
 
     const new_test = await Test.create({
       name: req.body.name,
-      type: req.body.type,
+      test_order: req.body.test_order,
+      test_type: req.body.test_type,
     });
 
     success_response(res, new_test.toJSON(), "Create Successful!");
@@ -70,7 +71,8 @@ class TestController {
 
       test.set({
         name: req.body.name,
-        type: req.body.type,
+        test_order: req.body.test_order,
+        test_type: req.body.test_type,
       });
       test.save();
 

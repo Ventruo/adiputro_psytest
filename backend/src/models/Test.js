@@ -15,10 +15,15 @@ Test.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    type: {
+    test_order: {
       type: DataTypes.STRING,
       allowNull: false,
       comment: "1: in sequence, 2 : not in sequence",
+    },
+    test_type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      comment: "normal, EPPS, or else",
     },
     status: {
       type: DataTypes.INTEGER,
