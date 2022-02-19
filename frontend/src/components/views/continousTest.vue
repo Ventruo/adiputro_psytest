@@ -3,9 +3,7 @@
         <div>
             <div id="carouselFirst" class="carousel carousel-slider center mt-10">
                 <div class="carousel-fixed-item center clearfix px-5">
-                    <a id="carousel-prev" class="prev btn waves-effect blue white-text left">
-                        <i class="fas fa-angle-left mr-2"></i>
-                        <span>prev</span>
+                    <a id="carousel-prev" class="prev btn waves-effect blue white-text left">text-xl
                     </a>
                     
                     <div class="text-xl inline-block center">

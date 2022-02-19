@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import dashboard from '/src/views/dashboard.vue'
 import imgMatch from '/src/views/imgMatch.vue'
+import epps from '/src/views/epps.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
@@ -42,6 +43,11 @@ const routes = [
         path: '/soalImage',
         name: 'imgMatch',
         component: imgMatch,
+    },
+    {
+        path: '/epps',
+        name: 'epps',
+        component: epps,
     },
     {
         path: '/masterImage',

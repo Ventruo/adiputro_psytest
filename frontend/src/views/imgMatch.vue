@@ -3,8 +3,8 @@
         <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
             <p class="text-primary-900">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
             <div class="flex gap-2">
-                <button class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="prevSoal">Prev</button>
-                <button id="nextBtn" class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 w-20 text-base" @click.prevent="nextSoal">Next</button>
+                <button class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="prevSoal">Prev</button>
+                <button id="nextBtn" class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="nextSoal">Next</button>
             </div>
         </div>
 
@@ -77,21 +77,10 @@ export default {
         nextSoal(){
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
-                if(this.noSoal==this.jumSoal) $('#nextBtn').text('Finish')
+                if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
 
-                const elements = document.getElementById("progress")
-                var interval = setInterval(frame, 50)
-                var ctr = 0
-                var tambahan = ((1/this.jumSoal)*100)/5
-                function frame() {
-                    var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
-                    if (ctr == 5) {
-                        clearInterval(interval)
-                    } else {
-                        elements.style.width = width +'%'
-                    }
-                    ctr++
-                }
+                this.progress(true)
+
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }else{
@@ -132,19 +121,9 @@ export default {
             if (this.noSoal>1){
                 this.noSoal--
                 if(this.noSoal<this.jumSoal) $('#nextBtn').text('Next')
-                const elements = document.getElementById("progress")
-                var interval = setInterval(frame, 50)
-                var ctr = 0
-                var tambahan = ((1/this.jumSoal)*100)/5
-                function frame() {
-                    var width = parseFloat(elements.style.width.replace(/px/,""))-tambahan
-                    if (ctr == 5) {
-                        clearInterval(interval)
-                    } else {
-                        elements.style.width = width +'%'
-                    }
-                    ctr++
-                }
+
+                this.progress(false)
+                
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
@@ -159,13 +138,18 @@ export default {
                 'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
             ]
         },
-        ready(){
+        progress(maju){
             const elements = document.getElementById("progress")
             var interval = setInterval(frame, 50)
             var ctr = 0
             var tambahan = ((1/this.jumSoal)*100)/5
             function frame() {
-                var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
+                if(maju){
+                    var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
+                }else{
+                    var width = parseFloat(elements.style.width.replace(/px/,""))-tambahan
+                }
+
                 if (ctr == 5) {
                     clearInterval(interval)
                 } else {
@@ -173,8 +157,7 @@ export default {
                 }
                 ctr++
             }
-
-            this.jawaban = Array(this.jumSoal)
+            this.jawaban = Array(225)
         },
         submitJawaban(){
             for (let i = 0; i < this.jumSoal; i++) {
@@ -287,7 +270,7 @@ export default {
             // this.menit = this.pertanyaan[0]["section"]["duration"],
             this.jumSoal = this.pertanyaan.length,
             this.gantiPilihanJawaban(),
-            this.ready()
+            this.progress(true)
         ))
 
         axios
@@ -296,6 +279,14 @@ export default {
             this.jumChoice = data.option_num,
             this.test_id = data.test_id
         ))
+
+        let thi = this
+        $('body').keydown(function(event) {
+            if (event.keyCode==37||event.keyCode==65)
+                thi.prevSoal()
+            else if (event.keyCode==39||event.keyCode==68)
+                thi.nextSoal()
+        });
     }
 }
     
