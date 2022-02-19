@@ -1,8 +1,8 @@
 <template>
     <div class="top-0 z-0 w-full h-full flex text-white">
         <div class="w-9/12 h-auto min-h-screen px-5">
-            <!-- <Skippable v-if="this.section!=null" :sectionList="this.section"/> -->
-            <Continous v-if="this.section!=null" :sectionList="this.section"/>
+            <Skippable v-if="this.section!=null" :sectionList="this.section"/>
+            <!-- <Continous v-if="this.section!=null" :sectionList="this.section"/> -->
         </div>
         <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-4 pb-5 px-5">
             <div class="flex justify-between text-sm font-bold">

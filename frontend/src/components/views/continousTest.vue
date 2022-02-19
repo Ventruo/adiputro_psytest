@@ -3,7 +3,9 @@
         <div>
             <div id="carouselFirst" class="carousel carousel-slider center mt-10">
                 <div class="carousel-fixed-item center clearfix px-5">
-                    <a id="carousel-prev" class="prev btn waves-effect blue white-text left">text-xl
+                    <a id="carousel-prev" class="prev btn waves-effect blue white-text left">
+                        <i class="fas fa-angle-left ml-2"></i>
+                        <span>prev</span>
                     </a>
                     
                     <div class="text-xl inline-block center">
@@ -46,7 +48,7 @@
 
                                 <div>{{section.duration}} Minutes</div>
                                 
-                                <div v-if="section.type==1">Essay</div>
+                                <div v-if="section.section_type==1">Essay</div>
                                 <div v-else-if="section.option_num==5">Multiple Choices (A - E)</div>
                                 <div v-else-if="section.option_num==4">Multiple Choices (A - D)</div>
                                 <div v-else-if="section.option_num==3">Multiple Choices (A - C)</div>

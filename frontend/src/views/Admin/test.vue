@@ -29,12 +29,12 @@
                             <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
                             <td>{{i.duration}} Minutes</td>
                             <td>
-                                <span v-if="i%2==0">Teks</span>
-                                <span v-else>Gambar</span>
+                                <span v-if="i.question_type==1">Teks</span>
+                                <span v-else-if="i.question_type==2">Gambar</span>
                             </td>
                             <td>
-                                <span v-if="i.type==1">Essay</span>
-                                <span v-else-if="i.type==2">Pilihan Ganda</span>
+                                <span v-if="i.section_type==1">Essay</span>
+                                <span v-else-if="i.section_type==2">Pilihan Ganda</span>
                             </td>
                             <td>{{i.option_num}}</td>
                             <td>
@@ -203,7 +203,8 @@ export default {
             axios
             .get('http://127.0.0.1:8888/api/section/all/'+this.test[0].id)
             .then(({data}) => (
-                this.sectionList = data
+                this.sectionList = data,
+                console.log(this.sectionList)
             ))
         },
         gantiTes(event){

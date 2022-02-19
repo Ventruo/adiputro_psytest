@@ -23,18 +23,18 @@
             </p>
         </div>
 
-        <div class="h-full pt-2">
+        <div class="h-full pt-2" v-if="pertanyaan!=null">
             <div class="flex" v-for="i in 5" :key="i">
-                <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-10 text-right" v-if="i>95">{{i}}.</p>
-                <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-7 text-right" v-else-if="i>5">{{i}}.</p>
-                <p class="text-primary-900 text-xl font-bold mr-1 mt-1" v-else>{{i}}.</p>
+                <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-10 text-right" v-if="i+((page-1)*5)>95">{{i+((page-1)*5)}}.</p>
+                <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-7 text-right" v-else-if="i+((page-1)*5)>5">{{i+((page-1)*5)}}.</p>
+                <p class="text-primary-900 text-xl font-bold mr-1 mt-1" v-else>{{i+((page-1)*5)}}.</p>
                 <div class="flex mb-2 h-auto min-h-[4rem] overflow-hidden grow" v-if="i%2==1">
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = i :label="'A. hehe'" :warna="'mr-2 rounded-lg bg-primary-800 hover:bg-primary-100 hover:text-primary-900'" />
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = i :label="'B. h3h3'" :warna="'bg-primary-600 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
+                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']" :warna="'mr-2 rounded-lg bg-primary-800 hover:bg-primary-100 hover:text-primary-900'" />
+                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" :warna="'bg-primary-600 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
                 </div>
                 <div class="flex mb-2 h-auto min-h-[4rem] overflow-hidden grow" v-else>
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = i :label="'A. hehe'" :warna="'mr-2 rounded-lg bg-primary-600 hover:bg-primary-100 hover:text-primary-900'" />
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = i :label="'B. h3h3'" :warna="'bg-primary-800 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
+                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']" :warna="'mr-2 rounded-lg bg-primary-600 hover:bg-primary-100 hover:text-primary-900'" />
+                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" :warna="'bg-primary-800 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
                 </div>
             </div>
         </div>
@@ -61,66 +61,60 @@ export default {
             judulHalaman: 'EPPS',
             page: 1,
             jumHalaman: 45,
-            // jumChoice: 5,
             menit: 1,
-            detik: 10,
-            // waktu: null,
+            detik: 0,
+            waktu: null,
             // countdownTimer: null,
             // countdown: 2,
-            jawaban: []
-            // jawabanFinal: [],
-            // pertanyaan: null,
-            // pilihanJawaban: null,
+            jawaban: [],
+            jawabanFinal: [],
+            pertanyaan: null,
+            pilihanJawaban: null,
             // section_id: this.$route.query.current_section,
+            section_id: 11,
             // test_id: null,
-            // exam_session: 3
+            exam_session: 3
         }
     },
     methods: {
-        keyboardAction(event){
-            alert(event.keyCode)
-        },
         nextSoal(){
             if (this.page<this.jumHalaman){
                 this.page++
                 if(this.page==this.jumHalaman) $('#nextBtn').text('Submit')
 
                 this.progress(true)
-                // if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-                //     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }else{
-                // var isi = 0
-                // this.jawaban.forEach(e => { if (e != null) isi++; });
-                // // isi = this.jumSoal;
-                // if(isi!=this.jumSoal){
-                //     Swal.fire({
-                //         title: 'Ada Pertanyaan yang Belum Dijawab!',
-                //         icon: 'warning',
-                //         showCancelButton: true,
-                //         confirmButtonColor: '#3085d6',
-                //         cancelButtonColor: '#d33',
-                //         confirmButtonText: 'Tetap Submit'
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             this.submitJawaban()
-                //         }
-                //     });
-                // }else{
-                //     Swal.fire({
-                //         title: 'Submit This Task?',
-                //         icon: 'warning',
-                //         showCancelButton: true,
-                //         confirmButtonColor: '#3085d6',
-                //         cancelButtonColor: '#d33',
-                //         confirmButtonText: 'Yes'
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             this.submitJawaban()
-                //         }
-                //     });
-                // }
+                var isi = 0
+                this.jawaban.forEach(e => { if (e != null) isi++; });
+                // isi = this.jumSoal;
+                if(isi!=225){
+                    Swal.fire({
+                        title: 'Ada Pertanyaan yang Belum Dijawab!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Tetap Submit'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        title: 'Submit This Task?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
+                }
             }
-            // this.gantiPilihanJawaban()
         },
         prevSoal(){
             if (this.page>1){
@@ -128,21 +122,8 @@ export default {
                 if(this.page<this.jumHalaman) $('#nextBtn').text('Next')
                 
                 this.progress(false)
-
-                // if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-                //     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
-            // this.gantiPilihanJawaban()
         },
-        // gantiPilihanJawaban(){
-        //     this.pilihanJawaban = [
-        //         'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
-        //         'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
-        //         'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
-        //         'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
-        //         'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
-        //     ]
-        // },
         progress(maju){
             const elements = document.getElementById("progress")
             var interval = setInterval(frame, 50)
@@ -162,59 +143,54 @@ export default {
                 }
                 ctr++
             }
-            this.jawaban = Array(225)
         },
-        // submitJawaban(){
-        //     for (let i = 0; i < this.jumSoal; i++) {
-        //         this.jawabanFinal[i] = []
-        //         this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
-        //         if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-        //             this.jawabanFinal[i]["answer"] = this.jawaban[i];
-        //         else if(this.jumChoice==2)
-        //             this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(3,4):'';
-        //         else
-        //             this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
-        //         this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
-        //     }
+        submitJawaban(){
+            for (let i = 0; i < 225; i++) {
+                this.jawabanFinal[i] = []
+                this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
+                this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
+                this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
+            }
+            console.log(this.jawabanFinal)
 
-        //     let formData = {
-        //         exam_session: this.exam_session,
-        //         section_id: this.section_id,
-        //         data: this.jawabanFinal
-        //     }
+            let formData = {
+                exam_session: this.exam_session,
+                section_id: this.section_id,
+                data: this.jawabanFinal
+            }
 
-        //     axios.post('http://127.0.0.1:8888/api/section_result/create',{
-        //         "test_result_id": 3,
-        //         "section_id": this.section_id,
-        //         "exam_session": this.exam_session,
-        //         "start_date": "2022-01-28 15:00:00",
-        //         "finish_date": "2022-01-28 18:00:00"
-        //     })
-        //     .then((response) => {
-        //         axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
-        //         .then((response) => {
-        //             axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
-        //                 test_id: this.test_id,
-        //                 email: "coba@coba.com"
-        //             })
-        //             .then((response) => {
-        //                 Swal.fire(
-        //                     'Submitted!',
-        //                     'Task Successfully Submitted.',
-        //                     'success'
-        //                 )
-        //                 .then(function(){
-        //                     window.location = '/dashboard'
-        //                 })
-        //             })
-        //             // .catch( error => 
-        //             //     console.log('error: ' + error) 
-        //             // })
-        //         })
-        //     }).catch( error => { 
-        //         console.log('error: ' + error) 
-        //     });
-        // }
+            axios.post('http://127.0.0.1:8888/api/section_result/create',{
+                "test_result_id": 3,
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "start_date": "2022-01-28 15:00:00",
+                "finish_date": "2022-01-28 18:00:00"
+            })
+            .then((response) => {
+                axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
+                .then((response) => {
+                    axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
+                        test_id: 2,
+                        email: "cob1@coba.com"
+                    })
+                    .then((response) => {
+                        Swal.fire(
+                            'Submitted!',
+                            'Task Successfully Submitted.',
+                            'success'
+                        )
+                        .then(function(){
+                            window.location = '/dashboard'
+                        })
+                    })
+                    // .catch( error => 
+                    //     console.log('error: ' + error) 
+                    // })
+                })
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        }
     },
 
     created () {
@@ -268,15 +244,16 @@ export default {
     },
 
     mounted(){
-        // axios
-        // .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
-        // .then(({data}) => (
-        //     this.pertanyaan = data,
-        //     // this.menit = this.pertanyaan[0]["section"]["duration"],
-        //     this.jumSoal = this.pertanyaan.length,
-        //     this.gantiPilihanJawaban(),
+        axios
+        .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
+        .then(({data}) => (
+            this.pertanyaan = data,
+            console.log(data),
+            this.menit = this.pertanyaan[0]["section"]["duration"],
+            // this.jumSoal = this.pertanyaan.length,
+            this.jawaban = Array(225),
             this.progress(true)
-        // ))
+        ))
 
         // axios
         // .get('http://127.0.0.1:8888/api/section/'+this.section_id)

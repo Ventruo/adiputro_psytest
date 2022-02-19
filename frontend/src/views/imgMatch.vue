@@ -24,12 +24,13 @@
         </div>
 
         <div id="soal" class="hidden" v-if="pertanyaan!=null">
+        <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
             <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
             <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
             
-            <ImageAnswer v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
+            <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
             <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
-            <mChoiceAnswer v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
+            <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
         </div>
 
         <!-- Transparent Overlay -->
@@ -60,7 +61,7 @@ export default {
             jumSoal: 5,
             jumChoice: 5,
             menit: 0,
-            detik: 10,
+            detik: 0,
             waktu: null,
             countdownTimer: null,
             countdown: 2,
@@ -115,7 +116,7 @@ export default {
                     });
                 }
             }
-            // this.gantiPilihanJawaban()
+            this.gantiPilihanJawaban()
         },
         prevSoal(){
             if (this.noSoal>1){
@@ -127,7 +128,7 @@ export default {
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
-            // this.gantiPilihanJawaban()
+            this.gantiPilihanJawaban()
         },
         gantiPilihanJawaban(){
             this.pilihanJawaban = [
@@ -157,7 +158,6 @@ export default {
                 }
                 ctr++
             }
-            this.jawaban = Array(225)
         },
         submitJawaban(){
             for (let i = 0; i < this.jumSoal; i++) {
@@ -209,7 +209,23 @@ export default {
             }).catch( error => { 
                 console.log('error: ' + error) 
             });
-        }
+        },
+        chooseWithKeyboard(pilihan){
+            let komponen = null
+            if(this.pertanyaan[this.noSoal-1]['option_type']==2){
+                komponen = this.$refs.imageAnswer
+            }else if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']!='-'){
+                komponen = this.$refs.mChoiceAnswer
+            }
+            
+            if(komponen){
+                if(pilihan=='a') komponen.keyChoose(pilihan)
+                else if(pilihan=='b'&&this.jumChoice>=2) komponen.keyChoose(pilihan)
+                else if(pilihan=='c'&&this.jumChoice>=3) komponen.keyChoose(pilihan)
+                else if(pilihan=='d'&&this.jumChoice>=4) komponen.keyChoose(pilihan)
+                else if(pilihan=='e'&&this.jumChoice==5) komponen.keyChoose(pilihan)
+            }
+        },
     },
 
     created () {
@@ -267,9 +283,10 @@ export default {
         .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
-            // this.menit = this.pertanyaan[0]["section"]["duration"],
+            this.menit = this.pertanyaan[0]["section"]["duration"],
             this.jumSoal = this.pertanyaan.length,
             this.gantiPilihanJawaban(),
+            this.jawaban = Array(225),
             this.progress(true)
         ))
 
@@ -282,10 +299,15 @@ export default {
 
         let thi = this
         $('body').keydown(function(event) {
-            if (event.keyCode==37||event.keyCode==65)
+            if (event.keyCode==37)
                 thi.prevSoal()
-            else if (event.keyCode==39||event.keyCode==68)
+            else if (event.keyCode==39)
                 thi.nextSoal()
+            else if(event.keyCode==65) thi.chooseWithKeyboard('a')
+            else if(event.keyCode==66) thi.chooseWithKeyboard('b')
+            else if(event.keyCode==67) thi.chooseWithKeyboard('c')
+            else if(event.keyCode==68) thi.chooseWithKeyboard('d')
+            else if(event.keyCode==69) thi.chooseWithKeyboard('e')
         });
     }
 }
