@@ -8,6 +8,8 @@ const {
 
 class AuhtController {
   login(req, res) {
+    console.log("Login Attempt");
+
     if (!req.body.email || !req.body.test_token) {
       missing_param_response(res);
       return;
@@ -45,6 +47,8 @@ class AuhtController {
   }
 
   refresh(req, res) {
+    console.log("Refreshing Access Token");
+
     const refresh_token = req.body.refresh_token;
     if (refresh_token == null) return res.sendStatus(401);
 
@@ -68,6 +72,8 @@ class AuhtController {
   }
 
   verifyToken(req, res, next) {
+    console.log("Verifying Token");
+
     const authHeader = req.headers["authorization"];
     const access_token = authHeader && authHeader.split(" ")[1];
     const refresh_token = authHeader && authHeader.split(" ")[2];
