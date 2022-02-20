@@ -73,14 +73,27 @@
             </div>
             <div class="w-full bg-primary-700 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
-                <div class="flex gap-2 justify-center w-full h-full">
+                <div class="flex gap-2 justify-center w-full h-full" v-if="data!=null">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
-                        <Tintum :data="data" :print="'no'"/>
+                        <!-- <Tintum :data="data" :print="'no'"/> -->
+                        <Epps :data="data" :print="'no'"/>
                     </div>
-                    <div class="hidden">
+                    <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
+                        <EppsGraphics :data="data" :id="'pChart'"/>
+                    </div>
+                    <div class="absolute -z-10" id="pdf">
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
-                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" id="pdf">
-                            <Tintum :data="data" :print="'yes'"/>
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                            <!-- <Tintum :data="data" :print="'yes'"/> -->
+                            <!-- <Epps :data="data" :print="'yes'"/> -->
+                            
+                            <Epps :data="data" :print="'yes'"/>
+                        </div>
+                        <div class="flex flex-col bg-white py-2 px-3 text-black" 
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
+                            <!-- <Tintum :data="data" :print="'yes'"/> -->
+                            <!-- <Epps :data="data" :print="'yes'"/> -->
+                            <EppsGraphics :data="data" :id="'printChart'"/>
                         </div>
                     </div>
                 </div>
@@ -94,21 +107,27 @@
 import axios from 'axios'
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
+
 import Tintum from "../../components/report/tintum.vue"
+
+import Epps from "../../components/report/epps.vue"
+import EppsGraphics from "../../components/report/eppsGraphics.vue"
+
 export default {
     components: { 
-        axios, Tintum
+        axios, Tintum, Epps, EppsGraphics
     },
     data () {
         return {
             judulHalaman: 'Registrant Detail',
             data: null,
+            keyData: null
         }
     },
     methods:{
         makePDF(){
             window.html2canvas = html2canvas;
-            var doc = new jsPDF("p","pt","a4",true);
+            var doc = new jsPDF("p","pt","a4");
             doc.html(document.getElementById('pdf'), {
                 callback: function(pdf) {
                     pdf.save("mypdf.pdf");
