@@ -610,7 +610,7 @@ class TestResultController {
       for (let i = 1; i <= 11; i++) {
         let norm = [];
         for (let j = 1; j <= 21; j++) {
-          norm.push(rows[j][i]);
+          norm.push(rows[j][i] ?? 0);
         }
         if (i == 11) norms_value = norm;
         else norms_lookup.push(norm);
