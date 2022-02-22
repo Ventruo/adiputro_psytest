@@ -621,10 +621,12 @@ class TestResultController {
       //   Calculate Norms
       let norms_result = [];
       for (let i = 0; i < correct_data.length; i++) {
-        let j = 0;
-        while (norms_lookup[i][++j] <= correct_data[i]);
+        let j = -1;
+        while (norms_lookup[i][++j] < correct_data[i]);
 
-        norms_result.push(norms_value[--j]);
+        if (norms_lookup[i][j] > correct_data[i]) j--;
+
+        norms_result.push(norms_value[j]);
       }
       console.log("Values: ", correct_data);
       console.log("Norms: ", norms_result);
