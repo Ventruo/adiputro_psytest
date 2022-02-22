@@ -23,7 +23,8 @@
             </p>
         </div>
 
-        <div id="soal" class="hidden" v-if="pertanyaan!=null">
+        <div id="soal" class="" v-if="pertanyaan!=null">
+        <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
         <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
             <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
             <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
@@ -34,12 +35,12 @@
         </div>
 
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div>
+        <!-- <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div> -->
 
         <!-- Countdown -->
-        <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
+        <!-- <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
             <p id="counter">3</p>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -71,7 +72,7 @@ export default {
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
             test_id: null,
-            exam_session: 3
+            exam_session: 16
         }
     },
     methods: {
@@ -164,9 +165,10 @@ export default {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i];
-                else if(this.jumChoice==2)
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(3,4):'';
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
+                else if(this.jumChoice==2){
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
+                }
                 else
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
@@ -179,7 +181,7 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 3,
+                "test_result_id": 15,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
@@ -190,7 +192,7 @@ export default {
                 .then((response) => {
                     axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
                         test_id: this.test_id,
-                        email: "coba@coba.com"
+                        email: "ahmad.iqbal@x.com"
                     })
                     .then((response) => {
                         Swal.fire(
@@ -230,20 +232,20 @@ export default {
 
     created () {
         this.$emit('updateJudul', this.judulHalaman)
-        this.countdownTimer = setInterval(() => {
-            var element = document.getElementById("counter")
-            if(this.countdown<4 && this.countdown>0){
-                element.innerHTML = this.countdown
-            }else if(this.countdown==0){
-                element.innerHTML = "GO!!!"
-            }else if(this.countdown==-1){
-                element.classList.add("hidden")
-                document.getElementById("bg").classList.add("hidden")
-                document.getElementById("counterDiv").classList.add("hidden")
-                document.getElementById("bg").classList.remove("z-50")
-                document.getElementById("soal").classList.remove("hidden")
+        // this.countdownTimer = setInterval(() => {
+        //     var element = document.getElementById("counter")
+        //     if(this.countdown<4 && this.countdown>0){
+        //         element.innerHTML = this.countdown
+        //     }else if(this.countdown==0){
+        //         element.innerHTML = "GO!!!"
+        //     }else if(this.countdown==-1){
+        //         element.classList.add("hidden")
+        //         document.getElementById("bg").classList.add("hidden")
+        //         document.getElementById("counterDiv").classList.add("hidden")
+        //         document.getElementById("bg").classList.remove("z-50")
+        //         document.getElementById("soal").classList.remove("hidden")
                 
-                clearInterval(this.countdownTimer)
+        //         clearInterval(this.countdownTimer)
                 this.waktu = setInterval(() => {
                     this.detik--
                     if (this.detik<0){
@@ -268,9 +270,9 @@ export default {
                         });
                     } 
                 }, 1000)
-            }
-            this.countdown--
-        },1000)
+        //     }
+        //     this.countdown--
+        // },1000)
     },
 
     beforeDestroy() {

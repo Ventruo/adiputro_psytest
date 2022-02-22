@@ -79,8 +79,8 @@ export default {
         }
     },
     mounted(){
-        console.log(this.$cookies.get('refresh_token'));
-        this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
+        // console.log(this.$cookies.get('refresh_token'));
+        // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
         axios
         .get('http://127.0.0.1:8888/api/section/all/1')

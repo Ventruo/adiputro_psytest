@@ -12,7 +12,7 @@
             <p>Pendidikan</p>
         </div>
         <div class="ml-3">
-            <p>: Hasil Tes Kedua</p>
+            <p>: {{this.nama}}</p>
             <p>: L</p>
             <p>: S1</p>
         </div>
@@ -100,8 +100,20 @@
 <script>
 export default {
     props: {
-        "data": { type: Array, default: [], required: true },
+        "data": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
+        "nama": { type: String, default: '', required: true },
+    },
+    data() {
+        return {
+            arrData: null
+        }
+    },
+    mounted() {
+        this.arrData = Object.entries(this.data)
+        // console.log(this.arrData)
+        // console.log(this.arrTabel)
+        // console.log(this.arrData[0][1].RS)
     },
 }
 </script>
