@@ -305,7 +305,32 @@ class QuestionResultController {
         await Question.findOne({ where: { id: data.question_id } }).then(
           async (question) => {
             let status_correct = false;
-            if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
+            if (question.answer.includes("&")) {
+              let a1 = eval(data.answer.split("&")[0]);
+              let a2 = eval(data.answer.split("&")[1]);
+              let q1 = eval(question.answer.split("&")[0]);
+              let q2 = eval(question.answer.split("&")[1]);
+
+              if (a1 == q1 && a2 == q2) {
+                console.log("bener");
+                status_correct = true;
+                ctr_correct++;
+              }
+            } else if (question.answer.includes("|")) {
+              let q1 = question.answer.split("|")[0];
+              let q2 = question.answer.split("|")[1];
+
+              if (
+                data.answer.toUpperCase() == q1.toUpperCase() ||
+                data.answer.toUpperCase() == q2.toUpperCase()
+              ) {
+                console.log("bener");
+                status_correct = true;
+                ctr_correct++;
+              }
+            } else if (
+              data.answer.toUpperCase() == question.answer.toUpperCase()
+            ) {
               status_correct = true;
               ctr_correct++;
             }
