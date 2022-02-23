@@ -6,6 +6,8 @@ const {
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
 const short = require("short-uuid");
+const TestResult = require("../models/TestResult");
+const ExamSessionTest = require("../models/ExamSessionTest");
 
 class ExamSessionController {
   async getOne(req, res) {
@@ -63,12 +65,12 @@ class ExamSessionController {
     console.log("Creating A New Exam Session...");
 
     if (
-      !validate_required_columns(req, ExamSession, [
-        "is_logged",
-        "status",
-        "test_token",
-        "auth_token",
-      ])
+      !validate_required_columns(
+        req,
+        ExamSession,
+        ["is_logged", "status", "test_token", "auth_token"],
+        ["tests"]
+      )
     ) {
       missing_param_response(res);
       return;
@@ -84,6 +86,25 @@ class ExamSessionController {
       test_token: test_key,
       auth_token: user_key,
     });
+
+    let es_test_bulk_data = [];
+    let test_res_bulk_data = [];
+    for (let i = 0; i < req.body.tests.length; i++) {
+      const test = req.body.tests[i];
+      es_test_bulk_data.push({
+        exam_session_id: new_session.id,
+        test_id: test,
+      });
+
+      test_res_bulk_data.push({
+        test_id: test,
+        exam_session: new_session.id,
+        start_date: req.body.start_date,
+        finish_date: req.body.finish_date,
+      });
+    }
+    ExamSessionTest.bulkCreate(es_test_bulk_data);
+    TestResult.bulkCreate(test_res_bulk_data);
 
     success_response(res, new_session.toJSON(), "Create Successful!");
   }
@@ -122,6 +143,9 @@ class ExamSessionController {
       }
     );
   }
+
+  // TODO: Tambah function utk update Test apa yang bisa dibuka lagi utk sebuah exam session
+  // TODO: Kalau test nya ada dibiairn, kalau test gaada dihapus, kalau test baru dibuat
 
   async refresh_test_token(req, res) {
     console.log("Refreshing Exam Session Test Token...");
