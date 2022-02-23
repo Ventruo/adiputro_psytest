@@ -194,15 +194,168 @@ class TestResultController {
 
         // Check Test Type
         if (test.test_type == 1) {
-          this.calculate_normal_test(testres, res);
+          this.calculate_tintum_test(test.test_type, testres, res);
         } else if (test.test_type == 2) {
-          this.calculate_EPPS_test(testres, res);
+          this.calculate_EPPS_test(test.test_type, testres, res);
+        } else if (
+          test.test_type == 6 ||
+          test.test_type == 7 ||
+          test.test_type == 8 ||
+          test.test_type == 9 ||
+          test.test_type == 11 ||
+          test.test_type == 12 ||
+          test.test_type == 13 ||
+          test.test_type == 14 ||
+          test.test_type == 15
+        ) {
+          this.calculate_nine_tests(test.test_type, testres, res);
         }
       });
     });
   }
 
-  async calculate_EPPS_test(testres, res) {
+  async calculate_tintum_test(test_type, testres, res) {
+    // Get correct answers per Section from Section Results
+    SectionResult.findAll({ where: { test_result_id: testres.id } }).then(
+      (sectionsres) => {
+        Section.findAndCountAll({
+          where: { test_id: testres.test_id },
+        }).then((sections) => {
+          let correct_data = [];
+          correct_data = correct_data.concat(Array(sections.count).fill(0));
+
+          for (let i = 0; i < sections.count; i++) {
+            for (let j = 0; j < sectionsres.length; j++) {
+              if (sectionsres[j].section_id == sections.rows[i].id) {
+                correct_data[sections.rows[i].section_number - 1] =
+                  sectionsres[j].num_correct;
+                break;
+              }
+            }
+          }
+
+          // Calculate with norms
+          this.process_tintum(
+            "./src/data/test_norma.xlsx",
+            test_type,
+            correct_data,
+            res,
+            testres
+          );
+        });
+      }
+    );
+  }
+
+  async process_tintum(excel_path, sheet, correct_data, res, testres) {
+    // Read Norms from Excel
+    xlsxFile(excel_path, {
+      sheet: sheet,
+    }).then(async (rows) => {
+      console.log("Correct Data: ", correct_data);
+
+      let norms_lookup = [];
+      let norms_value = [];
+      for (let i = 1; i <= 11; i++) {
+        let norm = [];
+        for (let j = 1; j <= 21; j++) {
+          norm.push(rows[j][i] ?? 0);
+        }
+        if (i == 11) norms_value = norm;
+        else norms_lookup.push(norm);
+      }
+      // console.log(norms_lookup);
+      // console.log(norms_value);
+
+      //   Calculate Norms
+      let norms_result = [];
+      for (let i = 0; i < correct_data.length; i++) {
+        let j = -1;
+        while (norms_lookup[i][++j] < correct_data[i]);
+
+        if (norms_lookup[i][j] > correct_data[i]) j--;
+
+        norms_result.push(norms_value[j]);
+      }
+      console.log("Values: ", correct_data);
+      console.log("Norms: ", norms_result);
+
+      //   Calculate Tintum
+      let tintum_result = [];
+      for (let i = 0; i < norms_result.length; i++) {
+        let tintum =
+          tintum_lookup[
+            Object.keys(tintum_lookup)[Object.keys(tintum_lookup).length - 1]
+          ];
+
+        for (const key in tintum_lookup) {
+          if (key >= norms_result[i]) {
+            let tintum_keys = Object.keys(tintum_lookup);
+            let loc = tintum_keys.indexOf(key);
+
+            if (key == norms_result[i]) tintum = tintum_lookup[key];
+            else tintum = tintum_lookup[tintum_keys[loc - 1]];
+
+            break;
+          }
+        }
+
+        tintum_result.push(tintum);
+      }
+      console.log("Tintum: ", tintum_result);
+
+      //   Calculate IQ
+      let norms_sum = norms_result.reduce((a, b) => a + b, 0);
+      console.log("Norms Sum: ", norms_sum);
+      let norms_div = norms_sum / 10;
+      let norms_rounded = Math.floor(norms_div);
+
+      let iq =
+        iq_lookup[Object.keys(iq_lookup)[Object.keys(iq_lookup).length - 1]];
+      for (const key in iq_lookup) {
+        if (key >= norms_div) {
+          let iq_keys = Object.keys(iq_lookup);
+          let loc = iq_keys.indexOf(key);
+
+          if (key == norms_div) iq = iq_lookup[key];
+          else if (loc != 0) iq = iq_lookup[iq_keys[loc - 1]];
+          else iq = 0;
+
+          break;
+        }
+      }
+
+      if (!(norms_div - norms_rounded < 0.3)) {
+        iq = iq + Math.floor((norms_div - norms_rounded + 0.000001) / 0.3);
+      }
+      console.log("IQ: ", iq);
+
+      let results = {};
+      results.section_result_id = 1;
+      results.norms_sum = norms_sum;
+      results.iq = iq;
+      let temp = [];
+      for (let i = 0; i < correct_data.length; i++) {
+        let object = {};
+        object.num_correct = correct_data[i];
+        object.norm = norms_result[i];
+        object.tintum = tintum_result[i];
+
+        temp.push(object);
+      }
+      results.data = temp;
+      console.log("Result JSON: ", results);
+
+      testres.set({
+        result: JSON.stringify(results),
+      });
+      testres.save();
+
+      success_response(res, testres?.toJSON(), "Calculate successful!");
+    });
+  }
+
+  async calculate_EPPS_test(test_type, testres, res) {
     SectionResult.findOne({
       where: { test_result_id: testres.id },
     }).then((sectionres) => {
@@ -226,8 +379,8 @@ class TestResultController {
 
           // Calculate EPPS
           this.process_EPPS(
-            "./src/data/NORMA_EPPS.xlsx",
-            "lookup",
+            "./src/data/test_norma.xlsx",
+            test_type,
             answers,
             res,
             testres
@@ -565,8 +718,7 @@ class TestResultController {
     });
   }
 
-  async calculate_normal_test(testres, res) {
-    // Get correct answers per Section from Section Results
+  async calculate_nine_tests(test_type, testres, res) {
     SectionResult.findAll({ where: { test_result_id: testres.id } }).then(
       (sectionsres) => {
         Section.findAndCountAll({
@@ -586,9 +738,9 @@ class TestResultController {
           }
 
           // Calculate with norms
-          this.process_normal(
-            "./src/data/NORMA TINTUM.xlsx",
-            "Sheet1",
+          this.process_nine(
+            "./src/data/test_norma.xlsx",
+            test_type,
             correct_data,
             res,
             testres
@@ -598,7 +750,7 @@ class TestResultController {
     );
   }
 
-  async process_normal(excel_path, sheet, correct_data, res, testres) {
+  async process_nine(excel_path, sheet, correct_data, res, testres) {
     // Read Norms from Excel
     xlsxFile(excel_path, {
       sheet: sheet,
@@ -607,94 +759,32 @@ class TestResultController {
 
       let norms_lookup = [];
       let norms_value = [];
-      for (let i = 1; i <= 11; i++) {
-        let norm = [];
-        for (let j = 1; j <= 21; j++) {
-          norm.push(rows[j][i] ?? 0);
-        }
-        if (i == 11) norms_value = norm;
-        else norms_lookup.push(norm);
+      let categories = rows[0][1];
+      for (let i = 2; i < 2 + categories; i++) {
+        norms_lookup.push(rows[i][0]);
+        norms_value.push(rows[i][1]);
       }
       // console.log(norms_lookup);
       // console.log(norms_value);
 
       //   Calculate Norms
-      let norms_result = [];
+      let results = [];
       for (let i = 0; i < correct_data.length; i++) {
-        let j = -1;
-        while (norms_lookup[i][++j] < correct_data[i]);
+        for (let j = 0; j < categories; j++) {
+          let split = norms_lookup[j].split("-");
+          let low = split[0];
+          let high = split[1];
 
-        if (norms_lookup[i][j] > correct_data[i]) j--;
-
-        norms_result.push(norms_value[j]);
-      }
-      console.log("Values: ", correct_data);
-      console.log("Norms: ", norms_result);
-
-      //   Calculate Tintum
-      let tintum_result = [];
-      for (let i = 0; i < norms_result.length; i++) {
-        let tintum =
-          tintum_lookup[
-            Object.keys(tintum_lookup)[Object.keys(tintum_lookup).length - 1]
-          ];
-
-        for (const key in tintum_lookup) {
-          if (key >= norms_result[i]) {
-            let tintum_keys = Object.keys(tintum_lookup);
-            let loc = tintum_keys.indexOf(key);
-
-            if (key == norms_result[i]) tintum = tintum_lookup[key];
-            else tintum = tintum_lookup[tintum_keys[loc - 1]];
-
+          if (correct_data[i] >= low && correct_data[i] <= high) {
+            let result = {
+              num_correct: correct_data[i],
+              norma: norms_value[j],
+            };
+            results.push(result);
             break;
           }
         }
-
-        tintum_result.push(tintum);
       }
-      console.log("Tintum: ", tintum_result);
-
-      //   Calculate IQ
-      let norms_sum = norms_result.reduce((a, b) => a + b, 0);
-      console.log("Norms Sum: ", norms_sum);
-      let norms_div = norms_sum / 10;
-      let norms_rounded = Math.floor(norms_div);
-
-      let iq =
-        iq_lookup[Object.keys(iq_lookup)[Object.keys(iq_lookup).length - 1]];
-      for (const key in iq_lookup) {
-        if (key >= norms_div) {
-          let iq_keys = Object.keys(iq_lookup);
-          let loc = iq_keys.indexOf(key);
-
-          if (key == norms_div) iq = iq_lookup[key];
-          else if (loc != 0) iq = iq_lookup[iq_keys[loc - 1]];
-          else iq = 0;
-
-          break;
-        }
-      }
-
-      if (!(norms_div - norms_rounded < 0.3)) {
-        iq = iq + Math.floor((norms_div - norms_rounded + 0.000001) / 0.3);
-      }
-      console.log("IQ: ", iq);
-
-      let results = {};
-      results.section_result_id = 1;
-      results.norms_sum = norms_sum;
-      results.iq = iq;
-      let temp = [];
-      for (let i = 0; i < correct_data.length; i++) {
-        let object = {};
-        object.num_correct = correct_data[i];
-        object.norm = norms_result[i];
-        object.tintum = tintum_result[i];
-
-        temp.push(object);
-      }
-      results.data = temp;
       console.log("Result JSON: ", results);
 
       testres.set({
