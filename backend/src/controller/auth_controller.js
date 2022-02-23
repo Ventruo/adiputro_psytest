@@ -5,6 +5,7 @@ const {
   missing_param_response,
   data_not_found_response,
 } = require("../helpers/ResponseHelper");
+const ExamSessionTest = require("../models/ExamSessionTest");
 
 class AuhtController {
   login(req, res) {
@@ -41,7 +42,21 @@ class AuhtController {
         });
         session.save();
 
-        res.json({ access_token: access_token, refresh_token: refresh_token });
+        ExamSessionTest.findAll({
+          where: { exam_session_id: session.id },
+        }).then((testresults) => {
+          let tests = [];
+
+          for (let i = 0; i < testresults.length; i++) {
+            tests.push(testresults[i].test_id);
+          }
+
+          res.json({
+            access_token: access_token,
+            refresh_token: refresh_token,
+            tests: tests,
+          });
+        });
       }
     );
   }

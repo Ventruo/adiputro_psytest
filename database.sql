@@ -38,11 +38,11 @@ CREATE TABLE `exam_session` (
 /*Data for the table `exam_session` */
 
 insert  into `exam_session`(`id`,`email`,`start_date`,`finish_date`,`duration`,`test_token`,`auth_token`,`is_logged`,`status`,`createdAt`,`updatedAt`) values 
-(1,'a@a.com','2022-01-17 15:00:00','2022-01-17 16:00:00',60,'ifd8Tbszwdqp8kyJbMhEBC','pzH4Fa9LdGmTb4QJcNyeQ3',0,1,'2022-01-17 16:50:42','2022-02-23 15:05:40'),
+(1,'a@a.com','2022-01-17 15:00:00','2022-01-17 16:00:00',60,'ifd8Tbszwdqp8kyJbMhEBC','p5cV5uCwJiqXttTaEP7HFh',0,1,'2022-01-17 16:50:42','2022-02-23 16:08:32'),
 (2,'update@ganti.com','2022-01-15 00:00:00','2022-01-16 00:00:00',60,'wqkrcVzb6gjP3UGKa3bKFi','aaa',0,0,'2022-01-25 00:07:41','2022-02-15 06:58:25'),
 (3,'coba@coba.com','2022-01-24 17:07:41','2022-01-24 17:07:41',60,'bEFXCFzTtmgu7bxVtVUcXG','asbce',0,1,'2022-01-24 17:17:52','2022-02-15 06:58:27'),
 (4,'coba@coba.com','2022-01-25 00:00:00','2022-01-25 00:00:00',60,'177Nj5Nddj6a1WpZmcxnLt','asbce',0,1,'2022-01-24 17:18:02','2022-02-15 06:58:29'),
-(5,'inibaru@ahay.com','2022-01-25 00:00:00','2022-01-25 00:00:00',60,'tMFHNUnroFastpfwDuyGjV','2adyJwJVB1srC5Q5fNUXTL',0,1,'2022-02-23 15:59:18','2022-02-23 15:59:18');
+(5,'inibaru@ahay.com','2022-01-25 00:00:00','2022-01-25 00:00:00',60,'tMFHNUnroFastpfwDuyGjV','fpiGWVeFJ71k2KZ54aXb8y',0,1,'2022-02-23 15:59:18','2022-02-23 16:16:13');
 
 /*Table structure for table `exam_session_test` */
 
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `exam_session_test`;
 
 CREATE TABLE `exam_session_test` (
   `exam_session_id` varchar(255) NOT NULL,
-  `test_id` varbinary(255) NOT NULL,
+  `test_id` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`exam_session_id`,`test_id`)
