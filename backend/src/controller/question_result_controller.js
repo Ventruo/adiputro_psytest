@@ -300,23 +300,47 @@ class QuestionResultController {
       }
 
       let results = [];
-      let ctr_correct = 0;
+      let ctr_correct = secres.num_correct;
       for (const data of req.body.data) {
         await Question.findOne({ where: { id: data.question_id } }).then(
           async (question) => {
             let status_correct = false;
-            if (question.answer.includes("&")) {
-              let a1 = eval(data.answer.split("&")[0]);
-              let a2 = eval(data.answer.split("&")[1]);
-              let q1 = eval(question.answer.split("&")[0]);
-              let q2 = eval(question.answer.split("&")[1]);
 
-              if (a1 == q1 && a2 == q2) {
-                console.log("bener");
-                status_correct = true;
-                ctr_correct++;
+            if (data.answer.includes("&")) {
+              let a1 = data.answer.split("&")[0];
+              let a2 = data.answer.split("&")[1];
+
+              if (question.answer.includes("&")) {
+                // Both answer must equal to the question
+                let q1 = question.answer.split("&")[0];
+                let q2 = question.answer.split("&")[1];
+
+                if (question.section_id == 6) {
+                  // Answer and Correct Answer has fractions
+                  a1 = eval(a1);
+                  a2 = eval(a2);
+                  q1 = eval(q1);
+                  q2 = eval(q2);
+                }
+
+                if (a1 == q1 && a2 == q2) {
+                  status_correct = true;
+                  ctr_correct++;
+                }
+              } else if (question.answer.includes("-")) {
+                // Each answer corresponds one question
+                console.log("?");
+                let q1 = question.answer.split("-")[0];
+                let q2 = question.answer.split("-")[1];
+
+                let temp_ctr = 0;
+                if (a1.toUpperCase() == q1.toUpperCase()) temp_ctr++;
+                if (a2.toUpperCase() == q2.toUpperCase()) temp_ctr++;
+                if (temp_ctr > 0) status_correct = true;
+                ctr_correct += temp_ctr;
               }
             } else if (question.answer.includes("|")) {
+              // Only 1 answer is needed to be true
               let q1 = question.answer.split("|")[0];
               let q2 = question.answer.split("|")[1];
 
@@ -324,7 +348,6 @@ class QuestionResultController {
                 data.answer.toUpperCase() == q1.toUpperCase() ||
                 data.answer.toUpperCase() == q2.toUpperCase()
               ) {
-                console.log("bener");
                 status_correct = true;
                 ctr_correct++;
               }
