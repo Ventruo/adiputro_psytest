@@ -6,6 +6,11 @@
                                                     placeholder-white border-none" placeholder="Answer">
             <i v-if="jawaban[noSoal-1]===label" class="fa fa-check absolute right-3 bottom-2.5 pilihan"></i>
         </div>
+        <div v-else-if="jenis === 'ekspresi'">
+            <p>{{label}}</p>
+            <i v-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[0]===label+'x'" class="fa fa-x absolute right-3 bottom-1/3 pilihan"></i>
+            <i v-else-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[1]===label+'o'" class="far fa-circle absolute right-3 bottom-1/3 pilihan"></i>
+        </div>
         <div v-else>
             <p>{{label}}</p>
             <i v-if="jawaban[noSoal-1]===label" class="fa fa-check absolute right-3 bottom-1/3 pilihan"></i>
@@ -19,12 +24,22 @@ export default {
         "jawaban": { type: Array, default: [], required: true },
         "noSoal": { type: Number, default: 1, required: true },
         "jenis": { type: String, default: '', required: true },
+        "aksi": { type: String, default: 'x' },
         "label": { default: "" },
         "warna": { default: "" },
     },
     methods: {
         choose(id){
-            this.jawaban[this.noSoal-1] = id
+            if (this.jenis=="ekspresi"){
+                if(this.jawaban[this.noSoal-1]==null){
+                    if(this.aksi=='x') this.jawaban[this.noSoal-1] = id+'x,'
+                    else if(this.aksi=='o') this.jawaban[this.noSoal-1] = ','+id+'o'
+                }else{
+                    var temp = this.jawaban[this.noSoal-1].split(',')
+                    if(this.aksi=='x' && temp[1]!=id+'o') this.jawaban[this.noSoal-1] = id+'x,'+temp[1]
+                    else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+','+id+'o'
+                }
+            }else this.jawaban[this.noSoal-1] = id
         },
         eppsStyle(){
             $('.answer-btn').removeClass('w-5/12 mr-3 rounded-full text-xl')

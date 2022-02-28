@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import dashboard from '/src/views/dashboard.vue'
 import imgMatch from '/src/views/imgMatch.vue'
 import epps from '/src/views/epps.vue'
+import ekspresi from '/src/views/ekspresi.vue'
+import kraepelin from '/src/views/kraepelin.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
@@ -48,6 +50,16 @@ const routes = [
         path: '/epps',
         name: 'epps',
         component: epps,
+    },
+    {
+        path: '/ekspresi',
+        name: 'ekspresi',
+        component: ekspresi,
+    },
+    {
+        path: '/kraepelin',
+        name: 'kraepelin',
+        component: kraepelin,
     },
     {
         path: '/masterImage',
@@ -100,12 +112,6 @@ const routes = [
         name: 'masterTestResult',
         component: masterTestResult,
     },
-
-    // {
-    //     path: '/',
-    //     name: 'Home',
-    //     component: Home,
-    // },
 ]
 
 const router = createRouter({

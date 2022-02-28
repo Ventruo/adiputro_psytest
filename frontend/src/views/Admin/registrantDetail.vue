@@ -73,26 +73,26 @@
             </div>
             <div class="w-full bg-primary-700 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
-                <div class="flex gap-2 justify-center w-full h-full" v-if="dataRegistrant!=null">
+                <div class="flex gap-2 justify-center w-full h-full" v-if="loaded">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
-                        <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
-                        <!-- <Epps :data="dataRegistrant" :print="'no'"/> -->
+                        <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                        <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                        <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                     </div>
                     <!-- <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
-                        <EppsGraphics :data="dataRegistrant" :id="'pChart'"/>
+                        <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
                     </div> -->
                     <div class="absolute -z-10" id="pdf">
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                            <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
-                            <!-- <Epps :data="dataRegistrant" :print="'yes'"/> -->
-                            
-                            <!-- <Epps :data="dataRegistrant" :print="'yes'"/> -->
+                            <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                            <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                            <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
                         </div>
-                        <div class="hidden flex flex-col bg-white py-2 px-3 text-black" 
+                        <!-- <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
-                            <!-- <EppsGraphics :data="dataRegistrant" :id="'printChart'"/> -->
-                        </div>
+                            <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -111,20 +111,21 @@ import Tintum from "../../components/report/tintum.vue"
 import Epps from "../../components/report/epps.vue"
 import EppsGraphics from "../../components/report/eppsGraphics.vue"
 
+import Kecil from "../../components/report/kecilkecil.vue"
+
 export default {
     components: { 
-        axios, Tintum, Epps, EppsGraphics
+        axios, Tintum, Epps, EppsGraphics, Kecil
     },
     data () {
         return {
             judulHalaman: 'Registrant Detail',
-            dataRegistrant: null,
+            dataRegistrant: [],
+            loaded: false,
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            nama: 'Effendi Susanto'
-            //10 Gaguk Prastyono
-            //6 Eko Ridwan
+            nama: 'Felisia Magdalena'
         }
     },
     methods:{
@@ -133,7 +134,7 @@ export default {
             var doc = new jsPDF("p","pt","a4");
             doc.html(document.getElementById('pdf'), {
                 callback: function(pdf) {
-                    pdf.save("Effendi Susanto.pdf");
+                    pdf.save("Felisia Magdalena.pdf");
                 }
             })
         }
@@ -150,15 +151,34 @@ export default {
             // .get('http://127.0.0.1:8888/api/test_result/'+this.exam_session)
             // .then(({data}) => (
             //     this.dataRegistrant = JSON.parse(data.result),
+                // this.loaded = true,
             //     console.log(data)
             // ))
             axios
-            .get('http://127.0.0.1:8888/api/test_result/7')
+            .get('http://127.0.0.1:8888/api/test_result/50')
             .then(({data}) => (
-                this.dataRegistrant = JSON.parse(data.result)
+                this.dataRegistrant["Berhitung"] = JSON.parse(data.result),
+
+                axios
+                .get('http://127.0.0.1:8888/api/test_result/51')
+                .then(({data}) => (
+                    this.dataRegistrant["Ekspresi"] = JSON.parse(data.result),
+
+                    axios
+                    .get('http://127.0.0.1:8888/api/test_result/52')
+                    .then(({data}) => (
+                        this.dataRegistrant["Penalaran"] = JSON.parse(data.result),
+                        
+                        axios
+                        .get('http://127.0.0.1:8888/api/test_result/53')
+                        .then(({data}) => (
+                            this.dataRegistrant["Pemahaman"] = JSON.parse(data.result),
+                            this.loaded = true
+                        ))
+                    ))
+                ))
             ))
         ))
-        
     }
     
 }

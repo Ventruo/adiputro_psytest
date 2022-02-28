@@ -12,7 +12,7 @@
                 <p>Jenis Kelamin (L/P)</p>
             </div>
             <div class="ml-2 text-sm">
-                <p>: Hasil Tes Kedua</p>
+                <p>: {{this.nama}}</p>
                 <p>: L</p>
             </div>
         </div>
@@ -92,8 +92,8 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="font-bold" v-if="arrData!=null">1</td>
-                    <td class="font-bold text-red-500" v-if="arrData!=null">1</td>
+                    <td class="font-bold" v-if="arrData!=null">{{arrData[1][1]}}</td>
+                    <td class="font-bold text-red-500" v-if="arrData!=null">{{arrData[1][1]}}</td>
                     <td class="font-bold">(total harus 210)</td>
                     <td></td>
                 </tr>
@@ -157,6 +157,7 @@ export default {
     props: {
         "data": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
+        "nama": { type: String, default: '', required: true },
     },
     data() {
         return {
@@ -168,6 +169,7 @@ export default {
         var temp = Object.entries(this.data)
         this.arrData = temp.slice(15,21)
         this.arrTabel = temp.slice(0,15)
+        // console.log(this.arrData)
         // console.log(this.arrData)
         // console.log(this.arrTabel)
         // console.log(this.arrData[0][1].RS)

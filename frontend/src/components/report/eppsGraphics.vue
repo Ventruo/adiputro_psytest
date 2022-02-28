@@ -12,7 +12,7 @@
                 <p>Jenis Kelamin (L/P)</p>
             </div>
             <div class="ml-2 text-sm">
-                <p>: Hasil Tes Kedua</p>
+                <p>: {{this.nama}}</p>
                 <p>: L</p>
             </div>
         </div>
@@ -70,6 +70,7 @@ export default {
     props: {
         "data": { type: Object, default: [], required: true },
         "id": { type: String, required: true },
+        "nama": { type: String, default: '', required: true },
     },
     data() {
         return {

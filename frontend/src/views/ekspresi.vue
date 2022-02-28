@@ -12,7 +12,7 @@
             <div class="h-8 bg-primary-800 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
             <div class="h-8 bg-primary-600 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
             <div class="w-full text-center absolute top-0">
-                <p class="text-center py-1">Halaman {{page}}/{{jumHalaman}}</p> 
+                <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
             </div>
         </div>
 
@@ -23,18 +23,29 @@
             </p>
         </div>
 
-        <div class="h-full pt-2" v-if="pertanyaan!=null">
-            <div class="flex" v-for="i in 5" :key="i">
-                <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-10 text-right" v-if="i+((page-1)*5)>95">{{i+((page-1)*5)}}.</p>
-                <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-7 text-right" v-else-if="i+((page-1)*5)>5">{{i+((page-1)*5)}}.</p>
-                <p class="text-primary-900 text-xl font-bold mr-1 mt-1" v-else>{{i+((page-1)*5)}}.</p>
-                <div class="flex mb-2 h-auto min-h-[4rem] overflow-hidden grow" v-if="i%2==1">
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']" :warna="'mr-2 rounded-lg bg-primary-800 hover:bg-primary-100 hover:text-primary-900'" />
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" :warna="'bg-primary-600 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
+        <div id="soal" class="" v-if="pertanyaan!=null">
+        <!-- <div id="soal" class=""> -->
+            <!-- <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" /> -->
+            <TextQuestion :question="'Halo'" />
+            <div class="w-full text-center mt-5 bg-primary-800 rounded-xl py-2">
+                <div class="inline-block w-full">
+                    <div class="w-full mb-2" v-if="this.aksi=='x'">
+                        <button  class="py-2 px-10 bg-primary-100 text-primary-900 rounded-full mr-3" @click.prevent="this.aksi='x'">X</button>
+                        <button class="py-2 px-10 ring-2 ring inset ring-primary-100 rounded-full mr-3" @click.prevent="this.aksi='o'">O</button>
+                    </div>
+                    <div class="w-full mb-2" v-else>
+                        <button  class="py-2 px-10 ring-2 ring inset ring-primary-100 rounded-full mr-3" @click.prevent="this.aksi='x'">X</button>
+                        <button class="py-2 px-10 bg-primary-100 text-primary-900 rounded-full mr-3" @click.prevent="this.aksi='o'">O</button>
+                    </div>
                 </div>
-                <div class="flex mb-2 h-auto min-h-[4rem] overflow-hidden grow" v-else>
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']" :warna="'mr-2 rounded-lg bg-primary-600 hover:bg-primary-100 hover:text-primary-900'" />
-                    <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" :warna="'bg-primary-800 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
+            </div>
+            <div class="w-full text-center mt-5 bg-primary-800 rounded-xl py-2">
+                <div class="inline-block w-full">
+                    <div class="w-full mb-2">
+                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'A. '+this.pertanyaan[noSoal-1]['option_a']" :aksi= aksi :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'B. '+this.pertanyaan[noSoal-1]['option_b']" :aksi= aksi :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'C. '+this.pertanyaan[noSoal-1]['option_c']" :aksi= aksi :warna="'mt-2 ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,20 +61,22 @@
 </template>
 <script>
 import axios from 'axios'
+import TextQuestion from '../components/views/textQuestion.vue'
 import AnswerButton from '../components/answerButton.vue'
 
 export default {
     components: {
-        axios, AnswerButton
+        axios, TextQuestion, AnswerButton
     },
     data () {
         return {
             judulHalaman: 'EPPS',
-            page: 1,
-            jumHalaman: 45,
+            noSoal: 1,
+            jumSoal: 19,
             menit: 1,
             detik: 0,
             waktu: null,
+            aksi: 'x',
             // countdownTimer: null,
             // countdown: 2,
             jawaban: [],
@@ -71,23 +84,23 @@ export default {
             pertanyaan: null,
             pilihanJawaban: null,
             // section_id: this.$route.query.current_section,
-            section_id: 11,
+            section_id: 45,
             // test_id: null,
-            exam_session: 9
+            exam_session: 14
         }
     },
     methods: {
         nextSoal(){
-            if (this.page<this.jumHalaman){
-                this.page++
-                if(this.page==this.jumHalaman) $('#nextBtn').text('Submit')
+            if (this.noSoal<this.jumSoal){
+                this.noSoal++
+                if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
 
                 this.progress(true)
             }else{
                 var isi = 0
                 this.jawaban.forEach(e => { if (e != null) isi++; });
                 // isi = this.jumSoal;
-                if(isi!=225){
+                if(isi!=19){
                     Swal.fire({
                         title: 'Ada Pertanyaan yang Belum Dijawab!',
                         icon: 'warning',
@@ -117,9 +130,9 @@ export default {
             }
         },
         prevSoal(){
-            if (this.page>1){
-                this.page--
-                if(this.page<this.jumHalaman) $('#nextBtn').text('Next')
+            if (this.noSoal>1){
+                this.noSoal--
+                if(this.noSoal<this.jumSoal) $('#nextBtn').text('Next')
                 
                 this.progress(false)
             }
@@ -128,7 +141,7 @@ export default {
             const elements = document.getElementById("progress")
             var interval = setInterval(frame, 50)
             var ctr = 0
-            var tambahan = ((1/this.jumHalaman)*100)/5
+            var tambahan = ((1/this.jumSoal)*100)/5
             function frame() {
                 if(maju){
                     var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
@@ -145,13 +158,19 @@ export default {
             }
         },
         submitJawaban(){
-            for (let i = 0; i < 225; i++) {
+            for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
-                this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
+                if(this.jawaban[i]==undefined) this.jawabanFinal[i]["answer"] = ''
+                else{
+                    var temp = this.jawaban[i].split(',')
+                    var salah = temp[0]==null ? '' : temp[0].substring(0,1)
+                    var benar = temp[1]==null ? '' : temp[1].substring(0,1)
+                    this.jawabanFinal[i]["answer"] = benar+"&"+salah
+                    this.jawabanFinal[i]["answer"] = this.jawabanFinal[i]["answer"].toLowerCase()
+                }
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
-            console.log(this.jawabanFinal)
 
             let formData = {
                 exam_session: this.exam_session,
@@ -160,8 +179,8 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 29,
-                "section_id": 11,
+                "test_result_id": 59,
+                "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
                 "finish_date": "2022-01-28 18:00:00"
@@ -170,8 +189,8 @@ export default {
                 axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
                 .then((response) => {
                     axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
-                        test_id: 2,
-                        email: "saifullah@x.com"
+                        test_id: 7,
+                        email: "ivan.christianto@x.com"
                     })
                     .then((response) => {
                         Swal.fire(
@@ -248,19 +267,10 @@ export default {
         .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
-            // console.log(data),
             this.menit = this.pertanyaan[0]["section"]["duration"],
-            // this.jumSoal = this.pertanyaan.length,
-            this.jawaban = Array(225),
+            this.jawaban = Array(19),
             this.progress(true)
         ))
-
-        // axios
-        // .get('http://127.0.0.1:8888/api/section/'+this.section_id)
-        // .then(({data}) => (
-        //     this.jumChoice = data.option_num,
-        //     this.test_id = data.test_id
-        // ))
         
         let thi = this
         $('body').keydown(function(event) {

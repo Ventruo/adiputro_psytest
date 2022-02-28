@@ -72,7 +72,7 @@ export default {
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
             test_id: null,
-            exam_session: 16
+            exam_session: 14
         }
     },
     methods: {
@@ -181,7 +181,7 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 15,
+                "test_result_id": 61,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
@@ -192,7 +192,7 @@ export default {
                 .then((response) => {
                     axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
                         test_id: this.test_id,
-                        email: "ahmad.iqbal@x.com"
+                        email: "ivan.christianto@x.com"
                     })
                     .then((response) => {
                         Swal.fire(

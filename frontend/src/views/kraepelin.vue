@@ -19,12 +19,12 @@
         <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
             <p class="text-xl font-bold mb-1">Petunjuk :</p>
             <p>
-                Pilih salah satu pernyataan yang paling menggambarkan diri anda! 
+                Pilih salah satu pernyataan yang paling menggambarkan diri anda2 
             </p>
         </div>
 
         <div class="h-full pt-2" v-if="pertanyaan!=null">
-            <div class="flex" v-for="i in 5" :key="i">
+            <!-- <div class="flex" v-for="i in 5" :key="i">
                 <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-10 text-right" v-if="i+((page-1)*5)>95">{{i+((page-1)*5)}}.</p>
                 <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-7 text-right" v-else-if="i+((page-1)*5)>5">{{i+((page-1)*5)}}.</p>
                 <p class="text-primary-900 text-xl font-bold mr-1 mt-1" v-else>{{i+((page-1)*5)}}.</p>
@@ -36,7 +36,7 @@
                     <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']" :warna="'mr-2 rounded-lg bg-primary-600 hover:bg-primary-100 hover:text-primary-900'" />
                     <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" :warna="'bg-primary-800 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <!-- Transparent Overlay -->
@@ -244,16 +244,16 @@ export default {
     },
 
     mounted(){
-        axios
-        .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
-        .then(({data}) => (
-            this.pertanyaan = data,
-            // console.log(data),
-            this.menit = this.pertanyaan[0]["section"]["duration"],
-            // this.jumSoal = this.pertanyaan.length,
-            this.jawaban = Array(225),
-            this.progress(true)
-        ))
+        // axios
+        // .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
+        // .then(({data}) => (
+        //     this.pertanyaan = data,
+        //     // console.log(data),
+        //     this.menit = this.pertanyaan[0]["section"]["duration"],
+        //     // this.jumSoal = this.pertanyaan.length,
+        //     this.jawaban = Array(225),
+        //     this.progress(true)
+        // ))
 
         // axios
         // .get('http://127.0.0.1:8888/api/section/'+this.section_id)
