@@ -1,29 +1,19 @@
 <template>
     <div class="h-full w-9/12 m-auto text-white relative mt-3 overflow-hidden">
         <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
-            <p class="text-primary-900">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-            <div class="flex gap-2">
-                <button class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="prevSoal">Prev</button>
-                <button id="nextBtn" class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="nextSoal">Next</button>
-            </div>
+            <p class="text-primary-900">Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
+            
+            <p class="text-center py-1 text-primary-900">Kolom {{kolom}}/{{jumKolom}}</p> 
         </div>
 
-        <div class="relative w-full mb-2">
-            <div class="h-8 bg-primary-800 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
-            <div class="h-8 bg-primary-600 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
-            <div class="w-full text-center absolute top-0">
-                <p class="text-center py-1">Halaman {{page}}/{{jumHalaman}}</p> 
-            </div>
+        <div class="text-center text-primary-900 font-bold mb-5" v-if="pertanyaan!=null">
+            <p class="text-5xl mb-2" v-if="currentRow<28">{{pertanyaan[27-currentRow]}} + {{pertanyaan[28-currentRow]}} = ...</p>
+            <p class="text-5xl mb-2" v-else>Kolom Berikutnya...</p>
+            <p v-if="currentRow<27">Berikutnya: {{pertanyaan[26-currentRow]}} + {{pertanyaan[27-currentRow]}} = ...</p>
+            <p v-else>Berikutnya: -</p>
         </div>
-
-        <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
-            <p class="text-xl font-bold mb-1">Petunjuk :</p>
-            <p>
-                Pilih salah satu pernyataan yang paling menggambarkan diri anda2 
-            </p>
-        </div>
-
-        <div class="h-full pt-2" v-if="pertanyaan!=null">
+        <!-- <div class="h-full pt-2" v-if="pertanyaan!=null"> -->
+        <div class="h-full pt-2 text-primary-900 font-bold">
             <!-- <div class="flex" v-for="i in 5" :key="i">
                 <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-10 text-right" v-if="i+((page-1)*5)>95">{{i+((page-1)*5)}}.</p>
                 <p class="text-primary-900 text-xl font-bold mr-1 mt-1 w-7 text-right" v-else-if="i+((page-1)*5)>5">{{i+((page-1)*5)}}.</p>
@@ -37,6 +27,36 @@
                     <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" :warna="'bg-primary-800 rounded-lg hover:bg-primary-100 hover:text-primary-900'" />
                 </div>
             </div> -->
+            <div class="flex gap-5 justify-center">
+                <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row1[i-1]}}</p></div>
+                <div class="mt-5 mr-5">
+                    <input type="number" name="" :id="'baris'+(10-i)" v-for="i in 9" :key="i" @keyup="ngisi"
+                            class="w-10 px-3 py-1 mb-2 block rounded-xl text-center text-white outline-none bg-primary-600" disabled>
+                </div>
+
+                <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row2[i-1]}}</p></div>
+                <div class="mt-5 mr-5">
+                    <input type="number" name="" :id="'baris'+(19-i)" v-for="i in 9" :key="i" @keyup="ngisi"
+                            class="w-10 px-3 py-1 mb-2 block rounded-xl text-center text-white outline-none bg-primary-600" disabled>
+                </div>
+
+                <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row3[i-1]}}</p></div>
+                <div class="mt-5 mr-5">
+                    <input type="number" name="" :id="'baris'+(28-i)" v-for="i in 9" :key="i" @keyup="ngisi"
+                            class="w-10 px-3 py-1 mb-2 block rounded-xl text-center text-white outline-none bg-primary-600" disabled>
+                </div>
+
+                <div class="ml-20">
+                    <div v-for="i in 3" :key="i" class="mb-5">
+                        <button v-for="j in 3" :key="j" class="px-10 py-1 bg-primary-800 text-white text-xl mr-5 rounded-lg font-bold
+                                                    hover:text-primary-800 hover:bg-primary-400 duration-200" @click.prevent="jawabTombol">{{j+((i-1)*3)}}</button>
+                    </div>
+                    <div class="text-center">
+                        <button class="px-10 py-1 bg-primary-800 text-white text-xl mr-5 rounded-lg font-bold
+                                    hover:text-primary-800 hover:bg-primary-400 duration-200" @click.prevent="jawabTombol">0</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Transparent Overlay -->
@@ -59,15 +79,19 @@ export default {
     data () {
         return {
             judulHalaman: 'EPPS',
-            page: 1,
-            jumHalaman: 45,
-            menit: 1,
-            detik: 0,
+            kolom: 1,
+            jumKolom: 45,
+            detik: 15,
             waktu: null,
+            row1: [],
+            row2: [],
+            row3: [],
+            currentRow: 1,
             // countdownTimer: null,
             // countdown: 2,
             jawaban: [],
             jawabanFinal: [],
+            pertanyaanFull: null,
             pertanyaan: null,
             pilihanJawaban: null,
             // section_id: this.$route.query.current_section,
@@ -77,73 +101,100 @@ export default {
         }
     },
     methods: {
-        nextSoal(){
-            if (this.page<this.jumHalaman){
-                this.page++
-                if(this.page==this.jumHalaman) $('#nextBtn').text('Submit')
+        nextSoal(value){
+            if(value!="" && this.currentRow<28){
+                this.jawaban[this.kolom-1][this.currentRow-1] = value
+                $('#baris'+this.currentRow).prop('disabled', true)
+                this.currentRow += 1
+                $('#baris'+this.currentRow).prop('disabled', false)
+                $('#baris'+this.currentRow).focus()
+            }
+            if(this.currentRow>=28) this.reset()
 
-                this.progress(true)
-            }else{
-                var isi = 0
-                this.jawaban.forEach(e => { if (e != null) isi++; });
-                // isi = this.jumSoal;
-                if(isi!=225){
-                    Swal.fire({
-                        title: 'Ada Pertanyaan yang Belum Dijawab!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Tetap Submit'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.submitJawaban()
-                        }
-                    });
-                }else{
-                    Swal.fire({
-                        title: 'Submit This Task?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.submitJawaban()
-                        }
-                    });
-                }
-            }
-        },
-        prevSoal(){
-            if (this.page>1){
-                this.page--
-                if(this.page<this.jumHalaman) $('#nextBtn').text('Next')
-                
-                this.progress(false)
-            }
-        },
-        progress(maju){
-            const elements = document.getElementById("progress")
-            var interval = setInterval(frame, 50)
-            var ctr = 0
-            var tambahan = ((1/this.jumHalaman)*100)/5
-            function frame() {
-                if(maju){
-                    var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
-                }else{
-                    var width = parseFloat(elements.style.width.replace(/px/,""))-tambahan
-                }
+            // $('#answer').focus()
+            // if (this.kolom<this.jumKolom){
+            //     this.kolom++
+            //     if(this.kolom==this.jumKolom) $('#nextBtn').text('Submit')
 
-                if (ctr == 5) {
-                    clearInterval(interval)
-                } else {
-                    elements.style.width = width +'%'
-                }
-                ctr++
-            }
+            //     // this.progress(true)
+            // }else{
+            //     var isi = 0
+            //     this.jawaban.forEach(e => { if (e != null) isi++; });
+            //     // isi = this.jumSoal;
+            //     if(isi!=225){
+            //         Swal.fire({
+            //             title: 'Ada Pertanyaan yang Belum Dijawab!',
+            //             icon: 'warning',
+            //             showCancelButton: true,
+            //             confirmButtonColor: '#3085d6',
+            //             cancelButtonColor: '#d33',
+            //             confirmButtonText: 'Tetap Submit'
+            //         }).then((result) => {
+            //             if (result.isConfirmed) {
+            //                 this.submitJawaban()
+            //             }
+            //         });
+            //     }else{
+            //         Swal.fire({
+            //             title: 'Submit This Task?',
+            //             icon: 'warning',
+            //             showCancelButton: true,
+            //             confirmButtonColor: '#3085d6',
+            //             cancelButtonColor: '#d33',
+            //             confirmButtonText: 'Yes'
+            //         }).then((result) => {
+            //             if (result.isConfirmed) {
+            //                 this.submitJawaban()
+            //             }
+            //         });
+            //     }
+            // }
         },
+        ngisi(event){
+            var isi = event.target.value
+            event.target.value = isi.substring(0,1)
+            this.nextSoal(event.target.value)
+        },
+        reset(){
+            this.jawaban.push([])
+            this.kolom++
+            this.currentRow = 1
+            this.pertanyaan = this.pertanyaanFull.slice(((this.kolom-1)*28),(this.kolom*28))
+            this.row1 = this.pertanyaan.slice(-10)
+            this.row2 = this.pertanyaan.slice(9,19)
+            this.row3 = this.pertanyaan.slice(0,10)
+            $('#baris'+this.currentRow).prop('disabled', false)
+            $('#baris'+this.currentRow).focus()
+
+            for (let i = 1; i <= 28; i++) {
+                $('#baris'+i).val('')
+            }
+            console.log(this.jawaban)
+        },
+        jawabTombol(event){
+            $('#baris'+this.currentRow).val(event.target.innerText)
+            this.nextSoal(event.target.innerText)
+        },
+        // progress(maju){
+        //     const elements = document.getElementById("progress")
+        //     var interval = setInterval(frame, 50)
+        //     var ctr = 0
+        //     var tambahan = ((1/this.jumKolom)*100)/5
+        //     function frame() {
+        //         if(maju){
+        //             var width = parseFloat(elements.style.width.replace(/px/,""))+tambahan
+        //         }else{
+        //             var width = parseFloat(elements.style.width.replace(/px/,""))-tambahan
+        //         }
+
+        //         if (ctr == 5) {
+        //             clearInterval(interval)
+        //         } else {
+        //             elements.style.width = width +'%'
+        //         }
+        //         ctr++
+        //     }
+        // },
         submitJawaban(){
             for (let i = 0; i < 225; i++) {
                 this.jawabanFinal[i] = []
@@ -151,7 +202,6 @@ export default {
                 this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
-            console.log(this.jawabanFinal)
 
             let formData = {
                 exam_session: this.exam_session,
@@ -209,17 +259,17 @@ export default {
         //         document.getElementById("soal").classList.remove("hidden")
                 
         //         clearInterval(this.countdownTimer)
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
+                // this.waktu = setInterval(() => {
+                //     this.detik--
+                //     if (this.detik<0){
+                //         this.detik = 59
+                //         this.menit--
+                //     }
                     
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 0
-                        clearInterval(this.waktu)
+                //     if (this.menit<0){
+                //         this.detik = 0
+                //         this.menit = 0
+                //         clearInterval(this.waktu)
                         
                         // Swal.fire({
                         //     title: 'Waktu Habis...',
@@ -231,8 +281,8 @@ export default {
                         //         this.submitJawaban()
                         //     }
                         // });
-                    } 
-                }, 1000)
+                    // } 
+                // }, 1000)
         //     }
         //     this.countdown--
         // },1000)
@@ -261,7 +311,16 @@ export default {
         //     this.jumChoice = data.option_num,
         //     this.test_id = data.test_id
         // ))
-        
+
+        this.pertanyaanFull = [2,7,7,9,7,4,6,6,9,2, 2,1,1,8,2,2,6,5,9,2, 9,8,6,4,7,2,9,4, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8]
+        this.pertanyaan = this.pertanyaanFull.slice(0,28)
+        this.jawaban.push([])
+        this.row1 = this.pertanyaan.slice(-10)
+        this.row2 = this.pertanyaan.slice(9,19)
+        this.row3 = this.pertanyaan.slice(0,10)
+        $('#baris'+this.currentRow).prop('disabled', false)
+        $('#baris'+this.currentRow).focus()
+
         let thi = this
         $('body').keydown(function(event) {
             if (event.keyCode==37||event.keyCode==65)
