@@ -1,7 +1,7 @@
 <template>
   <div class="h-auto min-h-screen bg-background-100 flex flex-col">
     <router-view />
-    <div class="h-20 hidden" id="hidden-bottom"></div>
+    <!-- <div class="h-20 hidden" id="hidden-bottom"></div> -->
   </div>
 </template>
 <script>

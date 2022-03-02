@@ -3,32 +3,32 @@
         <div class="absolute top-20 w-full flex justify-center" style="height: 30rem;">
             <div class="w-5/6 h-full">
                 <div class="overflow-auto w-full h-full no-scrollbar mt-5" v-if="this.exam_session!=null">
-                    <table class="table-fixed border-collapse border border-primary-200 w-full">
-                        <thead class="bg-primary-800">
+                    <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
+                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
                             <tr>
-                                <th class="font-semibold w-2/12">E-Mail</th>
-                                <th class="font-semibold w-1/12">Start</th>
-                                <th class="font-semibold w-1/12">Finish</th>
-                                <th class="font-semibold w-1/12">Duration</th>
-                                <th class="font-semibold w-2/12">Token</th>
-                                <th class="font-semibold w-1/12">Status</th>
-                                <th class="font-semibold w-1/12">Action</th>
+                                <th class="w-2/12 border border-stroke-100">E-Mail</th>
+                                <th class="w-1/12 border border-stroke-100">Start</th>
+                                <th class="w-1/12 border border-stroke-100">Finish</th>
+                                <th class="w-1/12 border border-stroke-100">Duration</th>
+                                <th class="w-2/12 border border-stroke-100">Token</th>
+                                <th class="w-1/12 border border-stroke-100">Status</th>
+                                <th class="w-1/12 border border-stroke-100">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="i in this.exam_session" :key="i">
-                                <td>{{i.email}}</td>
-                                <td>{{toDate(i.start_date)}}</td>
-                                <td>{{toDate(i.finish_date)}}</td>
-                                <td>{{i.duration}} Minutes</td>
-                                <td>{{i.test_token}}</td>
-                                <td class="py-5 text-white">
-                                    <span v-if="i%2==1" class="bg-primary-700 ring-2 ring-inset ring-primary-400 rounded-full h-auto w-auto text-base px-10 py-2 mr-1">Active</span>
-                                    <span v-else class="bg-primary-600 ring-2 ring-inset ring-primary-400 rounded-full h-auto w-auto text-base px-6 py-2 mr-1">Non-Active</span>
+                        <tbody class="bg-background-400 divide-y divide-stroke-100">
+                            <tr class="text-center" v-for="i in this.exam_session" :key="i">
+                                <td class="border border-stroke-100">{{i.email}}</td>
+                                <td class="border border-stroke-100">{{toDate(i.start_date)}}</td>
+                                <td class="border border-stroke-100">{{toDate(i.finish_date)}}</td>
+                                <td class="border border-stroke-100">{{i.duration}} Minutes</td>
+                                <td class="border border-stroke-100">{{i.test_token}}</td>
+                                <td class="py-5 border border-stroke-100">
+                                    <span v-if="i%2==1">Active</span>
+                                    <span v-else>Non-Active</span>
                                 </td>
-                                <td>
-                                    <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
-                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
+                                <td class="border border-stroke-100">
+                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
+                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="openModal"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Update</span>
@@ -39,13 +39,14 @@
                     </table>
                 </div>
                 <div class="flex justify-end">
-                    <button class="bg-primary-700 text-white ring-2 ring-inset hover:bg-sky-100 hover:text-primary-900 
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                     duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
                             id="btnCreateSession">
                         <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
                         <span>Add New Session</span>
                     </button>
                 </div>
+                <div class="w-1 h-64 relative top-10"></div>
             </div>
         </div>
 
@@ -183,12 +184,10 @@ export default {
 
     },
     mounted(){
-        $('.menu').removeClass('bg-primary-200')
-        $('.menu').removeClass('text-primary-900')
-        $('.menu').addClass('hover:bg-primary-800')
-        $('#menu-session').removeClass('hover:bg-primary-800')
-        $('#menu-session').addClass('bg-primary-200')
-        $('#menu-session').addClass('text-primary-900')
+        $('.menu').removeClass('bg-background-200')
+        $('.menu').removeClass('text-black')
+        $('#menu-session').addClass('bg-background-200')
+        $('#menu-session').addClass('text-black')
 
         let this2 = this;
         $('#btnCreateSession').click(function(){

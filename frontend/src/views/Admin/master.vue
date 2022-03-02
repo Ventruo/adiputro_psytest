@@ -1,49 +1,51 @@
 <template>
-    <div class="h-auto relative top-16 flex overflow-hidden">
-        <div class="h-auto min-h-screen fixed pt-2 w-1/6 text-white z-50">
-            <div class="bg-primary-700 h-screen w-14 px-1 hover:w-full duration-300 group">
-                <router-link to="/admin">
-                    <div class="relative">
-                        <div class="hover:bg-primary-800 rounded-full cursor-pointer pl-3.5 pr-4 py-3 flex items-center menu" id="menu-home">
-                            <i class="w-1/12 mr-5 fa fa-house"></i>
-                            <span class="ml-0.5 opacity-0 transition duration-300 group-hover:opacity-100">Home</span>
-                        </div>
+    <div class="h-auto min-h-screen w-full text-white flex overflow-hidden">
+        <div class="bg-foreground-4-200 rounded-r-3xl h-screen w-16 px-1 py-5 hover:w-1/6 hover:px-6 duration-300 flex flex-col group">
+            <div class="my-2">
+                <img src="../../assets/logo_only.png" alt="" class="w-8 m-auto mb-2">
+                <img src="../../assets/text_only.png" alt="" class="w-24 m-auto opacity-0 transition group-hover:opacity-100">
+            </div>
+            <router-link to="/admin">
+                <div class="relative">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer pl-3.5 pr-4 py-3 mb-2 flex items-center menu" id="menu-home">
+                        <i class="w-1/12 mr-5 fa fa-house text-2xl"></i>
+                        <span class="ml-0.5 opacity-0 transition group-hover:opacity-100">Home</span>
                     </div>
-                </router-link>
-                
-                <router-link to="/admin/registrant">
-                    <div class="relative">
-                        <div class="hover:bg-primary-800 rounded-full cursor-pointer px-4 py-3 flex items-center menu" id="menu-registrant">
-                            <i class="w-1/12 mr-5 fa fa-user"></i>
-                            <span class="opacity-0 transition duration-300 group-hover:opacity-100">Registrant</span>
-                        </div>
+                </div>
+            </router-link>
+            
+            <router-link to="/admin/registrant">
+                <div class="relative">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-registrant">
+                        <i class="w-1/12 mr-5 fa fa-user text-2xl"></i>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Registrant</span>
                     </div>
-                </router-link>
+                </div>
+            </router-link>
 
-                <router-link to="/admin/test">
-                    <div class="relative">
-                        <div class="hover:bg-primary-800 rounded-full cursor-pointer px-4 py-3 flex items-center menu" id="menu-test">
-                            <i class="w-1/12 mr-5 fa fa-tasks"></i>
-                            <span class="opacity-0 transition duration-300 group-hover:opacity-100">Test</span>
-                        </div>
+            <router-link to="/admin/test">
+                <div class="relative">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-test">
+                        <i class="w-1/12 mr-5 fa fa-tasks text-2xl"></i>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Test</span>
                     </div>
-                </router-link>
-                
-                <router-link to="/admin/session">
-                    <div class="relative">
-                        <div class="hover:bg-primary-800 rounded-full cursor-pointer px-4 py-3 flex items-center menu" id="menu-session">
-                            <i class="w-1/12 mr-5 fas fa-calendar-alt"></i>
-                            <span class="opacity-0 transition duration-300 group-hover:opacity-100">Session</span>
-                        </div>
+                </div>
+            </router-link>
+            
+            <router-link to="/admin/session" class="grow">
+                <div class="relative">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-session">
+                        <i class="w-1/12 mr-5 fas fa-calendar-alt text-2xl"></i>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Session</span>
                     </div>
-                </router-link>
+                </div>
+            </router-link>
 
-                <div @click="logout">
-                    <div class="relative">
-                        <div class="hover:bg-primary-800 cursor-pointer px-4 py-3 flex items-center">
-                            <i class="w-1/12 mr-5 fas fa-sign-out-alt"></i>
-                            <span class="opacity-0 transition duration-300 group-hover:opacity-100">Logout</span>
-                        </div>
+            <div @click="logout">
+                <div class="relative">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 flex items-center">
+                        <i class="w-1/12 mr-5 fas fa-sign-out-alt text-2xl"></i>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Logout</span>
                     </div>
                 </div>
             </div>
@@ -55,17 +57,20 @@
                                                 -> review essay
         -->
 
-        <div class="relative w-full h-auto min-h-screen pl-5 pr-6 left-7 text-white">
-            <div class="w-full absolute p-10 pr-20 text-white flex justify-between">
-                <h1 class="text-4xl font-bold">{{header}}</h1>
-                <h1 class="text-2xl font-bold">{{timestamp||""}}</h1>
+        <div class="relative w-full h-screen text-black">
+            <p class="font-bold text-white text-3xl ml-5 mt-5 mb-6">Hi, Admin</p>
+            <div class="overflow-auto no-scrollbar h-screen w-full relative">
+                <div class="overflow-hidden absolute w-full h-72 -z-10">
+                    <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="h-full w-full">
+                        <path d="M0.00,92.27 C216.83,192.92 304.30,8.39 500.00,109.03 L500.00,0.00 L0.00,0.00 Z" class="fill-foreground-4-50"></path>
+                    </svg>
+                </div>
+                <div class="w-full p-8 pr-10 flex justify-between">
+                    <h1 class="text-4xl font-bold">{{header}}</h1>
+                    <h1 class="text-2xl font-bold">{{timestamp||""}}</h1>
+                </div>
+                <router-view @updateHeader="updateHeader" />
             </div>
-            <div class="overflow-hidden w-full h-72">
-                <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="h-full w-full">
-                    <path d="M0.00,92.27 C216.83,192.92 304.30,8.39 500.00,109.03 L500.00,0.00 L0.00,0.00 Z" class="fill-primary-600"></path>
-                </svg>
-            </div>
-            <router-view @updateHeader="updateHeader" />
         </div>
     </div>
 </template>

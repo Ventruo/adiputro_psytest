@@ -68,53 +68,53 @@ const routes = [
                 name: 'kraepelin',
                 component: kraepelin,
             },
+            {
+                path: '/admin',
+                name: 'admin',
+                component: admin,
+                children: [
+                    {
+                        path: '',
+                        component: dashboardAdmin,
+                    },
+                    {
+                        path: '/admin/registrant',
+                        component: registrant,
+                    },
+                    {
+                        path: '/admin/test',
+                        component: test,
+                    },
+                    {
+                        path: '/admin/session',
+                        component: session,
+                    },
+                    {
+                        path: '/admin/registrantDetail',
+                        name: 'registrantDetail',
+                        component: registrantDetail,
+                    },
+                    {
+                        path: '/admin/reviewEssay',
+                        name: 'reviewEssay',
+                        component: reviewEssay,
+                    },
+                    {
+                        path: '/admin/question/add',
+                        component: addQuestion,
+                    },
+                    {
+                        path: '/admin/question/update',
+                        component: addQuestion,
+                    },
+                ]
+            },
         ]
     },
     {
         path: '/masterImage',
         name: 'masterImgMatch',
         component: masterImgMatch,
-    },
-    {
-        path: '/admin',
-        name: 'admin',
-        component: admin,
-        children: [
-            {
-                path: '',
-                component: dashboardAdmin,
-            },
-            {
-                path: '/admin/registrant',
-                component: registrant,
-            },
-            {
-                path: '/admin/test',
-                component: test,
-            },
-            {
-                path: '/admin/session',
-                component: session,
-            },
-            {
-                path: '/admin/registrantDetail',
-                name: 'registrantDetail',
-                component: registrantDetail,
-            },
-            {
-                path: '/admin/reviewEssay',
-                name: 'reviewEssay',
-                component: reviewEssay,
-            },
-            {
-                path: '/admin/question/add',
-                component: addQuestion,
-            },
-            {
-                path: '/admin/question/update',
-                component: addQuestion,
-            },
-        ]
     },
     {
         path: '/masterTestResult',

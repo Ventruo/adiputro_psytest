@@ -1,51 +1,49 @@
 <template>
-    <div class="relative bottom-28 w-full flex justify-center h-auto">
+    <div class="w-full flex justify-center h-auto">
         <div class="w-5/6 h-full">
             <div class="flex">
-                <label class="text-xl font-bold w-32">Test Name : </label>
+                <label class="text-xl font-bold w-32">Nama Tes : </label>
                 <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl appearance-none"
                     @change="gantiTes($event)">
                     <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
             </div>
 
-            <h1 class="font-bold text-primary-900 text-4xl mt-5">Section</h1>
+            <h1 class="font-bold text-4xl mt-5">Section</h1>
             <div class="overflow-auto w-full h-96 no-scrollbar mt-2" v-if="this.sectionList!=null">
-                <table class="table-fixed border-collapse border border-primary-200 w-full">
-                    <thead class="bg-primary-800">
+                <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
+                    <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
                         <tr>
-                            <th class="font-semibold w-1/12">Section Number</th>
-                            <th class="font-semibold w-2/12">Instruction</th>
-                            <th class="font-semibold w-1/12">Duration</th>
-                            <th class="font-semibold w-1/12">Question Type</th>
-                            <th class="font-semibold w-1/12">Option Type</th>
-                            <th class="font-semibold w-1/12">Option Number</th>
-                            <th class="font-semibold w-2/12">Action</th>
+                            <th class="w-1/12 border border-stroke-100">Section Number</th>
+                            <th class="w-2/12 border border-stroke-100">Instruction</th>
+                            <th class="w-1/12 border border-stroke-100">Duration</th>
+                            <th class="w-1/12 border border-stroke-100">Question Type</th>
+                            <th class="w-1/12 border border-stroke-100">Option Type</th>
+                            <th class="w-1/12 border border-stroke-100">Option Number</th>
+                            <th class="w-2/12 border border-stroke-100">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="i in this.sectionList" :key="i">
-                            <td>{{i.section_number}}</td>
-                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
-                            <td>{{i.duration}} Minutes</td>
-                            <td>
+                    <tbody class="bg-background-400 divide-y divide-stroke-100">
+                        <tr class="text-center" v-for="i in this.sectionList" :key="i">
+                            <td class="border border-stroke-100">{{i.section_number}}</td>
+                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1 border border-stroke-100">{{i.instruction}}</td>
+                            <td class="border border-stroke-100">{{i.duration}} Minutes</td>
+                            <td class="border border-stroke-100">
                                 <span v-if="i.question_type==1">Teks</span>
                                 <span v-else-if="i.question_type==2">Gambar</span>
                             </td>
-                            <td>
+                            <td class="border border-stroke-100">
                                 <span v-if="i.section_type==1">Essay</span>
                                 <span v-else-if="i.section_type==2">Pilihan Ganda</span>
                             </td>
-                            <td>{{i.option_num}}</td>
-                            <td>
-                                <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
-                                                duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
+                            <td class="border border-stroke-100">{{i.option_num}}</td>
+                            <td class="border border-stroke-100 text-white">
+                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
                                     @click.prevent="gantiSection(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
-                                <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
-                                                duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
+                                <button class="bg-secondary hover:bg-red-800 duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
@@ -57,7 +55,7 @@
             </div>
 
             <div class="flex justify-end">
-                <button class="bg-primary-700 text-white ring-2 ring-inset hover:bg-sky-100 hover:text-primary-900 
+                <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
                     id="btnCreateSection">
                     <i class="fa fa-feather fa-lg mr-2"></i>   
@@ -66,27 +64,27 @@
             </div>
 
             <div v-show="this.questionList!=null">
-                <h1 class="font-bold text-primary-900 text-4xl mt-5">Question</h1>
+                <h1 class="font-bold text-4xl mt-5">Question</h1>
                 <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
-                    <table class="table-fixed border-collapse border border-primary-200 w-full">
-                        <thead class="bg-primary-800">
+                    <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
+                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
                             <tr>
-                                <th class="font-semibold w-1/12">Question No</th>
-                                <th class="font-semibold w-3/12">Question</th>
-                                <th class="font-semibold w-3/12">Option Choices</th>
-                                <th class="font-semibold w-1/12">Answer Key</th>
-                                <th class="font-semibold w-1/12">Action</th>
+                                <th class="w-1/12 border border-stroke-100">Question No</th>
+                                <th class="w-3/12 border border-stroke-100">Question</th>
+                                <th class="w-3/12 border border-stroke-100">Option Choices</th>
+                                <th class="w-1/12 border border-stroke-100">Answer Key</th>
+                                <th class="w-1/12 border border-stroke-100">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="text-center even:bg-sky-100 odd:bg-sky-200 text-primary-900" v-for="(i,idx) in this.questionList" :key="idx">
-                                <td>{{idx+1}}</td>
-                                <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
-                                <td>{{optionToString(i)}}</td>
-                                <td>{{i.answer}}</td>
-                                <td>
-                                    <button class="bg-primary-600 text-white ring-2 ring-inset ring-primary-200 hover:bg-primary-800 
-                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-2 mr-1" 
+                        <tbody class="bg-background-400 divide-y divide-stroke-100">
+                            <tr class="text-center" v-for="(i,idx) in this.questionList" :key="idx">
+                                <td class="border border-stroke-100">{{idx+1}}</td>
+                                <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1 border border-stroke-100">{{i.instruction}}</td>
+                                <td class="border border-stroke-100">{{optionToString(i)}}</td>
+                                <td class="border border-stroke-100">{{i.answer}}</td>
+                                <td class="border border-stroke-100">
+                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
+                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Update</span>
@@ -98,14 +96,15 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <button class="bg-primary-700 text-white ring-2 ring-inset hover:bg-sky-100 hover:text-primary-900 
-                                    duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
+                                duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
                         @click="this.$router.push({path: '/admin/question/add'})">
                         <i class="fa fa-feather fa-lg mr-2"></i>   
                         <span>Add New Question</span>
                     </button>
                 </div>
             </div>
+            <div class="w-1 h-64 relative top-10"></div>
         </div>
         
         <!-- Transparent Overlay -->
@@ -234,12 +233,10 @@ export default {
         }
     },
     mounted(){
-        $('.menu').removeClass('bg-primary-200')
-        $('.menu').removeClass('text-primary-900')
-        $('.menu').addClass('hover:bg-primary-800')
-        $('#menu-test').removeClass('hover:bg-primary-800')
-        $('#menu-test').addClass('bg-primary-200')
-        $('#menu-test').addClass('text-primary-900')
+        $('.menu').removeClass('bg-background-200')
+        $('.menu').removeClass('text-black')
+        $('#menu-test').addClass('bg-background-200')
+        $('#menu-test').addClass('text-black')
 
         $('#answer_multiple').on("click", function() { $('.non-essay').removeClass('hidden'); });
         $('#answer_image').on("click", function() { $('.non-essay').removeClass('hidden'); });

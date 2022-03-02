@@ -30,7 +30,7 @@
             </p>
         </div> -->
 
-        <div id="soal" class="mb-3" v-if="pertanyaan!=null">
+        <div id="soal" class="mb-3 text-white" v-if="pertanyaan!=null">
         <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
         <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
             <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
@@ -42,11 +42,11 @@
         </div>
 
         <div class="flex justify-between">
-            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 h-8 font-bold" @click.prevent="prevSoal">
+            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
                 <i class="fa fa-chevron-left mr-3"></i>
                 <span>Sebelumnya</span>
             </button>
-            <button id="nextBtn" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 h-8 font-bold" @click.prevent="nextSoal">
+            <button id="nextBtn" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
                 <span>Selanjutnya</span>
                 <i class="fa fa-chevron-right ml-3"></i>
             </button>
@@ -90,7 +90,7 @@ export default {
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
             test_id: null,
-            exam_session: 6
+            exam_session: 13
         }
     },
     methods: {
@@ -199,7 +199,7 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 26,
+                "test_result_id": 65,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
@@ -210,7 +210,7 @@ export default {
                 .then((response) => {
                     axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
                         test_id: this.test_id,
-                        email: "ardhyaska.amy@x.com"
+                        email: "moh.fharhan@x.com"
                     })
                     .then((response) => {
                         Swal.fire(
