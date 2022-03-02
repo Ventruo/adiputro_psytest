@@ -89,6 +89,7 @@ class QuestionController {
     const new_question = await Question.create({
       instruction: req.body.instruction,
       section_id: req.body.section_id,
+      option_num: req.body.option_num,
       option_a: req.body.option_a,
       option_b: req.body.option_b,
       option_c: req.body.option_c,
@@ -122,6 +123,7 @@ class QuestionController {
         question.set({
           question: req.body.question,
           section_id: req.body.section_id,
+          option_num: req.body.option_num,
           option_a: req.body.option_a,
           option_b: req.body.option_b,
           option_c: req.body.option_c,

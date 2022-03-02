@@ -20,6 +20,10 @@ Question.init(
       type: DataTypes.BIGINT,
       allowNull: false,
     },
+    option_num: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
     option_a: {
       type: DataTypes.STRING,
       allowNull: true,
