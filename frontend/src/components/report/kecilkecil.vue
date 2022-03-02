@@ -14,7 +14,7 @@
             </div>
             <div class="ml-2 text-sm">
                 <p class="mb-2">: {{this.nama}}</p>
-                <p class="mb-2">: P</p>
+                <p class="mb-2">: L</p>
                 <p>: S1</p>
             </div>
         </div>

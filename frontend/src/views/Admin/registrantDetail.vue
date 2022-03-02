@@ -125,7 +125,7 @@ export default {
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            nama: 'Felisia Magdalena'
+            nama: 'Ardhyaska Amy'
         }
     },
     methods:{
@@ -134,7 +134,7 @@ export default {
             var doc = new jsPDF("p","pt","a4");
             doc.html(document.getElementById('pdf'), {
                 callback: function(pdf) {
-                    pdf.save("Felisia Magdalena.pdf");
+                    pdf.save("Ardhyaska Amy.pdf");
                 }
             })
         }
@@ -155,22 +155,22 @@ export default {
             //     console.log(data)
             // ))
             axios
-            .get('http://127.0.0.1:8888/api/test_result/50')
+            .get('http://127.0.0.1:8888/api/test_result/26')
             .then(({data}) => (
                 this.dataRegistrant["Berhitung"] = JSON.parse(data.result),
 
                 axios
-                .get('http://127.0.0.1:8888/api/test_result/51')
+                .get('http://127.0.0.1:8888/api/test_result/27')
                 .then(({data}) => (
                     this.dataRegistrant["Ekspresi"] = JSON.parse(data.result),
 
                     axios
-                    .get('http://127.0.0.1:8888/api/test_result/52')
+                    .get('http://127.0.0.1:8888/api/test_result/28')
                     .then(({data}) => (
                         this.dataRegistrant["Penalaran"] = JSON.parse(data.result),
                         
                         axios
-                        .get('http://127.0.0.1:8888/api/test_result/53')
+                        .get('http://127.0.0.1:8888/api/test_result/29')
                         .then(({data}) => (
                             this.dataRegistrant["Pemahaman"] = JSON.parse(data.result),
                             this.loaded = true

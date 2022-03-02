@@ -1,29 +1,36 @@
 <template>
-    <div class="h-full w-9/12 m-auto text-white relative mt-3">
-        <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
-            <p class="text-primary-900">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-            <div class="flex gap-2">
-                <button class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="prevSoal">Prev</button>
-                <button id="nextBtn" class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="nextSoal">Next</button>
+    <div class="h-full w-9/12 m-auto text-white relative mt-3 text-black">
+        <div class="flex justify-between mb-7">
+            <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaTes}}</h1>
+            <div class="flex justify-center">
+                <img src="../assets/logo.png" alt="" class="w-20">
             </div>
+        </div>
+
+        <div class="flex justify-between items-center text-lg font-bold mb-5 relative z-10">
+            <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold">
+                <i class="fa fa-th-large mr-3"></i>
+                <span>Daftar Soal</span>
+            </button>
         </div>
 
         <div class="relative w-full mb-2">
-            <div class="h-8 bg-primary-800 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
-            <div class="h-8 bg-primary-600 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-xl"></div>    
+            <div class="h-8 bg-foreground-3-300 ring-1 ring-inset ring-black rounded-l-xl absolute top-0" id="progress" style="width: 0px;"></div>
             <div class="w-full text-center absolute top-0">
-                <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
+                <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
             </div>
         </div>
 
-        <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
+        <!-- <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
             <p class="text-xl font-bold mb-1">Petunjuk :</p>
             <p>
                 Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 
             </p>
-        </div>
+        </div> -->
 
-        <div id="soal" class="" v-if="pertanyaan!=null">
+        <div id="soal" class="mb-3" v-if="pertanyaan!=null">
         <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
         <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
             <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
@@ -32,6 +39,17 @@
             <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
             <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
             <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
+        </div>
+
+        <div class="flex justify-between">
+            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 h-8 font-bold" @click.prevent="prevSoal">
+                <i class="fa fa-chevron-left mr-3"></i>
+                <span>Sebelumnya</span>
+            </button>
+            <button id="nextBtn" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 h-8 font-bold" @click.prevent="nextSoal">
+                <span>Selanjutnya</span>
+                <i class="fa fa-chevron-right ml-3"></i>
+            </button>
         </div>
 
         <!-- Transparent Overlay -->
@@ -57,7 +75,7 @@ export default {
     },
     data () {
         return {
-            judulHalaman: 'Image Matching',
+            namaTes: 'Tes 1',
             noSoal: 1,
             jumSoal: 5,
             jumChoice: 5,
@@ -72,7 +90,7 @@ export default {
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
             test_id: null,
-            exam_session: 14
+            exam_session: 6
         }
     },
     methods: {
@@ -181,7 +199,7 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 61,
+                "test_result_id": 26,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
@@ -192,7 +210,7 @@ export default {
                 .then((response) => {
                     axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
                         test_id: this.test_id,
-                        email: "ivan.christianto@x.com"
+                        email: "ardhyaska.amy@x.com"
                     })
                     .then((response) => {
                         Swal.fire(
@@ -231,7 +249,7 @@ export default {
     },
 
     created () {
-        this.$emit('updateJudul', this.judulHalaman)
+        // this.$emit('updateJudul', this.judulHalaman)
         // this.countdownTimer = setInterval(() => {
         //     var element = document.getElementById("counter")
         //     if(this.countdown<4 && this.countdown>0){

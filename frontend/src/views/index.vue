@@ -9,29 +9,31 @@
           </div>
       </div>
     </div> -->
-    <div class="absolute top-0 z-0 w-full h-full flex text-white justify-center items-center">
+    <div class="absolute top-0 z-0 w-full h-full flex justify-center items-center">
         <div class="w-1/2 h-3/4 flex rounded-xl overflow-hidden">
-            <div class="w-5/12 h-full bg-primary-1000 flex justify-center items-center">
+            <div class="w-5/12 h-full bg-foreground-4-100 flex justify-center items-center">
                 <div class="text-center">
                    <img src="../assets/logo2.png" alt="" class="h-64 inline-block">
                    <!-- <img src="../assets/psychotest.png" alt=""> -->
                 </div>
             </div>
-            <div class="w-7/12 h-full bg-primary-800  flex justify-center items-center">
+            <div class="w-7/12 h-full bg-background-50 flex justify-center items-center">
                 <div class="w-full h-auto text-center">
-                    <h1 class="font-bold text-4xl">Login</h1>
+                    <h1 class="font-bold text-4xl">LOGIN</h1>
                     <!-- <div>
                         {{ info }}
                     </div> -->
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
                         <label for="userEmail">Email</label>
-                        <input type="email" name="email" id="userEmail" class="w-full mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
+                        <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
+                                    mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
 
                         <label for="userToken">Test Token</label>
-                        <input type="text" name="token" id="userToken" class="w-full mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
+                        <input type="text" name="token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
+                                    mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
 
-                        <button type="submit" class="w-full mt-5 px-3 py-2 font-bold rounded-full ring-2 ring-inset ring-primary-300
-                                                    hover:text-primary-800 hover:bg-primary-300 duration-300"
+                        <button type="submit" class="w-full mt-5 px-3 py-2 text-white font-bold bg-foreground-4-100 rounded-full ring-1 ring-inset ring-stroke
+                                                    hover:bg-foreground-4-200 duration-300"
                                                     >Login</button>
                     </form>
                 </div>

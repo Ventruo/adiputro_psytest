@@ -1,33 +1,40 @@
 <template>
     <div class="top-0 z-0 w-full h-full flex text-white">
-        <div class="w-9/12 h-auto min-h-screen px-5">
-            <Skippable v-if="this.section!=null" :sectionList="this.section"/>
-            <!-- <Continous v-if="this.section!=null" :sectionList="this.section"/> -->
-        </div>
-        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-primary-800 pt-4 pb-5 px-5">
-            <div class="flex justify-between text-sm font-bold">
-                <div class="text-right mb-2">
-                    <p>Waktu Lokal : </p>
-                    <p>Tenggat Waktu : </p>
-                </div>
-                <div>
-                    <p>{{timestamp || 'Getting Current Time...'}}</p>
-                    <p>{{tenggat}}</p>
-                </div>
+        <div class="w-3/12 h-auto min-h-screen flex flex-col bg-foreground-4-200 pt-4 pb-5 px-5 rounded-r-3xl">
+            <div class="text-center my-5">
+                <img src="../assets/logo.png" alt="" class="w-32 inline-block">
             </div>
-            <hr>
-            <h1 class="text-xl font-bold mt-3">Tes Yang Sudah Selesai</h1>
-            <div class="w-auto mt-2 overflow-x-hidden overflow-y-auto no-scrollbar">
-                <div class="w-full mr-2 h-auto bg-primary-600 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in 3" :key="i">
+            <div>
+                <p class="text-lg font-bold">Waktu Lokal : </p>
+                <p class="mb-2">{{timestamp || 'Getting Current Time...'}}</p>
+
+                <p class="text-lg font-bold">Tenggat Waktu : </p>
+                <p>{{tenggat}}</p>
+            </div>
+            <h1 class="text-xl font-bold mt-3">Tes Selesai: </h1>
+            <div class="w-auto mt-2 overflow-x-hidden overflow-y-auto no-scrollbar text-foreground-4-800 grow">
+                <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in 3" :key="i">
                     <div class="flex items-center">
-                        <i class="fas fa-file-alt mr-3"></i>
+                        <i class="fas fa-file-alt mr-3 text-2xl"></i>
                         <div>
                             <p class="text-lg font-bold">Tes {{i+7}}</p>
-                            <p class="text-gray-300 text-sm italic">Diselesaikan Pada 21 Januari 2022 20:20:24</p>
+                            <p class="text-foreground-4-300 font-bold text-sm">Diselesaikan Pada 21 Januari 2022 20:20:24</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="w-full text-left text-xl font-bold mb-3">
+                <i class="mr-5 fa fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+        
+        <div class="w-9/12 h-auto min-h-screen px-5">
+            <div class="flex items-center mt-6">
+                <p class="text-2xl font-bold text-white">{{judulHalaman}}</p>
+            </div>
+            <Skippable v-if="this.section!=null" :sectionList="this.section"/>
+            <!-- <Continous v-if="this.section!=null" :sectionList="this.section"/> -->
         </div>
     </div>
 </template>
@@ -63,7 +70,6 @@ export default {
         }
     },
     created() {
-        this.$emit('updateJudul', this.judulHalaman)
         this.timerWaktu = setInterval(() => {
             this.getNow()
             // console.log(this.$store.state.access_token);

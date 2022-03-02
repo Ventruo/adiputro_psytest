@@ -1,7 +1,7 @@
 <template>
-    <td class="px-1">
+    <td class="px-1 border border-stroke-100">
         <input type="text" v-model="inputValue" :name="nama" 
-            class="w-full px-3 py-1 my-1 rounded-xl bg-transparent placeholder-gray-300 text-center outline-none" 
+            class="w-full px-3 py-1 my-1 rounded-xl bg-transparent placeholder-stroke-100 text-center outline-none" 
             :placeholder="placeHolder" autocomplete="off"/>
     </td>
 </template>

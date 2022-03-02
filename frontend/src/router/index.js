@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import main from '/src/views/main_layout.vue'
+
 import dashboard from '/src/views/dashboard.vue'
 import imgMatch from '/src/views/imgMatch.vue'
 import epps from '/src/views/epps.vue'
@@ -22,44 +24,51 @@ import masterTestResult from '/src/views/Admin/masterTestResult.vue'
 
 const routes = [
     {
-        path: '/',
+        path: '/login',
         name: 'index',
         component: index,
     },
     {
-        path: '/biodata',
-        name: 'biodata',
-        component: biodata,
-    },
-    {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: dashboard,
-    },
-    {
-        path: '/preExam',
-        name: 'preExam',
-        component: preExam,
-    },
-    {
-        path: '/soalImage',
-        name: 'imgMatch',
-        component: imgMatch,
-    },
-    {
-        path: '/epps',
-        name: 'epps',
-        component: epps,
-    },
-    {
-        path: '/ekspresi',
-        name: 'ekspresi',
-        component: ekspresi,
-    },
-    {
-        path: '/kraepelin',
-        name: 'kraepelin',
-        component: kraepelin,
+        path: '/',
+        name: 'main',
+        component: main,
+        children: [
+            {
+                path: '/biodata',
+                name: 'biodata',
+                component: biodata,
+            },
+            {
+                path: '/dashboard',
+                name: 'dashboard',
+                component: dashboard,
+            },
+            {
+                path: '/preExam',
+                name: 'preExam',
+                component: preExam,
+            },
+            {
+                path: '/soalImage',
+                name: 'imgMatch',
+                component: imgMatch,
+            },
+            {
+                path: '/epps',
+                name: 'epps',
+                component: epps,
+            },
+            {
+                path: '/ekspresi',
+                name: 'ekspresi',
+                component: ekspresi,
+            },
+            {
+                path: '/kraepelin',
+                name: 'kraepelin',
+                component: kraepelin,
+            },
+        ]
     },
     {
         path: '/masterImage',

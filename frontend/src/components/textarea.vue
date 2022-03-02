@@ -1,6 +1,6 @@
 <template>
     <textarea v-model="inputValue" :name="nama" 
-        class="w-full px-3 py-1 mb-1 rounded-xl outline-none bg-primary-600 placeholder-gray-300" 
+        class="w-full px-3 py-1 mb-1 rounded-xl outline-none bg-background-400 placeholder-stroke-100 resize-none" 
         :placeholder="placeHolder"/>
 </template>
 
