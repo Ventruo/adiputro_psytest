@@ -334,10 +334,14 @@ class QuestionResultController {
                 let q2 = question.answer.split("-")[1];
 
                 let temp_ctr = 0;
+                console.log((a1+" - "+q1),(a1.toUpperCase() == q1.toUpperCase()))
+                console.log((a2+" - "+q2),(a2.toUpperCase() == q2.toUpperCase()))
                 if (a1.toUpperCase() == q1.toUpperCase()) temp_ctr++;
                 if (a2.toUpperCase() == q2.toUpperCase()) temp_ctr++;
                 if (temp_ctr > 0) status_correct = true;
+                console.log(temp_ctr)
                 ctr_correct += temp_ctr;
+                console.log(ctr_correct)
               }
             } else if (question.answer.includes("|")) {
               // Only 1 answer is needed to be true

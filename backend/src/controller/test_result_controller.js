@@ -662,7 +662,7 @@ class TestResultController {
       // Calculate Sum RS
       let sum_rs = 0;
       for (let key in factors) {
-        sum_rs += factors[key]["RS"];
+        if(key!="con") sum_rs += factors[key]["RS"];
       }
       factors["SUM_RS"] = sum_rs;
 
@@ -726,7 +726,6 @@ class TestResultController {
         }).then((sections) => {
           let correct_data = [];
           correct_data = correct_data.concat(Array(sections.count).fill(0));
-
           for (let i = 0; i < sections.count; i++) {
             for (let j = 0; j < sectionsres.length; j++) {
               if (sectionsres[j].section_id == sections.rows[i].id) {
@@ -774,7 +773,7 @@ class TestResultController {
           let split = norms_lookup[j].split("-");
           let low = split[0];
           let high = split[1];
-
+          
           if (correct_data[i] >= low && correct_data[i] <= high) {
             let result = {
               num_correct: correct_data[i],
