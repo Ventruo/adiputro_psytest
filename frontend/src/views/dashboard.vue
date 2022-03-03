@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <button class="w-full text-left text-xl font-bold mb-3">
+            <button @click="logout" type="button" class="w-full text-left text-xl font-bold mb-3">
                 <i class="mr-5 fa fa-sign-out-alt"></i>
                 <span>Logout</span>
             </button>
@@ -43,6 +43,8 @@
 import axios from 'axios'
 import Continous from '../components/views/continousTest.vue'
 import Skippable from '../components/views/skippableTest.vue'
+import { useRouter } from 'vue-router'
+import { onMounted } from '@vue/runtime-core'
 
 export default {
     components: {
@@ -82,6 +84,15 @@ export default {
             const time = ('00'+today.getHours()).slice(-2) + ":" + ('00'+today.getMinutes()).slice(-2) + ":" + ('00'+today.getSeconds()).slice(-2)
             const dateTime = date + ' ' + time
             this.timestamp = dateTime
+        },
+
+        async logout() {
+            await axios.post("/auth/logout", {}, { withCredentials: true });
+
+            axios.defaults.headers.common['Authorization'] = '';
+            this.$cookies.remove('refresh_token')
+
+            await this.$router.push('/login');
         }
     },
     mounted(){

@@ -20,16 +20,13 @@
             <div class="w-7/12 h-full bg-background-50 flex justify-center items-center">
                 <div class="w-full h-auto text-center">
                     <h1 class="font-bold text-4xl">LOGIN</h1>
-                    <!-- <div>
-                        {{ info }}
-                    </div> -->
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
                         <label for="userEmail">Email</label>
                         <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
                                     mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
 
                         <label for="userToken">Test Token</label>
-                        <input type="text" name="token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
+                        <input type="text" name="test_token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
                                     mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
 
                         <button type="submit" class="w-full mt-5 px-3 py-2 text-white font-bold bg-foreground-4-100 rounded-full ring-1 ring-inset ring-stroke
@@ -57,30 +54,32 @@ export default {
     methods: {
         login(submitEvent) {
             let elements = submitEvent.target.elements;
-        
-            (async() => {
-                try {
-                    await axios.post('http://127.0.0.1:8888/api/auth/login',{
-                        email: elements.email.value,
-                        test_token: elements.token.value
-                    })
-                    .then((response) => {
-                        let access_token = response.data.access_token;
-                        let refresh_token = response.data.refresh_token;
-                        this.$store.commit('change_access_token', access_token);
-                        this.$cookies.set('refresh_token', refresh_token);
 
-                        window.location = '/dashboard'
-                    });
-                } catch (err) {
-                    Swal.fire({
-                        title: err.response.data,
-                        icon: 'error',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'OK'
-                    });
-                }
+            (async() => {
+                axios.post('/auth/login', {
+                            email: elements.email.value,
+                            test_token: elements.test_token.value
+                        },
+                        {
+                            withCredentials: true
+                        })
+                .then((e) => {
+                    if(e.response && e.response.status != 200){
+                        Swal.fire({
+                            title: e.response.data,
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'OK'
+                        });
+                    }else{
+                        let {token, age} = e.data.refresh_token;
+                        this.$cookies.set('refresh_token', token, age);
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${e.data.token}`
+                        
+                        this.$router.push('/dashboard')
+                    }
+                });
             })();
         }
     },
