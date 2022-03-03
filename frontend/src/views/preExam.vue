@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button class="bg-safe w-2/3 py-1 rounded-full" @click="this.$router.push({path: '/soalImage', query: {current_section: section.id}})">
+                            <button class="bg-safe w-2/3 py-1 rounded-full" @click="this.$router.push({path: '/test', query: {current_section: section.id}})">
                                 <i class="fa fa-play mr-2 text-xl"></i>
                                 <span class="font-bold text-xl">Start</span>
                             </button>

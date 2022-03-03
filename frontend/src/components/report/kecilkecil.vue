@@ -37,12 +37,14 @@
                 <p class="mb-2">Penalaran Mekanik</p>
             </div>
             <div class="ml-2 text-sm">
-                <p class="mb-2" v-for="i in 4" :key="i">
+                <p class="mb-2" v-for="i in 4" :key="i">-</p>
+                <p class="mb-2" v-for="i in 5" :key="i">
                     : Benar ({{arrData[i-1].num_correct}})
                 </p>
             </div>
             <div class="ml-2 text-sm">
-                <p class="mb-2" v-for="i in 4" :key="i">
+                <p class="mb-2" v-for="i in 4" :key="i">-</p>
+                <p class="mb-2" v-for="i in 5" :key="i">
                     Norma ({{arrData[i-1].norma}})
                 </p>
             </div>
@@ -112,7 +114,6 @@ export default {
             ctr++
         });
         this.arrData = arrTemp
-        // console.log(this.arrData)
     },
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
-    <button id="label" :class="[warna]" class="duration-200 py-2 w-5/12 text-xl rounded-full mr-3 relative answer-btn" @click.prevent="choose(label)">
+    <button id="label" class="duration-200 py-2 w-full h-40 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold 
+                ring-1 ring-inset ring-stroke-100 relative answer-btn" @click.prevent="choose(label)">
         <div v-if="jenis === 'add'" class="flex justify-center px-4">
             <p>{{label}}.</p>
             <input type="text" name="question" id="question" class="w-full ml-2 text-xl bg-transparent outline-none
@@ -42,7 +43,7 @@ export default {
             }else this.jawaban[this.noSoal-1] = id
         },
         eppsStyle(){
-            $('.answer-btn').removeClass('w-5/12 mr-3 rounded-full text-xl')
+            $('.answer-btn').removeClass('w-5/12 mr-3 rounded-full text-lg')
             $('.answer-btn').addClass('w-1/2 text-left pl-5')
         }
     },
