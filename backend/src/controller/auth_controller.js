@@ -7,7 +7,37 @@ const {
 } = require("../helpers/ResponseHelper");
 const ExamSessionTest = require("../models/ExamSessionTest");
 
-class AuhtController {
+class AuthController {
+  constructor() {
+    this.login = this.login.bind(this);
+    this.refresh = this.refresh.bind(this);
+  }
+
+  createAccessToken(session, user_key) {
+    return jwt.sign(
+      {
+        session_id: session.id,
+      },
+      process.env.ACCESS_KEY + user_key,
+      {
+        expiresIn: "30s",
+        // 60 * 60 * 1000
+      }
+    );
+  }
+
+  createRefreshToken(session) {
+    return jwt.sign(
+      {
+        session_id: session.id,
+      },
+      process.env.REFRESH_KEY,
+      {
+        expiresIn: "1w",
+      }
+    );
+  }
+
   login(req, res) {
     console.log("Login Attempt");
 
@@ -19,23 +49,16 @@ class AuhtController {
     ExamSession.findOne({ where: { email: req.body.email } }).then(
       (session) => {
         if (!session) {
-          data_not_found_response(res);
-          return;
+          return res.status(401).send("Invalid Credential");
         }
 
         if (session.test_token != req.body.test_token)
-          return res.status(401).send("Invalid Test Token");
+          return res.status(401).send("Invalid Credential");
 
-        const refresh_token = jwt.sign(session.id, process.env.REFRESH_KEY);
+        const refresh_token = this.createRefreshToken(session);
 
         const user_key = short.generate();
-        const access_token = jwt.sign(
-          { session_id: session.id },
-          process.env.ACCESS_KEY + user_key,
-          {
-            expiresIn: "1h",
-          }
-        );
+        const access_token = this.createAccessToken(session, user_key);
 
         session.set({
           auth_token: user_key,
@@ -51,38 +74,74 @@ class AuhtController {
             tests.push(testresults[i].test_id);
           }
 
-          res.json({
-            access_token: access_token,
-            refresh_token: refresh_token,
+          // TODO: Refresh Token isnt set in browser
+          let refresh_age = 7 * 24 * 60 * 60 * 1000;
+          res.cookie("refresh_token", refresh_token, {
+            httpOnly: true,
+            maxAge: refresh_age,
+            secure: true,
+          });
+
+          res.status(200).send({
             tests: tests,
+            token: access_token,
+            refresh_token: {
+              token: refresh_token,
+              age: refresh_age / 1000,
+            },
           });
         });
       }
     );
   }
 
+  authenticatedUser(req, res) {
+    console.log("Getting Authenticated User");
+
+    try {
+      const { session_id } = jwt.decode(req.cookies["refresh_token"]);
+
+      ExamSession.findOne({ where: { id: session_id } }).then((session) => {
+        if (!session) return res.status(401).send("Not Authenticated");
+
+        try {
+          const access_token = req.header("Authorization")?.split(" ")[1] || "";
+
+          const payload = jwt.verify(
+            access_token,
+            process.env.ACCESS_KEY + session.auth_token
+          );
+
+          if (!payload) return res.status(401).send("Not Authenticated");
+
+          return res.status(200).send(session);
+        } catch (error) {
+          return res.status(401).send("Not Authenticated");
+        }
+      });
+    } catch (error) {
+      return res.status(401).send("Not Authenticated");
+    }
+  }
+
   refresh(req, res) {
     console.log("Refreshing Access Token");
 
-    const refresh_token = req.body.refresh_token;
-    if (refresh_token == null) return res.sendStatus(401);
+    const refresh_token = req.cookies["refresh_token"];
+    if (refresh_token == null) return res.status(401).send("Not Authenticated");
 
-    const session_id = jwt.decode(refresh_token);
+    const { session_id } = jwt.verify(refresh_token, process.env.REFRESH_KEY);
+    if (!session_id) return res.status(401).send("Not Authenticated");
+
     ExamSession.findOne({ where: { id: session_id } }).then((session) => {
       if (!session) {
         data_not_found_response(res);
         return;
       }
 
-      const access_token = jwt.sign(
-        { session_id: session_id },
-        process.env.ACCESS_KEY + session.auth_token,
-        {
-          expiresIn: "1h",
-        }
-      );
+      const access_token = this.createAccessToken(session, session.auth_token);
 
-      res.json({ access_token: access_token });
+      return res.status(200).send({ token: access_token });
     });
   }
 
@@ -95,7 +154,7 @@ class AuhtController {
     if (access_token == null || refresh_token == null)
       return res.sendStatus(401);
 
-    const session_id = jwt.decode(refresh_token);
+    const { session_id } = jwt.decode(refresh_token);
     ExamSession.findOne({ where: { id: session_id } }).then((session) => {
       if (!session) {
         data_not_found_response(res);
@@ -116,6 +175,12 @@ class AuhtController {
       );
     });
   }
+
+  async logout(req, res) {
+    res.cookie("refresh_token", "", { maxAge: 0, secure: true });
+
+    return res.status(200).send({ message: "success" });
+  }
 }
 
-module.exports = AuhtController;
+module.exports = AuthController;
