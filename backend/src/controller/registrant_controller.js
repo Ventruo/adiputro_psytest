@@ -32,7 +32,9 @@ class RegistrantController {
   async getAll(req, res) {
     console.log("Getting All Registrant Data...");
 
-    Registrant.findAll({ where: { status: 1 } }).then((registrants) => {
+    Registrant.findAll(
+      // { where: { status: 1 } }
+      ).then((registrants) => {
       if (registrants.length == 0) {
         data_not_found_response(res);
         return;
