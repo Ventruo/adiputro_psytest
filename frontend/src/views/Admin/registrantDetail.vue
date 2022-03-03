@@ -69,7 +69,7 @@
             </div>
             <div class="w-full bg-primary-700 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
                 <h1 class="font-bold text-xl mb-2 text-white">Print Preview</h1>
-                <div class="flex gap-2 justify-center w-full h-full" v-if="loaded">
+                <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==9">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
@@ -117,11 +117,11 @@ export default {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
-            loaded: false,
+            loaded: 4,
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            nama: 'Ardhyaska Amy'
+            nama: 'Moh. Fharhan Dhoyfur'
         }
     },
     methods:{
@@ -130,7 +130,7 @@ export default {
             var doc = new jsPDF("p","pt","a4");
             doc.html(document.getElementById('pdf'), {
                 callback: function(pdf) {
-                    pdf.save("Ardhyaska Amy.pdf");
+                    pdf.save("Moh. Fharhan Dhoyfur.pdf");
                 }
             })
         }
@@ -151,28 +151,34 @@ export default {
             //     console.log(data)
             // ))
             axios
-            .get('http://127.0.0.1:8888/api/test_result/26')
+            .get('http://127.0.0.1:8888/api/test_result/61')
             .then(({data}) => (
-                this.dataRegistrant["Berhitung"] = JSON.parse(data.result),
-
-                axios
-                .get('http://127.0.0.1:8888/api/test_result/27')
-                .then(({data}) => (
-                    this.dataRegistrant["Ekspresi"] = JSON.parse(data.result),
-
-                    axios
-                    .get('http://127.0.0.1:8888/api/test_result/28')
-                    .then(({data}) => (
-                        this.dataRegistrant["Penalaran"] = JSON.parse(data.result),
-                        
-                        axios
-                        .get('http://127.0.0.1:8888/api/test_result/29')
-                        .then(({data}) => (
-                            this.dataRegistrant["Pemahaman"] = JSON.parse(data.result),
-                            this.loaded = true
-                        ))
-                    ))
-                ))
+                this.dataRegistrant["ruang_bidang"] = JSON.parse(data.result),
+                this.loaded = this.loaded+1
+            )),
+            axios
+            .get('http://127.0.0.1:8888/api/test_result/62')
+            .then(({data}) => (
+                this.dataRegistrant["dpm"] = JSON.parse(data.result),
+                this.loaded = this.loaded+1
+            )),
+            axios
+            .get('http://127.0.0.1:8888/api/test_result/63')
+            .then(({data}) => (
+                this.dataRegistrant["komponen"] = JSON.parse(data.result),
+                this.loaded = this.loaded+1
+            )),
+            axios
+            .get('http://127.0.0.1:8888/api/test_result/64')
+            .then(({data}) => (
+                this.dataRegistrant["mekanik"] = JSON.parse(data.result),
+                this.loaded = this.loaded+1
+            )),
+            axios
+            .get('http://127.0.0.1:8888/api/test_result/65')
+            .then(({data}) => (
+                this.dataRegistrant["penalaran_mekanik"] = JSON.parse(data.result),
+                this.loaded = this.loaded+1
             ))
         ))
     }

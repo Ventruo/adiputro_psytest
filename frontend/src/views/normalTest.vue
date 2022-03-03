@@ -7,17 +7,35 @@
             </div>
         </div>
 
-        <div class="flex justify-between items-center text-lg font-bold mb-5 relative z-10">
+        <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
             <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold">
-                <i class="fa fa-th-large mr-3"></i>
-                <span>Daftar Soal</span>
+            <button id="btnDaftarSoal" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold">
+                <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
+                <span id="btnDaftarSoal3">Daftar Soal</span>
             </button>
+        </div>
+        
+        <div class="relative hidden z-10" id="daftarSoal">
+            <div class="absolute bg-foreground-3-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                <div class="font-bold text-lg mb-2">
+                    <i class="fa fa-th-large mr-3"></i>
+                    <span>Daftar Soal</span>
+                </div>
+                <div v-for="i in jumSoal" :key="i" class="inline-block">
+                    <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        {{i}}
+                    </button>
+                    <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        {{i}}
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="relative w-full mb-2">
-            <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-xl"></div>    
-            <div class="h-8 bg-foreground-3-300 ring-1 ring-inset ring-black rounded-l-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-xl overflow-x-hidden">
+                <div class="h-8 bg-foreground-3-300 ring-1 ring-inset ring-black" id="progress" style="width: 0px;"></div>
+            </div>    
             <div class="w-full text-center absolute top-0">
                 <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
             </div>
@@ -30,7 +48,7 @@
             </p>
         </div> -->
 
-        <div id="soal" class="mb-3 text-white" v-if="pertanyaan!=null">
+        <div id="soal" class="mb-10 h-full font-semibold" v-if="pertanyaan!=null">
         <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
         <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
             <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
@@ -46,8 +64,8 @@
                 <i class="fa fa-chevron-left mr-3"></i>
                 <span>Sebelumnya</span>
             </button>
-            <button id="nextBtn" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
-                <span>Selanjutnya</span>
+            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
+                <span id="nextBtn">Selanjutnya</span>
                 <i class="fa fa-chevron-right ml-3"></i>
             </button>
         </div>
@@ -97,6 +115,7 @@ export default {
         nextSoal(){
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
+                this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
 
                 this.progress(true)
@@ -140,13 +159,29 @@ export default {
         prevSoal(){
             if (this.noSoal>1){
                 this.noSoal--
-                if(this.noSoal<this.jumSoal) $('#nextBtn').text('Next')
+                this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
+                if(this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
 
                 this.progress(false)
                 
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
+            this.gantiPilihanJawaban()
+        },
+        lompatSoal(idx){
+            this.noSoal = idx
+            const elements = document.getElementById("progress")
+            var width = ((this.noSoal/this.jumSoal)*100)
+            elements.style.width = width +'%'
+            
+            this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
+            if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
+            else $('#nextBtn').text('Submit')
+            
+            if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
+                this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+
             this.gantiPilihanJawaban()
         },
         gantiPilihanJawaban(){
@@ -199,7 +234,7 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 65,
+                "test_result_id": 62,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
@@ -245,7 +280,7 @@ export default {
                 else if(pilihan=='d'&&this.jumChoice>=4) komponen.keyChoose(pilihan)
                 else if(pilihan=='e'&&this.jumChoice==5) komponen.keyChoose(pilihan)
             }
-        },
+        }
     },
 
     created () {
@@ -304,6 +339,7 @@ export default {
         .then(({data}) => (
             this.pertanyaan = data,
             this.menit = this.pertanyaan[0]["section"]["duration"],
+            this.jumChoice = this.pertanyaan[0]["option_num"],
             this.jumSoal = this.pertanyaan.length,
             this.gantiPilihanJawaban(),
             this.jawaban = Array(225),
@@ -313,7 +349,6 @@ export default {
         axios
         .get('http://127.0.0.1:8888/api/section/'+this.section_id)
         .then(({data}) => (
-            this.jumChoice = data.option_num,
             this.test_id = data.test_id
         ))
 
@@ -328,6 +363,17 @@ export default {
             else if(event.keyCode==67) thi.chooseWithKeyboard('c')
             else if(event.keyCode==68) thi.chooseWithKeyboard('d')
             else if(event.keyCode==69) thi.chooseWithKeyboard('e')
+            
+            if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+        });
+        
+        $('body').click(function(e) {
+            var target = $(e.target)
+            if(!target.is('#btnNoSoal') && !target.is('#btnDaftarSoal') && !target.is('#btnDaftarSoal2') && !target.is('#btnDaftarSoal3') && !target.is('#daftarSoal')) {
+                if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+            }else{
+                if ($('#daftarSoal').hasClass('hidden')) $('#daftarSoal').removeClass("hidden")
+            }
         });
     }
 }

@@ -1,32 +1,26 @@
 <template>
-    <div class="bg-primary-800 rounded-xl">
-        <div class="mb-3">
+    <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100">
+        <div class="mb-5">
             <div class="flex">
                 <p class="text-lg font-bold mb-2 mr-3 ml-3 mt-2">{{judul}}</p>
                 <div v-if="jenis === 'add'" class="mt-2">
                     <input type="file" name="imgJawaban" id="" class="mb-2" @change="jawabanChange"> <br>
                 </div>
             </div>
-            <div class="text-center h-28">
+            <div class="text-center h-28 py-2">
                 <img v-if="jenis === 'add'" :src="urlJawaban" class="inline-block h-full" alt="" id="imgJawaban">
                 <img v-else src="../../assets/jawaban1.png" alt="" id="imgJawaban" class="inline-block h-full">
             </div>
         </div>
+    </div>
 
-        <div class="w-full text-center">
-            <div class="inline-block w-full">
-                <div class="w-full mb-2">
-                    <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[0]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                    <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[1]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                </div>
-                <div class="w-full mb-2">
-                    <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[2]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                    <AnswerButton v-if="numberOfChoices>3" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                </div>
-                <div class="w-full" v-if="numberOfChoices>4">
-                    <AnswerButton :jawaban = jawaban :noSoal = noSoal :label="choices[4]" :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                </div>
-            </div>
+    <div class="w-full text-center">
+        <div class="flex gap-3 w-full">
+            <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[0]" />
+            <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[1]" />
+            <AnswerButton v-if="numberOfChoices>2" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[2]" />
+            <AnswerButton v-if="numberOfChoices>3" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" />
+            <AnswerButton v-if="numberOfChoices>4" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[4]" />
         </div>
     </div>
 </template>

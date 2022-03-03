@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import main from '/src/views/main_layout.vue'
 
 import dashboard from '/src/views/dashboard.vue'
-import imgMatch from '/src/views/imgMatch.vue'
+import normalTest from '/src/views/normalTest.vue'
 import epps from '/src/views/epps.vue'
 import ekspresi from '/src/views/ekspresi.vue'
 import kraepelin from '/src/views/kraepelin.vue'
@@ -55,9 +55,9 @@ const routes = [
                 component: preExam,
             },
             {
-                path: '/soalImage',
-                name: 'imgMatch',
-                component: imgMatch,
+                path: '/test',
+                name: 'normalTest',
+                component: normalTest,
             },
             {
                 path: '/epps',
