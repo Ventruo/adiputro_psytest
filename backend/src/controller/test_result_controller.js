@@ -209,6 +209,8 @@ class TestResultController {
           test.test_type == 15
         ) {
           this.calculate_nine_tests(test.test_type, testres, res);
+        } else if (test.test_type == 5) {
+          this.calculate_kreapelin(test.test_type, testres, res);
         }
       });
     });
@@ -662,7 +664,7 @@ class TestResultController {
       // Calculate Sum RS
       let sum_rs = 0;
       for (let key in factors) {
-        if(key!="con") sum_rs += factors[key]["RS"];
+        if (key != "con") sum_rs += factors[key]["RS"];
       }
       factors["SUM_RS"] = sum_rs;
 
@@ -773,7 +775,7 @@ class TestResultController {
           let split = norms_lookup[j].split("-");
           let low = split[0];
           let high = split[1];
-          
+
           if (correct_data[i] >= low && correct_data[i] <= high) {
             let result = {
               num_correct: correct_data[i],
@@ -793,6 +795,282 @@ class TestResultController {
 
       success_response(res, testres?.toJSON(), "Calculate successful!");
     });
+  }
+
+  async calculate_kreapelin(test_type, testres, res) {
+    SectionResult.findOne({ where: { test_result_id: testres.id } }).then(
+      (sectionres) => {
+        QuestionResult.findAll({
+          where: { section_result_id: sectionres.id },
+        }).then((questionres) => {
+          Question.findAndCountAll({
+            where: { section_id: sectionres.section_id },
+          }).then((questions) => {
+            let correct_data = [];
+            correct_data = correct_data.concat(Array(questions.count).fill(0));
+
+            for (let i = 0; i < questionres.length; i++) {
+              for (let j = 0; j < questions.rows.length; j++) {
+                if (questionres[i].question_id == questions.rows[j].id) {
+                  let ctr_correct = 0;
+
+                  let correct_answer = questions.rows[j].answer.split(",");
+                  let user_answer = questionres[i].answer.split(",");
+                  for (let k = 0; k < user_answer.length; k++) {
+                    if (user_answer[k] == correct_answer[k]) ctr_correct++;
+                  }
+                  correct_data[i] = ctr_correct;
+                }
+              }
+            }
+            console.log(correct_data);
+
+            this.process_kreapelin(
+              "./src/data/test_norma.xlsx",
+              test_type,
+              correct_data,
+              res,
+              testres
+            );
+          });
+        });
+      }
+    );
+  }
+
+  toFixed(x, precs) {
+    return parseFloat(Number.parseFloat(x).toFixed(precs));
+  }
+
+  async process_kreapelin(excel_path, sheet, correct_data, res, testres) {
+    //   Calculate Norms
+    let n = correct_data.length;
+    let sum_x = 0;
+    let sum_y = 0;
+    let sum_xy = 0;
+    let sum_pow_x = 0;
+    for (let i = 1; i <= n; i++) {
+      let x = i;
+      let y = correct_data[i - 1];
+      sum_x += x;
+      sum_y += y;
+
+      let xy = x * y;
+      let x_pow = x * x;
+      sum_xy += xy;
+      sum_pow_x += x_pow;
+    }
+
+    let sum_x_sum_y = sum_x * sum_y;
+    let pow_sum_x = sum_x * sum_x;
+
+    let b = (n * sum_xy - sum_x_sum_y) / (n * sum_pow_x - pow_sum_x);
+    let x = sum_x / n;
+    let y = sum_y / n;
+    let a = y - b * x;
+
+    let b_round = this.toFixed(b, 4);
+    let y_round = this.toFixed(y, 1);
+    let a_round = this.toFixed(a, 4);
+
+    let ori_datas = [];
+    let sum_f = 0;
+    let sum_fy = 0;
+    // Find xy, x^2, y_regresi
+    for (let i = 1; i <= n; i++) {
+      let x = i;
+      let y = correct_data[i - 1];
+      let xy = x * y;
+      let x_pow = x * x;
+
+      let y_regresi = a + b * x;
+
+      let data = {
+        x: x,
+        y: y,
+        xy: xy,
+        x_pow: x_pow,
+        y_regresi: y_regresi,
+      };
+      ori_datas.push(data);
+    }
+
+    let calc_datas = [];
+    // Find f and fy
+    for (let i = 1; i <= 27; i++) {
+      let f = 0;
+      for (let j = 0; j < n; j++) {
+        let y_search = correct_data[j];
+        if (y_search == i) f++;
+      }
+      let fy = f * i;
+
+      sum_f += f;
+      sum_fy += fy;
+
+      let data = {
+        y: i,
+        f: f,
+        fy: fy,
+      };
+      calc_datas.push(data);
+    }
+
+    let sum_dev = 0;
+    let sum_d = 0;
+    let sum_fd = 0;
+
+    let panker = 0;
+    let janker = 0;
+    let hanker = 0;
+    let tianker = 0;
+    // Find dev, d, fd
+    for (let i = 0; i < calc_datas.length; i++) {
+      let data = calc_datas[i];
+
+      panker = sum_fy / n;
+      let dev = 0;
+      let d = 0;
+      let fd = 0;
+      if (data.f != 0) {
+        dev = this.toFixed(data.y - panker, 2);
+
+        if (panker > data.y) d = dev * -1;
+        else d = dev;
+
+        fd = this.toFixed(data.f * d, 2);
+      }
+
+      calc_datas[i].dev = dev;
+      calc_datas[i].d = d;
+      calc_datas[i].fd = fd;
+
+      sum_dev += dev;
+      sum_d += d;
+      sum_fd += fd;
+    }
+    sum_dev = this.toFixed(sum_dev, 2);
+    sum_d = this.toFixed(sum_d, 2);
+    sum_fd = this.toFixed(sum_fd, 2);
+
+    janker = this.toFixed(sum_fd / n, 2);
+    hanker = this.toFixed(ori_datas[n - 1].y_regresi - a, 2);
+
+    // TODO: Tanya ini dapet darimana
+    let sum_of_error = 9;
+    let sum_of_skipeds = 0;
+    tianker = sum_of_error + sum_of_skipeds;
+
+    // TODO: Masukkan code dari backend/frontend
+    let codes = [8, 2, 2, 2];
+    let values = [panker, janker, hanker, tianker];
+    let analisis = await this.analisis_kreapelin_data(
+      excel_path,
+      sheet,
+      codes,
+      values
+    );
+
+    // TODO: JK ngaruh dimana
+    let results = {
+      sum_x: sum_x,
+      sum_y: sum_y,
+      sum_xy: sum_xy,
+      sum_pow_x: sum_pow_x,
+      sum_x_sum_y,
+      sum_x_sum_y,
+      pow_sum_x,
+      pow_sum_x,
+      sum_f: sum_f,
+      sum_fy: sum_fy,
+      b: b_round,
+      x: x,
+      y: y_round,
+      a: a_round,
+      sum_dev: sum_dev,
+      sum_d: sum_d,
+      sum_fd: sum_fd,
+      panker: {
+        val: panker,
+        analisis: analisis["panker"],
+      },
+      janker: {
+        val: janker,
+        analisis: analisis["janker"],
+      },
+      hanker: {
+        val: hanker,
+        analisis: analisis["hanker"],
+      },
+      tianker: {
+        val: tianker,
+        analisis: analisis["tianker"],
+      },
+      ori_datas: ori_datas,
+      calc_datas: calc_datas,
+    };
+    console.log("Result JSON: ", results);
+
+    testres.set({
+      result: JSON.stringify(results),
+    });
+    testres.save();
+
+    success_response(res, testres?.toJSON(), "Calculate successful!");
+  }
+
+  async analisis_kreapelin_data(excel_path, sheet, codes, values) {
+    let rows = await xlsxFile(excel_path, {
+      sheet: sheet,
+    });
+
+    let keterangan_nama = ["panker", "janker", "hanker", "tianker"];
+    let keterangan_ops = [8, 5, 7, 8];
+    let keterangan_excel = [1, 11, 18, 27];
+    let norms = {};
+    for (let i = 0; i < keterangan_ops.length; i++) {
+      let temp = [];
+      for (let j = 0; j < keterangan_ops[i]; j++) {
+        let row = keterangan_excel[i] + j;
+        let temp2 = {
+          code: j + 1,
+          x: rows[row][1].split(";"),
+          keterangan: rows[row][2].split(";"),
+        };
+        temp.push(temp2);
+      }
+      norms[keterangan_nama[i]] = temp;
+    }
+
+    let analysis = {};
+    for (let i = 0; i < keterangan_nama.length; i++) {
+      let norm = norms[keterangan_nama[i]].filter((obj) => {
+        return obj.code == codes[i];
+      });
+      norm = norm[0];
+      let hasil_keterangan = "";
+
+      for (let j = 0; j < norm.x.length; j++) {
+        let x = norm.x[j];
+        let keterangan = norm.keterangan[j];
+
+        //check if tianker or not
+        if (keterangan_nama[i] != "tianker") {
+          if (values[i] <= x) {
+            hasil_keterangan = keterangan;
+            break;
+          }
+        } else {
+          if (values[i] >= x) {
+            hasil_keterangan = keterangan;
+            break;
+          }
+        }
+      }
+      analysis[keterangan_nama[i]] = hasil_keterangan;
+    }
+
+    return analysis;
   }
 }
 
