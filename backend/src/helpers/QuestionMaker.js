@@ -367,7 +367,7 @@ module.exports = {
       let column = kreapelin_questions[i];
       let answer = [];
       for (let j = column.length - 1; j > 0; j--) {
-        answer.push(column[j] + column[j - 1]);
+        answer.push((column[j] + column[j - 1]) % 10);
       }
       kreapelin_answers.push(answer);
     }
@@ -375,10 +375,10 @@ module.exports = {
     let questions = [];
     for (let i = 0; i < kreapelin_questions.length; i++) {
       questions.push({
-        instruction: "-",
+        instruction: kreapelin_questions[i].toString(),
         section_id: section,
         option_num: 1,
-        option_a: kreapelin_questions[i].toString(),
+        option_a: "-",
         option_b: "-",
         option_c: "-",
         option_d: "-",
