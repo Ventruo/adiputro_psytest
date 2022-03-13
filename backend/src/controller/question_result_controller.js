@@ -334,14 +334,20 @@ class QuestionResultController {
                 let q2 = question.answer.split("-")[1];
 
                 let temp_ctr = 0;
-                console.log((a1+" - "+q1),(a1.toUpperCase() == q1.toUpperCase()))
-                console.log((a2+" - "+q2),(a2.toUpperCase() == q2.toUpperCase()))
+                console.log(
+                  a1 + " - " + q1,
+                  a1.toUpperCase() == q1.toUpperCase()
+                );
+                console.log(
+                  a2 + " - " + q2,
+                  a2.toUpperCase() == q2.toUpperCase()
+                );
                 if (a1.toUpperCase() == q1.toUpperCase()) temp_ctr++;
                 if (a2.toUpperCase() == q2.toUpperCase()) temp_ctr++;
                 if (temp_ctr > 0) status_correct = true;
-                console.log(temp_ctr)
+                console.log(temp_ctr);
                 ctr_correct += temp_ctr;
-                console.log(ctr_correct)
+                console.log(ctr_correct);
               }
             } else if (question.answer.includes("|")) {
               // Only 1 answer is needed to be true
@@ -355,11 +361,23 @@ class QuestionResultController {
                 status_correct = true;
                 ctr_correct++;
               }
-            } else if (
-              data.answer.toUpperCase() == question.answer.toUpperCase()
-            ) {
-              status_correct = true;
-              ctr_correct++;
+            } else if (question.answer.includes(",")) {
+              // for kreapelin
+              let correct_answer = question.answer.split(",");
+              let user_answer = data.answer;
+              let temp_status_correct = true;
+              for (let i = 0; i < user_answer.length; i++) {
+                if (user_answer[i] == correct_answer[i]) ctr_correct++;
+                else temp_status_correct = false;
+              }
+
+              data.answer = data.answer.toString();
+              status_correct = temp_status_correct;
+            } else {
+              if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
+                status_correct = true;
+                ctr_correct++;
+              }
             }
 
             const new_result = await QuestionResult.create({

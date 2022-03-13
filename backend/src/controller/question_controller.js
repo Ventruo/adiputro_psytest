@@ -6,7 +6,10 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
-const { populateQuestion } = require("../helpers/QuestionMaker");
+const {
+  populateQuestion,
+  pupulateKreapelinQuestion,
+} = require("../helpers/QuestionMaker");
 
 class QuestionController {
   async getOne(req, res) {
@@ -148,6 +151,10 @@ class QuestionController {
       Question,
       res
     );
+  }
+
+  async createKreapelinQuestion(req, res) {
+    pupulateKreapelinQuestion(req.body.section, Question, res);
   }
 }
 
