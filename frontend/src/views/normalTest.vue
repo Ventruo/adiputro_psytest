@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full w-9/12 m-auto text-white relative mt-3 text-black">
+    <div class="h-full w-9/12 m-auto relative mt-3 text-black">
         <div class="flex justify-between mb-7">
             <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaTes}}</h1>
             <div class="flex justify-center">
@@ -40,14 +40,7 @@
                 <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
             </div>
         </div>
-
-        <!-- <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
-            <p class="text-xl font-bold mb-1">Petunjuk :</p>
-            <p>
-                Pada gambar di bawah terdapat sebuah pola yang terpisah, pilihlah salah satu gambar dari 5 pilihan di bawah (a, b, c, d, atau e) yang apabila pola di atas digabungkan akan menghasilkan gambar tersebut! 
-            </p>
-        </div> -->
-
+        
         <div id="soal" class="mb-10 h-full font-semibold" v-if="pertanyaan!=null">
         <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
         <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
@@ -234,7 +227,7 @@ export default {
             }
 
             axios.post('http://127.0.0.1:8888/api/section_result/create',{
-                "test_result_id": 62,
+                "test_result_id": 63,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",

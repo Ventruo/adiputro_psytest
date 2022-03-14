@@ -2,7 +2,7 @@
     <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100">
         <div class="mb-5">
             <div class="flex">
-                <p class="text-lg font-bold mb-2 mr-3 ml-3 mt-2">{{judul}}</p>
+                <p class="text-lg font-bold my-2 mx-3">{{judul}}</p>
                 <div v-if="jenis === 'add'" class="mt-2">
                     <input type="file" name="imgJawaban" id="" class="mb-2" @change="jawabanChange"> <br>
                 </div>

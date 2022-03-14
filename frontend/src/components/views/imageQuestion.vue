@@ -1,12 +1,12 @@
 <template>
-    <div class="mb-2">
+    <div class="mb-2 rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100">
         <div class="flex">
-            <p class="text-lg font-bold mb-2 mr-3">{{label}}</p>
-            <div v-if="jenis === 'add'">
+            <p class="text-lg font-bold my-2 mx-3">{{label}}</p>
+            <div v-if="jenis === 'add'" class="my-2 mx-3">
                 <input type="file" name="imgSoal" id="" class="mb-2" @change="soalChange"> <br>
             </div>
         </div>
-        <div class="text-center h-28 py-2 w-full flex justify-center items-center rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100">
+        <div class="text-center h-28 py-2 w-full flex justify-center items-center">
             <img v-if="jenis === 'add'" :src="url" alt="" id="imgSoal" class="inline-block h-full">
             <img v-else src="src/assets/soal1.png" alt="" id="imgSoal" class="inline-block h-full">
         </div>

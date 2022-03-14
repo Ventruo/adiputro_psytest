@@ -1,5 +1,5 @@
 <template>
-    <div class="top-0 z-0 w-full h-full flex text-white">
+    <div class="w-full h-full flex text-white">
         <div class="w-3/12 h-auto min-h-screen flex flex-col bg-foreground-4-200 pt-4 pb-5 px-5 rounded-r-3xl">
             <div class="text-center my-5">
                 <img src="../assets/logo.png" alt="" class="w-32 inline-block">
@@ -28,14 +28,16 @@
                 <span>Logout</span>
             </button>
         </div>
-        
-        <div class="w-9/12 h-auto min-h-screen px-5">
-            <div class="flex items-center mt-6">
-                <p class="text-2xl font-bold text-white">{{judulHalaman}}</p>
-            </div>
-            <Skippable v-if="this.section!=null" :sectionList="this.section"/>
+
+        <div class="w-full h-screen overflow-hidden">
+            <p class="text-2xl font-bold text-white ml-5 my-6">{{judulHalaman}}</p>
+            <div class="overflow-auto no-scrollbar h-screen w-full relative px-10">
+                <Skippable v-if="this.section!=null" :sectionList="this.section"/>
             <!-- <Continous v-if="this.section!=null" :sectionList="this.section"/> -->
+                <div class="w-1 h-28"></div>
+            </div>
         </div>
+        
     </div>
 </template>
 

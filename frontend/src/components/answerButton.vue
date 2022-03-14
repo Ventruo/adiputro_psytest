@@ -4,17 +4,23 @@
         <div v-if="jenis === 'add'" class="flex justify-center px-4">
             <p>{{label}}.</p>
             <input type="text" name="question" id="question" class="w-full ml-2 text-xl bg-transparent outline-none
-                                                    placeholder-white border-none" placeholder="Answer">
-            <i v-if="jawaban[noSoal-1]===label" class="fa fa-check absolute right-3 bottom-2.5 pilihan"></i>
+                                                    placeholder-stroke-100 border-none" placeholder="Answer">
+            <div class="absolute bottom-3 right-3">
+                <i v-if="jawaban[noSoal-1]===label" class="fa fa-check pilihan"></i>
+            </div>
         </div>
         <div v-else-if="jenis === 'ekspresi'">
             <p>{{label}}</p>
-            <i v-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[0]===label+'x'" class="fa fa-x absolute right-3 bottom-1/3 pilihan"></i>
-            <i v-else-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[1]===label+'o'" class="far fa-circle absolute right-3 bottom-1/3 pilihan"></i>
+            <div class="absolute bottom-3 right-3">
+                <i v-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[0]===label+'x'" class="fa fa-x pilihan"></i>
+                <i v-else-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[1]===label+'o'" class="far fa-circle pilihan"></i>
+            </div>
         </div>
         <div v-else>
             <p>{{label}}</p>
-            <i v-if="jawaban[noSoal-1]===label" class="fa fa-check absolute right-3 bottom-1/3 pilihan"></i>
+            <div class="absolute bottom-3 right-3">
+                <i v-if="jawaban[noSoal-1]===label" class="fa fa-check pilihan"></i>
+            </div>
         </div>
     </button>
 </template>
@@ -43,8 +49,12 @@ export default {
             }else this.jawaban[this.noSoal-1] = id
         },
         eppsStyle(){
-            $('.answer-btn').removeClass('w-5/12 mr-3 rounded-full text-lg')
-            $('.answer-btn').addClass('w-1/2 text-left pl-5')
+            $('.answer-btn').removeClass('w-full h-40')
+            $('.answer-btn').addClass('w-1/2 h-14')
+        },
+        ekspresiStyle(){
+            $('.answer-btn').removeClass('h-40')
+            $('.answer-btn').addClass('h-32')
         }
     },
     created(){
@@ -52,6 +62,7 @@ export default {
     },
     mounted(){
         if(this.jenis=="epps") this.eppsStyle()
+        else if(this.jenis=="ekspresi") this.ekspresiStyle()
     }
 }
 </script>

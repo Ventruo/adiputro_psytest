@@ -1,51 +1,72 @@
 <template>
-    <div class="h-full w-9/12 m-auto text-white relative mt-3 overflow-hidden">
-        <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
-            <p class="text-primary-900">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-            <div class="flex gap-2">
-                <button class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="prevSoal">Prev</button>
-                <button id="nextBtn" class="bg-primary-800 hover:bg-blue-800 duration-200 rounded-full px-5 h-8 text-base" @click.prevent="nextSoal">Next</button>
+    <div class="h-full w-9/12 m-auto relative mt-3 overflow-hidden">
+        <div class="flex justify-between mb-7">
+            <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaTes}}</h1>
+            <div class="flex justify-center">
+                <img src="../assets/logo.png" alt="" class="w-20">
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
+            <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+            <button id="btnDaftarSoal" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold">
+                <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
+                <span id="btnDaftarSoal3">Daftar Soal</span>
+            </button>
+        </div>
+
+        <div class="relative hidden z-10" id="daftarSoal">
+            <div class="absolute bg-foreground-3-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                <div class="font-bold text-lg mb-2">
+                    <i class="fa fa-th-large mr-3"></i>
+                    <span>Daftar Soal</span>
+                </div>
+                <div v-for="i in jumSoal" :key="i" class="inline-block">
+                    <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        {{i}}
+                    </button>
+                    <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        {{i}}
+                    </button>
+                </div>
             </div>
         </div>
 
         <div class="relative w-full mb-2">
-            <div class="h-8 bg-primary-800 ring-2 ring-inset ring-primary-400 rounded-xl"></div>    
-            <div class="h-8 bg-primary-600 rounded-xl absolute top-0" id="progress" style="width: 0px;"></div>
+            <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-xl overflow-x-hidden">
+                <div class="h-8 bg-foreground-3-300 ring-1 ring-inset ring-black" id="progress" style="width: 0px;"></div>
+            </div>    
             <div class="w-full text-center absolute top-0">
-                <p class="text-center py-1">Soal {{noSoal}}/{{jumSoal}}</p> 
+                <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
             </div>
         </div>
 
-        <div class="h-auto bg-primary-800 py-2 px-3 rounded-xl mb-2">
-            <p class="text-xl font-bold mb-1">Petunjuk :</p>
-            <p>
-                Pilih salah satu pernyataan yang paling menggambarkan diri anda! 
-            </p>
+        <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
+                    p-3 my-5 h-16 flex justify-center items-center text-xl font-bold">
+            Pilih X sebelum memilih pilihan yang salah, Pilih O sebelum memilih pilihan yang salah.
         </div>
 
         <div id="soal" class="" v-if="pertanyaan!=null">
         <!-- <div id="soal" class=""> -->
             <!-- <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" /> -->
-            <TextQuestion :question="'Halo'" />
-            <div class="w-full text-center mt-5 bg-primary-800 rounded-xl py-2">
+            <TextQuestion :question="'Halo'" :jenis="'ekspresi'"/>
+            <div class="w-full text-center mt-5 py-2">
                 <div class="inline-block w-full">
                     <div class="w-full mb-2" v-if="this.aksi=='x'">
-                        <button  class="py-2 px-10 bg-primary-100 text-primary-900 rounded-full mr-3" @click.prevent="this.aksi='x'">X</button>
-                        <button class="py-2 px-10 ring-2 ring inset ring-primary-100 rounded-full mr-3" @click.prevent="this.aksi='o'">O</button>
+                        <button class="py-2 px-10 bg-foreground-3-100 rounded-lg mr-3 font-bold text-xl" @click.prevent="this.aksi='x'">X</button>
+                        <button class="py-2 px-10 bg-background-200 ring-2 ring-inset ring-stroke-100 rounded-lg mr-3 font-bold text-xl" @click.prevent="this.aksi='o'">O</button>
                     </div>
                     <div class="w-full mb-2" v-else>
-                        <button  class="py-2 px-10 ring-2 ring inset ring-primary-100 rounded-full mr-3" @click.prevent="this.aksi='x'">X</button>
-                        <button class="py-2 px-10 bg-primary-100 text-primary-900 rounded-full mr-3" @click.prevent="this.aksi='o'">O</button>
+                        <button class="py-2 px-10 bg-background-200 ring-2 ring-inset ring-stroke-100 rounded-lg mr-3 font-bold text-xl" @click.prevent="this.aksi='x'">X</button>
+                        <button class="py-2 px-10 bg-foreground-3-100 rounded-lg mr-3 font-bold text-xl" @click.prevent="this.aksi='o'">O</button>
                     </div>
                 </div>
             </div>
-            <div class="w-full text-center mt-5 bg-primary-800 rounded-xl py-2">
-                <div class="inline-block w-full">
-                    <div class="w-full mb-2">
-                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'A. '+this.pertanyaan[noSoal-1]['option_a']" :aksi= aksi :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'B. '+this.pertanyaan[noSoal-1]['option_b']" :aksi= aksi :warna="'ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'C. '+this.pertanyaan[noSoal-1]['option_c']" :aksi= aksi :warna="'mt-2 ring-2 ring-inset ring-primary-100 hover:bg-primary-100 hover:text-primary-900'" />
-                    </div>
+            <div class="w-full mt-3">
+                <div class="w-full mb-2 flex gap-3">
+                    <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'A. '+this.pertanyaan[noSoal-1]['option_a']" :aksi= aksi />
+                    <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'B. '+this.pertanyaan[noSoal-1]['option_b']" :aksi= aksi />
+                    <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'C. '+this.pertanyaan[noSoal-1]['option_c']" :aksi= aksi />
                 </div>
             </div>
         </div>
@@ -70,6 +91,7 @@ export default {
     },
     data () {
         return {
+            namaTes: 'Tes Ekspresi',
             judulHalaman: 'EPPS',
             noSoal: 1,
             jumSoal: 19,
@@ -136,6 +158,15 @@ export default {
                 
                 this.progress(false)
             }
+        },
+        lompatSoal(idx){
+            this.noSoal = idx
+            const elements = document.getElementById("progress")
+            var width = ((this.noSoal/this.jumSoal)*100)
+            elements.style.width = width +'%'
+            
+            if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
+            else $('#nextBtn').text('Submit')
         },
         progress(maju){
             const elements = document.getElementById("progress")
@@ -278,6 +309,17 @@ export default {
                 thi.prevSoal()
             else if (event.keyCode==39||event.keyCode==68)
                 thi.nextSoal()
+                
+            if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+        });
+        
+        $('body').click(function(e) {
+            var target = $(e.target)
+            if(!target.is('#btnNoSoal') && !target.is('#btnDaftarSoal') && !target.is('#btnDaftarSoal2') && !target.is('#btnDaftarSoal3') && !target.is('#daftarSoal')) {
+                if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+            }else{
+                if ($('#daftarSoal').hasClass('hidden')) $('#daftarSoal').removeClass("hidden")
+            }
         });
     }
 }

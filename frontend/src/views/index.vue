@@ -33,8 +33,7 @@
                                     mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
 
                         <button type="submit" class="w-full mt-5 px-3 py-2 text-white font-bold bg-foreground-4-100 rounded-full ring-1 ring-inset ring-stroke
-                                                    hover:bg-foreground-4-200 duration-300"
-                                                    >Login</button>
+                                                    hover:bg-foreground-4-200 duration-300">Login</button>
                     </form>
                 </div>
             </div>

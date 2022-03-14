@@ -67,8 +67,8 @@
                                     </button>
                 </div>
             </div>
-            <div class="w-full bg-primary-700 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
-                <h1 class="font-bold text-xl mb-2 text-white">Print Preview</h1>
+            <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
+                <h1 class="font-bold text-xl mb-2">Print Preview</h1>
                 <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==9">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->

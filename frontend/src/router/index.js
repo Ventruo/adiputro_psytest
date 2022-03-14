@@ -24,7 +24,7 @@ import masterTestResult from '/src/views/Admin/masterTestResult.vue'
 
 const routes = [
     {
-        path: '/login',
+        path: '/',
         name: 'index',
         component: index,
     },

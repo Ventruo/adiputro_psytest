@@ -96,7 +96,7 @@
                                     @click="this.$router.push({path: '/preExam', query: {current_section: 49}})">Kerjakan Tes Ini</button>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <div class="h-56 w-48 mb-2 mr-2 inline-block align-top relative overflow-hidden">
@@ -124,6 +124,7 @@
             </div>
         </div>
 
+        <!--
         <div class="h-56 w-48 mb-2 mr-2 inline-block align-top relative overflow-hidden">
             <div class="w-full h-24 bg-primary-900 px-2 py-1 hover:h-56 duration-500 group">
                 <div class="mb-1">
