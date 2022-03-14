@@ -4,6 +4,7 @@ import './index.css'
 import router from './router'
 import store from './store'
 import VueCookies from 'vue3-cookies'
+import './interceptor/axios';
 
 createApp(App)
     .use(router)
