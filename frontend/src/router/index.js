@@ -9,12 +9,15 @@ import kraepelin from '/src/views/kraepelin.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
+import recruitment from '/src/views/recruitment.vue'
 
 import admin from '/src/views/Admin/master.vue'
 import dashboardAdmin from '/src/views/Admin/dashboard.vue'
 import registrant from '/src/views/Admin/registrant.vue'
 import test from '/src/views/Admin/test.vue'
 import session from '/src/views/Admin/session.vue'
+import masterRecruitment from '/src/views/Admin/recruitment.vue'
+import applicant from '/src/views/Admin/applicant.vue'
 import registrantDetail from '/src/views/Admin/registrantDetail.vue'
 import reviewEssay from '/src/views/Admin/reviewEssay.vue'
 import addQuestion from '/src/views/Admin/addQuestion.vue'
@@ -32,12 +35,17 @@ const routes = [
         component: index,
     },
     {
+        path: '/recruitment',
+        name: 'recruitment',
+        component: recruitment,
+    },
+    {
         path: '/',
         name: 'main',
         component: main,
-        meta: {
-            middleware: auth
-        },
+        // meta: {
+        //     middleware: auth
+        // },
         children: [
             {
                 path: '/biodata',
@@ -94,6 +102,14 @@ const routes = [
                     {
                         path: '/admin/session',
                         component: session,
+                    },
+                    {
+                        path: '/admin/recruitment',
+                        component: masterRecruitment,
+                    },
+                    {
+                        path: '/admin/applicant',
+                        component: applicant,
                     },
                     {
                         path: '/admin/registrantDetail',

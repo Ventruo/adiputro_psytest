@@ -32,11 +32,20 @@
                 </div>
             </router-link>
             
-            <router-link to="/admin/session" class="grow">
+            <router-link to="/admin/session">
                 <div class="relative">
                     <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-session">
                         <i class="w-1/12 mr-5 fas fa-calendar-alt text-2xl"></i>
                         <span class="opacity-0 transition duration-300 group-hover:opacity-100">Session</span>
+                    </div>
+                </div>
+            </router-link>
+            
+            <router-link to="/admin/recruitment" class="grow">
+                <div class="relative">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-recruitment">
+                        <i class="w-1/12 mr-5 fas fa-users text-2xl relative right-1"></i>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Recruitment</span>
                     </div>
                 </div>
             </router-link>

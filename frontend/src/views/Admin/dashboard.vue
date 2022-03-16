@@ -1,7 +1,7 @@
 <template>
     <div class="w-full text-center">
         <div class="flex justify-center gap-10">
-            <div class="w-4/12 h-96 bg-white rounded-xl shadow-xl ml-10 py-10 px-5">
+            <div class="w-3/12 h-96 bg-white rounded-xl shadow-xl ml-10 py-10 px-5">
                 <i class="fa fa-user text-8xl"></i>
                 <p class="font-bold text-3xl my-3">Master Registrant</p>
                 <p class="font-bold">
@@ -9,7 +9,7 @@
                     Aliquid tempora quos consequatur explicabo perspiciatis. Qui cupiditate architecto
                 </p>
             </div>
-            <div class="w-4/12 h-96 bg-white rounded-xl shadow-xl ml-10 py-10 px-5">
+            <div class="w-3/12 h-96 bg-white rounded-xl shadow-xl py-10 px-5">
                 <i class="fa fa-tasks text-8xl"></i>
                 <p class="font-bold text-3xl my-3">Master Test</p>
                 <p class="font-bold">
@@ -17,9 +17,18 @@
                     Aliquid tempora quos consequatur explicabo perspiciatis. Qui cupiditate architecto
                 </p>
             </div>
-            <div class="w-4/12 h-96 bg-white rounded-xl shadow-xl mx-10 py-10 px-5">
+            <div class="w-3/12 h-96 bg-white rounded-xl shadow-xl py-10 px-5">
                 <i class="fas fa-calendar-alt text-8xl"></i>
                 <p class="font-bold text-3xl my-3">Master Session</p>
+                <p class="font-bold">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo sunt rerum perspiciatis possimus? 
+                    Aliquid tempora quos consequatur explicabo perspiciatis. Qui cupiditate architecto
+                </p>
+            </div>
+            
+            <div class="w-3/12 h-96 bg-white rounded-xl shadow-xl mr-10 py-10 px-5">
+                <i class="fa fa-users text-8xl"></i>
+                <p class="font-bold text-3xl my-3">Master Recruitment</p>
                 <p class="font-bold">
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo sunt rerum perspiciatis possimus? 
                     Aliquid tempora quos consequatur explicabo perspiciatis. Qui cupiditate architecto
