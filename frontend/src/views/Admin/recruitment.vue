@@ -91,7 +91,7 @@
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
 
         <!-- Create New Recruitment Modal -->
-        <div id="modalRecruitment" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
+        <div id="modalRecruitment" class="fixed left-1/3 bg-primary-1000 h-3/5 w-1/3 text-primary-1000 rounded-lg hidden" style="top: 20%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <button id="closeNewRecruitment" class="relative inline-block">
                     <i class="fa fa-times fa-lg"></i>
@@ -100,29 +100,30 @@
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
-                <label for="user_email">Email</label><br>
-                <input type="text" name="email" id="user_email" placeholder="Registrant's Email"
-                    class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
-                <!-- <label>Session Token</label><br>
-                <div class="flex mb-5">
-                    <input type="text" name="token" id="user_token" placeholder="Session Token"
-                        class="rounded-lg py-2 px-3 w-8/12 my-2 bg-primary-600 outline-none placeholder-gray-300" readonly><br>
-                    <button id="genToken" class="ml-3 w-4/12 rounded-lg px-5 my-2 bg-sky-300 text-primary-1000 hover:bg-primary-700 
-                                            hover:text-white ring-2 ring-inset ring-sky-300 hover:ring-primary-200 duration-300"
-                                            @click="generateToken">Generate Token</button>
-                </div> -->
-
-                <label>Test Date</label><br>
-                <div class="flex gap-2">
-                    <div class="w-1/2">
-                        <label for="start">From :</label>
-                        <input type="datetime-local" name="start_date" id="start"
-                                class="ml-2 rounded-lg py-2 px-3 w-10/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
+                <div class="flex">
+                    <p class="w-5/12">Lowongan Yang Ditawarkan :</p>
+                    <div class="grow h-auto">
+                        <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in lowongan" :key="i">
+                            <span>{{i}}</span>
+                            <i class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusLowongan(`${i}`)"></i>
+                        </div>
                     </div>
-                    <div class="w-1/2">
-                        <label for="finish">To: </label>
-                        <input type="datetime-local" name="finish_date" id="finish"
-                                class="ml-2 rounded-lg py-2 px-3 w-10/12 my-2 bg-primary-600 outline-none placeholder-gray-300"><br>
+                </div>
+                <div class="flex items-center gap-3 py-4">
+                    <input type="text" name="lowongan" id="lowongan" placeholder="Lowongan"
+                        class="rounded-lg py-2 px-3 w-full bg-primary-600 outline-none placeholder-gray-300"><br>
+                    <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
+                                    @click.prevent="tambahLowongan">Tambahkan</button>
+                </div>
+
+                <div class="flex gap-3">
+                    <p class="w-2/12">QR Code :</p>
+                    <div class="h-40 w-40 bg-white">
+
+                    </div>
+                    <div class="flex items-end">
+                        <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
+                                    @click.prevent="tambahLowongan">Generate</button>
                     </div>
                 </div>
 
@@ -144,7 +145,8 @@ export default {
     data() {
         return {
             headerModal: "Buat Rekrutmen Baru",
-            recruitment: null
+            recruitment: null,
+            lowongan: ["Boss", "Manager", "Karyawan"]
         }
     },
     created() {
@@ -157,18 +159,6 @@ export default {
             const time = ('00'+waktu.getHours()).slice(-2) + ":" + ('00'+waktu.getMinutes()).slice(-2)
             const dateTime = date + ' ' + time
             return dateTime
-        },
-        getToken(length) {
-            var token = '';
-            var validChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            for (let i = 0; i < length; i++ ) {
-                token += validChar.charAt(Math.floor(Math.random()*36));
-            }
-            return token;
-        },
-        generateToken(){
-            let token = this.getToken(5);
-            $('#user_token').val(token)
         },
         openModal(){
             this.headerModal = "Update Rekrutmen";
@@ -217,8 +207,20 @@ export default {
                     console.log('error: ' + error) 
                 });
             }
+        },
+        tambahLowongan(){
+            let lowonganKerja = $('#lowongan').val()
+            if(lowonganKerja!='' && !this.lowongan.includes(lowonganKerja)){
+                this.lowongan.push(lowonganKerja)
+                $('#lowongan').val('')
+            }
+        },
+        hapusLowongan(lowonganKerja){
+            var idx = this.lowongan.indexOf(lowonganKerja);
+            if (idx !== -1) {
+                this.lowongan.splice(idx, 1);
+            }
         }
-
     },
     mounted(){
         $('.menu').removeClass('bg-background-200')
