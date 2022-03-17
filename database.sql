@@ -16,6 +16,39 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`adiputro_psytest` /*!40100 DEFAULT CHAR
 
 USE `adiputro_psytest`;
 
+/*Table structure for table `applicant` */
+
+DROP TABLE IF EXISTS `applicant`;
+
+CREATE TABLE `applicant` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(1000) NOT NULL,
+  `no_ktp` varchar(1000) NOT NULL,
+  `tempat_lahir` varchar(1000) NOT NULL,
+  `tanggal_lahir` date NOT NULL,
+  `jenis_kelamin` varchar(1) NOT NULL,
+  `alamat_domisili` varchar(1000) NOT NULL,
+  `usia` int(100) NOT NULL,
+  `status_perkawinan` varchar(1000) NOT NULL,
+  `nomor_hp` varchar(100) NOT NULL,
+  `email` varchar(1000) NOT NULL,
+  `pendidikan_terakhir` varchar(1000) NOT NULL,
+  `nama_sekolah` varchar(1000) NOT NULL,
+  `jurusan` varchar(1000) NOT NULL,
+  `posisi_dilamar` varchar(1000) NOT NULL,
+  `status` int(10) NOT NULL DEFAULT 1,
+  `lampiran_drive_id` varchar(100) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `applicant` */
+
+insert  into `applicant`(`id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
+(12,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 13:23:22'),
+(13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1xufIw_Z_xDEUrxCSwftXh5ZmPdYVEwnK','2022-03-17 13:11:11','2022-03-17 13:23:53');
+
 /*Table structure for table `exam_session` */
 
 DROP TABLE IF EXISTS `exam_session`;
@@ -62,37 +95,6 @@ insert  into `exam_session_test`(`exam_session_id`,`test_id`,`createdAt`,`update
 ('5','1','2022-02-23 15:59:18','2022-02-23 15:59:18'),
 ('5','2','2022-02-23 15:59:18','2022-02-23 15:59:18'),
 ('5','6','2022-02-23 15:59:18','2022-02-23 15:59:18');
-
-/*Table structure for table `lamaran` */
-
-DROP TABLE IF EXISTS `lamaran`;
-
-CREATE TABLE `lamaran` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(1000) NOT NULL,
-  `tempat_lahir` varchar(1000) NOT NULL,
-  `tanggal_lahir` date NOT NULL,
-  `jenis_kelamin` varchar(1) NOT NULL,
-  `alamat_domisili` varchar(1000) NOT NULL,
-  `usia` int(100) NOT NULL,
-  `status_perkawinan` varchar(1000) NOT NULL,
-  `nomor_hp` varchar(100) NOT NULL,
-  `email` varchar(1000) NOT NULL,
-  `pendidikan_terakhir` varchar(1000) NOT NULL,
-  `nama_sekolah` varchar(1000) NOT NULL,
-  `jurusan` varchar(1000) NOT NULL,
-  `posisi_dilamar` varchar(1000) NOT NULL,
-  `status` int(10) NOT NULL DEFAULT 1,
-  `lampiran_drive_id` varchar(100) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `lamaran` */
-
-insert  into `lamaran`(`id`,`nama`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
-(12,'Lawrence Patrick','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 07:40:14');
 
 /*Table structure for table `question` */
 

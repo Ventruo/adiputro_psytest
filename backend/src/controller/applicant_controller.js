@@ -5,7 +5,7 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
-const Lamaran = require("../models/Lamaran");
+const Applicant = require("../models/Applicant");
 const GoogleDriveService = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
@@ -14,61 +14,66 @@ const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
 const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
 const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
-class LamaranController {
+class ApplicantController {
   async getOne(req, res) {
-    console.log("Getting Lamaran...");
+    console.log("Getting Applicant...");
 
     if (!req.params.email) {
       missing_param_response(res);
       return;
     }
 
-    Lamaran.findOne({ where: { email: req.params.email } }).then((lamaran) => {
-      if (!lamaran) {
-        data_not_found_response(res);
-        return;
-      }
+    Applicant.findOne({ where: { email: req.params.email } }).then(
+      (applicant) => {
+        if (!applicant) {
+          data_not_found_response(res);
+          return;
+        }
 
-      success_response(res, lamaran, "Get One Data Successful!");
-    });
+        success_response(res, applicant, "Get One Data Successful!");
+      }
+    );
   }
 
   async getByFilter(req, res) {
-    console.log("Getting Lamaran By Filter...");
+    console.log("Getting Applicant By Filter...");
 
     let wheres = {};
     if (req.query.posisi) wheres.posisi_dilamar = req.query.posisi;
     if (req.query.jurusan) wheres.jurusan = req.query.jurusan;
     if (req.query.pendidikan) wheres.pendidikan_terakhir = req.query.pendidikan;
 
-    Lamaran.findOne({ where: wheres }).then((lamaran) => {
-      if (!lamaran) {
+    Applicant.findOne({ where: wheres }).then((applicant) => {
+      if (!applicant) {
         data_not_found_response(res);
         return;
       }
 
-      success_response(res, lamaran, "Get Multiple Data Successful!");
+      success_response(res, applicant, "Get Multiple Data Successful!");
     });
   }
 
   async getAll(req, res) {
-    console.log("Getting All Available Lamarans...");
+    console.log("Getting All Available Applicants...");
 
-    Lamaran.findAll({ where: { status: 1 } }).then((lamarans) => {
-      if (lamarans.length == 0) {
+    Applicant.findAll({ where: { status: 1 } }).then((apllicants) => {
+      if (apllicants.length == 0) {
         data_not_found_response(res);
         return;
       }
 
-      success_response(res, lamarans, "Get All Data Successful!");
+      success_response(res, apllicants, "Get All Data Successful!");
     });
   }
 
   async create(req, res) {
-    console.log("Creating A New Lamaran...");
+    console.log("Creating A New Applicant...");
 
     if (
-      !validate_required_columns(req, Lamaran, ["status", "lampiran_drive_id"])
+      !validate_required_columns(req, Applicant, [
+        "status",
+        "lampiran_drive_id",
+      ])
     ) {
       missing_param_response(res);
       return;
@@ -93,8 +98,9 @@ class LamaranController {
         req.file,
         req.body.email
       );
-      const new_lamaran = await Lamaran.create({
+      const new_applicant = await Applicant.create({
         nama: req.body.nama,
+        no_ktp: req.body.no_ktp,
         tempat_lahir: req.body.tempat_lahir,
         tanggal_lahir: req.body.tanggal_lahir,
         jenis_kelamin: req.body.jenis_kelamin,
@@ -110,17 +116,17 @@ class LamaranController {
         lampiran_drive_id: file.data.id,
       });
 
-      success_response(res, new_lamaran.toJSON(), "Create Successful!");
+      success_response(res, new_applicant.toJSON(), "Create Successful!");
     });
   }
 
   async update(req, res) {
-    console.log("Updating A Lamaran...");
+    console.log("Updating A Applicant...");
 
     if (
       !validate_required_columns(
         req,
-        Lamaran,
+        Applicant,
         ["status", "lampiran_drive_id"],
         ["updating_id"]
       )
@@ -129,9 +135,9 @@ class LamaranController {
       return;
     }
 
-    Lamaran.findOne({ where: { id: req.body.updating_id } }).then(
-      async (lamaran) => {
-        if (!lamaran) {
+    Applicant.findOne({ where: { id: req.body.updating_id } }).then(
+      async (applicant) => {
+        if (!applicant) {
           data_not_found_response(res);
           return;
         }
@@ -147,7 +153,7 @@ class LamaranController {
         if (req.file) {
           // Delete & Reupload Lampiran
           await googleDriveService
-            .deleteFile(lamaran.lampiran_drive_id)
+            .deleteFile(applicant.lampiran_drive_id)
             .catch((error) => {
               console.error(error);
             });
@@ -156,11 +162,12 @@ class LamaranController {
             req.file,
             req.body.email
           );
-          lamaran.set({ lampiran_drive_id: file.data.id });
+          applicant.set({ lampiran_drive_id: file.data.id });
         }
 
-        lamaran.set({
+        applicant.set({
           nama: req.body.nama,
+          no_ktp: req.body.no_ktp,
           tempat_lahir: req.body.tempat_lahir,
           tanggal_lahir: req.body.tanggal_lahir,
           jenis_kelamin: req.body.jenis_kelamin,
@@ -174,15 +181,15 @@ class LamaranController {
           jurusan: req.body.jurusan,
           posisi_dilamar: req.body.posisi_dilamar,
         });
-        lamaran.save();
+        applicant.save();
 
-        success_response(res, lamaran?.toJSON(), "Update successful!");
+        success_response(res, applicant?.toJSON(), "Update successful!");
       }
     );
   }
 
   async uploadLampiran(googleDriveService, uploadFile, email) {
-    // Get lamaran folder
+    // Get applicant folder
     let subfolders = await googleDriveService
       .searchInParent(driveStorageID)
       .catch((error) => {
@@ -190,7 +197,7 @@ class LamaranController {
         return null;
       });
     let subfolder = subfolders.filter(
-      (subfolder) => subfolder.name == "LAMARAN"
+      (subfolder) => subfolder.name == "APPLICANT"
     )[0];
 
     let ext = uploadFile.originalname.split(".");
@@ -198,7 +205,7 @@ class LamaranController {
 
     let file = await googleDriveService
       .saveFile(
-        "Lampiran_Lamaran_" + email,
+        "Lampiran_Applicant_" + email,
         uploadFile.buffer,
         "application/" + ext,
         subfolder.id
@@ -217,7 +224,7 @@ class LamaranController {
   }
 
   async isEmailUnique(email) {
-    return Lamaran.count({ where: { email: email } }).then((count) => {
+    return Applicant.count({ where: { email: email } }).then((count) => {
       if (count != 0) {
         return false;
       }
@@ -226,4 +233,4 @@ class LamaranController {
   }
 }
 
-module.exports = LamaranController;
+module.exports = ApplicantController;

@@ -2,8 +2,8 @@ const { getDB } = require("../setup/sequelize");
 const sequelize = getDB();
 const { Model, DataTypes } = require("sequelize");
 
-class Lamaran extends Model {}
-Lamaran.init(
+class Applicant extends Model {}
+Applicant.init(
   {
     id: {
       type: DataTypes.BIGINT,
@@ -12,6 +12,10 @@ Lamaran.init(
       autoIncrement: true,
     },
     nama: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    no_ktp: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -76,9 +80,9 @@ Lamaran.init(
   },
   {
     sequelize,
-    modelName: "lamaran",
-    tableName: "lamaran",
+    modelName: "applicant",
+    tableName: "applicant",
   }
 );
 
-module.exports = Lamaran;
+module.exports = Applicant;

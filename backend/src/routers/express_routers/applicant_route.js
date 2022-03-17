@@ -1,11 +1,11 @@
-const LamaranController = require("../../controller/lamaran_controller");
+const ApplicantController = require("../../controller/applicant_controller");
 const express = require("express");
 const router = express.Router();
 
 const multer = require("multer");
 const upload = multer();
 
-let controller = new LamaranController();
+let controller = new ApplicantController();
 router.get("/all", controller.getAll);
 
 router.post(
