@@ -10,6 +10,7 @@ const SectionRouter = require("./express_routers/section_route");
 const SectionResultRouter = require("./express_routers/section_result_route");
 const TestRouter = require("./express_routers/test_route");
 const TestResultRouter = require("./express_routers/test_result_route");
+const LamaranRouter = require("./express_routers/lamaran_route");
 
 const ClockRouter = require("./express_routers/clock_route");
 const AuthRouter = require("./express_routers/auth_route");
@@ -23,6 +24,7 @@ router.use("/section", SectionRouter);
 router.use("/section_result", SectionResultRouter);
 router.use("/test", TestRouter);
 router.use("/test_result", TestResultRouter);
+router.use("/lamaran", LamaranRouter);
 router.use("/clock", ClockRouter);
 router.use("/auth", AuthRouter);
 
