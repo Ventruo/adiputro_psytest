@@ -49,8 +49,7 @@
                     </button>
                 </div>
 
-                <!-- <div v-show="this.questionList!=null"> -->
-                <div>
+                <div v-show="this.applicant!=null">
                     <h1 class="font-bold text-4xl mt-5">Pelamar Kerja</h1>
                     <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
                         <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
@@ -65,15 +64,15 @@
                             </thead>
                             <tbody class="bg-background-400 divide-y divide-stroke-100">
                                 <!-- <tr class="text-center" v-for="(i,idx) in this.questionList" :key="idx"> -->
-                                <tr class="text-center" v-for="i in 10" :key="i">
-                                    <td class="border border-stroke-100">widean@test.com</td>
-                                    <td class="border border-stroke-100">Widean Nagari</td>
-                                    <td class="border border-stroke-100">Laki-Laki</td>                                
-                                    <td class="border border-stroke-100">16/03/2022 11:43</td>
+                                <tr class="text-center" v-for="i in this.applicant" :key="i">
+                                    <td class="border border-stroke-100">{{i.email}}</td>
+                                    <td class="border border-stroke-100">{{i.nama}}</td>
+                                    <td class="border border-stroke-100">{{i.jenis_kelamin=='L' ? "Laki-Laki" : "Perempuan"}}</td>                                
+                                    <td class="border border-stroke-100">{{toDate(i.createdAt)}}</td>
                                     <td class="border border-stroke-100 py-2">
                                         <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
                                                         duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
-                                            @click="this.$router.push({path: '/admin/applicant'})"> 
+                                            @click="this.$router.push({path: '/admin/applicant', query: {email: i.email}})"> 
                                             <i class="fa fa-info-circle mr-2"></i>
                                             <span>Detail</span>
                                         </button>
@@ -146,6 +145,7 @@ export default {
         return {
             headerModal: "Buat Rekrutmen Baru",
             recruitment: null,
+            applicant: null,
             lowongan: ["Boss", "Manager", "Karyawan"]
         }
     },
@@ -239,11 +239,11 @@ export default {
             $('#bg').fadeOut("slow");
         });
 
-        // axios
-        // .get('http://127.0.0.1:8888/api/exam_session/all')
-        // .then(({data}) => (
-        //     this.exam_session = data
-        // ))
+        axios
+        .get('http://127.0.0.1:8888/api/applicant/all')
+        .then(({data}) => (
+            this.applicant = data
+        ))
         this.recruitment = 1
         
     }
