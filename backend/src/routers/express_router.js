@@ -11,6 +11,7 @@ const SectionResultRouter = require("./express_routers/section_result_route");
 const TestRouter = require("./express_routers/test_route");
 const TestResultRouter = require("./express_routers/test_result_route");
 const ApplicantRouter = require("./express_routers/applicant_route");
+const JobVacancyRouter = require("./express_routers/job_vacancy_route");
 
 const ClockRouter = require("./express_routers/clock_route");
 const AuthRouter = require("./express_routers/auth_route");
@@ -25,6 +26,7 @@ router.use("/section_result", SectionResultRouter);
 router.use("/test", TestRouter);
 router.use("/test_result", TestResultRouter);
 router.use("/applicant", ApplicantRouter);
+router.use("/job_vacancy", JobVacancyRouter);
 router.use("/clock", ClockRouter);
 router.use("/auth", AuthRouter);
 

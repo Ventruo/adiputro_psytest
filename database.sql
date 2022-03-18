@@ -41,13 +41,14 @@ CREATE TABLE `applicant` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `applicant` */
 
 insert  into `applicant`(`id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
 (12,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 13:23:22'),
-(13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1xufIw_Z_xDEUrxCSwftXh5ZmPdYVEwnK','2022-03-17 13:11:11','2022-03-17 13:23:53');
+(13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1xufIw_Z_xDEUrxCSwftXh5ZmPdYVEwnK','2022-03-17 13:11:11','2022-03-17 13:23:53'),
+(14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1Hdy5R70jU25MILnVpMH-ctWDOtEjVokd','2022-03-17 15:23:48','2022-03-17 15:23:48');
 
 /*Table structure for table `exam_session` */
 
@@ -95,6 +96,28 @@ insert  into `exam_session_test`(`exam_session_id`,`test_id`,`createdAt`,`update
 ('5','1','2022-02-23 15:59:18','2022-02-23 15:59:18'),
 ('5','2','2022-02-23 15:59:18','2022-02-23 15:59:18'),
 ('5','6','2022-02-23 15:59:18','2022-02-23 15:59:18');
+
+/*Table structure for table `job_vacancy` */
+
+DROP TABLE IF EXISTS `job_vacancy`;
+
+CREATE TABLE `job_vacancy` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) NOT NULL,
+  `qr_link` varchar(1000) NOT NULL,
+  `list_pekerjaan` varchar(1000) NOT NULL,
+  `start_date` datetime NOT NULL,
+  `status` int(20) NOT NULL DEFAULT 1 COMMENT '1: open, 0: closed',
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `job_vacancy` */
+
+insert  into `job_vacancy`(`id`,`name`,`qr_link`,`list_pekerjaan`,`start_date`,`status`,`createdAt`,`updatedAt`) values 
+(13,'Lamaran ini bagus','https://drive.google.com/file/d/1Zzf22lpYpC50lKM3vIdjUmsYMxOMCKzj','Manager,Kasir','2022-03-17 19:03:14',1,'2022-03-18 13:19:39','2022-03-18 16:07:50'),
+(14,'Lamaran ini bagus','https://drive.google.com/file/d/1TnOK0LKQm2TUa95OgxZ1mSRbYPytqUBG','Manager,Kasir','2022-03-17 19:03:14',1,'2022-03-18 16:06:37','2022-03-18 16:14:44');
 
 /*Table structure for table `question` */
 
@@ -1324,6 +1347,23 @@ insert  into `test_result`(`id`,`test_id`,`exam_session`,`start_date`,`finish_da
 (24,2,5,'2022-01-25 00:00:00','2022-01-25 00:00:00',NULL,1,'2022-02-23 15:59:18','2022-02-23 15:59:18'),
 (25,6,5,'2022-01-25 00:00:00','2022-01-25 00:00:00',NULL,1,'2022-02-23 15:59:18','2022-02-23 15:59:18'),
 (26,5,1,'2022-03-12 23:19:48','2022-03-12 23:19:48','{\"sum_x\":1275,\"sum_y\":594,\"sum_xy\":14334,\"sum_pow_x\":42925,\"sum_x_sum_y\":757350,\"pow_sum_x\":1625625,\"sum_f\":50,\"sum_fy\":594,\"b\":-0.0781,\"x\":25.5,\"y\":11.9,\"a\":13.871,\"sum_dev\":-13.44,\"sum_d\":44.88,\"sum_fd\":103.68,\"panker\":{\"val\":11.88,\"analisis\":\"Hampir Cukup\"},\"janker\":{\"val\":2.07,\"analisis\":\"Kurang\"},\"hanker\":{\"val\":-3.9,\"analisis\":\"Kurang\"},\"tianker\":{\"val\":9,\"analisis\":\"Cukup\"},\"ori_datas\":[{\"x\":1,\"y\":17,\"xy\":17,\"x_pow\":1,\"y_regresi\":13.79294117647059},{\"x\":2,\"y\":16,\"xy\":32,\"x_pow\":4,\"y_regresi\":13.714861944777912},{\"x\":3,\"y\":13,\"xy\":39,\"x_pow\":9,\"y_regresi\":13.636782713085235},{\"x\":4,\"y\":14,\"xy\":56,\"x_pow\":16,\"y_regresi\":13.558703481392557},{\"x\":5,\"y\":14,\"xy\":70,\"x_pow\":25,\"y_regresi\":13.480624249699881},{\"x\":6,\"y\":15,\"xy\":90,\"x_pow\":36,\"y_regresi\":13.402545018007205},{\"x\":7,\"y\":15,\"xy\":105,\"x_pow\":49,\"y_regresi\":13.324465786314526},{\"x\":8,\"y\":15,\"xy\":120,\"x_pow\":64,\"y_regresi\":13.24638655462185},{\"x\":9,\"y\":15,\"xy\":135,\"x_pow\":81,\"y_regresi\":13.168307322929174},{\"x\":10,\"y\":12,\"xy\":120,\"x_pow\":100,\"y_regresi\":13.090228091236495},{\"x\":11,\"y\":15,\"xy\":165,\"x_pow\":121,\"y_regresi\":13.012148859543819},{\"x\":12,\"y\":13,\"xy\":156,\"x_pow\":144,\"y_regresi\":12.934069627851141},{\"x\":13,\"y\":11,\"xy\":143,\"x_pow\":169,\"y_regresi\":12.855990396158465},{\"x\":14,\"y\":15,\"xy\":210,\"x_pow\":196,\"y_regresi\":12.777911164465788},{\"x\":15,\"y\":15,\"xy\":225,\"x_pow\":225,\"y_regresi\":12.69983193277311},{\"x\":16,\"y\":11,\"xy\":176,\"x_pow\":256,\"y_regresi\":12.621752701080434},{\"x\":17,\"y\":14,\"xy\":238,\"x_pow\":289,\"y_regresi\":12.543673469387755},{\"x\":18,\"y\":11,\"xy\":198,\"x_pow\":324,\"y_regresi\":12.465594237695079},{\"x\":19,\"y\":7,\"xy\":133,\"x_pow\":361,\"y_regresi\":12.387515006002403},{\"x\":20,\"y\":15,\"xy\":300,\"x_pow\":400,\"y_regresi\":12.309435774309724},{\"x\":21,\"y\":10,\"xy\":210,\"x_pow\":441,\"y_regresi\":12.231356542617048},{\"x\":22,\"y\":11,\"xy\":242,\"x_pow\":484,\"y_regresi\":12.153277310924372},{\"x\":23,\"y\":4,\"xy\":92,\"x_pow\":529,\"y_regresi\":12.075198079231694},{\"x\":24,\"y\":10,\"xy\":240,\"x_pow\":576,\"y_regresi\":11.997118847539017},{\"x\":25,\"y\":12,\"xy\":300,\"x_pow\":625,\"y_regresi\":11.919039615846339},{\"x\":26,\"y\":9,\"xy\":234,\"x_pow\":676,\"y_regresi\":11.840960384153663},{\"x\":27,\"y\":12,\"xy\":324,\"x_pow\":729,\"y_regresi\":11.762881152460986},{\"x\":28,\"y\":12,\"xy\":336,\"x_pow\":784,\"y_regresi\":11.684801920768308},{\"x\":29,\"y\":10,\"xy\":290,\"x_pow\":841,\"y_regresi\":11.606722689075632},{\"x\":30,\"y\":12,\"xy\":360,\"x_pow\":900,\"y_regresi\":11.528643457382955},{\"x\":31,\"y\":12,\"xy\":372,\"x_pow\":961,\"y_regresi\":11.450564225690277},{\"x\":32,\"y\":9,\"xy\":288,\"x_pow\":1024,\"y_regresi\":11.3724849939976},{\"x\":33,\"y\":12,\"xy\":396,\"x_pow\":1089,\"y_regresi\":11.294405762304923},{\"x\":34,\"y\":9,\"xy\":306,\"x_pow\":1156,\"y_regresi\":11.216326530612246},{\"x\":35,\"y\":5,\"xy\":175,\"x_pow\":1225,\"y_regresi\":11.13824729891957},{\"x\":36,\"y\":13,\"xy\":468,\"x_pow\":1296,\"y_regresi\":11.060168067226892},{\"x\":37,\"y\":9,\"xy\":333,\"x_pow\":1369,\"y_regresi\":10.982088835534215},{\"x\":38,\"y\":12,\"xy\":456,\"x_pow\":1444,\"y_regresi\":10.904009603841537},{\"x\":39,\"y\":9,\"xy\":351,\"x_pow\":1521,\"y_regresi\":10.82593037214886},{\"x\":40,\"y\":8,\"xy\":320,\"x_pow\":1600,\"y_regresi\":10.747851140456184},{\"x\":41,\"y\":12,\"xy\":492,\"x_pow\":1681,\"y_regresi\":10.669771908763506},{\"x\":42,\"y\":9,\"xy\":378,\"x_pow\":1764,\"y_regresi\":10.59169267707083},{\"x\":43,\"y\":12,\"xy\":516,\"x_pow\":1849,\"y_regresi\":10.513613445378152},{\"x\":44,\"y\":14,\"xy\":616,\"x_pow\":1936,\"y_regresi\":10.435534213685475},{\"x\":45,\"y\":13,\"xy\":585,\"x_pow\":2025,\"y_regresi\":10.357454981992799},{\"x\":46,\"y\":12,\"xy\":552,\"x_pow\":2116,\"y_regresi\":10.279375750300122},{\"x\":47,\"y\":12,\"xy\":564,\"x_pow\":2209,\"y_regresi\":10.201296518607444},{\"x\":48,\"y\":13,\"xy\":624,\"x_pow\":2304,\"y_regresi\":10.123217286914766},{\"x\":49,\"y\":14,\"xy\":686,\"x_pow\":2401,\"y_regresi\":10.04513805522209},{\"x\":50,\"y\":10,\"xy\":500,\"x_pow\":2500,\"y_regresi\":9.967058823529413}],\"calc_datas\":[{\"y\":1,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":2,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":3,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":4,\"f\":1,\"fy\":4,\"dev\":-7.88,\"d\":7.88,\"fd\":7.88},{\"y\":5,\"f\":1,\"fy\":5,\"dev\":-6.88,\"d\":6.88,\"fd\":6.88},{\"y\":6,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":7,\"f\":1,\"fy\":7,\"dev\":-4.88,\"d\":4.88,\"fd\":4.88},{\"y\":8,\"f\":1,\"fy\":8,\"dev\":-3.88,\"d\":3.88,\"fd\":3.88},{\"y\":9,\"f\":6,\"fy\":54,\"dev\":-2.88,\"d\":2.88,\"fd\":17.28},{\"y\":10,\"f\":4,\"fy\":40,\"dev\":-1.88,\"d\":1.88,\"fd\":7.52},{\"y\":11,\"f\":4,\"fy\":44,\"dev\":-0.88,\"d\":0.88,\"fd\":3.52},{\"y\":12,\"f\":12,\"fy\":144,\"dev\":0.12,\"d\":0.12,\"fd\":1.44},{\"y\":13,\"f\":5,\"fy\":65,\"dev\":1.12,\"d\":1.12,\"fd\":5.6},{\"y\":14,\"f\":5,\"fy\":70,\"dev\":2.12,\"d\":2.12,\"fd\":10.6},{\"y\":15,\"f\":8,\"fy\":120,\"dev\":3.12,\"d\":3.12,\"fd\":24.96},{\"y\":16,\"f\":1,\"fy\":16,\"dev\":4.12,\"d\":4.12,\"fd\":4.12},{\"y\":17,\"f\":1,\"fy\":17,\"dev\":5.12,\"d\":5.12,\"fd\":5.12},{\"y\":18,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":19,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":20,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":21,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":22,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":23,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":24,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":25,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":26,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0},{\"y\":27,\"f\":0,\"fy\":0,\"dev\":0,\"d\":0,\"fd\":0}]}',1,'2022-03-12 23:19:48','2022-03-13 09:11:31');
+
+/* Procedure structure for procedure `semuaPegawai` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `semuaPegawai` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `semuaPegawai`(
+ IN nama VARCHAR(50) 
+)
+BEGIN 
+
+DECLARE a VARCHAR(50);
+SET a=CONCAT('%',nama,'%');
+ SELECT nama_pegawai FROM pegawai WHERE nama_pegawai LIKE a;
+END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

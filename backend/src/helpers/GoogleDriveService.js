@@ -1,5 +1,6 @@
 const Readable = require("stream").Readable;
 const { google } = require("googleapis");
+const fs = require("fs");
 
 class GoogleDriveService {
   constructor(clientId, clientSecret, redirectUri, refreshToken) {
@@ -86,6 +87,20 @@ class GoogleDriveService {
       media: {
         mimeType: fileMimeType,
         body: this.bufferToStream(fileBuffer),
+      },
+    });
+  }
+
+  saveFileFromLocal(fileName, filePath, fileMimeType, folderId) {
+    return this.driveClient.files.create({
+      requestBody: {
+        name: fileName,
+        mimeType: fileMimeType,
+        parents: folderId ? [folderId] : [],
+      },
+      media: {
+        mimeType: fileMimeType,
+        body: fs.createReadStream(filePath),
       },
     });
   }
