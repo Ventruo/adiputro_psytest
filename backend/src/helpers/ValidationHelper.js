@@ -9,6 +9,7 @@ module.exports = {
       if (guards.includes(attr)) continue;
       if (!req.body[attr]) return false; // TODO FIX attr exist but nullable. ex : empty string
     }
+    if(req.file==undefined) return false;
 
     return true;
   },
