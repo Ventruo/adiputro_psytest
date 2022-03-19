@@ -1,5 +1,10 @@
 <template>
     <header class="bg-foreground-4-100 flex justify-between px-8 py-2 z-10 absolute w-full h-20 z-0" id="main-header"></header>
+    <div v-show="this.lowongan!=null && this.lowongan.status==0" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div class="bg-foreground-3-500 w-full h-full px-10 py-20 rounded-xl flex items-center justify-center text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+            Mohon maaf lowongan sudah tidak tersedia, silahkan cari lowongan lain :D
+        </div>
+    </div>
     <div class="z-10">
         <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden">
             <div class="flex justify-between mb-7">
@@ -8,8 +13,7 @@
                     <img src="../assets/logo.png" alt="" class="w-20">
                 </div>
             </div>
-
-            <form method="POST" action="http://127.0.0.1:8888/api/applicant/create" name="forms" autocomplete="off" enctype="multipart/form-data" 
+            <form v-show="this.lowongan!=null && this.lowongan.status==1" method="POST" action="http://127.0.0.1:8888/api/applicant/create" name="forms" autocomplete="off" enctype="multipart/form-data" 
                     class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5"
                     @submit.prevent="submitForm">
                 <h1 class="text-3xl font-bold mb-2">Biodata</h1>
@@ -122,6 +126,7 @@ export default {
         return{
             judulHalaman: 'Biodata',
             url: null,
+            lowongan: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
         }
     },
@@ -196,7 +201,12 @@ export default {
         },
     },
     mounted() {
-
+        axios
+        .get('http://127.0.0.1:8888/api/job_vacancy/'+this.$route.query.id)
+        .then(({data}) => (
+            this.lowongan = data,
+            console.log(this.lowongan)
+        ))
     },
     created(){
         this.$emit('updateJudul', this.judulHalaman)
