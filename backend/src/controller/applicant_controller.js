@@ -43,7 +43,7 @@ class ApplicantController {
     if (req.query.jurusan) wheres.jurusan = req.query.jurusan;
     if (req.query.pendidikan) wheres.pendidikan_terakhir = req.query.pendidikan;
 
-    Applicant.findOne({ where: wheres }).then((applicant) => {
+    Applicant.findAll({ where: wheres }).then((applicant) => {
       if (!applicant) {
         data_not_found_response(res);
         return;
