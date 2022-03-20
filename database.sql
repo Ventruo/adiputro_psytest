@@ -37,20 +37,21 @@ CREATE TABLE `applicant` (
   `nama_sekolah` varchar(1000) NOT NULL,
   `jurusan` varchar(1000) NOT NULL,
   `posisi_dilamar` varchar(1000) NOT NULL,
-  `status` int(10) NOT NULL DEFAULT 1,
+  `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
   `lampiran_drive_id` varchar(100) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `applicant` */
 
 insert  into `applicant`(`id`,`job_vacancy_id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
 (12,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 13:23:22'),
-(13,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','abc@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'15J2vQM6IOnGr5wR0o95ajRsRr3q1LNhE','2022-03-17 13:11:11','2022-03-20 03:57:51'),
+(13,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','abc@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1MMPW3hUCusOQYf8HLSdGR399juV06c4U','2022-03-17 13:11:11','2022-03-20 04:37:47'),
 (14,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1Hdy5R70jU25MILnVpMH-ctWDOtEjVokd','2022-03-17 15:23:48','2022-03-17 15:23:48'),
-(15,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1VqZZdsffNkct9upM9ailqSmXc93CGV8a','2022-03-20 03:55:30','2022-03-20 03:55:30');
+(15,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1VqZZdsffNkct9upM9ailqSmXc93CGV8a','2022-03-20 03:55:30','2022-03-20 03:55:30'),
+(16,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1qyiDdQgcdPHRXdwJY0X7Vlo4jRPB3BQ4','2022-03-20 04:37:29','2022-03-20 04:37:29');
 
 /*Table structure for table `exam_session` */
 
@@ -126,14 +127,23 @@ insert  into `job_vacancy`(`id`,`name`,`qr_link`,`list_pekerjaan`,`start_date`,`
 DROP TABLE IF EXISTS `kreapelin_data`;
 
 CREATE TABLE `kreapelin_data` (
-  `section_result_id` bigint(20) NOT NULL,
+  `section_result_id` bigint(10) NOT NULL,
+  `exam_session_id` bigint(10) NOT NULL,
   `pendidikan` varchar(100) NOT NULL,
   `jurusan` varchar(100) NOT NULL COMMENT 'ilmu pasti/ipa or ips',
   `jenis_kelamin` varchar(100) NOT NULL,
-  PRIMARY KEY (`section_result_id`)
+  `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`section_result_id`,`exam_session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `kreapelin_data` */
+
+insert  into `kreapelin_data`(`section_result_id`,`exam_session_id`,`pendidikan`,`jurusan`,`jenis_kelamin`,`status`,`createdAt`,`updatedAt`) values 
+(23,1,'sma','ipa','L',1,'2022-03-20 04:57:45','2022-03-20 04:57:45'),
+(25,1,'smk','ips','P',1,'2022-03-20 04:44:46','2022-03-20 04:44:51'),
+(25,2,'stie','ilmu murni','L',1,'2022-03-20 04:40:14','2022-03-20 04:49:58');
 
 /*Table structure for table `question` */
 

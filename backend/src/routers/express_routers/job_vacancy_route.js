@@ -5,8 +5,6 @@ const router = express.Router();
 let controller = new JobVacancyController();
 router.get("/all", controller.getAll);
 
-router.get("/qr", controller.createQR);
-
 router.post("/create", controller.create.bind(controller));
 router.post("/update", controller.update.bind(controller));
 router.post("/refreshQR", controller.refreshQR.bind(controller));
