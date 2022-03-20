@@ -12,6 +12,7 @@ const Test = require("../models/Test");
 const Section = require("../models/Section");
 const QuestionResult = require("../models/QuestionResult");
 const Question = require("../models/Question");
+const KreapelinData = require("../models/KreapelinData");
 
 const tintum_lookup = {
   0: "K",
@@ -809,6 +810,10 @@ class TestResultController {
             let correct_data = [];
             correct_data = correct_data.concat(Array(questions.count).fill(0));
 
+            let sum_correct = 0;
+            let sum_error = 0;
+            let sum_skipped = 0;
+            let total_questions = 0;
             for (let i = 0; i < questionres.length; i++) {
               for (let j = 0; j < questions.rows.length; j++) {
                 if (questionres[i].question_id == questions.rows[j].id) {
@@ -817,21 +822,48 @@ class TestResultController {
                   let correct_answer = questions.rows[j].answer.split(",");
                   let user_answer = questionres[i].answer.split(",");
                   for (let k = 0; k < user_answer.length; k++) {
-                    if (user_answer[k] == correct_answer[k]) ctr_correct++;
+                    if (user_answer[k] == -1) sum_skipped++;
+                    //FIXME ini masih per soal sum skipped nya, belum per kolom
+                    else if (user_answer[k] == correct_answer[k]) ctr_correct++;
+                    else sum_error++;
                   }
                   correct_data[i] = ctr_correct;
+                  sum_correct += ctr_correct;
+
+                  total_questions += user_answer.length;
+                  break;
                 }
               }
             }
             console.log(correct_data);
+            let data_sums = {
+              sum_correct: sum_correct,
+              sum_error: sum_error,
+              sum_skipped: sum_skipped,
+              total_questions: total_questions,
+            };
+            console.log(data_sums);
 
-            this.process_kreapelin(
-              "./src/data/test_norma.xlsx",
-              test_type,
-              correct_data,
-              res,
-              testres
-            );
+            KreapelinData.findOne({
+              where: {
+                section_result_id: sectionres.id,
+              },
+            }).then((kreapelin_data) => {
+              if (!kreapelin_data) {
+                data_not_found_response(res);
+                return;
+              }
+
+              this.process_kreapelin(
+                "./src/data/test_norma.xlsx",
+                test_type,
+                correct_data,
+                res,
+                testres,
+                kreapelin_data,
+                data_sums
+              );
+            });
           });
         });
       }
@@ -842,7 +874,15 @@ class TestResultController {
     return parseFloat(Number.parseFloat(x).toFixed(precs));
   }
 
-  async process_kreapelin(excel_path, sheet, correct_data, res, testres) {
+  async process_kreapelin(
+    excel_path,
+    sheet,
+    correct_data,
+    res,
+    testres,
+    kreapelin_data,
+    data_sums
+  ) {
     //   Calculate Norms
     let n = correct_data.length;
     let sum_x = 0;
@@ -956,13 +996,61 @@ class TestResultController {
     janker = this.toFixed(sum_fd / n, 2);
     hanker = this.toFixed(ori_datas[n - 1].y_regresi - a, 2);
 
-    // TODO: Tanya ini dapet darimana
-    let sum_of_error = 9;
-    let sum_of_skipeds = 0;
-    tianker = sum_of_error + sum_of_skipeds;
+    tianker = data_sums.sum_error + data_sums.sum_skipped;
 
-    // TODO: Masukkan code dari backend/frontend
-    let codes = [8, 2, 2, 2];
+    let codes = [0, 0, 0, 0];
+    let k_pendidikan = kreapelin_data.pendidikan.toLowerCase();
+    let k_jurusan = kreapelin_data.jurusan.toLowerCase();
+    let k_jk = kreapelin_data.jenis_kelamin.toLowerCase();
+
+    // kode panker
+    if (k_pendidikan == "smea") codes[0] = 1;
+    else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[0] = 2;
+    else if (k_pendidikan == "sma") codes[0] = 3;
+    else if (k_pendidikan == "sarjana muda") {
+      if (k_jurusan == "ips") {
+        if (k_jk == "l") codes[0] = 4;
+        else if (k_jk == "p") codes[0] = 5;
+      } else if (k_jurusan == "ipa") {
+        codes[0] = 6;
+      }
+    } else if (k_pendidikan == "sarjana") {
+      if (k_jurusan == "ips") {
+        codes[0] = 7;
+      } else if (k_jurusan == "ipa") {
+        codes[0] = 8;
+      }
+    }
+
+    // kode janker
+    if (k_pendidikan == "smea") codes[1] = 1;
+    else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[1] = 2;
+    else if (k_pendidikan == "sma") codes[1] = 3;
+    else if (k_pendidikan == "sarjana muda") codes[1] = 4;
+    else if (k_pendidikan == "sarjana") codes[1] = 5;
+
+    // kode hanker
+    if (k_pendidikan == "smea") codes[2] = 1;
+    else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[2] = 2;
+    else if (k_pendidikan == "sma") codes[2] = 3;
+    else if (k_pendidikan == "sarjana muda") {
+      if (k_jurusan == "ips") {
+        if (k_jk == "l") codes[2] = 4;
+        else if (k_jk == "p") codes[2] = 5;
+      } else if (k_jurusan == "ipa") {
+        codes[2] = 6;
+      }
+    } else if (k_pendidikan == "sarjana") codes[2] = 7;
+
+    // kode tianker
+    if (k_pendidikan == "smea") codes[3] = 1;
+    else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[3] = 2;
+    else if (k_pendidikan == "sma") {
+      if (k_jurusan == "ipa") codes[3] = 3;
+      else if (k_jurusan == "ips") codes[3] = 4;
+    } else if (k_pendidikan == "sarjana muda") codes[3] = 7;
+    else if (k_pendidikan == "sarjana") codes[3] = 8;
+
     let values = [panker, janker, hanker, tianker];
     let analisis = await this.analisis_kreapelin_data(
       excel_path,
@@ -971,7 +1059,6 @@ class TestResultController {
       values
     );
 
-    // TODO: JK ngaruh dimana
     let results = {
       sum_x: sum_x,
       sum_y: sum_y,
