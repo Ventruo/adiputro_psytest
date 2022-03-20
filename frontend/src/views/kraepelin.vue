@@ -6,61 +6,94 @@
                 <img src="../assets/logo.png" alt="" class="w-20">
             </div>
         </div>
+        <form v-if="this.dataKraepelin==null" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5"
+            @submit.prevent="submitKraepelinData">
+            <h1 class="text-3xl font-bold mb-2">Biodata</h1>
+            <div class="mb-5 mt-3">
+                <p class="mt-2">PENDIDIKAN TERAKHIR :</p>
+                <div class="flex my-2">
+                    <div class="w-1/5"><Radio :values="'smea'" :names="'pendidikan'" :id="'SMEA'" :label="'SMEA'"/></div>
+                    <div class="w-1/5"><Radio :values="'smk'" :names="'pendidikan'" :id="'SMK'" :label="'STM/SMK'"/></div>
+                    <div class="w-1/5"><Radio :values="'sma'" :names="'pendidikan'" :id="'SMA'" :label="'SMA'"/></div>
+                    <div class="w-1/5"><Radio :values="'sarjana muda'" :names="'pendidikan'" :id="'SARJANA MUDA'" :label="'SARJANA MUDA (D3)'"/></div>
+                    <div class="w-1/5"><Radio :values="'sarjana'" :names="'pendidikan'" :id="'SARJANA'" :label="'SARJANA (S1)'"/></div>
+                </div>
 
-        <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
-                    p-5 my-5 flex justify-center items-center text-xl font-bold">
-            Jawablah perkolom dari bawah ke atas, tuliskan anngka satuan dari penjumlahan 2 angka diantara kotak jawaban. 
-            Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia disebelah kanan.
-        </div>
-        <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
-            <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
+                <p class="mt-4">JURUSAN :</p>
+                <div class="flex my-2">
+                    <div class="w-1/4"><Radio :values="'ipa'" :names="'jurusan'" :id="'ipa'" :label="'IPA'"/></div>
+                    <div class="w-1/4"><Radio :values="'ips'" :names="'jurusan'" :id="'ips'" :label="'IPS'"/></div>
+                </div>
+
+                <p class="mt-4">JENIS KELAMIN :</p>
+                <div class="flex my-2">
+                    <div class="w-1/4"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
+                    <div class="w-1/4"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>
+                </div>
+            </div>
             
-            <p class="text-center py-1">Kolom {{kolom}}/{{jumKolom}}</p> 
-        </div>
-
-        <div class="text-center font-bold mb-5" v-if="pertanyaan!=null">
-            <p class="text-5xl mb-2" v-if="currentRow<28">{{pertanyaan[27-currentRow]}} + {{pertanyaan[28-currentRow]}} = ...</p>
-            <p class="text-5xl mb-2" v-else>Kolom Berikutnya...</p>
-            <p v-if="currentRow<27">Berikutnya: {{pertanyaan[26-currentRow]}} + {{pertanyaan[27-currentRow]}} = ...</p>
-            <p v-else>Berikutnya: -</p>
-        </div>
-        <!-- <div class="h-full pt-2" v-if="pertanyaan!=null"> -->
-        <div class="h-full pt-2 font-bold mt-10">
-            <div class="flex gap-5 justify-center">
-                <!-- <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row1[i-1]}}</p></div>
-                <div class="mt-5 mr-5">
-                    <input type="number" name="" :id="'baris'+(10-i)" v-for="i in 9" :key="i" @keyup="ngisi"
-                            class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
-                            bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
-                </div>
-
-                <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row2[i-1]}}</p></div>
-                <div class="mt-5 mr-5">
-                    <input type="number" name="" :id="'baris'+(19-i)" v-for="i in 9" :key="i" @keyup="ngisi"
-                            class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
-                            bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
-                </div>
-
-                <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row3[i-1]}}</p></div>
-                <div class="mt-5 mr-5">
-                    <input type="number" name="" :id="'baris'+(28-i)" v-for="i in 9" :key="i" @keyup="ngisi"
-                            class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
-                            bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
-                </div> -->
+            <div class="text-right">
+                <button type="submit" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2">
+                    Submit dan mulai
+                </button>
+            </div>
+        </form>
+        <div v-else>
+            <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
+                        p-5 my-5 flex justify-center items-center text-xl font-bold">
+                Jawablah perkolom dari bawah ke atas, tuliskan anngka satuan dari penjumlahan 2 angka diantara kotak jawaban. 
+                Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia disebelah kanan.
+            </div>
+            <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
+                <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
                 
-                <div>
-                    <div v-for="i in 3" :key="i" class="mb-5">
-                        <button v-for="j in 3" :key="j" class="px-10 py-1 bg-background-200 ring-1 ring-inset ring-stroke-100 text-xl mr-5 rounded-lg font-bold
-                                                        hover:bg-background-300 duration-200" @click.prevent="jawabTombol">{{j+((i-1)*3)}}</button>
+                <p class="text-center py-1">Kolom {{kolom}}/{{jumKolom}}</p> 
+            </div>
+
+            <div class="text-center font-bold mb-5" v-if="pertanyaan!=null">
+                <p class="text-5xl mb-2" v-if="currentRow<28">{{pertanyaan[27-currentRow]}} + {{pertanyaan[28-currentRow]}} = ...</p>
+                <p class="text-5xl mb-2" v-else>Kolom Berikutnya...</p>
+                <p v-if="currentRow<27">Berikutnya: {{pertanyaan[26-currentRow]}} + {{pertanyaan[27-currentRow]}} = ...</p>
+                <p v-else>Berikutnya: -</p>
+            </div>
+            <!-- <div class="h-full pt-2" v-if="pertanyaan!=null"> -->
+            <div class="h-full pt-2 font-bold mt-10">
+                <div class="flex gap-5 justify-center">
+                    <!-- <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row1[i-1]}}</p></div>
+                    <div class="mt-5 mr-5">
+                        <input type="number" name="" :id="'baris'+(10-i)" v-for="i in 9" :key="i" @keyup="ngisi"
+                                class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
+                                bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
                     </div>
-                    <div class="text-center">
-                        <button class="px-10 py-1 bg-background-200 ring-1 ring-inset ring-stroke-100 text-xl mr-5 rounded-lg font-bold
-                                    hover:bg-background-300 duration-200" @click.prevent="jawabTombol">0</button>
+
+                    <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row2[i-1]}}</p></div>
+                    <div class="mt-5 mr-5">
+                        <input type="number" name="" :id="'baris'+(19-i)" v-for="i in 9" :key="i" @keyup="ngisi"
+                                class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
+                                bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
+                    </div>
+
+                    <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row3[i-1]}}</p></div>
+                    <div class="mt-5 mr-5">
+                        <input type="number" name="" :id="'baris'+(28-i)" v-for="i in 9" :key="i" @keyup="ngisi"
+                                class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
+                                bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
+                    </div> -->
+                    
+                    <div>
+                        <div v-for="i in 3" :key="i" class="mb-5">
+                            <button v-for="j in 3" :key="j" class="px-10 py-1 bg-background-200 ring-1 ring-inset ring-stroke-100 text-xl mr-5 rounded-lg font-bold
+                                                            hover:bg-background-300 duration-200" @click.prevent="jawabTombol">{{j+((i-1)*3)}}</button>
+                        </div>
+                        <div class="text-center">
+                            <button class="px-10 py-1 bg-background-200 ring-1 ring-inset ring-stroke-100 text-xl mr-5 rounded-lg font-bold
+                                        hover:bg-background-300 duration-200" @click.prevent="jawabTombol">0</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        
         <!-- Transparent Overlay -->
         <!-- <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div> -->
 
@@ -68,15 +101,19 @@
         <!-- <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
             <p id="counter">3</p>
         </div> -->
+        <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
+            <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
+        </div>
     </div>
 </template>
 <script>
 import axios from 'axios'
 import AnswerButton from '../components/answerButton.vue'
+import Radio from '../components/radiobutton.vue'
 
 export default {
     components: {
-        axios, AnswerButton
+        axios, AnswerButton, Radio
     },
     data () {
         return {
@@ -96,12 +133,36 @@ export default {
             pertanyaanFull: null,
             pertanyaan: null,
             pilihanJawaban: null,
-            // section_id: this.$route.query.current_section,
             section_id: 53,
-            exam_session: 9
+            exam_session: 9,
+            section_result_id: 26,
+            dataKraepelin: null
         }
     },
     methods: {
+        submitKraepelinData(e){
+            let pendidikan = ""
+            for (let i = 0; i < 5; i++) {
+                if (e.target[i].checked) pendidikan = e.target[i].value
+            }
+            let jurusan = e.target[5].checked!=false ? e.target[5].value : e.target[6].value
+            let jk = e.target[7].checked!=false ? e.target[7].value : e.target[8].value
+            
+            $('#spinner-modal').fadeIn("slow");
+            axios.post('http://127.0.0.1:8888/api/kreapelin_data/create',{
+                "section_result_id": this.section_result_id,
+                "pendidikan": pendidikan,
+                "jurusan": jurusan,
+                "jenis_kelamin": jk
+            })
+            .then((response) => {
+                $('#spinner-modal').fadeOut("slow"),
+                this.dataKraepelin = response.data,
+                console.log(this.dataKraepelin)
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
         nextSoal(value){
             if(value!=="" && this.currentRow<28){
                 this.jawaban[this.kolom-1][this.currentRow-1] = value
@@ -110,7 +171,7 @@ export default {
                 // $('#baris'+this.currentRow).prop('disabled', false)
                 // $('#baris'+this.currentRow).focus()
             }
-            if(this.currentRow>=28) this.reset()
+            // if(this.currentRow>=28) this.reset()
 
             // $('#answer').focus()
             // if (this.kolom<this.jumKolom){
@@ -157,6 +218,9 @@ export default {
             this.nextSoal(event.target.value)
         },
         reset(){
+            for (let i = this.jawaban[this.kolom-1].length; i < 27; i++) {
+                this.jawaban[this.kolom-1][i]=-1
+            }
             this.jawaban.push([])
             this.kolom++
             this.currentRow = 1
@@ -168,9 +232,9 @@ export default {
             // $('#baris'+this.currentRow).prop('disabled', false)
             // $('#baris'+this.currentRow).focus()
 
-            for (let i = 1; i <= 28; i++) {
-                $('#baris'+i).val('')
-            }
+            // for (let i = 1; i <= 28; i++) {
+            //     $('#baris'+i).val('')
+            // }
             console.log(this.jawaban)
         },
         jawabTombol(event){
@@ -262,7 +326,7 @@ export default {
                 
         //         clearInterval(this.countdownTimer)
                 this.waktu = setInterval(() => {
-                    if (this.pertanyaanFull){
+                    if (this.pertanyaanFull && this.dataKraepelin){
                         this.detik--
                         if (this.detik<0){
                             this.detik = 15
@@ -299,18 +363,17 @@ export default {
         .then(({data}) => (
             this.pertanyaanFull = [],
             data.forEach(d => {
-                this.pertanyaanFull.push(d.option_a.split(','))
+                this.pertanyaanFull.push(d.instruction.split(','))
             }),
             this.pertanyaan = this.pertanyaanFull[this.kolom-1],
             this.jawaban.push([])
         ))
 
-        // axios
-        // .get('http://127.0.0.1:8888/api/section/'+this.section_id)
-        // .then(({data}) => (
-        //     this.jumChoice = data.option_num,
-        //     this.test_id = data.test_id
-        // ))
+        axios
+        .get('http://127.0.0.1:8888/api/kreapelin_data/?section_result_id='+this.section_result_id)
+        .then(({data}) => (
+            this.dataKraepelin = data
+        ))
 
         // this.pertanyaanFull = [2,7,7,9,7,4,6,6,9,2, 2,1,1,8,2,2,6,5,9,2, 9,8,6,4,7,2,9,4, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8,9,0, 1,2,3,4,5,6,7,8]
         // this.pertanyaan = this.pertanyaanFull.slice(0,28)
