@@ -13,7 +13,7 @@ class KreapelinDataController {
   async getOne(req, res) {
     console.log("Getting One Kreapelin Data...");
 
-    if (!req.query.section_result_id || !req.query.exam_session_id) {
+    if (!req.query.section_result_id) {
       missing_param_response(res);
       return;
     }
@@ -21,7 +21,6 @@ class KreapelinDataController {
     KreapelinData.findOne({
       where: {
         section_result_id: req.query.section_result_id,
-        exam_session_id: req.query.exam_session_id,
       },
     }).then((data) => {
       if (!data) {
@@ -30,21 +29,6 @@ class KreapelinDataController {
       }
 
       success_response(res, data, "Get One Data Successful!");
-    });
-  }
-
-  async getBySectionResult(req, res) {
-    console.log("Getting Kreapelin Data By Section Result...");
-
-    KreapelinData.findAll({
-      where: { section_result_id: req.params.section_result_id },
-    }).then((data) => {
-      if (!data) {
-        data_not_found_response(res);
-        return;
-      }
-
-      success_response(res, data, "Get Multiple Data Successful!");
     });
   }
 
@@ -76,24 +60,14 @@ class KreapelinDataController {
           return;
         }
 
-        ExamSession.findOne({ where: { id: req.body.exam_session_id } }).then(
-          async (section) => {
-            if (!section) {
-              data_not_found_response(res);
-              return;
-            }
+        const new_data = await KreapelinData.create({
+          section_result_id: req.body.section_result_id,
+          pendidikan: req.body.pendidikan,
+          jurusan: req.body.jurusan,
+          jenis_kelamin: req.body.jenis_kelamin,
+        });
 
-            const new_data = await KreapelinData.create({
-              section_result_id: req.body.section_result_id,
-              exam_session_id: req.body.exam_session_id,
-              pendidikan: req.body.pendidikan,
-              jurusan: req.body.jurusan,
-              jenis_kelamin: req.body.jenis_kelamin,
-            });
-
-            success_response(res, new_data.toJSON(), "Create Successful!");
-          }
-        );
+        success_response(res, new_data.toJSON(), "Create Successful!");
       }
     );
   }
@@ -109,7 +83,6 @@ class KreapelinDataController {
     KreapelinData.findOne({
       where: {
         section_result_id: req.body.section_result_id,
-        exam_session_id: req.body.exam_session_id,
       },
     }).then(async (kreapelin_data) => {
       if (!kreapelin_data) {
@@ -119,7 +92,6 @@ class KreapelinDataController {
 
       kreapelin_data.set({
         section_result_id: req.body.section_result_id,
-        exam_session_id: req.body.exam_session_id,
         pendidikan: req.body.pendidikan,
         jurusan: req.body.jurusan,
         jenis_kelamin: req.body.jenis_kelamin,

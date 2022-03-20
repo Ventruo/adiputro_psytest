@@ -10,11 +10,6 @@ KreapelinData.init(
       primaryKey: true,
       allowNull: false,
     },
-    exam_session_id: {
-      type: DataTypes.BIGINT,
-      primaryKey: true,
-      allowNull: false,
-    },
     pendidikan: {
       type: DataTypes.STRING,
       allowNull: false,
