@@ -1,5 +1,11 @@
 module.exports = {
-  validate_required_columns(req, model, guard = [], fillable = []) {
+  validate_required_columns(
+    req,
+    model,
+    guard = [],
+    fillable = [],
+    hasFile = false
+  ) {
     const default_guard = ["id", "createdAt", "updatedAt"];
     const guards = default_guard.concat(guard);
 
@@ -9,7 +15,7 @@ module.exports = {
       if (guards.includes(attr)) continue;
       if (!req.body[attr]) return false; // TODO FIX attr exist but nullable. ex : empty string
     }
-    if(req.file==undefined) return false;
+    if (hasFile && req.file == undefined) return false;
 
     return true;
   },

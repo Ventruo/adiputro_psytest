@@ -91,10 +91,13 @@ class ApplicantController {
     console.log("Creating A New Applicant...");
 
     if (
-      !validate_required_columns(req, Applicant, [
-        "status",
-        "lampiran_drive_id",
-      ])
+      !validate_required_columns(
+        req,
+        Applicant,
+        ["status", "lampiran_drive_id"],
+        [],
+        true
+      )
     ) {
       missing_param_response(res);
       return;
@@ -150,7 +153,8 @@ class ApplicantController {
         req,
         Applicant,
         ["status", "lampiran_drive_id"],
-        ["updating_id"]
+        ["updating_id"],
+        true
       )
     ) {
       missing_param_response(res);
