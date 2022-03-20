@@ -128,22 +128,21 @@ DROP TABLE IF EXISTS `kreapelin_data`;
 
 CREATE TABLE `kreapelin_data` (
   `section_result_id` bigint(10) NOT NULL,
-  `exam_session_id` bigint(10) NOT NULL,
   `pendidikan` varchar(100) NOT NULL,
   `jurusan` varchar(100) NOT NULL COMMENT 'ilmu pasti/ipa or ips',
   `jenis_kelamin` varchar(100) NOT NULL,
   `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  PRIMARY KEY (`section_result_id`,`exam_session_id`)
+  PRIMARY KEY (`section_result_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `kreapelin_data` */
 
-insert  into `kreapelin_data`(`section_result_id`,`exam_session_id`,`pendidikan`,`jurusan`,`jenis_kelamin`,`status`,`createdAt`,`updatedAt`) values 
-(23,1,'sma','ipa','L',1,'2022-03-20 04:57:45','2022-03-20 04:57:45'),
-(25,1,'smk','ips','P',1,'2022-03-20 04:44:46','2022-03-20 04:44:51'),
-(25,2,'stie','ilmu murni','L',1,'2022-03-20 04:40:14','2022-03-20 04:49:58');
+insert  into `kreapelin_data`(`section_result_id`,`pendidikan`,`jurusan`,`jenis_kelamin`,`status`,`createdAt`,`updatedAt`) values 
+(23,'sma','ipa','L',1,'2022-03-20 04:57:45','2022-03-20 04:57:45'),
+(24,'sma','ipa','L',1,'2022-03-20 05:51:30','2022-03-20 05:51:30'),
+(25,'stie','ilmu murni','L',1,'2022-03-20 04:44:46','2022-03-20 05:51:33');
 
 /*Table structure for table `question` */
 
