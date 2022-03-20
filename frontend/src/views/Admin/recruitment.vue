@@ -17,8 +17,10 @@
                         <tbody class="bg-background-400 divide-y divide-stroke-100">
                             <!-- <tr class="text-center" v-for="i in this.recruitment" :key="i"> -->
                             <tr class="text-center" v-for="i in this.recruitment" :key="i">
-                                <td class="border border-stroke-100">
-                                    <img :src="getImg(i)" alt="">
+                                <td class="border border-stroke-100 text-center">
+                                    <a :href="getImg(i,'download')">
+                                        <img :src="getImg(i,'view')" alt="" class="h-36 my-2 inline-block">
+                                    </a>
                                 </td>
                                 <td class="border border-stroke-100">{{i.name}}</td>
                                 <td class="border border-stroke-100">{{i.list_pekerjaan}}</td>
@@ -27,7 +29,7 @@
                                 <td class="border border-stroke-100 py-2">
                                     <button class="bg-safe hover:bg-green-500 duration-200 rounded-full text-white
                                                     duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
-                                        @click="detailRecruitment(1)"> 
+                                        @click="gantiJobVacancy(i.id)"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Detail</span>
                                     </button>
@@ -160,9 +162,9 @@ export default {
             const dateTime = date + ' ' + time
             return dateTime
         },
-        getImg(job_vacancy){
-            // return job_vacancy.qr_link
-            return "https://cdn.pixabay.com/photo/2015/05/31/15/07/coffee-792113__340.jpg"
+        getImg(job_vacancy, exports){
+            let id = job_vacancy.qr_link.split("d/")
+            return "https://drive.google.com/uc?export="+exports+"&id="+id[1]
         },
         openModal(){
             this.headerModal = "Update Rekrutmen";
@@ -222,6 +224,13 @@ export default {
             if (idx !== -1) {
                 this.lowongan.splice(idx, 1);
             }
+        },
+        gantiJobVacancy(id){
+            axios
+            .get('http://127.0.0.1:8888/api/applicant/vacancy/'+id)
+            .then(({data}) => (
+                this.applicant = data
+            ))
         }
     },
     created() {
@@ -248,11 +257,6 @@ export default {
         .get('http://127.0.0.1:8888/api/job_vacancy/all')
         .then(({data}) => (
             this.recruitment = data
-        ))
-        axios
-        .get('http://127.0.0.1:8888/api/applicant/all')
-        .then(({data}) => (
-            this.applicant = data
         ))
     }
 }

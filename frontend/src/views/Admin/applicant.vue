@@ -41,25 +41,33 @@
                         </div>
                     </div>
                 </div>
-
-                <p class="mt-10 font-bold">PENDIDIKAN TERAKHIR</p>
-                <div class="w-6/12 flex gap-9 mb-5">
-                    <div class="font-bold">
-                        <p class="mt-2">GELAR</p>
-                        <p class="mt-2">JURUSAN</p>
-                        <p class="mt-2">NAMA SEKOLAH</p>
+                
+                <div class="flex mb-5">
+                    <div class="w-6/12">
+                        <p class="font-bold">PENDIDIKAN TERAKHIR</p>
+                        <div class="w-6/12 flex gap-9 mb-5">
+                            <div class="font-bold">
+                                <p class="mt-2">GELAR</p>
+                                <p class="mt-2">JURUSAN</p>
+                                <p class="mt-2">NAMA SEKOLAH</p>
+                            </div>
+                            <div>
+                                <p class="mt-2"></p>
+                                <p class="mt-2"><span class="font-bold">:</span> {{this.dataApplicant.pendidikan_terakhir}}</p>
+                                <p class="mt-2"><span class="font-bold">:</span> {{this.dataApplicant.jurusan}}</p>
+                                <p class="mt-2"><span class="font-bold">:</span> {{this.dataApplicant.nama_sekolah}}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p class="mt-2"></p>
-                        <p class="mt-2"><span class="font-bold">:</span> {{this.dataApplicant.pendidikan_terakhir}}</p>
-                        <p class="mt-2"><span class="font-bold">:</span> {{this.dataApplicant.jurusan}}</p>
-                        <p class="mt-2"><span class="font-bold">:</span> {{this.dataApplicant.nama_sekolah}}</p>
+
+                    <div class="w-6/12">
+                        <div class="mb-2 flex gap-2">
+                            <p class="font-bold mb-2">LAMPIRAN :</p>
+                            <a :href="getFile(this.dataApplicant.lampiran_drive_id)" class="hover:underline hover:text-blue-700">
+                                Lihat Lampiran (klik disini)
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="mb-2">
-                    <p class="font-bold mb-2">LAMPIRAN :</p>
-
                 </div>
                 
             </div>
@@ -85,6 +93,9 @@ export default {
             const today = new Date()
             const date = ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
             return date
+        },
+        getFile(id){
+            return "https://drive.google.com/file/d/"+id+"/view?usp=sharing"
         },
     },
     mounted() {

@@ -81,12 +81,8 @@
                         </div>
 
                         <p class="mt-4">POSISI YANG DILAMAR :</p> 
-                        <select name="posisi_dilamar" class="w-full text-lg rounded-lg outline-none ring-1 ring-inset ring-stroke-100 bg-background-400 px-4 py-1.5 my-1 outline-none ">
-                            <option value="a">a</option>
-                            <option value="b">b</option>
-                            <option value="c">c</option>
-                            <option value="d">d</option>
-                            <option value="e">e</option>
+                        <select name="posisi_dilamar" class="w-full text-lg rounded-lg outline-none ring-1 ring-inset ring-stroke-100 bg-background-400 px-2 py-1.5 my-1 outline-none ">
+                            <option v-for="i in pekerjaan" :key="i" v-bind:value="i">{{i}}</option>
                         </select>
 
                         <p class="mt-4">LAMPIRAN:</p>
@@ -127,6 +123,7 @@ export default {
             judulHalaman: 'Biodata',
             url: null,
             lowongan: null,
+            pekerjaan: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
         }
     },
@@ -154,6 +151,7 @@ export default {
                 fileLamaran.originalname = fileLamaran.name
 
             let formData = new FormData()
+            formData.append('job_vacancy_id',this.$route.query.id)
             formData.append('nama',e.target[0].value)
             formData.append('no_ktp',e.target[1].value)
             formData.append('tempat_lahir',e.target[2].value)
@@ -170,7 +168,6 @@ export default {
             formData.append('posisi_dilamar',e.target[15].value)
             formData.append('lampiran',fileLamaran)
 
-            // console.log(formData)
             $('#spinner-modal').fadeIn("slow");
 
             axios.post('http://127.0.0.1:8888/api/applicant/create', formData, {headers: {
@@ -205,7 +202,7 @@ export default {
         .get('http://127.0.0.1:8888/api/job_vacancy/'+this.$route.query.id)
         .then(({data}) => (
             this.lowongan = data,
-            console.log(this.lowongan)
+            this.pekerjaan = this.lowongan.list_pekerjaan.split(",")
         ))
     },
     created(){
