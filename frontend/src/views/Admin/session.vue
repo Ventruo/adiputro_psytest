@@ -107,7 +107,8 @@ export default {
     data() {
         return {
             headerModal: "Create A New Session",
-            exam_session: null
+            exam_session: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     created() {
@@ -160,7 +161,7 @@ export default {
                 var dateFinish = new Date(finish);
                 var duration = (dateFinish.getTime()-dateStart.getTime())/(1000*60)
 
-                axios.post('http://127.0.0.1:8888/api/exam_session/create',{
+                axios.post(this.port+'/exam_session/create',{
                     "email": email,
                     "start_date": dateStart,
                     "finish_date": dateFinish,
@@ -201,7 +202,7 @@ export default {
         });
 
         axios
-        .get('http://127.0.0.1:8888/api/exam_session/all')
+        .get(this.port+'/exam_session/all')
         .then(({data}) => (
             this.exam_session = data
         ))

@@ -68,7 +68,8 @@ export default {
     data(){
         return{
             judulHalaman: 'Persiapan Tes',
-            section: null
+            section: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     created(){
@@ -76,7 +77,7 @@ export default {
     },
     mounted(){
         axios
-        .get('http://127.0.0.1:8888/api/section/'+this.$route.query.current_section)
+        .get(this.port+'/section/'+this.$route.query.current_section)
         .then(({data}) => (
             this.section = data
         ))

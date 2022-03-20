@@ -59,18 +59,9 @@ export default {
             tenggat: 'Jumat, 21 Januari 2022 23:59:59',
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
-            day: ["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"],
-            section: null
-        }
-    },
-    data() {
-        return {
-            judulHalaman: 'Dashboard',
-            timestamp: '',
-            tenggat: 'Jumat, 21 Januari 2022 23:59:59',
-            timerWaktu: null,
-            month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
+            section: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     created() {
@@ -102,7 +93,7 @@ export default {
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
         axios
-        .get('http://127.0.0.1:8888/api/section/all/1')
+        .get(this.port+'/section/all/1')
         .then(({data}) => (
             this.section = data
             // console.log(this.section)

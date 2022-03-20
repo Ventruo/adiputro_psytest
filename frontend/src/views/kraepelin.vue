@@ -136,7 +136,8 @@ export default {
             section_id: 53,
             exam_session: 9,
             section_result_id: 26,
-            dataKraepelin: null
+            dataKraepelin: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
@@ -149,7 +150,7 @@ export default {
             let jk = e.target[7].checked!=false ? e.target[7].value : e.target[8].value
             
             $('#spinner-modal').fadeIn("slow");
-            axios.post('http://127.0.0.1:8888/api/kreapelin_data/create',{
+            axios.post(this.port+'/kreapelin_data/create',{
                 "section_result_id": this.section_result_id,
                 "pendidikan": pendidikan,
                 "jurusan": jurusan,
@@ -275,17 +276,17 @@ export default {
                 data: this.jawabanFinal
             }
 
-            axios.post('http://127.0.0.1:8888/api/section_result/create',{
+            axios.post(this.port+'/section_result/create',{
                 "test_result_id": 29,
                 "section_id": 11,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
-                "finish_date": "2022-01-28 18:00:00"
+                "finish_date": Date.now()
             })
             .then((response) => {
-                axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
+                axios.post(this.port+'/question_result/createmultiple',formData)
                 .then((response) => {
-                    axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
+                    axios.post(this.port+'/test_result/calculateresult',{
                         test_id: 2,
                         email: "saifullah@x.com"
                     })
@@ -359,7 +360,7 @@ export default {
 
     mounted(){
         axios
-        .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
+        .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaanFull = [],
             data.forEach(d => {
@@ -370,7 +371,7 @@ export default {
         ))
 
         axios
-        .get('http://127.0.0.1:8888/api/kreapelin_data/?section_result_id='+this.section_result_id)
+        .get(this.port+'/kreapelin_data/?section_result_id='+this.section_result_id)
         .then(({data}) => (
             this.dataKraepelin = data
         ))

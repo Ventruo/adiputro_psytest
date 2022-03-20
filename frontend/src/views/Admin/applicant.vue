@@ -85,6 +85,7 @@ export default {
         return{
             dataApplicant: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
@@ -100,7 +101,7 @@ export default {
     },
     mounted() {
         axios
-        .get("http://127.0.0.1:8888/api/applicant/"+this.$route.query.email)
+        .get(this.port+"/applicant/"+this.$route.query.email)
         .then(({data}) => (
             this.dataApplicant = data,
             console.log(this.dataApplicant)

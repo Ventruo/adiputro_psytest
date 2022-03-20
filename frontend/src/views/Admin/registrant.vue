@@ -54,7 +54,8 @@ export default {
     },
     data() {
         return {
-            registrantList: null
+            registrantList: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     created() {
@@ -70,7 +71,7 @@ export default {
         $('#menu-registrant').addClass('text-black')
 
         axios
-        .get('http://127.0.0.1:8888/api/registrant/all')
+        .get(this.port+'/registrant/all')
         .then(({data}) => (
             this.registrantList = data
         ))

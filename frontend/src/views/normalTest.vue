@@ -101,7 +101,8 @@ export default {
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
             test_id: null,
-            exam_session: 13
+            exam_session: 13,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
@@ -226,17 +227,17 @@ export default {
                 data: this.jawabanFinal
             }
 
-            axios.post('http://127.0.0.1:8888/api/section_result/create',{
+            axios.post(this.port+'/section_result/create',{
                 "test_result_id": 63,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": "2022-01-28 15:00:00",
-                "finish_date": "2022-01-28 18:00:00"
+                "finish_date": Date.now()
             })
             .then((response) => {
-                axios.post('http://127.0.0.1:8888/api/question_result/createmultiple',formData)
+                axios.post(this.port+'/question_result/createmultiple',formData)
                 .then((response) => {
-                    axios.post('http://127.0.0.1:8888/api/test_result/calculateresult',{
+                    axios.post(this.port+'/test_result/calculateresult',{
                         test_id: this.test_id,
                         email: "moh.fharhan@x.com"
                     })
@@ -328,7 +329,7 @@ export default {
 
     mounted(){
         axios
-        .get('http://127.0.0.1:8888/api/question/all?section_id='+this.section_id)
+        .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
             this.menit = this.pertanyaan[0]["section"]["duration"],
@@ -340,7 +341,7 @@ export default {
         ))
 
         axios
-        .get('http://127.0.0.1:8888/api/section/'+this.section_id)
+        .get(this.port+'/api/section/'+this.section_id)
         .then(({data}) => (
             this.test_id = data.test_id
         ))

@@ -148,7 +148,8 @@ export default {
             headerModal: "Buat Rekrutmen Baru",
             recruitment: null,
             applicant: null,
-            lowongan: []
+            lowongan: [],
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     created() {
@@ -173,7 +174,7 @@ export default {
         },
         createRecruitment(e){
             let nama = e.target[0].value
-            let url = "http://localhost:3000/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
+            let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
             let date = Date.now()
             if(nama==""||this.lowongan.length==0)
                 Swal.fire({
@@ -183,7 +184,7 @@ export default {
                 });
             else{
                 $('#spinner-modal').fadeIn("slow");
-                axios.post('http://127.0.0.1:8888/api/job_vacancy/create',{
+                axios.post(this.port+'/job_vacancy/create',{
                     "name": nama,
                     "list_pekerjaan": this.lowongan,
                     "start_date": date,
@@ -191,7 +192,7 @@ export default {
                 })
                 .then((response) => {
                     axios
-                    .get('http://127.0.0.1:8888/api/job_vacancy/all')
+                    .get(this.port+'/job_vacancy/all')
                     .then(({data}) => (
                         this.recruitment = data,
                         this.lowongan = [],
@@ -227,7 +228,7 @@ export default {
         },
         gantiJobVacancy(id){
             axios
-            .get('http://127.0.0.1:8888/api/applicant/vacancy/'+id)
+            .get(this.port+'/applicant/vacancy/'+id)
             .then(({data}) => (
                 this.applicant = data
             ))
@@ -237,6 +238,7 @@ export default {
         this.$emit('updateHeader', 'Recruitment')
     },
     mounted(){
+        console.log(import.meta.env)
         $('.menu').removeClass('bg-background-200')
         $('.menu').removeClass('text-black')
         $('#menu-recruitment').addClass('bg-background-200')
@@ -254,9 +256,10 @@ export default {
         });
 
         axios
-        .get('http://127.0.0.1:8888/api/job_vacancy/all')
+        .get(this.port+'/job_vacancy/all')
         .then(({data}) => (
-            this.recruitment = data
+            this.recruitment = data,
+            console.log(import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1))
         ))
     }
 }

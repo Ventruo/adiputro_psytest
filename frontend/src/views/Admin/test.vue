@@ -182,7 +182,8 @@ export default {
             questionList: null,
             test: null,
             questionId: 0,
-            headerModal: "Create A New Section"
+            headerModal: "Create A New Section",
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     created() {
@@ -200,23 +201,23 @@ export default {
             }
 
             axios
-            .get('http://127.0.0.1:8888/api/section/all/'+this.test[0].id)
+            .get(this.port+'/section/all/'+this.test[0].id)
             .then(({data}) => (
-                this.sectionList = data,
-                console.log(this.sectionList)
+                this.sectionList = data
+                // console.log(this.sectionList)
             ))
         },
         gantiTes(event){
             this.questionList = null
             axios
-            .get('http://127.0.0.1:8888/api/section/all/'+event.target.value)
+            .get(this.port+'/section/all/'+event.target.value)
             .then(({data}) => (
                 this.sectionList = data
             ))
         },
         gantiSection(id){
             axios
-            .get('http://127.0.0.1:8888/api/question/all?section_id='+id)
+            .get(this.port+'/question/all?section_id='+id)
             .then(({data}) => (
                 this.questionList = data
             ))
@@ -254,7 +255,7 @@ export default {
         });
 
         axios
-        .get('http://127.0.0.1:8888/api/test/all')
+        .get(this.port+'/test/all')
         .then(({data}) => (
             this.test = data,
             this.dataInit()

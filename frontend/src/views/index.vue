@@ -48,6 +48,7 @@ export default {
         return {
             judulHalaman: 'Login',
             info: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {

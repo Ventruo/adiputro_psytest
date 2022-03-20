@@ -6,7 +6,7 @@ import store from './store'
 import VueCookies from 'vue3-cookies'
 import './interceptor/axios';
 
-createApp(App)
+const app = createApp(App)
     .use(router)
     .use(store)
     .use(VueCookies)

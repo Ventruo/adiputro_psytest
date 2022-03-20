@@ -125,6 +125,7 @@ export default {
             lowongan: null,
             pekerjaan: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
@@ -170,7 +171,7 @@ export default {
 
             $('#spinner-modal').fadeIn("slow");
 
-            axios.post('http://127.0.0.1:8888/api/applicant/create', formData, {headers: {
+            axios.post(this.port+'/applicant/create', formData, {headers: {
                 'Content-Type': 'multipart/form-data',
             }})
             .then((response) => {
@@ -199,7 +200,7 @@ export default {
     },
     mounted() {
         axios
-        .get('http://127.0.0.1:8888/api/job_vacancy/'+this.$route.query.id)
+        .get(this.port+'/job_vacancy/'+this.$route.query.id)
         .then(({data}) => (
             this.lowongan = data,
             this.pekerjaan = this.lowongan.list_pekerjaan.split(",")

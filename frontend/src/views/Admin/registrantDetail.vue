@@ -122,7 +122,8 @@ export default {
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            nama: 'Moh. Fharhan Dhoyfur'
+            nama: 'Moh. Fharhan Dhoyfur',
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods:{
@@ -141,7 +142,7 @@ export default {
     },
     mounted(){
         axios
-        .get('http://127.0.0.1:8888/api/exam_session/getbyemail/'+this.email)
+        .get(this.port+'/exam_session/getbyemail/'+this.email)
         .then(({data}) => (
             this.exam_session = data.id,
             // axios
@@ -152,31 +153,31 @@ export default {
             //     console.log(data)
             // ))
             axios
-            .get('http://127.0.0.1:8888/api/test_result/61')
+            .get(this.port+'/test_result/61')
             .then(({data}) => (
                 this.dataRegistrant["ruang_bidang"] = JSON.parse(data.result),
                 this.loaded = this.loaded+1
             )),
             axios
-            .get('http://127.0.0.1:8888/api/test_result/62')
+            .get(this.port+'/test_result/62')
             .then(({data}) => (
                 this.dataRegistrant["dpm"] = JSON.parse(data.result),
                 this.loaded = this.loaded+1
             )),
             axios
-            .get('http://127.0.0.1:8888/api/test_result/63')
+            .get(this.port+'/test_result/63')
             .then(({data}) => (
                 this.dataRegistrant["komponen"] = JSON.parse(data.result),
                 this.loaded = this.loaded+1
             )),
             axios
-            .get('http://127.0.0.1:8888/api/test_result/64')
+            .get(this.port+'/test_result/64')
             .then(({data}) => (
                 this.dataRegistrant["mekanik"] = JSON.parse(data.result),
                 this.loaded = this.loaded+1
             )),
             axios
-            .get('http://127.0.0.1:8888/api/test_result/65')
+            .get(this.port+'/test_result/65')
             .then(({data}) => (
                 this.dataRegistrant["penalaran_mekanik"] = JSON.parse(data.result),
                 this.loaded = this.loaded+1

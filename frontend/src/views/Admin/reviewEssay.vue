@@ -48,7 +48,8 @@ export default {
         return {
             noSoal: 1,
             jumSoal: 5,
-            hasil: []
+            hasil: [],
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
