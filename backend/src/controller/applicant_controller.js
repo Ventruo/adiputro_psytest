@@ -53,6 +53,27 @@ class ApplicantController {
     });
   }
 
+  async getByVacancy(req, res) {
+    console.log("Getting Applicant By Vacancy...");
+
+    console.log(req.params.id_vacancy);
+    if (!req.params.id_vacancy) {
+      missing_param_response(res);
+      return;
+    }
+
+    Applicant.findAll({
+      where: { job_vacancy_id: req.params.id_vacancy },
+    }).then((applicants) => {
+      if (!applicants) {
+        data_not_found_response(res);
+        return;
+      }
+
+      success_response(res, applicants, "Get Multiple Data Successful!");
+    });
+  }
+
   async getAll(req, res) {
     console.log("Getting All Available Applicants...");
 
@@ -99,6 +120,7 @@ class ApplicantController {
         req.body.email
       );
       const new_applicant = await Applicant.create({
+        job_vacancy_id: req.body.job_vacancy_id,
         nama: req.body.nama,
         no_ktp: req.body.no_ktp,
         tempat_lahir: req.body.tempat_lahir,
@@ -166,6 +188,7 @@ class ApplicantController {
         }
 
         applicant.set({
+          job_vacancy_id: req.body.job_vacancy_id,
           nama: req.body.nama,
           no_ktp: req.body.no_ktp,
           tempat_lahir: req.body.tempat_lahir,

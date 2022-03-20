@@ -11,6 +11,10 @@ Applicant.init(
       allowNull: false,
       autoIncrement: true,
     },
+    job_vacancy_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
     nama: {
       type: DataTypes.STRING,
       allowNull: false,

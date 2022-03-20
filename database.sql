@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `applicant`;
 
 CREATE TABLE `applicant` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `job_vacancy_id` bigint(10) NOT NULL,
   `nama` varchar(1000) NOT NULL,
   `no_ktp` varchar(1000) NOT NULL,
   `tempat_lahir` varchar(1000) NOT NULL,
@@ -41,14 +42,15 @@ CREATE TABLE `applicant` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `applicant` */
 
-insert  into `applicant`(`id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
-(12,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 13:23:22'),
-(13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1xufIw_Z_xDEUrxCSwftXh5ZmPdYVEwnK','2022-03-17 13:11:11','2022-03-17 13:23:53'),
-(14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1Hdy5R70jU25MILnVpMH-ctWDOtEjVokd','2022-03-17 15:23:48','2022-03-17 15:23:48');
+insert  into `applicant`(`id`,`job_vacancy_id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
+(12,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 13:23:22'),
+(13,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','abc@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'15J2vQM6IOnGr5wR0o95ajRsRr3q1LNhE','2022-03-17 13:11:11','2022-03-20 03:57:51'),
+(14,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1Hdy5R70jU25MILnVpMH-ctWDOtEjVokd','2022-03-17 15:23:48','2022-03-17 15:23:48'),
+(15,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1VqZZdsffNkct9upM9ailqSmXc93CGV8a','2022-03-20 03:55:30','2022-03-20 03:55:30');
 
 /*Table structure for table `exam_session` */
 
@@ -118,6 +120,20 @@ CREATE TABLE `job_vacancy` (
 insert  into `job_vacancy`(`id`,`name`,`qr_link`,`list_pekerjaan`,`start_date`,`status`,`createdAt`,`updatedAt`) values 
 (13,'Lamaran ini bagus','https://drive.google.com/file/d/1Zzf22lpYpC50lKM3vIdjUmsYMxOMCKzj','Manager,Kasir','2022-03-17 19:03:14',1,'2022-03-18 13:19:39','2022-03-18 16:07:50'),
 (14,'Lamaran ini bagus','https://drive.google.com/file/d/1TnOK0LKQm2TUa95OgxZ1mSRbYPytqUBG','Manager,Kasir','2022-03-17 19:03:14',1,'2022-03-18 16:06:37','2022-03-18 16:14:44');
+
+/*Table structure for table `kreapelin_data` */
+
+DROP TABLE IF EXISTS `kreapelin_data`;
+
+CREATE TABLE `kreapelin_data` (
+  `section_result_id` bigint(20) NOT NULL,
+  `pendidikan` varchar(100) NOT NULL,
+  `jurusan` varchar(100) NOT NULL COMMENT 'ilmu pasti/ipa or ips',
+  `jenis_kelamin` varchar(100) NOT NULL,
+  PRIMARY KEY (`section_result_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `kreapelin_data` */
 
 /*Table structure for table `question` */
 

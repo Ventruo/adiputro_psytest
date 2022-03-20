@@ -19,6 +19,7 @@ router.post(
   controller.update.bind(controller)
 );
 
+router.get("/vacancy/:id_vacancy", controller.getByVacancy);
 router.get("/:email", controller.getOne);
 router.get("/", controller.getByFilter);
 
