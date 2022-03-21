@@ -1,7 +1,8 @@
 import axios from "axios";
 import router from "../router";
 
-axios.defaults.baseURL = "http://127.0.0.1:8888/api";
+let url = import.meta.env.VITE_BACKEND_URL;
+axios.defaults.baseURL = url;
 axios.defaults.withCredentials = true;
 
 let refresh = false;
