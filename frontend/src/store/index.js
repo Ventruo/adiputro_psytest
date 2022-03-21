@@ -2,6 +2,11 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 
 export default createStore({
+    data(){
+        return{
+            port: import.meta.env.VITE_BACKEND_URL
+        }
+    },
     state () {
         return {
             access_token: "-"
@@ -12,7 +17,7 @@ export default createStore({
             state.access_token = access_token;
         },
         refresh_access_token (state, refresh_token) {
-            axios.post('http://127.0.0.1:8888/api/auth/refresh',{
+            axios.post(this.port+'/auth/refresh',{
                 refresh_token: refresh_token,
             })
             .then((response) => {
