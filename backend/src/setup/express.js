@@ -23,8 +23,13 @@ app.use(
   })
 );
 
+let host = "localhost";
+if (process.env.NODE_ENV != "dev") {
+  host = "0.0.0.0";
+}
+
 const initExpress = () => {
-  app.listen(PORT, () => {
+  app.listen(PORT, host, () => {
     console.log(`Server started on ${process.env.EXPRESS_URL}`);
   });
 };
