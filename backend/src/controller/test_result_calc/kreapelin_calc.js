@@ -31,12 +31,14 @@ async function calculate_kreapelin(test_type, testres, res) {
               if (questionres[i].question_id == questions.rows[j].id) {
                 let ctr_correct = 0;
 
+                let column_skipped = false;
                 let correct_answer = questions.rows[j].answer.split(",");
                 let user_answer = questionres[i].answer.split(",");
                 for (let k = 0; k < user_answer.length; k++) {
-                  if (user_answer[k] == -1) sum_skipped++;
-                  //FIXME ini masih per soal sum skipped nya, belum per kolom
-                  else if (user_answer[k] == correct_answer[k]) ctr_correct++;
+                  if (!column_skipped && user_answer[k] == -1) {
+                    sum_skipped++;
+                    column_skipped = true;
+                  } else if (user_answer[k] == correct_answer[k]) ctr_correct++;
                   else sum_error++;
                 }
                 correct_data[i] = ctr_correct;
