@@ -1,17 +1,22 @@
 version: "3"
 services:
-  web-dev:
+  adiputro_backend:
+    container_name: adiputro_backend
     build:
       context: ./
-      dockerfile: ./docker/Dockerfile.dev
+      dockerfile: Dockerfile
     expose:
-      - "3000"
-    ports:
-      - "3000:3000"
+      - 8888
     volumes:
       - .:/app
     networks:
       - web
+    labels:
+      - traefik.http.routers.adiputrobackend.rule=Host(`adiputropsytest.sedaap.xyz`) && PathPrefix(`/api`)
+      - traefik.http.routers.adiputrobackend.tls=true
+      - traefik.http.routers.adiputrobackend.tls.certresolver=lets-encrypt
+      - traefik.port=8888
+    restart: on-failure
 
 networks:
   web:
