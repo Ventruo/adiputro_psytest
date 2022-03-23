@@ -130,6 +130,8 @@ export default {
                         }
                     },
                     yAxes: {
+                        min: 0,
+                        max: 27,
                         beginAtZero: true,
                         ticks:{
                         stepSize: 5,

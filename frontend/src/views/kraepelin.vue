@@ -121,8 +121,8 @@ export default {
             namaTes: 'Tes Kraepelin',
             judulHalaman: 'EPPS',
             kolom: 1,
-            jumKolom: 50,
-            detik: 15,
+            jumKolom: 5,
+            detik: 2,
             waktu: null,
             row1: [],
             row2: [],
@@ -136,6 +136,7 @@ export default {
             dataQuestion: null,
             pilihanJawaban: null,
             section_id: 53,
+            test_result_id: null,
             exam_session: null,
             email: null,
             section_result_id: null,
@@ -161,7 +162,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 1
+                        this.detik = 2
                         this.reset()
                     }
                 }
@@ -178,7 +179,7 @@ export default {
             $('#spinner-modal').fadeIn("slow");
 
             axios.post(this.port+'/section_result/create',{
-                "test_result_id": 27,
+                "test_result_id": this.test_result_id,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": parseInt(this.$cookies.get("start_time")),
@@ -328,11 +329,11 @@ export default {
                 data: this.jawabanFinal
             }
 
-            console.log(formData)
+            // console.log(formData)
 
             axios.post(this.port+'/section_result/update',{
                 "updating_id": this.section_result_id,
-                "test_result_id": 27,
+                "test_result_id": this.test_result_id,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
                 "start_date": parseInt(this.$cookies.get("start_time")),
@@ -425,8 +426,12 @@ export default {
         let datas = this.$cookies.get("data_registrant")
         this.email = datas.email;
         this.exam_session = datas.exam_session;
+        let tests = datas.test;
+        for (let i = 0; i < tests.length; i++) {
+            if (tests[i][0]==5)
+                this.test_result_id = tests[i][1]
+        }
 
-        // diganti get berdasarkan email
         axios
         .get(this.port+'/kreapelin_data/getbyemail/'+this.email)
         .then(({data}) => (

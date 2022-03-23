@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute top-32 w-full flex justify-center" style="height: 30rem;">
+    <div class="absolute w-full flex justify-center" style="height: 30rem;">
         <div class="overflow-auto w-5/6 h-full no-scrollbar mt-5" v-if="this.registrantList!=null">
             <p class="font-bold">Cari Nama Registrant : </p>
             <input type="text" name="token" id="userToken" class="w-1/2 ml-2 mb-3 bg-background-300 ring-1 ring inset ring-stroke-100 
