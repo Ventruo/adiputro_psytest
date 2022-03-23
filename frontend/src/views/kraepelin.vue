@@ -13,7 +13,7 @@
                 <p class="mt-2">PENDIDIKAN TERAKHIR :</p>
                 <div class="flex my-2">
                     <div class="w-1/5"><Radio :values="'smea'" :names="'pendidikan'" :id="'SMEA'" :label="'SMEA'"/></div>
-                    <div class="w-1/5"><Radio :values="'smk'" :names="'pendidikan'" :id="'SMK'" :label="'STM/SMK'"/></div>
+                    <div class="w-1/5"><Radio :values="'stm-smk'" :names="'pendidikan'" :id="'SMK'" :label="'STM/SMK'"/></div>
                     <div class="w-1/5"><Radio :values="'sma'" :names="'pendidikan'" :id="'SMA'" :label="'SMA'"/></div>
                     <div class="w-1/5"><Radio :values="'sarjana muda'" :names="'pendidikan'" :id="'SARJANA MUDA'" :label="'SARJANA MUDA (D3)'"/></div>
                     <div class="w-1/5"><Radio :values="'sarjana'" :names="'pendidikan'" :id="'SARJANA'" :label="'SARJANA (S1)'"/></div>
@@ -135,7 +135,8 @@ export default {
             dataQuestion: null,
             pilihanJawaban: null,
             section_id: 53,
-            exam_session: 6,
+            exam_session: null,
+            email: null,
             section_result_id: 27,
             dataKraepelin: null,
             port: import.meta.env.VITE_BACKEND_URL
@@ -210,15 +211,15 @@ export default {
             this.jawaban.push([4,8,5,7,3,6,7,2,0,8,9,0,8,5,9,9,1,4,4,7])
             this.jawaban.push([8,7,9,9,4,6,2,1,6,2,8,0,2,5,0,5,1,7])
             this.jawaban.push([3,7,2,0,9,2,4,8,3,5,3,7,6,6,3])
-
+//31 36
             this.jawaban.push([9,1,6,8,9,0,3,0,2,9,5,2,5,0,2,4,7,8,2])
-            this.jawaban.push([0,9,4,0,8,0,3,3,1,9,6,3,3,1,3,4,3,3])
+            this.jawaban.push([0,9,4,0,8,0,3,3,1,9,6,3,9,1,3,4,3,3])
             this.jawaban.push([7,2,1,4,8,1,9,4,5,1,9,6,5,6,8,2,2,2])
-            this.jawaban.push([3,8,8,3,0,6,1,3,0,2,9,8,7,0,3,4,0,0,0])
+            this.jawaban.push([3,8,8,3,0,6,1,3,0,2,9,8,7,0,2,3,0,0,0])
             this.jawaban.push([9,6,4,8,7,9,0,0,4,0,7,0,5,6,3,5,4])
 
             this.jawaban.push([7,9,1,0,3,0,5,8,4,9,5,2,7,7,4,3,9,9])
-            this.jawaban.push([3,6,1,7,0,4,3,8,8,0,3,6,9,6,2,3,5,0])
+            this.jawaban.push([3,6,1,7,0,4,3,8,8,0,3,6,9,6,2,9,5,0])
             this.jawaban.push([8,3,0,0,0,7,4,4,8,4,1,5,8,7,5,1])
             this.jawaban.push([3,6,1,3,5,4,6,4,1,5,3,1,2,6,6])
             this.jawaban.push([9,0,0,3,7,5,9,1,3,0,5,9,0,2,8,1,0,5,6])
@@ -227,7 +228,7 @@ export default {
             this.jawaban.push([3,0,1,2,3,3,1,8,4,0,6,5,8])
             this.jawaban.push([2,1,1,3,2,3,4,9,1,8,3,7,4,3,6,1,7,0])
             this.jawaban.push([6,5,7,2,0,7,2,2,9,2,6,3,1,4,0,9,1,7])
-            this.jawaban.push([1,1,5,0,5,0,6,3,4,8,7,3,5,1,1,1,0,9])
+            this.jawaban.push([1,1,5,0,5,0,6,3,4,8,7,3,5,1,1,1,0,4])
 
             this.jawaban.push([1,0,3,4,5,3,6,7,8,1,2,8,8,8,7,6,5])
             this.jawaban.push([0,6,2,9,4,4,7,0,8,2,4,4,4,5,1,1])
@@ -279,13 +280,13 @@ export default {
                 data: this.jawabanFinal
             }
 
-            console.log(formData)
+            // console.log(formData)
 
             axios.post(this.port+'/section_result/create',{
                 "test_result_id": 27,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
-                "start_date": "2022-01-28 15:00:00",
+                "start_date": this.$cookies.get("start_time"),
                 "finish_date": Date.now()
             })
             .then((response) => {
@@ -293,7 +294,7 @@ export default {
                 .then((response) => {
                     axios.post(this.port+'/test_result/calculateresult',{
                         test_id: 5,
-                        email: "saifullah@x.com"
+                        email: this.email
                     })
                     .then((response) => {
                         Swal.fire(
@@ -302,6 +303,7 @@ export default {
                             'success'
                         )
                         .then(function(){
+                            this.$cookies.remove("start_time")
                             window.location = '/dashboard'
                         })
                     })
@@ -381,6 +383,10 @@ export default {
         .then(({data}) => (
             this.dataKraepelin = data
         ))
+
+        let datas = this.$cookies.get("data_registrant")
+        this.email = datas.email;
+        this.exam_session = datas.exam_session;
 
         let thi = this
         $('body').keydown(function(event) {

@@ -74,7 +74,13 @@ export default {
                         });
                     }else{
                         let {token, age} = e.data.refresh_token;
+                        let data_user = {
+                            "test": e.data.tests, 
+                            "email": e.data.email,
+                            "exam_session": e.data.exam_session
+                        };
                         this.$cookies.set('refresh_token', token, age);
+                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age);
                         axios.defaults.headers.common['Authorization'] = `Bearer ${e.data.token}`
                         
                         this.$router.push('/dashboard')

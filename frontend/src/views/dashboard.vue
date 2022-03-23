@@ -92,11 +92,13 @@ export default {
         // console.log(this.$cookies.get('refresh_token'));
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
+        let tes = this.$cookies.get('data_registrant').test
+        
         axios
-        .get(this.port+'/section/all/1')
+        .get(this.port+'/section/all/'+tes[0])
         .then(({data}) => (
-            this.section = data
-            // console.log(this.section)
+            this.section = data,
+            console.log(this.section)
         ))
     },
 }

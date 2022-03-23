@@ -69,26 +69,30 @@
             </div>
             <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
-                <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==9">
+                <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                        <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                        <Kraepelin :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                     </div>
-                    <!-- <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
-                        <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
-                    </div> -->
-                    <div class="absolute -z-10" id="pdf">
+                    <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
+                        <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
+                        <KraepelinGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
+                    </div>
+                    <div class="absolute -z-20" id="pdf">
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
+                            <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                            <Kraepelin :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
                         </div>
-                        <!-- <div class="flex flex-col bg-white py-2 px-3 text-black" 
+                        <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
-                            <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/>
-                        </div> -->
+                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
+                            <KraepelinGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,19 +114,22 @@ import EppsGraphics from "../../components/report/eppsGraphics.vue"
 
 import Kecil from "../../components/report/kecilkecil.vue"
 
+import Kraepelin from "../../components/report/kraepelin.vue"
+import KraepelinGraphics from "../../components/report/kraepelinGraphics.vue"
+
 export default {
     components: { 
-        axios, Tintum, Epps, EppsGraphics, Kecil
+        axios, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics
     },
     data () {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
-            loaded: 4,
+            loaded: 0,
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            nama: 'Moh. Fharhan Dhoyfur',
+            nama: 'Mr. X',
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -132,7 +139,7 @@ export default {
             var doc = new jsPDF("p","pt","a4");
             doc.html(document.getElementById('pdf'), {
                 callback: function(pdf) {
-                    pdf.save("Moh. Fharhan Dhoyfur.pdf");
+                    pdf.save("Mr. X.pdf");
                 }
             })
         }
@@ -142,47 +149,54 @@ export default {
     },
     mounted(){
         axios
-        .get(this.port+'/exam_session/getbyemail/'+this.email)
+        .get(this.port+'/test_result/27')
         .then(({data}) => (
-            this.exam_session = data.id,
+            this.dataRegistrant = JSON.parse(data.result),
+            this.loaded = 1
+        ))
+        // axios
+        // .get(this.port+'/exam_session/getbyemail/'+this.email)
+        // .then(({data}) => (
+        //     this.exam_session = data.id,
             // axios
             // .get('http://127.0.0.1:8888/api/test_result/'+this.exam_session)
             // .then(({data}) => (
             //     this.dataRegistrant = JSON.parse(data.result),
-                // this.loaded = true,
+            //     this.loaded = 1,
             //     console.log(data)
             // ))
-            axios
-            .get(this.port+'/test_result/61')
-            .then(({data}) => (
-                this.dataRegistrant["ruang_bidang"] = JSON.parse(data.result),
-                this.loaded = this.loaded+1
-            )),
-            axios
-            .get(this.port+'/test_result/62')
-            .then(({data}) => (
-                this.dataRegistrant["dpm"] = JSON.parse(data.result),
-                this.loaded = this.loaded+1
-            )),
-            axios
-            .get(this.port+'/test_result/63')
-            .then(({data}) => (
-                this.dataRegistrant["komponen"] = JSON.parse(data.result),
-                this.loaded = this.loaded+1
-            )),
-            axios
-            .get(this.port+'/test_result/64')
-            .then(({data}) => (
-                this.dataRegistrant["mekanik"] = JSON.parse(data.result),
-                this.loaded = this.loaded+1
-            )),
-            axios
-            .get(this.port+'/test_result/65')
-            .then(({data}) => (
-                this.dataRegistrant["penalaran_mekanik"] = JSON.parse(data.result),
-                this.loaded = this.loaded+1
-            ))
-        ))
+            
+            // axios
+            // .get(this.port+'/test_result/61')
+            // .then(({data}) => (
+            //     this.dataRegistrant["ruang_bidang"] = JSON.parse(data.result),
+            //     this.loaded = this.loaded+1
+            // )),
+            // axios
+            // .get(this.port+'/test_result/62')
+            // .then(({data}) => (
+            //     this.dataRegistrant["dpm"] = JSON.parse(data.result),
+            //     this.loaded = this.loaded+1
+            // )),
+            // axios
+            // .get(this.port+'/test_result/63')
+            // .then(({data}) => (
+            //     this.dataRegistrant["komponen"] = JSON.parse(data.result),
+            //     this.loaded = this.loaded+1
+            // )),
+            // axios
+            // .get(this.port+'/test_result/64')
+            // .then(({data}) => (
+            //     this.dataRegistrant["mekanik"] = JSON.parse(data.result),
+            //     this.loaded = this.loaded+1
+            // )),
+            // axios
+            // .get(this.port+'/test_result/65')
+            // .then(({data}) => (
+            //     this.dataRegistrant["penalaran_mekanik"] = JSON.parse(data.result),
+            //     this.loaded = this.loaded+1
+            // ))
+        // ))
     }
     
 }
