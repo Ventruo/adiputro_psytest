@@ -138,15 +138,19 @@ export default {
             section_id: 53,
             exam_session: null,
             email: null,
-            section_result_id: 26,
+            section_result_id: null,
             dataKraepelin: null,
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
+        gotData(data){
+            if(data!=undefined){
+                document.getElementById("klikAnywhere").classList.remove("hidden"),
+                document.getElementById("bg").classList.remove("hidden")
+            }
+        },
         mulai(){
-            console.log("asd")
-            
             document.getElementById("klikAnywhere").classList.add("hidden")
             document.getElementById("bg").classList.add("hidden")
 
@@ -184,6 +188,7 @@ export default {
                 this.section_result_id = dataResponse.data.id
                 axios.post(this.port+'/kreapelin_data/create',{
                     "section_result_id": this.section_result_id,
+                    "email": this.email,
                     "pendidikan": pendidikan,
                     "jurusan": jurusan,
                     "jenis_kelamin": jk
@@ -417,16 +422,17 @@ export default {
             this.jawaban.push([])
         ))
 
-        // diganti get berdasarkan email
-        axios
-        .get(this.port+'/kreapelin_data/?section_result_id='+this.section_result_id)
-        .then(({data}) => (
-            this.dataKraepelin = data
-        ))
-
         let datas = this.$cookies.get("data_registrant")
         this.email = datas.email;
         this.exam_session = datas.exam_session;
+
+        // diganti get berdasarkan email
+        axios
+        .get(this.port+'/kreapelin_data/getbyemail/'+this.email)
+        .then(({data}) => (
+            this.dataKraepelin = data,
+            this.gotData(data)
+        ))
 
         let thi = this
         $('body').keydown(function(event) {

@@ -365,7 +365,7 @@ export default {
     },
     mounted() {
         this.arrTabel = this.data
-        console.log(this.arrTabel)
+        // console.log(this.arrTabel)
     },
 }
 </script>

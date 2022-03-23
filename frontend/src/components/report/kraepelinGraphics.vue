@@ -94,7 +94,7 @@ export default {
         for (let i = 0; i < 50; i++) {
             data.push(temp.ori_datas[i].y)
         }
-        console.log(data)
+        // console.log(data)
 
         this.dataGrafik = data
         const ctx = $('#'+this.id)

@@ -142,17 +142,28 @@ export default {
                     pdf.save("Mr. X.pdf");
                 }
             })
-        }
+        },
+        checkTest(test){
+            // this.dataRegistrant = JSON.parse(data.result),
+            let dataNow = null
+            for (let i = 0; i < this.dataRegistrant.length; i++) {
+                const data = this.dataRegistrant[i];
+                if (data.test_id == test)
+                    dataNow = JSON.parse(data.result)
+            }
+            this.dataRegistrant = dataNow
+            this.loaded = 1
+        },
     },
     created(){
         this.$emit('updateHeader', this.judulHalaman)
     },
     mounted(){
         axios
-        .get(this.port+'/test_result/27')
+        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
         .then(({data}) => (
-            this.dataRegistrant = JSON.parse(data.result),
-            this.loaded = 1
+            this.dataRegistrant = data,
+            this.checkTest(5)
         ))
         // axios
         // .get(this.port+'/exam_session/getbyemail/'+this.email)
