@@ -10,6 +10,10 @@ KreapelinData.init(
       primaryKey: true,
       allowNull: false,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     pendidikan: {
       type: DataTypes.STRING,
       allowNull: false,

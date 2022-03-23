@@ -90,6 +90,33 @@ class TestResultController {
     }
   }
 
+  async getByEmail(req, res) {
+    console.log("Getting Test Result By Email...");
+
+    if (!req.params.email) {
+      missing_param_response(res);
+      return;
+    }
+
+    TestResult.findAll({
+      include: [
+        {
+          model: ExamSession,
+          where: {
+            email: req.params.email,
+          },
+        },
+      ],
+    }).then((results) => {
+      if (results.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
+      success_response(res, results, "Get All Data Successful!");
+    });
+  }
+
   async create(req, res) {
     console.log("Creating A New Test Result...");
 

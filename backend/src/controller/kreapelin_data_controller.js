@@ -45,6 +45,26 @@ class KreapelinDataController {
     });
   }
 
+  async getByEmail(req, res) {
+    console.log("Getting All Available Kreapelin Data by Email...");
+
+    if (!req.params.email) {
+      missing_param_response(res);
+      return;
+    }
+
+    KreapelinData.findAll({ where: { email: req.params.email } }).then(
+      (data) => {
+        if (data.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        success_response(res, data, "Get All Data Successful!");
+      }
+    );
+  }
+
   async create(req, res) {
     console.log("Creating A New Kreapelin Data...");
 
@@ -62,6 +82,7 @@ class KreapelinDataController {
 
         const new_data = await KreapelinData.create({
           section_result_id: req.body.section_result_id,
+          email: req.body.email,
           pendidikan: req.body.pendidikan,
           jurusan: req.body.jurusan,
           jenis_kelamin: req.body.jenis_kelamin,
@@ -92,6 +113,7 @@ class KreapelinDataController {
 
       kreapelin_data.set({
         section_result_id: req.body.section_result_id,
+        email: req.body.email,
         pendidikan: req.body.pendidikan,
         jurusan: req.body.jurusan,
         jenis_kelamin: req.body.jenis_kelamin,

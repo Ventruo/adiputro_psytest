@@ -8,6 +8,7 @@ const { validate_required_columns } = require("../helpers/ValidationHelper");
 const short = require("short-uuid");
 const TestResult = require("../models/TestResult");
 const ExamSessionTest = require("../models/ExamSessionTest");
+const Registrant = require("../models/Registrant");
 
 class ExamSessionController {
   async getOne(req, res) {
@@ -105,6 +106,11 @@ class ExamSessionController {
     }
     ExamSessionTest.bulkCreate(es_test_bulk_data);
     TestResult.bulkCreate(test_res_bulk_data);
+
+    await Registrant.create({
+      email: req.body.email,
+      biodata: "",
+    });
 
     success_response(res, new_session.toJSON(), "Create Successful!");
   }

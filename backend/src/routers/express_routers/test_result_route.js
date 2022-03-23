@@ -12,5 +12,6 @@ router.post("/calculateresult", controller.calculate_result.bind(controller));
 
 router.get("/:id", controller.getOne);
 router.get("/getbytest/:test_id", controller.getByTest);
+router.get("/getbyemail/:email", controller.getByEmail);
 
 module.exports = router;
