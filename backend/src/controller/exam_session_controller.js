@@ -107,16 +107,18 @@ class ExamSessionController {
     ExamSessionTest.bulkCreate(es_test_bulk_data);
     TestResult.bulkCreate(test_res_bulk_data);
 
-    Registrant.findOne({ where: { email: req.body.email } }).then((reg) => {
-      if (!reg) {
-        await Registrant.create({
-          email: req.body.email,
-          biodata: "",
-        });
-      }
+    Registrant.findOne({ where: { email: req.body.email } }).then(
+      async (reg) => {
+        if (!reg) {
+          await Registrant.create({
+            email: req.body.email,
+            biodata: "",
+          });
+        }
 
-      success_response(res, new_session.toJSON(), "Create Successful!");
-    });
+        success_response(res, new_session.toJSON(), "Create Successful!");
+      }
+    );
   }
 
   async update(req, res) {
