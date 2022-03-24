@@ -6,6 +6,7 @@ const {
   data_not_found_response,
 } = require("../helpers/ResponseHelper");
 const ExamSessionTest = require("../models/ExamSessionTest");
+const TestResult = require("../models/TestResult");
 
 class AuthController {
   constructor() {
@@ -67,29 +68,45 @@ class AuthController {
 
         ExamSessionTest.findAll({
           where: { exam_session_id: session.id },
-        }).then((testresults) => {
-          let tests = [];
+        }).then((assigned_tests) => {
+          let temp_tests = [];
 
-          for (let i = 0; i < testresults.length; i++) {
-            tests.push(testresults[i].test_id);
+          for (let i = 0; i < assigned_tests.length; i++) {
+            temp_tests.push(assigned_tests[i].test_id);
           }
 
-          // TODO: Refresh Token isnt set in browser
-          let refresh_age = 7 * 24 * 60 * 60 * 1000;
-          res.cookie("refresh_token", refresh_token, {
-            httpOnly: true,
-            maxAge: refresh_age,
-            secure: true,
-          });
+          TestResult.findAll({ where: { exam_session: session.id } }).then(
+            (test_ress) => {
+              let tests = [];
 
-          res.status(200).send({
-            tests: tests,
-            token: access_token,
-            refresh_token: {
-              token: refresh_token,
-              age: refresh_age / 1000,
-            },
-          });
+              for (let i = 0; i < temp_tests.length; i++) {
+                let test_res_id = test_ress.find(
+                  (t) => t.test_id == temp_tests[i]
+                ).id;
+                let temp_test = [parseInt(temp_tests[i]), test_res_id];
+                tests.push(temp_test);
+              }
+
+              // TODO: Refresh Token isnt set in browser
+              let refresh_age = 7 * 24 * 60 * 60 * 1000;
+              res.cookie("refresh_token", refresh_token, {
+                httpOnly: true,
+                maxAge: refresh_age,
+                secure: true,
+              });
+
+              res.status(200).send({
+                tests: tests,
+                email: session.email,
+                exam_session: session.id,
+                token: access_token,
+                refresh_token: {
+                  token: refresh_token,
+                  age: refresh_age / 1000,
+                },
+              });
+            }
+          );
         });
       }
     );

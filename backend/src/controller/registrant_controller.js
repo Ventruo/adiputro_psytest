@@ -23,7 +23,10 @@ class RegistrantController {
           return;
         }
 
-        registrant.biodata = JSON.parse(registrant.biodata);
+        if(registrant.biodata!="")
+          registrant.biodata = JSON.parse(registrant.biodata);
+        else
+          registrant.biodata = {}
         success_response(res, registrant, "Get One Data Successful!");
       }
     );
@@ -41,7 +44,10 @@ class RegistrantController {
       }
 
       for (const key in registrants) {
-        registrants[key].biodata = JSON.parse(registrants[key].biodata);
+        if(registrants[key].biodata!="")
+          registrants[key].biodata = JSON.parse(registrants[key].biodata);
+        else
+          registrants[key].biodata = {}
       }
       success_response(res, registrants, "Get All Data Successful!");
     });

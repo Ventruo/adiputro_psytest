@@ -8,6 +8,7 @@ router.post("/create", controller.create.bind(controller));
 router.post("/update", controller.update.bind(controller));
 
 router.get("/", controller.getOne);
+router.get("/getbyemail/:email", controller.getByEmail);
 router.get("/all", controller.getAll);
 
 module.exports = router;
