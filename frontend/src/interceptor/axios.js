@@ -19,7 +19,7 @@ axios.interceptors.response.use(resp => resp, async error => {
 
             return axios(error.config);
         }else{
-            router.push('/login');
+            router.push('/');
         }
     }
 

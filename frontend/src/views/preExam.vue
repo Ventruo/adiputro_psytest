@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button class="bg-safe w-2/3 py-1 rounded-full" @click="this.$router.push({path: '/test', query: {current_section: section.id}})">
+                            <button class="bg-safe w-2/3 py-1 rounded-full" @click.prevent="doTest">
                                 <i class="fa fa-play mr-2 text-xl"></i>
                                 <span class="font-bold text-xl">Start</span>
                             </button>
@@ -70,6 +70,16 @@ export default {
             judulHalaman: 'Persiapan Tes',
             section: null,
             port: import.meta.env.VITE_BACKEND_URL
+        }
+    },
+    methods: {
+        doTest(){
+            let age =  7 * 24 * 60 * 60 * 1000;
+            this.$cookies.set('start_time', Date.now())
+            if(this.$route.query.current_section==53)
+                this.$router.push({path: '/kraepelin', query: {current_section: this.$route.query.current_section}})
+            else
+                this.$router.push({path: '/test', query: {current_section: this.$route.query.current_section}})
         }
     },
     created(){
