@@ -38,6 +38,11 @@
                         </tbody>
                     </table>
                 </div>
+                <div v-else class="flex items-center justify-center w-full h-full">
+                    <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+                        Belum ada data tersedia.
+                    </div>
+                </div>
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                     duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"

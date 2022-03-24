@@ -121,8 +121,8 @@ export default {
             namaTes: 'Tes Kraepelin',
             judulHalaman: 'EPPS',
             kolom: 1,
-            jumKolom: 5,
-            detik: 2,
+            jumKolom: 50,
+            detik: 15,
             waktu: null,
             row1: [],
             row2: [],
@@ -162,7 +162,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 2
+                        this.detik = 15
                         this.reset()
                     }
                 }

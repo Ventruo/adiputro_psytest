@@ -78,7 +78,7 @@
                     <h1 class="text-4xl font-bold">{{header}}</h1>
                     <h1 class="text-2xl font-bold">{{timestamp||""}}</h1>
                 </div>
-                <router-view @updateHeader="updateHeader" class="relative"/>
+                <router-view @updateHeader="updateHeader"/>
             </div>
         </div>
     </div>

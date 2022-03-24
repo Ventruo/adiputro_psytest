@@ -84,6 +84,7 @@ export default {
 
             axios.defaults.headers.common['Authorization'] = '';
             this.$cookies.remove('refresh_token')
+            this.$cookies.remove('data_registrant')
 
             await this.$router.push('/login');
         }
@@ -96,8 +97,8 @@ export default {
         axios
         .get(this.port+'/section/all/'+tes[0][0])
         .then(({data}) => (
-            this.section = data,
-            console.log(this.section)
+            this.section = data
+            // console.log(this.section)
         ))
     },
 }

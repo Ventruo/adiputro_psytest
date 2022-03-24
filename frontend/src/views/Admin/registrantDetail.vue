@@ -145,14 +145,18 @@ export default {
         },
         checkTest(test){
             // this.dataRegistrant = JSON.parse(data.result),
-            let dataNow = null
-            for (let i = 0; i < this.dataRegistrant.length; i++) {
-                const data = this.dataRegistrant[i];
-                if (data.test_id == test)
-                    dataNow = JSON.parse(data.result)
+            if(this.dataRegistrant!=null){
+                let dataNow = null
+                for (let i = 0; i < this.dataRegistrant.length; i++) {
+                    const data = this.dataRegistrant[i];
+                    if (data.test_id == test)
+                        dataNow = JSON.parse(data.result)
+                }
+                if (dataNow!=null){
+                    this.dataRegistrant = dataNow
+                    this.loaded = 1
+                }
             }
-            this.dataRegistrant = dataNow
-            this.loaded = 1
         },
     },
     created(){
