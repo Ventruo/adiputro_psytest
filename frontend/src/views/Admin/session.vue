@@ -32,7 +32,7 @@
                                 <td>{{i.duration}} Minutes</td>
                                 <td>{{i.test_token}}</td>
                                 <td class="py-5">
-                                    <span v-if="i%2==1">Active</span>
+                                    <span v-if="i.status%2==1">Active</span>
                                     <span v-else>Non-Active</span>
                                 </td>
                                 <td>
@@ -48,7 +48,7 @@
                     </table>
                 </div>
                 <div v-else class="flex items-center justify-center w-full h-full">
-                    <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+                    <div class="bg-foreground-3-500 w-full rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
                         Belum ada data tersedia.
                     </div>
                 </div>
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
         <div id="modalSession" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
