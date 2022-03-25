@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3 py-4">
-                    <input type="email" name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
+                    <input name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
                         class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
                     <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                     @click.prevent="tambahEmail">Tambahkan</button>
