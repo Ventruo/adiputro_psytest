@@ -7,7 +7,7 @@
                                     duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
                             id="btnCreateSession">
                         <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
-                        <span>Add New Session</span>
+                        <span>Buat Session Baru</span>
                     </button>
                 </div>
 
@@ -69,17 +69,21 @@
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
-                <label for="user_email">Email</label><br>
-                <input type="text" name="email" id="user_email" placeholder="Registrant's Email"
-                    class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
-                <!-- <label>Session Token</label><br>
-                <div class="flex mb-5">
-                    <input type="text" name="token" id="user_token" placeholder="Session Token"
-                        class="rounded-lg py-2 px-3 w-8/12 my-2 bg-primary-600 outline-none placeholder-gray-300" readonly><br>
-                    <button id="genToken" class="ml-3 w-4/12 rounded-lg px-5 my-2 bg-sky-300 text-primary-1000 hover:bg-primary-700 
-                                            hover:text-white ring-2 ring-inset ring-sky-300 hover:ring-primary-200 duration-300"
-                                            @click="generateToken">Generate Token</button>
-                </div> -->
+                <div class="flex">
+                    <p class="w-2/12">Emails :</p>
+                    <div class="grow h-auto">
+                        <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in emails" :key="i">
+                            <span>{{i}}</span>
+                            <i class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusEmail(`${i}`)"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 py-4">
+                    <input type="email" name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
+                        class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
+                    <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
+                                    @click.prevent="tambahEmail">Tambahkan</button>
+                </div>
 
                 <label>Test Date</label><br>
                 <div class="flex gap-2">
@@ -112,9 +116,11 @@ export default {
     },
     data() {
         return {
-            headerModal: "Create A New Session",
+            headerModal: "Buat Session Baru",
             exam_session: null,
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
+            emails: [],
+            isiEmail: ""
         }
     },
     created() {
@@ -128,29 +134,37 @@ export default {
             const dateTime = date + ' ' + time
             return dateTime
         },
-        getToken(length) {
-            var token = '';
-            var validChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            for (let i = 0; i < length; i++ ) {
-                token += validChar.charAt(Math.floor(Math.random()*36));
-            }
-            return token;
-        },
-        generateToken(){
-            let token = this.getToken(5);
-            $('#user_token').val(token)
-        },
+        // getToken(length) {
+        //     var token = '';
+        //     var validChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        //     for (let i = 0; i < length; i++ ) {
+        //         token += validChar.charAt(Math.floor(Math.random()*36));
+        //     }
+        //     return token;
+        // },
         openModal(){
-            this.headerModal = "Update A Session";
+            this.headerModal = "Update Session";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
+        },
+        tambahEmail(){
+            if(this.isiEmail!='' && !this.emails.includes(this.isiEmail)){
+                this.emails.push(this.isiEmail)
+                this.isiEmail = ""
+            }
+        },
+        hapusEmail(email){
+            var idx = this.emails.indexOf(email);
+            if (idx !== -1) {
+                this.emails.splice(idx, 1);
+            }
         },
         createSession(){
             let email = $('#user_email').val()
             let start = $('#start').val()
             let finish = $('#finish').val()
 
-            if(email==""||start==""||finish=="")
+            if(this.emails.length==0||start==""||finish=="")
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
                     icon: 'warning',
@@ -168,23 +182,34 @@ export default {
                 var duration = (dateFinish.getTime()-dateStart.getTime())/(1000*60)
 
                 axios.post(this.port+'/exam_session/create',{
-                    "email": email,
+                    "email": this.emails,
                     "start_date": dateStart,
                     "finish_date": dateFinish,
-                    "duration": duration
+                    "duration": duration,
+                    "tests": [5]
                 })
                 .then((response) => {
+                    if (response.status==200){
+                        Swal.fire(
+                            'Created!',
+                            'Sesi Baru Berhasil Dibuat!',
+                            'success'
+                        )
+                        .then(function(){
+                            $('#modalSession').fadeOut("fast");
+                            $('#bg').fadeOut("slow");
+                            // window.location = '/'
+                        })
+                    }else{
+                        throw response
+                    }
+                }).catch( error => {
+                    $('#spinner-modal').fadeOut("slow");
                     Swal.fire(
-                        'Created!',
-                        'Sesi Baru Berhasil Dibuat!',
-                        'success'
+                        'Warning!',
+                        error.response.data,
+                        'warning'
                     )
-                    .then(function(){
-                        $('#modalSession').fadeOut("fast");
-                        $('#bg').fadeOut("slow");
-                    })
-                }).catch( error => { 
-                    console.log('error: ' + error) 
                 });
             }
         }

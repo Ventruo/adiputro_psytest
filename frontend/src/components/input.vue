@@ -20,7 +20,15 @@ export default {
             set(value) {
                 this.$emit('update:modelValue', value)
             }
-        }
+        },
+        // na,aValue: {
+        //     get() {
+        //         return this.nama
+        //     },
+        //     set(value) {
+        //         this.$emit('update:nama', value)
+        //     }
+        // }
     }
 }
 </script>
