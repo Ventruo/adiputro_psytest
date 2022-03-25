@@ -86,7 +86,7 @@ export default {
             this.$cookies.remove('refresh_token')
             this.$cookies.remove('data_registrant')
 
-            await this.$router.push('/login');
+            window.location="/"
         }
     },
     mounted(){

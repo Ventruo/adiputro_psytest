@@ -19,9 +19,9 @@
                     <span>Buat Section Baru</span>
                 </button>
             </div>
-            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.sectionList!=null">
+            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                 <table class="table-fixed w-full font-semibold">
-                    <thead class="bg-foreground-4-100 text-white">
+                    <thead class="bg-foreground-4-100 text-white sticky top-0">
                         <tr>
                             <th class="w-1/12 py-3">Section No</th>
                             <th class="w-2/12">Instruction</th>
@@ -32,7 +32,7 @@
                             <th class="w-2/12">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="this.sectionList!=null && this.sectionList.length>0">
                         <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
                             <td>{{i.section_number}}</td>
                             <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
@@ -60,14 +60,29 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tbody v-else>
+                        <tr class="text-center bg-foreground-4-50 text-xl">
+                            <td colspan="7" class="py-5">Belum ada data tersedia</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
-            <div v-show="this.questionList!=null">
-                <h1 class="font-bold text-4xl mt-5">Question</h1>
-                <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
+            <div>
+                <h1 class="font-bold text-4xl mt-10">Question</h1>
+
+                <div class="flex justify-end">
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
+                                duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
+                        @click="this.$router.push({path: '/admin/question/add'})">
+                        <i class="fa fa-feather fa-lg mr-2"></i>   
+                        <span>Add New Question</span>
+                    </button>
+                </div>
+
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                     <table class="table-fixed w-full font-semibold">
-                        <thead class="bg-foreground-4-100 text-white">
+                        <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-1/12 py-3">Question No</th>
                                 <th class="w-3/12">Question</th>
@@ -76,7 +91,7 @@
                                 <th class="w-1/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="this.questionList!=null && this.questionList.length>0">
                             <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i,idx) in this.questionList" :key="idx">
                                 <td>{{idx+1}}</td>
                                 <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
@@ -92,16 +107,13 @@
                                 </td>
                             </tr>
                         </tbody>
+                        
+                        <tbody v-else>
+                            <tr class="text-center bg-foreground-4-50 text-xl">
+                                <td colspan="5" class="py-5">Belum ada data tersedia</td>
+                            </tr>
+                        </tbody>
                     </table>
-                </div>
-
-                <div class="flex justify-end">
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
-                        @click="this.$router.push({path: '/admin/question/add'})">
-                        <i class="fa fa-feather fa-lg mr-2"></i>   
-                        <span>Add New Question</span>
-                    </button>
                 </div>
             </div>
             <div class="w-1 h-64 relative top-10"></div>
@@ -212,8 +224,14 @@ export default {
             axios
             .get(this.port+'/section/all/'+this.test[0].id)
             .then(({data}) => (
-                this.sectionList = data
-                // console.log(this.sectionList)
+                this.sectionList = data,
+                // console.log(this.sectionList[0].id)
+                
+                axios
+                .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
+                .then(({data}) => (
+                    this.questionList = data
+                ))
             ))
         },
         gantiTes(event){
@@ -221,7 +239,12 @@ export default {
             axios
             .get(this.port+'/section/all/'+event.target.value)
             .then(({data}) => (
-                this.sectionList = data
+                this.sectionList = data,
+                axios
+                .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
+                .then(({data}) => (
+                    this.questionList = data
+                ))
             ))
         },
         gantiSection(id){

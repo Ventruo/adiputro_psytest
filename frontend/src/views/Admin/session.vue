@@ -11,9 +11,9 @@
                     </button>
                 </div>
 
-                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.exam_session!=null">
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                     <table class="table-fixed w-full font-semibold">
-                        <thead class="bg-foreground-4-100 text-white">
+                        <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-2/12 py-3">E-Mail</th>
                                 <th class="w-1/12">Start</th>
@@ -24,7 +24,7 @@
                                 <th class="w-1/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="this.exam_session!=null && this.exam_session.length>0">
                             <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.exam_session" :key="i">
                                 <td>{{i.email}}</td>
                                 <td>{{toDate(i.start_date)}}</td>
@@ -45,12 +45,12 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tbody v-else>
+                            <tr class="text-center bg-foreground-4-50 text-xl">
+                                <td colspan="7" class="py-5">Belum ada data tersedia</td>
+                            </tr>
+                        </tbody>
                     </table>
-                </div>
-                <div v-else class="flex items-center justify-center w-full h-full">
-                    <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
-                        Belum ada data tersedia.
-                    </div>
                 </div>
                 <div class="w-1 h-64 relative top-10"></div>
             </div>
