@@ -59,10 +59,7 @@ export default {
 
     },
     mounted(){
-        $('.menu').removeClass('bg-background-200')
-        $('.menu').removeClass('text-black')
-        $('#menu-home').addClass('bg-background-200')
-        $('#menu-home').addClass('text-black')
+        
     }
 }
 </script>

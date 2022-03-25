@@ -5,7 +5,7 @@
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                     duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
-                            id="btnCreateSession">
+                            id="btnCreateSession" @click="openModalCreate">
                         <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
                         <span>Buat Session Baru</span>
                     </button>
@@ -62,7 +62,7 @@
         <!-- Create New Session Modal -->
         <div id="modalSession" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
-                <button id="closeNewSession" class="relative inline-block">
+                <button id="closeNewSession" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
                 </button>
                 <p class="font-bold text-lg text-right inline-block relative" style="width: 96%">{{headerModal}}</p>
@@ -89,12 +89,12 @@
                 <div class="flex gap-2">
                     <div class="w-1/2">
                         <label for="start">From :</label>
-                        <input type="datetime-local" name="start_date" id="start"
+                        <input type="datetime-local" name="start_date" id="start" v-model="start"
                                 class="ml-2 rounded-lg py-2 px-3 w-10/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
                     </div>
                     <div class="w-1/2">
                         <label for="finish">To: </label>
-                        <input type="datetime-local" name="finish_date" id="finish"
+                        <input type="datetime-local" name="finish_date" id="finish" v-model="finish"
                                 class="ml-2 rounded-lg py-2 px-3 w-10/12 my-2 bg-primary-600 outline-none placeholder-gray-300"><br>
                     </div>
                 </div>
@@ -120,6 +120,8 @@ export default {
             exam_session: null,
             port: import.meta.env.VITE_BACKEND_URL,
             emails: [],
+            start: null,
+            finish: null,
             isiEmail: ""
         }
     },
@@ -148,7 +150,7 @@ export default {
             $('#bg').fadeIn("slow");
         },
         tambahEmail(){
-            if(this.isiEmail!='' && !this.emails.includes(this.isiEmail)){
+            if(this.isiEmail!='' && !this.emails.includes(this.isiEmail) && this.emailFormatCheck(this.isiEmail)){
                 this.emails.push(this.isiEmail)
                 this.isiEmail = ""
             }
@@ -159,12 +161,11 @@ export default {
                 this.emails.splice(idx, 1);
             }
         },
+        emailFormatCheck(email){
+            
+        },
         createSession(){
-            let email = $('#user_email').val()
-            let start = $('#start').val()
-            let finish = $('#finish').val()
-
-            if(this.emails.length==0||start==""||finish=="")
+            if(this.emails.length==0||this.start==null||this.finish==null)
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
                     icon: 'warning',
@@ -177,8 +178,8 @@ export default {
                     confirmButtonText: 'Kembali'
                 });
             else{
-                var dateStart = new Date(start);
-                var dateFinish = new Date(finish);
+                var dateStart = new Date(this.start);
+                var dateFinish = new Date(this.finish);
                 var duration = (dateFinish.getTime()-dateStart.getTime())/(1000*60)
 
                 axios.post(this.port+'/exam_session/create',{
@@ -196,8 +197,11 @@ export default {
                             'success'
                         )
                         .then(function(){
-                            $('#modalSession').fadeOut("fast");
-                            $('#bg').fadeOut("slow");
+                            $('#modalSession').fadeOut("fast")
+                            $('#bg').fadeOut("slow")
+                            this.emails = []
+                            this.start = null
+                            this.finish = null
                             // window.location = '/'
                         })
                     }else{
@@ -212,26 +216,19 @@ export default {
                     )
                 });
             }
+        },
+        openModalCreate(){
+            this.headerModal = "Buat Session Baru";
+            $('#modalSession').fadeIn("slow");
+            $('#bg').fadeIn("slow");
+        },
+        closeModal(){
+            $('#modalSession').fadeOut("fast");
+            $('#bg').fadeOut("slow");
         }
 
     },
     mounted(){
-        $('.menu').removeClass('bg-background-200')
-        $('.menu').removeClass('text-black')
-        $('#menu-session').addClass('bg-background-200')
-        $('#menu-session').addClass('text-black')
-
-        let this2 = this;
-        $('#btnCreateSession').click(function(){
-            this2.headerModal = "Create A New Session";
-            $('#modalSession').fadeIn("slow");
-            $('#bg').fadeIn("slow");
-        });
-        $('#closeNewSession').click(function(){
-            $('#modalSession').fadeOut("fast");
-            $('#bg').fadeOut("slow");
-        });
-
         axios
         .get(this.port+'/exam_session/all')
         .then(({data}) => (

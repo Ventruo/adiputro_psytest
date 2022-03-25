@@ -4,7 +4,8 @@
             <div class="flex justify-end">
                 <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
-                        id="btnCreateRecruitment">
+                        id="btnCreateRecruitment"
+                        @click.prevent="openModalCreate">
                     <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
                     <span>Buat Rekrutmen Baru</span>
                 </button>
@@ -99,7 +100,8 @@
     <!-- Create New Recruitment Modal -->
     <div id="modalRecruitment" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
         <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
-            <button id="closeNewRecruitment" class="relative inline-block">
+            <button id="closeNewRecruitment" class="relative inline-block"
+                @click.prevent="closeModal">
                 <i class="fa fa-times fa-lg"></i>
             </button>
             <p class="font-bold text-lg text-right inline-block relative" style="width: 96%">{{headerModal}}</p>
@@ -107,7 +109,7 @@
 
         <form class="text-white p-5 h-5/6 relative" @submit.prevent="createRecruitment">
             <label for="nama">Nama Lowongan :</label><br>
-            <input type="text" name="nama" id="nama" placeholder="Nama Lowongan"
+            <input type="text" name="nama" id="nama" placeholder="Nama Lowongan" v-model="nama"
                 class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
 
             <div class="flex">
@@ -120,7 +122,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-3 py-4">
-                <input type="text" name="lowongan" id="lowongan" placeholder="Lowongan"
+                <input type="text" name="lowongan" id="lowongan" placeholder="Lowongan" v-model="isiLowongan"
                     class="rounded-lg py-2 px-3 w-full bg-primary-600 outline-none placeholder-gray-300"><br>
                 <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                 @click.prevent="tambahLowongan">Tambahkan</button>
@@ -151,6 +153,8 @@ export default {
             headerModal: "Buat Rekrutmen Baru",
             recruitment: null,
             applicant: null,
+            isiLowongan: "",
+            nama: "",
             lowongan: [],
             port: import.meta.env.VITE_BACKEND_URL
         }
@@ -175,11 +179,19 @@ export default {
             $('#modalRecruitment').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
+        openModalCreate(){
+            this.headerModal = "Buat Rekrutmen Baru";
+            $('#modalRecruitment').fadeIn("slow");
+            $('#bg').fadeIn("slow");
+        },
+        closeModal(){
+            $('#modalRecruitment').fadeOut("fast");
+            $('#bg').fadeOut("slow");
+        },
         createRecruitment(e){
-            let nama = e.target[0].value
             let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
             let date = Date.now()
-            if(nama==""||this.lowongan.length==0)
+            if(this.nama==""||this.lowongan.length==0)
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
                     icon: 'warning',
@@ -188,7 +200,7 @@ export default {
             else{
                 $('#spinner-modal').fadeIn("slow");
                 axios.post(this.port+'/job_vacancy/create',{
-                    "name": nama,
+                    "name": this.nama,
                     "list_pekerjaan": this.lowongan,
                     "start_date": date,
                     "url": url
@@ -199,7 +211,7 @@ export default {
                     .then(({data}) => (
                         this.recruitment = data,
                         this.lowongan = [],
-                        $('#nama').val(""),
+                        this.nama = "",
                         $('#spinner-modal').fadeOut("slow"),
                         $('#modalRecruitment').fadeOut("fast"),
                         $('#bg').fadeOut("slow"),
@@ -217,10 +229,9 @@ export default {
             }
         },
         tambahLowongan(){
-            let lowonganKerja = $('#lowongan').val()
-            if(lowonganKerja!='' && !this.lowongan.includes(lowonganKerja)){
-                this.lowongan.push(lowonganKerja)
-                $('#lowongan').val('')
+            if(this.isiLowongan!='' && !this.lowongan.includes(this.isiLowongan)){
+                this.lowongan.push(this.isiLowongan)
+                this.isiLowongan = ""
             }
         },
         hapusLowongan(lowonganKerja){
@@ -241,22 +252,7 @@ export default {
         this.$emit('updateHeader', 'Recruitment')
     },
     mounted(){
-        // console.log(import.meta.env)
-        $('.menu').removeClass('bg-background-200')
-        $('.menu').removeClass('text-black')
-        $('#menu-recruitment').addClass('bg-background-200')
-        $('#menu-recruitment').addClass('text-black')
-
         let this2 = this;
-        $('#btnCreateRecruitment').click(function(){
-            this2.headerModal = "Buat Rekrutmen Baru";
-            $('#modalRecruitment').fadeIn("slow");
-            $('#bg').fadeIn("slow");
-        });
-        $('#closeNewRecruitment').click(function(){
-            $('#modalRecruitment').fadeOut("fast");
-            $('#bg').fadeOut("slow");
-        });
 
         axios
         .get(this.port+'/job_vacancy/all')

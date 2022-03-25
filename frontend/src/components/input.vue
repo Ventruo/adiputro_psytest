@@ -6,12 +6,9 @@
 
 <script>
 export default {
-    props: {
-        "type": { type: String, default: 'text', required: true },
-        "modelValue": { type: String, default: '', required: true },
-        "placeHolder": { type: String, default: '', required: true },
-        "nama": { type: String, default: '', required: true },
-    },
+    props: [
+        "type", "modelValue", "placeHolder", "nama"
+    ],
     computed: {
         inputValue: {
             get() {

@@ -71,11 +71,6 @@ export default {
         this.$emit('updateHeader', 'Registrant')
     },
     mounted(){
-        $('.menu').removeClass('bg-background-200')
-        $('.menu').removeClass('text-black')
-        $('#menu-registrant').addClass('bg-background-200')
-        $('#menu-registrant').addClass('text-black')
-
         axios
         .get(this.port+'/registrant/all')
         .then(({data}) => (

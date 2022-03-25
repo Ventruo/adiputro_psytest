@@ -7,7 +7,9 @@
             </div>
             <router-link to="/admin">
                 <div class="relative">
-                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer pl-3.5 pr-4 py-3 mb-2 flex items-center menu" id="menu-home">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer pl-3.5 pr-4 py-3 mb-2 flex items-center menu" id="menu-home"
+                        :class="{'bg-background-200': menu=='dashboard', 'text-black':menu=='dashboard'}"
+                        @click="menu='dashboard'">
                         <i class="w-1/12 mr-5 fa fa-house text-2xl"></i>
                         <span class="ml-0.5 opacity-0 transition group-hover:opacity-100">Home</span>
                     </div>
@@ -16,7 +18,9 @@
             
             <router-link to="/admin/registrant">
                 <div class="relative">
-                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-registrant">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-registrant"
+                        :class="{'bg-background-200': menu=='registrant', 'text-black': menu=='registrant'}"
+                        @click="menu='registrant'">
                         <i class="w-1/12 mr-5 fa fa-user text-2xl"></i>
                         <span class="opacity-0 transition duration-300 group-hover:opacity-100">Registrant</span>
                     </div>
@@ -25,7 +29,9 @@
 
             <router-link to="/admin/test">
                 <div class="relative">
-                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-test">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-test"
+                        :class="{'bg-background-200': menu=='test', 'text-black':menu=='test'}"
+                        @click="menu='test'">
                         <i class="w-1/12 mr-5 fa fa-tasks text-2xl"></i>
                         <span class="opacity-0 transition duration-300 group-hover:opacity-100">Test</span>
                     </div>
@@ -34,7 +40,9 @@
             
             <router-link to="/admin/session">
                 <div class="relative">
-                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-session">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-session"
+                        :class="{'bg-background-200': menu=='session', 'text-black':menu=='session'}"
+                        @click="menu='session'">
                         <i class="w-1/12 mr-5 fas fa-calendar-alt text-2xl"></i>
                         <span class="opacity-0 transition duration-300 group-hover:opacity-100">Session</span>
                     </div>
@@ -43,7 +51,9 @@
             
             <router-link to="/admin/recruitment" class="grow">
                 <div class="relative">
-                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-recruitment">
+                    <div class="hover:bg-background-200 hover:text-black font-bold rounded-xl cursor-pointer px-4 py-3 mb-2 flex items-center menu" id="menu-recruitment"
+                        :class="{'bg-background-200': menu=='recruitment', 'text-black':menu=='recruitment'}"
+                        @click="menu='recruitment'">
                         <i class="w-1/12 mr-5 fas fa-users text-2xl relative right-1"></i>
                         <span class="opacity-0 transition duration-300 group-hover:opacity-100">Recruitment</span>
                     </div>
@@ -93,6 +103,7 @@ export default {
             header: null,
             timerWaktu: null,
             timestamp: null,
+            menu: 'dashboard',
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
         }
@@ -130,9 +141,10 @@ export default {
         }, 1000)
     },
     mounted(){
-        $('#main-header').addClass('fixed')
-        $('#main-header').addClass('w-full')
-        $('#hidden-bottom').removeClass('hidden')
+        let path = this.$route.fullPath.split('/')
+        this.menu = path[path.length-1]=="admin" ? 'dashboard' : path[path.length-1]
+        // $('#main-header').addClass('fixed')
+        // $('#main-header').addClass('w-full')
     }
 }
 </script>

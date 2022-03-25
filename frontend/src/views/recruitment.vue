@@ -146,7 +146,6 @@ export default {
             return date
         },
         submitForm(e){
-            // console.log(e)
             var fileLamaran = e.target[16].files[0]
             if (fileLamaran!=undefined)
                 fileLamaran.originalname = fileLamaran.name

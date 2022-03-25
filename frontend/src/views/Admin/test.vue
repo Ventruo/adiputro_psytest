@@ -14,9 +14,9 @@
             <div class="flex justify-end">
                 <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
-                    id="btnCreateSection">
+                    id="btnCreateSection" @click="openModalCreate">
                     <i class="fa fa-feather fa-lg mr-2"></i>   
-                    <span>Add New Section</span>
+                    <span>Buat Section Baru</span>
                 </button>
             </div>
             <div class="overflow-auto w-full h-96 no-scrollbar mt-2" v-if="this.sectionList!=null">
@@ -113,7 +113,7 @@
         <!-- Create New Session Modal -->
         <div id="modalSection" class="fixed left-1/3 bg-primary-1000 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
-                <button id="closeNewSection" class="relative inline-block">
+                <button id="closeNewSection" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
                 </button>
                 <p class="font-bold text-lg text-right inline-block relative" style="width: 96%">{{headerModal}}</p>
@@ -148,11 +148,11 @@
                             <Radio :values="'question_Image'" :names="'Question_Type'" :id="'question_Image'" :label="'Image'"/>
                         </div>
                         <div class="flex gap-2">
-                            <Radio :values="'answer_text'" :names="'Answer_Type'" :id="'answer_text'" :label="'Text'"/>
-                            <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Multiple Choice'"/>
-                            <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Image'"/>
+                            <Radio :values="'answer_text'" :names="'Answer_Type'" :id="'answer_text'" :label="'Text'" @change="non_essay=false"/>
+                            <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Multiple Choice'" @change="non_essay=true"/>
+                            <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Image'" @change="non_essay=true"/>
                         </div>
-                        <div class="flex non-essay">
+                        <div class="flex non-essay" v-show="non_essay">
                             <input type="number" name="option_number" id="option_number" placeholder="2-5"
                                 class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
                         </div>
@@ -172,8 +172,7 @@ import Radio from '../../components/radiobutton.vue'
 import axios from 'axios'
 export default {
     components: {
-        Radio,
-        axios
+        Radio, axios
     },
     data() {
         return {
@@ -182,6 +181,7 @@ export default {
             questionList: null,
             test: null,
             questionId: 0,
+            non_essay: true,
             headerModal: "Create A New Section",
             port: import.meta.env.VITE_BACKEND_URL
         }
@@ -194,6 +194,15 @@ export default {
             this.headerModal = "Update A Section";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
+        },
+        openModalCreate(){
+            this.headerModal = "Create A New Section";
+            $('#modalSection').fadeIn("slow");
+            $('#bg').fadeIn("slow");
+        },
+        closeModal(){
+            $('#modalSection').fadeOut("fast");
+            $('#bg').fadeOut("slow");
         },
         dataInit(){
             for (let i = 0; i < this.test.length; i++) {
@@ -234,26 +243,6 @@ export default {
         }
     },
     mounted(){
-        $('.menu').removeClass('bg-background-200')
-        $('.menu').removeClass('text-black')
-        $('#menu-test').addClass('bg-background-200')
-        $('#menu-test').addClass('text-black')
-
-        $('#answer_multiple').on("click", function() { $('.non-essay').removeClass('hidden'); });
-        $('#answer_image').on("click", function() { $('.non-essay').removeClass('hidden'); });
-        $('#answer_text').on("click", function() { $('.non-essay').addClass('hidden'); });
-
-        let this2 = this;
-        $('#btnCreateSection').click(function(){
-            this2.headerModal = "Create A New Section";
-            $('#modalSection').fadeIn("slow");
-            $('#bg').fadeIn("slow");
-        });
-        $('#closeNewSection').click(function(){
-            $('#modalSection').fadeOut("fast");
-            $('#bg').fadeOut("slow");
-        });
-
         axios
         .get(this.port+'/test/all')
         .then(({data}) => (
