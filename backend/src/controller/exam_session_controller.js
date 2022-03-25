@@ -77,42 +77,55 @@ class ExamSessionController {
       return;
     }
 
-    const test_key = short.generate();
-    const user_key = short.generate();
-    const new_session = await ExamSession.create({
-      email: req.body.email,
-      start_date: req.body.start_date,
-      finish_date: req.body.finish_date,
-      duration: req.body.duration,
-      test_token: test_key,
-      auth_token: user_key,
-    });
-
+    const emails = req.body.email;
     let es_test_bulk_data = [];
     let test_res_bulk_data = [];
-    for (let i = 0; i < req.body.tests.length; i++) {
-      const test = req.body.tests[i];
-      es_test_bulk_data.push({
-        exam_session_id: new_session.id,
-        test_id: test,
-      });
-
-      test_res_bulk_data.push({
-        test_id: test,
-        exam_session: new_session.id,
+    let new_sessions = [];
+    for (let i = 0; i < emails.length; i++) {
+      let test_key = short.generate();
+      let user_key = short.generate();
+      let new_session = await ExamSession.create({
+        email: emails[i],
         start_date: req.body.start_date,
         finish_date: req.body.finish_date,
+        duration: req.body.duration,
+        test_token: test_key,
+        auth_token: user_key,
       });
+      new_sessions.push(new_session);
+
+      for (let i = 0; i < req.body.tests.length; i++) {
+        const test = req.body.tests[i];
+        es_test_bulk_data.push({
+          exam_session_id: new_session.id,
+          test_id: test,
+        });
+
+        test_res_bulk_data.push({
+          test_id: test,
+          exam_session: new_session.id,
+          start_date: req.body.start_date,
+          finish_date: req.body.finish_date,
+        });
+      }
     }
+
     ExamSessionTest.bulkCreate(es_test_bulk_data);
     TestResult.bulkCreate(test_res_bulk_data);
 
-    await Registrant.create({
-      email: req.body.email,
-      biodata: "",
-    });
+    Registrant.findAll().then(async (regs) => {
+      for (let i = 0; i < emails.length; i++) {
+        let has_reg = regs.find((r) => r.email == emails[i]);
+        if (!has_reg) {
+          await Registrant.create({
+            email: emails[i],
+            biodata: "",
+          });
+        }
+      }
 
-    success_response(res, new_session.toJSON(), "Create Successful!");
+      success_response(res, new_sessions, "Create Successful!");
+    });
   }
 
   async update(req, res) {
