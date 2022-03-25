@@ -21,9 +21,9 @@
             </div>
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.sectionList!=null">
                 <table class="table-fixed w-full font-semibold">
-                    <thead class="bg-foreground-4-100 text-white text-xl">
+                    <thead class="bg-foreground-4-100 text-white">
                         <tr>
-                            <th class="w-1/12 py-3">Section Number</th>
+                            <th class="w-1/12 py-3">Section No</th>
                             <th class="w-2/12">Instruction</th>
                             <th class="w-1/12">Duration</th>
                             <th class="w-1/12">Question Type</th>
@@ -33,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-lg" v-for="i in this.sectionList" :key="i">
+                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
                             <td>{{i.section_number}}</td>
                             <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
                             <td>{{i.duration}} Minutes</td>
@@ -67,7 +67,7 @@
                 <h1 class="font-bold text-4xl">Question</h1>
                 <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
                     <table class="table-fixed w-full font-semibold">
-                        <thead class="bg-foreground-4-100 text-white text-xl">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th class="w-1/12 py-3">No</th>
                                 <th class="w-3/12">Question</th>
@@ -77,7 +77,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-lg" v-for="(i,idx) in this.questionList" :key="idx">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i,idx) in this.questionList" :key="idx">
                                 <td>{{idx+1}}</td>
                                 <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
                                 <td>{{optionToString(i)}}</td>
