@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xl" v-for="i in this.recruitment" :key="i">
+                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.recruitment" :key="i">
                             <td>
                                 <a :href="getImg(i,'download')">
                                     <img :src="getImg(i,'view')" alt="" class="h-36 my-2 inline-block">
