@@ -84,7 +84,7 @@
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
-                                <th class="w-1/12 py-3">Question No</th>
+                                <th class="w-1/12 py-3">No</th>
                                 <th class="w-3/12">Question</th>
                                 <th class="w-3/12">Option Choices</th>
                                 <th class="w-1/12">Answer Key</th>
@@ -120,7 +120,7 @@
         </div>
         
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
         <div id="modalSection" class="fixed left-1/3 bg-primary-1000 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">

@@ -100,7 +100,7 @@
     </div>
 
     <!-- Transparent Overlay -->
-    <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+    <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
     <!-- Create New Recruitment Modal -->
     <div id="modalRecruitment" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">

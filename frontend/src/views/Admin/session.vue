@@ -32,7 +32,7 @@
                                 <td>{{i.duration}} Minutes</td>
                                 <td>{{i.test_token}}</td>
                                 <td class="py-5">
-                                    <span v-if="i%2==1">Active</span>
+                                    <span v-if="i.status%2==1">Active</span>
                                     <span v-else>Non-Active</span>
                                 </td>
                                 <td>
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
         <div id="modalSession" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3 py-4">
-                    <input type="email" name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
+                    <input name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
                         class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
                     <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                     @click.prevent="tambahEmail">Tambahkan</button>
