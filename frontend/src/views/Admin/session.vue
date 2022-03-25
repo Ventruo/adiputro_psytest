@@ -4,40 +4,40 @@
             <div class="w-5/6 h-full">
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                    duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
+                                    duration-200 rounded-md px-10 py-2 mt-5 h-auto w-auto shadow-xl"
                             id="btnCreateSession" @click="openModalCreate">
                         <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
                         <span>Buat Session Baru</span>
                     </button>
                 </div>
 
-                <div class="overflow-auto w-full h-full no-scrollbar mt-5" v-if="this.exam_session!=null">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.exam_session!=null">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="w-2/12 border border-stroke-100">E-Mail</th>
-                                <th class="w-1/12 border border-stroke-100">Start</th>
-                                <th class="w-1/12 border border-stroke-100">Finish</th>
-                                <th class="w-1/12 border border-stroke-100">Duration</th>
-                                <th class="w-2/12 border border-stroke-100">Token</th>
-                                <th class="w-1/12 border border-stroke-100">Status</th>
-                                <th class="w-1/12 border border-stroke-100">Action</th>
+                                <th class="w-2/12 py-3">E-Mail</th>
+                                <th class="w-1/12">Start</th>
+                                <th class="w-1/12">Finish</th>
+                                <th class="w-1/12">Duration</th>
+                                <th class="w-2/12">Token</th>
+                                <th class="w-1/12">Status</th>
+                                <th class="w-1/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100">
-                            <tr class="text-center" v-for="i in this.exam_session" :key="i">
-                                <td class="border border-stroke-100">{{i.email}}</td>
-                                <td class="border border-stroke-100">{{toDate(i.start_date)}}</td>
-                                <td class="border border-stroke-100">{{toDate(i.finish_date)}}</td>
-                                <td class="border border-stroke-100">{{i.duration}} Minutes</td>
-                                <td class="border border-stroke-100">{{i.test_token}}</td>
-                                <td class="py-5 border border-stroke-100">
-                                    <span v-if="i%2==1">Active</span>
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.exam_session" :key="i">
+                                <td>{{i.email}}</td>
+                                <td>{{toDate(i.start_date)}}</td>
+                                <td>{{toDate(i.finish_date)}}</td>
+                                <td>{{i.duration}} Minutes</td>
+                                <td>{{i.test_token}}</td>
+                                <td class="py-5">
+                                    <span v-if="i.status%2==1">Active</span>
                                     <span v-else>Non-Active</span>
                                 </td>
-                                <td class="border border-stroke-100">
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
+                                <td>
+                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                                    h-auto w-auto px-5 py-1 mr-1" 
                                         @click="openModal"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Update</span>
@@ -48,7 +48,7 @@
                     </table>
                 </div>
                 <div v-else class="flex items-center justify-center w-full h-full">
-                    <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+                    <div class="bg-foreground-3-500 w-full rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
                         Belum ada data tersedia.
                     </div>
                 </div>
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
         <div id="modalSession" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
@@ -162,7 +162,12 @@ export default {
             }
         },
         emailFormatCheck(email){
-            
+            let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            let result = email.match(pattern)
+            if(result==null)
+                return false
+            else
+                return true
         },
         createSession(){
             if(this.emails.length==0||this.start==null||this.finish==null)

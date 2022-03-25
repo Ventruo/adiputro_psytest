@@ -13,46 +13,46 @@
 
             <div class="flex justify-end">
                 <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
+                                duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
                     id="btnCreateSection" @click="openModalCreate">
                     <i class="fa fa-feather fa-lg mr-2"></i>   
                     <span>Buat Section Baru</span>
                 </button>
             </div>
-            <div class="overflow-auto w-full h-96 no-scrollbar mt-2" v-if="this.sectionList!=null">
-                <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
-                    <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.sectionList!=null">
+                <table class="table-fixed w-full font-semibold">
+                    <thead class="bg-foreground-4-100 text-white">
                         <tr>
-                            <th class="w-1/12 border border-stroke-100">Section Number</th>
-                            <th class="w-2/12 border border-stroke-100">Instruction</th>
-                            <th class="w-1/12 border border-stroke-100">Duration</th>
-                            <th class="w-1/12 border border-stroke-100">Question Type</th>
-                            <th class="w-1/12 border border-stroke-100">Option Type</th>
-                            <th class="w-1/12 border border-stroke-100">Option Number</th>
-                            <th class="w-2/12 border border-stroke-100">Action</th>
+                            <th class="w-1/12 py-3">Section No</th>
+                            <th class="w-2/12">Instruction</th>
+                            <th class="w-1/12">Duration</th>
+                            <th class="w-1/12">Question Type</th>
+                            <th class="w-1/12">Option Type</th>
+                            <th class="w-1/12">Option Number</th>
+                            <th class="w-2/12">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-background-400 divide-y divide-stroke-100">
-                        <tr class="text-center" v-for="i in this.sectionList" :key="i">
-                            <td class="border border-stroke-100">{{i.section_number}}</td>
-                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1 border border-stroke-100">{{i.instruction}}</td>
-                            <td class="border border-stroke-100">{{i.duration}} Minutes</td>
-                            <td class="border border-stroke-100">
+                    <tbody>
+                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
+                            <td>{{i.section_number}}</td>
+                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
+                            <td>{{i.duration}} Minutes</td>
+                            <td>
                                 <span v-if="i.question_type==1">Teks</span>
                                 <span v-else-if="i.question_type==2">Gambar</span>
                             </td>
-                            <td class="border border-stroke-100">
+                            <td>
                                 <span v-if="i.section_type==1">Essay</span>
                                 <span v-else-if="i.section_type==2">Pilihan Ganda</span>
                             </td>
-                            <td class="border border-stroke-100">{{i.option_num}}</td>
-                            <td class="border border-stroke-100 text-white">
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                            <td>{{i.option_num}}</td>
+                            <td class="text-white">
+                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click.prevent="gantiSection(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
-                                <button class="bg-secondary hover:bg-red-800 duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                <button class="bg-secondary hover:bg-red-800 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
@@ -63,27 +63,27 @@
                 </table>
             </div>
 
-            <div v-show="this.questionList!=null">
-                <h1 class="font-bold text-4xl mt-5">Question</h1>
+            <div v-show="this.questionList!=null" class="mt-10">
+                <h1 class="font-bold text-4xl">Question</h1>
                 <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="w-1/12 border border-stroke-100">Question No</th>
-                                <th class="w-3/12 border border-stroke-100">Question</th>
-                                <th class="w-3/12 border border-stroke-100">Option Choices</th>
-                                <th class="w-1/12 border border-stroke-100">Answer Key</th>
-                                <th class="w-1/12 border border-stroke-100">Action</th>
+                                <th class="w-1/12 py-3">No</th>
+                                <th class="w-3/12">Question</th>
+                                <th class="w-3/12">Option Choices</th>
+                                <th class="w-1/12">Answer Key</th>
+                                <th class="w-1/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100">
-                            <tr class="text-center" v-for="(i,idx) in this.questionList" :key="idx">
-                                <td class="border border-stroke-100">{{idx+1}}</td>
-                                <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1 border border-stroke-100">{{i.instruction}}</td>
-                                <td class="border border-stroke-100">{{optionToString(i)}}</td>
-                                <td class="border border-stroke-100">{{i.answer}}</td>
-                                <td class="border border-stroke-100">
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i,idx) in this.questionList" :key="idx">
+                                <td>{{idx+1}}</td>
+                                <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
+                                <td>{{optionToString(i)}}</td>
+                                <td>{{i.answer}}</td>
+                                <td>
+                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
                                                     h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
@@ -97,7 +97,7 @@
 
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
+                                duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
                         @click="this.$router.push({path: '/admin/question/add'})">
                         <i class="fa fa-feather fa-lg mr-2"></i>   
                         <span>Add New Question</span>
@@ -108,7 +108,7 @@
         </div>
         
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
         <div id="modalSection" class="fixed left-1/3 bg-primary-1000 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">

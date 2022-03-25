@@ -1,9 +1,9 @@
 <template>
-    <div class="absolute top-20 w-full flex justify-center" style="height: 30rem;">
+    <div class="absolute top-20 w-full min-h-screen flex justify-center">
         <div class="w-5/6 h-full">
             <div class="flex justify-end">
                 <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
+                                duration-200 rounded-md px-10 py-2 mt-5 h-auto w-auto shadow-lg"
                         id="btnCreateRecruitment"
                         @click.prevent="openModalCreate">
                     <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
@@ -11,38 +11,38 @@
                 </button>
             </div>
 
-            <div class="overflow-auto w-full h-full no-scrollbar mt-5" v-if="this.recruitment!=null">
-                <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
-                    <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.recruitment!=null">
+                <table class="table-fixed w-full font-semibold">
+                    <thead class="bg-foreground-4-100 text-white">
                         <tr>
-                            <th class="w-2/12 border border-stroke-100">QR Barcode</th>
-                            <th class="w-1/12 border border-stroke-100">Nama</th>
-                            <th class="w-2/12 border border-stroke-100">Lowongan</th>
-                            <th class="w-2/12 border border-stroke-100">Dibuat Pada</th>
-                            <th class="w-1/12 border border-stroke-100">Status</th>
-                            <th class="w-2/12 border border-stroke-100">Action</th>
+                            <th class="w-2/12 py-3">QR Barcode</th>
+                            <th class="w-1/12">Nama</th>
+                            <th class="w-2/12">Lowongan</th>
+                            <th class="w-2/12">Dibuat Pada</th>
+                            <th class="w-1/12">Status</th>
+                            <th class="w-2/12">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-background-400 divide-y divide-stroke-100">
-                        <tr class="text-center" v-for="i in this.recruitment" :key="i">
-                            <td class="border border-stroke-100 text-center">
+                    <tbody>
+                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.recruitment" :key="i">
+                            <td>
                                 <a :href="getImg(i,'download')">
                                     <img :src="getImg(i,'view')" alt="" class="h-36 my-2 inline-block">
                                 </a>
                             </td>
-                            <td class="border border-stroke-100">{{i.name}}</td>
-                            <td class="border border-stroke-100">{{i.list_pekerjaan}}</td>
-                            <td class="border border-stroke-100">{{toDate(i.start_date)}}</td>
-                            <td class="border border-stroke-100">{{i.status==1?"Open":"Closed"}}</td>
-                            <td class="border border-stroke-100 py-2">
-                                <button class="bg-safe hover:bg-green-500 duration-200 rounded-full text-white
-                                                h-auto w-auto text-base px-5 py-1 mr-1" 
+                            <td>{{i.name}}</td>
+                            <td>{{i.list_pekerjaan}}</td>
+                            <td>{{toDate(i.start_date)}}</td>
+                            <td>{{i.status==1?"Open":"Closed"}}</td>
+                            <td>
+                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                                h-auto w-auto px-5 py-1 mr-1" 
                                     @click="gantiJobVacancy(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                h-auto w-auto text-base px-5 py-1 mr-1" 
+                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                                h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
@@ -59,27 +59,27 @@
             </div>
 
             <div v-show="this.applicant!=null">
-                <h1 class="font-bold text-4xl mt-5">Pelamar Kerja</h1>
-                <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <h1 class="font-bold text-4xl mt-10">Pelamar Kerja</h1>
+                <div class="overflow-auto w-full h-auto max-h-[30rem] bg-transparent no-scrollbar mt-3 rounded-lg shadow-xl">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="w-2/12 border border-stroke-100">Email</th>
-                                <th class="w-2/12 border border-stroke-100">Nama</th>
-                                <th class="w-2/12 border border-stroke-100">Jenis Kelamin</th>
-                                <th class="w-2/12 border border-stroke-100">Melamar Pada</th>
-                                <th class="w-1/12 border border-stroke-100">Action</th>
+                                <th class="w-2/12 py-3">Email</th>
+                                <th class="w-2/12">Nama</th>
+                                <th class="w-2/12">Jenis Kelamin</th>
+                                <th class="w-2/12">Melamar Pada</th>
+                                <th class="w-1/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100">
-                            <tr class="text-center" v-for="i in this.applicant" :key="i">
-                                <td class="border border-stroke-100">{{i.email}}</td>
-                                <td class="border border-stroke-100">{{i.nama}}</td>
-                                <td class="border border-stroke-100">{{i.jenis_kelamin=='L' ? "Laki-Laki" : "Perempuan"}}</td>                                
-                                <td class="border border-stroke-100">{{toDate(i.createdAt)}}</td>
-                                <td class="border border-stroke-100 py-2">
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.applicant" :key="i">
+                                <td>{{i.email}}</td>
+                                <td>{{i.nama}}</td>
+                                <td>{{i.jenis_kelamin=='L' ? "Laki-Laki" : "Perempuan"}}</td>                                
+                                <td>{{toDate(i.createdAt)}}</td>
+                                <td class="py-5">
+                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                                    h-auto w-auto px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/applicant', query: {email: i.email}})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Detail</span>
@@ -95,7 +95,7 @@
     </div>
 
     <!-- Transparent Overlay -->
-    <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden"></div>
+    <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
 
     <!-- Create New Recruitment Modal -->
     <div id="modalRecruitment" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
