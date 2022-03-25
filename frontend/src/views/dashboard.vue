@@ -94,12 +94,19 @@ export default {
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
         let tes = this.$cookies.get('data_registrant').test
-        axios
-        .get(this.port+'/section/all/'+tes[0][0])
-        .then(({data}) => (
-            this.section = data
-            // console.log(this.section)
-        ))
+        
+        let ada = false
+        tes.forEach(t => {
+            if (t[0]==5)
+                ada = true
+        });
+        if(ada)
+            axios
+            .get(this.port+'/section/all/5')
+            .then(({data}) => (
+                this.section = data
+                // console.log(this.section)
+            ))
     },
 }
 </script>
