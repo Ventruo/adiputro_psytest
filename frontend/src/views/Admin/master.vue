@@ -80,7 +80,7 @@
                 <div class="w-full p-8 pr-10 flex justify-between">
                     <h1 class="text-4xl font-bold">{{header}}</h1>
                 </div>
-                <router-view @updateHeader="updateHeader" class="relative"/>
+                <router-view @updateHeader="updateHeader"/>
             </div>
         </div>
     </div>

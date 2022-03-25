@@ -6,15 +6,15 @@
     <hr v-if="print=='yes'" style="border-top: 2px solid black; margin-top: 10px;">
     <hr v-else style="border-top: 2px solid black;">
 
-    <div class="flex mt-2">
+    <div class="flex mt-2" v-if="this.bio!=null">
         <div class="flex">
             <div class="font-bold text-sm">
                 <p>Nama</p>
                 <p>Jenis Kelamin (L/P)</p>
             </div>
             <div class="ml-2 text-sm">
-                <p>: {{this.nama}}</p>
-                <p>: L</p>
+                <p>: {{this.bio[0].email}}</p>
+                <p>: {{this.bio[0].jenis_kelamin}}</p>
             </div>
         </div>
         
@@ -24,8 +24,8 @@
                 <p>Jurusan</p>
             </div>
             <div class="ml-3 text-sm">
-                <p>: SMA</p>
-                <p>: IPA</p>
+                <p>: {{this.bio[0].pendidikan}}</p>
+                <p>: {{this.bio[0].jurusan.toUpperCase()}}</p>
             </div>
         </div>
     </div>
@@ -355,16 +355,18 @@
 export default {
     props: {
         "data": { type: Object, default: [], required: true },
+        "biodata": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
-        "nama": { type: String, default: '', required: true },
     },
     data() {
         return {
-            arrTabel: null
+            arrTabel: null,
+            bio: null
         }
     },
     mounted() {
         this.arrTabel = this.data
+        this.bio = this.biodata
         // console.log(this.arrTabel)
     },
 }

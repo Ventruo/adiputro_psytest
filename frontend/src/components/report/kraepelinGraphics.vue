@@ -4,27 +4,26 @@
     </div>
     
     <hr style="border-top: 2px solid black;">
-
-    <div class="flex mt-2">
+    <div class="flex mt-2" v-if="this.bio!=null">
         <div class="flex">
             <div class="font-bold text-sm">
                 <p>Nama</p>
                 <p>Jenis Kelamin (L/P)</p>
             </div>
             <div class="ml-2 text-sm">
-                <p>: {{this.nama}}</p>
-                <p>: L</p>
+                <p>: {{this.bio[0].email}}</p>
+                <p>: {{this.bio[0].jenis_kelamin}}</p>
             </div>
         </div>
         
         <div class="flex ml-3">
             <div class="font-bold text-sm">
                 <p>Pendidikan</p>
-                <p>Kode</p>
+                <p>Jurusan</p>
             </div>
             <div class="ml-3 text-sm">
-                <p>: S1</p>
-                <p>: 1</p>
+                <p>: {{this.bio[0].pendidikan}}</p>
+                <p>: {{this.bio[0].jurusan.toUpperCase()}}</p>
             </div>
         </div>
     </div>
@@ -69,12 +68,13 @@
 export default {
     props: {
         "data": { type: Object, default: [], required: true },
+        "biodata": { type: Object, default: [], required: true },
         "id": { type: String, required: true },
-        "nama": { type: String, default: '', required: true },
     },
     data() {
         return {
             dataGrafik: null,
+            bio: null,
             plugin: {
                 id: 'custom_canvas',
                 beforeDraw: (chart) => {
@@ -89,6 +89,7 @@ export default {
         }
     },
     mounted() {
+        this.bio = this.biodata
         var temp = this.data
         var data = []
         for (let i = 0; i < 50; i++) {

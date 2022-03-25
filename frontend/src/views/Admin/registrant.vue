@@ -42,6 +42,11 @@
                 </tbody>
             </table>
         </div>
+        <div v-else class="flex items-center justify-center w-full mx-20">
+            <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+                Belum ada data tersedia.
+            </div>
+        </div>
         
         <div class="w-1 h-64 relative top-10"></div>
     </div>
@@ -59,11 +64,11 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
-    created() {
-        this.$emit('updateHeader', 'Registrant')
-    },
     methods: {
 
+    },
+    created() {
+        this.$emit('updateHeader', 'Registrant')
     },
     mounted(){
         $('.menu').removeClass('bg-background-200')

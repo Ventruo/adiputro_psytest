@@ -84,11 +84,11 @@
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <Kraepelin :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                        <Kraepelin :data="dataRegistrant" :biodata="biodata" :print="'no'"/>
                     </div>
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                        <KraepelinGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
+                        <KraepelinGraphics :data="dataRegistrant" :biodata="biodata" :id="'pChart'"/>
                     </div>
                     <div class="absolute -z-20" id="pdf">
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
@@ -96,12 +96,12 @@
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <Kraepelin :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
+                            <Kraepelin :data="dataRegistrant" :biodata="biodata" :print="'yes'"/>
                         </div>
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <KraepelinGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/>
+                            <KraepelinGraphics :data="dataRegistrant" :biodata="biodata" :id="'printChart'"/>
                         </div>
                     </div>
                 </div>
@@ -135,6 +135,7 @@ export default {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
+            biodata: null,
             loaded: 0,
             keyData: null,
             email: this.$route.query.registrant,
@@ -155,14 +156,18 @@ export default {
         },
         checkTest(test){
             // this.dataRegistrant = JSON.parse(data.result),
-            let dataNow = null
-            for (let i = 0; i < this.dataRegistrant.length; i++) {
-                const data = this.dataRegistrant[i];
-                if (data.test_id == test)
-                    dataNow = JSON.parse(data.result)
+            if(this.dataRegistrant!=null){
+                let dataNow = null
+                for (let i = 0; i < this.dataRegistrant.length; i++) {
+                    const data = this.dataRegistrant[i];
+                    if (data.test_id == test)
+                        dataNow = JSON.parse(data.result)
+                }
+                if (dataNow!=null){
+                    this.dataRegistrant = dataNow
+                    this.loaded = 1
+                }
             }
-            this.dataRegistrant = dataNow
-            this.loaded = 1
         },
     },
     created(){
@@ -170,10 +175,15 @@ export default {
     },
     mounted(){
         axios
-        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+        .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
         .then(({data}) => (
-            this.dataRegistrant = data,
-            this.checkTest(5)
+            this.biodata = data,
+            axios
+            .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+            .then(({data}) => (
+                this.dataRegistrant = data,
+                this.checkTest(5)
+            ))
         ))
         // axios
         // .get(this.port+'/exam_session/getbyemail/'+this.email)
