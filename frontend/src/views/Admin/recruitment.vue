@@ -1,19 +1,15 @@
 <template>
-    <div>
-        <div class="absolute top-20 w-full flex justify-center" style="height: 30rem;">
-            <div class="w-5/6 h-full">
-                <div class="flex justify-end">
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                    duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
-                            id="btnCreateRecruitment">
-                        <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
-                        <span>Buat Rekrutmen Baru</span>
-                    </button>
-                </div>
-                
-                <div class="overflow-auto w-full h-full no-scrollbar mt-5" v-if="this.recruitment!=null">
     <div class="absolute top-20 w-full flex justify-center" style="height: 30rem;">
         <div class="w-5/6 h-full">
+            <div class="flex justify-end">
+                <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
+                                duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
+                        id="btnCreateRecruitment">
+                    <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
+                    <span>Buat Rekrutmen Baru</span>
+                </button>
+            </div>
+
             <div class="overflow-auto w-full h-full no-scrollbar mt-5" v-if="this.recruitment!=null">
                 <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
                     <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
@@ -39,13 +35,13 @@
                             <td class="border border-stroke-100">{{i.status==1?"Open":"Closed"}}</td>
                             <td class="border border-stroke-100 py-2">
                                 <button class="bg-safe hover:bg-green-500 duration-200 rounded-full text-white
-                                                duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                                h-auto w-auto text-base px-5 py-1 mr-1" 
                                     @click="gantiJobVacancy(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
                                 <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                                h-auto w-auto text-base px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
@@ -56,17 +52,9 @@
                 </table>
             </div>
             <div v-else class="flex items-center justify-center w-full h-full">
-                <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+                <div class="bg-foreground-3-500 w-full rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
                     Belum ada data tersedia.
                 </div>
-            </div>
-            <div class="flex justify-end">
-                <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
-                        id="btnCreateRecruitment">
-                    <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
-                    <span>Buat Rekrutmen Baru</span>
-                </button>
             </div>
 
             <div v-show="this.applicant!=null">
@@ -90,7 +78,7 @@
                                 <td class="border border-stroke-100">{{toDate(i.createdAt)}}</td>
                                 <td class="border border-stroke-100 py-2">
                                     <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/applicant', query: {email: i.email}})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Detail</span>
