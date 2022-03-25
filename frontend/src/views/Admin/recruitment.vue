@@ -12,7 +12,7 @@
             </div>
 
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.recruitment!=null">
-                <table class="table-fixed w-full font-semibold text-xl">
+                <table class="table-fixed w-full font-semibold">
                     <thead class="bg-foreground-4-100 text-white">
                         <tr>
                             <th class="w-2/12 py-3">QR Barcode</th>
@@ -61,7 +61,7 @@
             <div v-show="this.applicant!=null">
                 <h1 class="font-bold text-4xl mt-10">Pelamar Kerja</h1>
                 <div class="overflow-auto w-full h-auto max-h-[30rem] bg-transparent no-scrollbar mt-3 rounded-lg shadow-xl">
-                    <table class="table-fixed w-full font-semibold text-xl">
+                    <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th class="w-2/12 py-3">Email</th>

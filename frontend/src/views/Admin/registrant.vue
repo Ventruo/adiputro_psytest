@@ -5,7 +5,7 @@
             <input type="text" name="token" id="userToken" class="w-1/2 ml-0.5 mb-3 bg-background-100 ring-1 inset ring-stroke-100 
                         placeholder-stroke mt-1 px-3 py-1.5 rounded-md outline-none" placeholder="Cari registrant disini...">
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.registrantList!=null">
-                <table class="table-fixed w-full font-semibold text-xl">
+                <table class="table-fixed w-full font-semibold">
                     <thead class="bg-foreground-4-100 text-white">
                         <tr>
                             <th class="w-4/12 py-3">E-Mail</th>
@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xl" v-for="i in this.registrantList" :key="i">
+                        <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.registrantList" :key="i">
                             <td>{{i.email}}</td>
                             <td class="py-5">
                                 <span v-if="i.status==1"> 

@@ -13,7 +13,7 @@
 
                 <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.exam_session!=null">
                     <table class="table-fixed w-full font-semibold">
-                        <thead class="bg-foreground-4-100 text-white text-xl">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th class="w-2/12 py-3">E-Mail</th>
                                 <th class="w-1/12">Start</th>
@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-lg" v-for="i in this.exam_session" :key="i">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.exam_session" :key="i">
                                 <td>{{i.email}}</td>
                                 <td>{{toDate(i.start_date)}}</td>
                                 <td>{{toDate(i.finish_date)}}</td>
