@@ -10,6 +10,15 @@
             </div>
 
             <h1 class="font-bold text-4xl mt-5">Section</h1>
+
+            <div class="flex justify-end">
+                <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
+                                duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
+                    id="btnCreateSection">
+                    <i class="fa fa-feather fa-lg mr-2"></i>   
+                    <span>Add New Section</span>
+                </button>
+            </div>
             <div class="overflow-auto w-full h-96 no-scrollbar mt-2" v-if="this.sectionList!=null">
                 <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
                     <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
@@ -54,15 +63,6 @@
                 </table>
             </div>
 
-            <div class="flex justify-end">
-                <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                duration-200 rounded-full px-10 py-2 mt-2 h-auto w-auto" 
-                    id="btnCreateSection">
-                    <i class="fa fa-feather fa-lg mr-2"></i>   
-                    <span>Add New Section</span>
-                </button>
-            </div>
-
             <div v-show="this.questionList!=null">
                 <h1 class="font-bold text-4xl mt-5">Question</h1>
                 <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
@@ -84,7 +84,7 @@
                                 <td class="border border-stroke-100">{{i.answer}}</td>
                                 <td class="border border-stroke-100">
                                     <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Update</span>
@@ -152,7 +152,7 @@
                             <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Multiple Choice'"/>
                             <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Image'"/>
                         </div>
-                        <div class="flex hidden non-essay">
+                        <div class="flex non-essay">
                             <input type="number" name="option_number" id="option_number" placeholder="2-5"
                                 class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
                         </div>

@@ -2,6 +2,15 @@
     <div>
         <div class="absolute top-20 w-full flex justify-center" style="height: 30rem;">
             <div class="w-5/6 h-full">
+                <div class="flex justify-end">
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
+                                    duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
+                            id="btnCreateSession">
+                        <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
+                        <span>Add New Session</span>
+                    </button>
+                </div>
+
                 <div class="overflow-auto w-full h-full no-scrollbar mt-5" v-if="this.exam_session!=null">
                     <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
                         <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
@@ -28,7 +37,7 @@
                                 </td>
                                 <td class="border border-stroke-100">
                                     <button class="bg-safe hover:bg-green-800 duration-200 rounded-full text-white
-                                                    duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="openModal"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Update</span>
@@ -38,14 +47,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="flex justify-end">
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
-                                    duration-200 rounded-full px-10 py-2 mt-5 h-auto w-auto"
-                            id="btnCreateSession">
-                        <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
-                        <span>Add New Session</span>
-                    </button>
-                </div>
+                
                 <div class="w-1 h-64 relative top-10"></div>
             </div>
         </div>

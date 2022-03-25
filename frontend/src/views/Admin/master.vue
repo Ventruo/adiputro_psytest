@@ -67,7 +67,10 @@
         -->
 
         <div class="relative w-full h-screen text-black">
-            <p class="font-bold text-white text-3xl ml-5 mt-5 mb-6">Hi, Admin</p>
+            <div class="w-full p-5 px-10 flex justify-between font-bold text-white text-2xl">
+                <p >Hi, Admin</p>
+                <p >{{timestamp||""}}</p>
+            </div>
             <div class="overflow-auto no-scrollbar h-screen w-full relative">
                 <div class="overflow-hidden absolute w-full h-72 -z-10">
                     <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="h-full w-full">
@@ -76,7 +79,6 @@
                 </div>
                 <div class="w-full p-8 pr-10 flex justify-between">
                     <h1 class="text-4xl font-bold">{{header}}</h1>
-                    <h1 class="text-2xl font-bold">{{timestamp||""}}</h1>
                 </div>
                 <router-view @updateHeader="updateHeader" class="relative"/>
             </div>
