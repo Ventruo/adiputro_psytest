@@ -1,9 +1,10 @@
 <template>
-    <div class="absolute w-full flex justify-center" style="height: 30rem;">
+    <div class="absolute w-full flex justify-center h-full">
         <div class="overflow-auto w-5/6 h-full no-scrollbar mt-5" v-if="this.registrantList!=null">
+        
             <p class="font-bold">Cari Nama Registrant : </p>
-            <input type="text" name="token" id="userToken" class="w-1/2 ml-2 mb-3 bg-background-300 ring-1 ring inset ring-stroke-100 
-                        placeholder-stroke mt-1 px-3 py-1.5 rounded-lg outline-none" placeholder="Cari registrant disini...">
+            <input type="text" name="token" id="userToken" class="w-1/2 ml-0.5 mb-3 bg-background-300 ring-1 inset ring-stroke-100 
+                        placeholder-stroke mt-1 px-3 py-1.5 rounded-md outline-none" placeholder="Cari registrant disini...">
 
             <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
                 <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
@@ -26,12 +27,12 @@
                             </span>
                         </td>
                         <td class="text-white border border-stroke-100">
-                            <button class="bg-safe hover:bg-green-800 duration-200 rounded-full h-auto w-1/3 px-5 py-1 mr-1" 
+                            <button class="bg-safe hover:bg-green-800 duration-200 rounded-md h-auto w-1/3 px-5 py-1 mr-1" 
                                 @click="this.$router.push({path: '/admin/registrantDetail', query: {registrant: i.email}})"> 
                                 <i class="fa fa-info-circle mr-2"></i>
                                 <span>Info</span>
                             </button>
-                            <button class="bg-secondary hover:bg-red-800 duration-200 rounded-full h-auto w-1/3 py-1" 
+                            <button class="bg-secondary hover:bg-red-800 duration-200 rounded-md h-auto w-1/3 py-1" 
                                 @click="this.$router.push({path: '/'})"> 
                                 <i class="fa fa-trash-alt mr-2"></i>
                                 <span>Delete</span>
@@ -40,6 +41,11 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div v-else class="flex items-center justify-center w-full mx-20">
+            <div class="bg-foreground-3-500 w-full py-5 rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+                Belum ada data tersedia.
+            </div>
         </div>
         
         <div class="w-1 h-64 relative top-10"></div>
@@ -58,18 +64,13 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
-    created() {
-        this.$emit('updateHeader', 'Registrant')
-    },
     methods: {
 
     },
+    created() {
+        this.$emit('updateHeader', 'Registrant')
+    },
     mounted(){
-        $('.menu').removeClass('bg-background-200')
-        $('.menu').removeClass('text-black')
-        $('#menu-registrant').addClass('bg-background-200')
-        $('#menu-registrant').addClass('text-black')
-
         axios
         .get(this.port+'/registrant/all')
         .then(({data}) => (

@@ -39,16 +39,15 @@
             </div>
         </form>
         <div v-else id="soal" class="hidden">
-            <!-- <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
+            <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
                         p-5 my-5 flex justify-center items-center text-xl font-bold">
-                Jawablah perkolom dari bawah ke atas, tuliskan anngka satuan dari penjumlahan 2 angka diantara kotak jawaban. 
-                Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia disebelah kanan.
-            </div> -->
-            <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
+                Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia.
+            </div>
+            <!-- <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
                 <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
                 
                 <p class="text-center py-1">Kolom {{kolom>jumKolom ? jumKolom : kolom}}/{{jumKolom}}</p> 
-            </div>
+            </div> -->
 
             <div class="text-center font-bold mb-5" v-if="pertanyaan!=null">
                 <p class="text-5xl mb-2" v-if="currentRow<28">{{pertanyaan[27-currentRow]}} + {{pertanyaan[28-currentRow]}} = ...</p>
@@ -121,8 +120,8 @@ export default {
             namaTes: 'Tes Kraepelin',
             judulHalaman: 'EPPS',
             kolom: 1,
-            jumKolom: 5,
-            detik: 2,
+            jumKolom: 50,
+            detik: 15,
             waktu: null,
             row1: [],
             row2: [],
@@ -162,7 +161,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 2
+                        this.detik = 15
                         this.reset()
                     }
                 }

@@ -6,12 +6,9 @@
 
 <script>
 export default {
-    props: {
-        "type": { type: String, default: 'text', required: true },
-        "modelValue": { type: String, default: '', required: true },
-        "placeHolder": { type: String, default: '', required: true },
-        "nama": { type: String, default: '', required: true },
-    },
+    props: [
+        "type", "modelValue", "placeHolder", "nama"
+    ],
     computed: {
         inputValue: {
             get() {
@@ -20,7 +17,15 @@ export default {
             set(value) {
                 this.$emit('update:modelValue', value)
             }
-        }
+        },
+        // na,aValue: {
+        //     get() {
+        //         return this.nama
+        //     },
+        //     set(value) {
+        //         this.$emit('update:nama', value)
+        //     }
+        // }
     }
 }
 </script>

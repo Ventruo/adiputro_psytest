@@ -23,7 +23,7 @@
                 </div>
                 <div class="w-6/12 mr-10">
                     <p class="mt-2">NAMA LENGKAP :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'fullname'" :placeHolder="'Nama Lengkap'" />
+                    <InputBio :type="'text'" v-model="fullname" :nama="'fullname'" :placeHolder="'Nama Lengkap'" />
 
                     <p class="mt-4">NAMA PANGGILAN :</p>
                     <InputBio :type="'text'" :modelValue="''" :nama="'nickname'" :placeHolder="'Nama Panggilan'" />
@@ -94,8 +94,8 @@
                             <p id="sakitKeras" class="mb-1">Apakah anda pernah sakit keras/kecelakaan?</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'kecelakaanYa'" :names="'kecelakaan'" id="kecelakaanYa" :label="'YA'"/></div>
-                            <div class="w-1/2"><Radio :values="'kecelakaanTidak'" :names="'kecelakaan'" id="kecelakaanTidak" :label="'TIDAK'"/></div>
+                            <div class="w-1/2"><Radio :values="'kecelakaanYa'" :names="'kecelakaan'" id="kecelakaanYa" :label="'YA'" @change="sakitKeras=true"/></div>
+                            <div class="w-1/2"><Radio :values="'kecelakaanTidak'" :names="'kecelakaan'" id="kecelakaanTidak" :label="'TIDAK'" @change="sakitKeras=false"/></div>
                         </div>
                     </div>
                     <div class="w-1/2">
@@ -104,11 +104,11 @@
                             <p class="mb-1 text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'cacatYa'" :names="'cacatTubuh'" :id="'cacatYa'" :label="'YA'"/></div>
+                            <div class="w-1/2"><Radio :values="'cacatYa'" :names="'cacatTubuh'" :id="'cacatYa'" :label="'YA'" /></div>
                             <div class="w-1/2"><Radio :values="'cacatTidak'" :names="'cacatTubuh'" :id="'cacatTidak'" :label="'TIDAK'"/></div>
                         </div>
 
-                        <div class="hidden" id="sakitKeras2">
+                        <div v-show="sakitKeras">
                             <div class="mt-2 w-1/3">
                                 <p>Kapan Terjadinya:</p>
                             </div>
@@ -128,13 +128,13 @@
                         </div>
                         
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'belum menikah'" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'"/></div>
-                            <div class="w-1/2"><Radio :values="'sudah menikah'" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'"/></div>
+                            <div class="w-1/2"><Radio :values="'belum menikah'" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
+                            <div class="w-1/2"><Radio :values="'sudah menikah'" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
                         </div>
                     </div>
 
                     <div class="w-1/2">
-                        <div id="sudahMenikah" class="hidden">
+                        <div v-show="sudahMenikah">
                             <p>Nama Suami/Istri :</p>
                             <InputBio :type="'text'" :modelValue="''" :nama="'namaSuamiIstri'" :placeHolder="'Nama Suami/Istri'" />
 
@@ -554,12 +554,12 @@
                     <div class="mt-2">
                         <p class="mr-3 mb-1">Apakah Anda memiliki saudara / kenalan di perusahaan ini: </p>
                         <div class="flex w-1/2">
-                            <div class="w-1/2"><Radio :values="'kenalanYa'" :names="'Kenalan'" :id="'kenalanYa'" :label="'YA'"/></div>
-                            <div class="w-1/2"><Radio :values="'kenalanTidak'" :names="'Kenalan'" :id="'kenalanTidak'" :label="'TIDAK'"/></div>
+                            <div class="w-1/2"><Radio :values="'kenalanYa'" :names="'Kenalan'" :id="'kenalanYa'" :label="'YA'" @change="adaKenalan=true"/></div>
+                            <div class="w-1/2"><Radio :values="'kenalanTidak'" :names="'Kenalan'" :id="'kenalanTidak'" :label="'TIDAK'" @change="adaKenalan=false"/></div>
                         </div>
                     </div>
                     
-                    <div class="hidden" id="adaKenalan">
+                    <div v-show="adaKenalan">
                         <p>Bila YA, Sebutkan:</p>
                         <div>
                             <p class="mt-1">Nama :</p>
@@ -755,9 +755,10 @@
             </div>
 
             <div class="mt-10 mb-5 flex justify-end">
-                <button class="bg-safe text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2">
-                                Submit
-                                </button>
+                <button class="bg-safe text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2"
+                    @click.prevent="aaa">
+                    Submit
+                </button>
             </div>
         </form>
     </div>
@@ -776,7 +777,10 @@ export default {
         return{
             judulHalaman: 'Biodata',
             url: null,
-            fullname: "Widean Nagari",
+            fullname: "",
+            sudahMenikah: false,
+            sakitKeras: false,
+            adaKenalan: false,
             pendidikanCount: 1,
             keluargaCount:[1,1,1,1],
             riwayatCount: 1,
@@ -812,16 +816,11 @@ export default {
             const date = ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
             return date
         },
+        aaa(){
+            console.log(this.adaKenalan)
+        }
     },
     mounted() {
-        $('#menikah').on("click", function() { $('#sudahMenikah').removeClass('hidden'); });
-        $('#belumMenikah').on("click", function() { $('#sudahMenikah').addClass('hidden'); });
-
-        $('#kecelakaanYa').on("click", function() { $('#sakitKeras2').removeClass('hidden'); });
-        $('#kecelakaanTidak').on("click", function() { $('#sakitKeras2').addClass('hidden'); });
-        
-        $('#kenalanYa').on("click", function() { $('#adaKenalan').removeClass('hidden'); });
-        $('#kenalanTidak').on("click", function() { $('#adaKenalan').addClass('hidden'); });
         
     },
     created(){

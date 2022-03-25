@@ -1,22 +1,30 @@
 <template>
     <div class="w-9/12 h-full m-auto relative mt-3 flex flex-col flex-grow pb-3">
         <div class="w-full h-auto">
-            <div class="relative">
-                <h1 class="text-3xl font-bold mb-3">Test Result</h1>
-                <div class="w-5/12 flex text-xl mb-3">
-                    <div class="text-right mr-5">
-                        <p>Email :</p>
-                        <p>Nama :</p>
-                        <p>Test :</p>
-                        <p>Start Date :</p>
-                        <p>Finish Date :</p>
+            <div class="relative mb-3">
+                <h1 class="text-3xl font-bold">Test Result</h1>
+                <div class="flex mb-3 mt-2">
+                    <div class="w-6/12 flex text-lg">
+                        <div class="text-right mr-5 text-gray-700">
+                            <p>Email</p>
+                            <p>Nama</p>
+                            <p>Test</p>
+                        </div>
+                        <div class="text-left">
+                            <p>abc@gmail.com</p>
+                            <p>Widean Nagari</p>
+                            <p>Test ABC</p>
+                        </div>
                     </div>
-                    <div class="text-left">
-                        <p>abc@gmail.com</p>
-                        <p>Widean Nagari</p>
-                        <p>Test ABC</p>
-                        <p>25 Januari 2022</p>
-                        <p>25 Januari 2022</p>
+                    <div class="w-6/12 flex text-lg">
+                        <div class="text-right mr-5 text-gray-700">
+                            <p>Start Date</p>
+                            <p>Finish Date</p>
+                        </div>
+                        <div class="text-left">
+                            <p>25 Januari 2022 08:00:00 WIB</p>
+                            <p>25 Januari 2022 20:00:00 WIB</p>
+                        </div>
                     </div>
                 </div>
 
@@ -43,7 +51,7 @@
                                 <td class="border border-stroke-100">12/02/2022 08:10</td>
                                 <td class="border border-stroke-100">17/20</td>
                                 <td class="h-12 border border-stroke-100">
-                                    <button v-if="i==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-full h-auto w-auto text-base px-5 py-1 mr-1" 
+                                    <button v-if="i==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/reviewEssay'})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Review Answer</span>
@@ -56,29 +64,31 @@
                 </div>
 
                 <div class="text-right mb-2">
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg px-10 py-2 mr-2"
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2"
                                     @click="makePDF">
                                     <i class="fa fa-print mr-2"></i>
                                     <span>Print PDF</span>
                                     </button>
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg px-10 py-2">
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2">
                                     <i class="fa fa-download mr-2"></i>
                                     <span>Download Excel</span>
                                     </button>
                 </div>
             </div>
-            <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow" style="height: 48rem;">
+
+
+            <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-10" style="height: 48rem;">
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
                 <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <Kraepelin :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                        <Kraepelin :data="dataRegistrant" :biodata="biodata" :print="'no'"/>
                     </div>
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                        <KraepelinGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
+                        <KraepelinGraphics :data="dataRegistrant" :biodata="biodata" :id="'pChart'"/>
                     </div>
                     <div class="absolute -z-20" id="pdf">
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
@@ -86,12 +96,12 @@
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <Kraepelin :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
+                            <Kraepelin :data="dataRegistrant" :biodata="biodata" :print="'yes'"/>
                         </div>
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <KraepelinGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/>
+                            <KraepelinGraphics :data="dataRegistrant" :biodata="biodata" :id="'printChart'"/>
                         </div>
                     </div>
                 </div>
@@ -125,6 +135,7 @@ export default {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
+            biodata: null,
             loaded: 0,
             keyData: null,
             email: this.$route.query.registrant,
@@ -145,14 +156,18 @@ export default {
         },
         checkTest(test){
             // this.dataRegistrant = JSON.parse(data.result),
-            let dataNow = null
-            for (let i = 0; i < this.dataRegistrant.length; i++) {
-                const data = this.dataRegistrant[i];
-                if (data.test_id == test)
-                    dataNow = JSON.parse(data.result)
+            if(this.dataRegistrant!=null){
+                let dataNow = null
+                for (let i = 0; i < this.dataRegistrant.length; i++) {
+                    const data = this.dataRegistrant[i];
+                    if (data.test_id == test)
+                        dataNow = JSON.parse(data.result)
+                }
+                if (dataNow!=null){
+                    this.dataRegistrant = dataNow
+                    this.loaded = 1
+                }
             }
-            this.dataRegistrant = dataNow
-            this.loaded = 1
         },
     },
     created(){
@@ -160,10 +175,15 @@ export default {
     },
     mounted(){
         axios
-        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+        .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
         .then(({data}) => (
-            this.dataRegistrant = data,
-            this.checkTest(5)
+            this.biodata = data,
+            axios
+            .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+            .then(({data}) => (
+                this.dataRegistrant = data,
+                this.checkTest(5)
+            ))
         ))
         // axios
         // .get(this.port+'/exam_session/getbyemail/'+this.email)
