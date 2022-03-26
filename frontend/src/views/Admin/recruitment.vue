@@ -35,13 +35,13 @@
                             <td>{{toDate(i.start_date)}}</td>
                             <td>{{i.status==1?"Open":"Closed"}}</td>
                             <td>
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                 h-auto w-auto px-5 py-1 mr-1" 
                                     @click="gantiJobVacancy(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                 h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
@@ -78,7 +78,7 @@
                                 <td>{{i.jenis_kelamin=='L' ? "Laki-Laki" : "Perempuan"}}</td>                                
                                 <td>{{toDate(i.createdAt)}}</td>
                                 <td class="py-5">
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/applicant', query: {email: i.email}})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
@@ -100,10 +100,10 @@
     </div>
 
     <!-- Transparent Overlay -->
-    <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
+    <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
     <!-- Create New Recruitment Modal -->
-    <div id="modalRecruitment" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
+    <div id="modalRecruitment" class="fixed left-1/4 bg-foreground-4-200 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
         <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
             <button id="closeNewRecruitment" class="relative inline-block"
                 @click.prevent="closeModal">

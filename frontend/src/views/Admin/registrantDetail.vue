@@ -28,29 +28,29 @@
                     </div>
                 </div>
 
-                <div class="overflow-auto w-full h-full no-scrollbar mt-2 mb-5">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full font-semibold">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl mb-10">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
-                                <th class="w-1/12 border border-stroke-100">Section No.</th>
-                                <th class="w-2/12 border border-stroke-100">Answer Type</th>
-                                <th class="w-2/12 border border-stroke-100">Start</th>
-                                <th class="w-2/12 border border-stroke-100">Finish</th>
-                                <th class="w-1/12 border border-stroke-100">Correct</th>
-                                <th class="w-2/12 border border-stroke-100">Action</th>
+                                <th class="w-1/12 py-2">Section No.</th>
+                                <th class="w-2/12">Answer Type</th>
+                                <th class="w-2/12">Start</th>
+                                <th class="w-2/12">Finish</th>
+                                <th class="w-1/12">Correct</th>
+                                <th class="w-2/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100">
-                            <tr class="text-center" v-for="i in 10" :key="i">
-                                <td class="border border-stroke-100">{{i}}</td>
-                                <td class="border border-stroke-100">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in 10" :key="i">
+                                <td>{{i}}</td>
+                                <td>
                                     <span v-if="i==1">Essay</span>
                                     <span v-else>Multiple Choice</span>
                                 </td>
-                                <td class="border border-stroke-100">12/02/2022 08:05</td>
-                                <td class="border border-stroke-100">12/02/2022 08:10</td>
-                                <td class="border border-stroke-100">17/20</td>
-                                <td class="h-12 border border-stroke-100">
+                                <td>12/02/2022 08:05</td>
+                                <td>12/02/2022 08:10</td>
+                                <td>17/20</td>
+                                <td class="h-12">
                                     <button v-if="i==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/reviewEssay'})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
@@ -77,7 +77,7 @@
             </div>
 
 
-            <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-10" style="height: 48rem;">
+            <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-2" style="height: 48rem;">
                 <h1 class="font-bold text-xl mb-2">Print Preview</h1>
                 <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">

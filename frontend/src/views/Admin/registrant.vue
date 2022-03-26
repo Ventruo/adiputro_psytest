@@ -26,12 +26,12 @@
                                 </span>
                             </td>
                             <td class="text-white">
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md h-auto w-1/3 px-5 py-1 mr-1" 
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-1/3 px-5 py-1 mr-1" 
                                     @click="this.$router.push({path: '/admin/registrantDetail', query: {registrant: i.email}})"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Info</span>
                                 </button>
-                                <button class="bg-secondary hover:bg-red-800 duration-200 rounded-md h-auto w-1/3 py-1" 
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-1/3 py-1" 
                                     @click="this.$router.push({path: '/'})"> 
                                     <i class="fa fa-trash-alt mr-2"></i>
                                     <span>Delete</span>

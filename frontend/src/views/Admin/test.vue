@@ -47,12 +47,12 @@
                             </td>
                             <td>{{i.option_num}}</td>
                             <td class="text-white">
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click.prevent="gantiSection(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
-                                <button class="bg-secondary hover:bg-red-800 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
@@ -98,7 +98,7 @@
                                 <td>{{optionToString(i)}}</td>
                                 <td>{{i.answer}}</td>
                                 <td>
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
@@ -120,10 +120,10 @@
         </div>
         
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
-        <div id="modalSection" class="fixed left-1/3 bg-primary-1000 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
+        <div id="modalSection" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <button id="closeNewSection" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>

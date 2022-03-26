@@ -36,7 +36,7 @@
                                     <span v-else>Non-Active</span>
                                 </td>
                                 <td>
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto px-5 py-1 mr-1" 
                                         @click="openModal"> 
                                         <i class="fa fa-refresh mr-2"></i>
@@ -57,10 +57,10 @@
         </div>
 
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
-        <div id="modalSession" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
+        <div id="modalSession" class="fixed left-1/4 bg-foreground-4-200 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <button id="closeNewSession" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="flex items-center gap-3 py-4">
                     <input name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
-                        class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
+                        class="rounded-lg py-2 px-3 w-full bg-primary-600 outline-none placeholder-gray-300"><br>
                     <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                     @click.prevent="tambahEmail">Tambahkan</button>
                 </div>
