@@ -1,9 +1,16 @@
 <template>
     <div class="w-9/12 h-full m-auto relative mt-3 flex flex-col flex-grow pb-3">
         <div class="w-full h-auto">
+            <div class="flex mb-5">
+                <label class="text-xl font-bold w-32">Nama Tes : </label>
+                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl appearance-none"
+                    @change="gantiTes($event)">
+                    <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
+                </select>
+            </div>
             <div class="relative mb-3">
-                <h1 class="text-3xl font-bold">Test Result</h1>
-                <div class="flex mb-3 mt-2">
+                <h1 class="text-3xl font-bold">Hasil Tes</h1>
+                <div class="flex mb-3 mt-2" v-if="this.dataNow!=null">
                     <div class="w-6/12 flex text-lg">
                         <div class="text-right mr-5 text-gray-700">
                             <p>Email</p>
@@ -11,9 +18,9 @@
                             <p>Test</p>
                         </div>
                         <div class="text-left">
-                            <p>abc@gmail.com</p>
-                            <p>Widean Nagari</p>
-                            <p>Test ABC</p>
+                            <p>{{this.$route.query.registrant}}</p>
+                            <p>{{this.dataNow.nama}}</p>
+                            <p>{{this.dataNow.tes}}</p>
                         </div>
                     </div>
                     <div class="w-6/12 flex text-lg">
@@ -22,8 +29,8 @@
                             <p>Finish Date</p>
                         </div>
                         <div class="text-left">
-                            <p>25 Januari 2022 08:00:00 WIB</p>
-                            <p>25 Januari 2022 20:00:00 WIB</p>
+                            <p>{{this.dataNow.start}}</p>
+                            <p>{{this.dataNow.finish}}</p>
                         </div>
                     </div>
                 </div>
@@ -40,24 +47,29 @@
                                 <th class="w-2/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in 10" :key="i">
-                                <td>{{i}}</td>
+                        <tbody v-if="this.sectionList!=null && this.sectionResult!=null">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i, idx) in this.sectionList" :key="idx">
+                                <td>{{i.section_number}}</td>
                                 <td>
-                                    <span v-if="i==1">Essay</span>
+                                    <span v-if="i.section_type==1">Essay</span>
                                     <span v-else>Multiple Choice</span>
                                 </td>
-                                <td>12/02/2022 08:05</td>
-                                <td>12/02/2022 08:10</td>
-                                <td>17/20</td>
+                                <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].finish_date)}}</td>
+                                <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].start_date)}}</td>
+                                <td>{{this.sectionResult[idx]==undefined? "-" : this.sectionResult[idx].num_correct}}/{{i.question_num}}</td>
                                 <td class="h-12">
-                                    <button v-if="i==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                    <button v-if="i.section_type==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/reviewEssay'})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Review Answer</span>
                                     </button>
                                     <span v-else>-</span>
                                 </td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr class="text-center bg-foreground-4-50 text-xl">
+                                <td colspan="6" class="py-5">Belum ada data tersedia</td>
                             </tr>
                         </tbody>
                     </table>
@@ -135,7 +147,12 @@ export default {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
+            dataNow: null,
             biodata: null,
+            test: null,
+            testResult: null,
+            sectionList: null,
+            sectionResult: null,
             loaded: 0,
             keyData: null,
             email: this.$route.query.registrant,
@@ -145,6 +162,101 @@ export default {
         }
     },
     methods:{
+        toDate(timeString){
+            const waktu = new Date(timeString)
+            const date = ('00'+waktu.getDate()).slice(-2) + "/" + ('00'+(waktu.getMonth()+1)).slice(-2) + "/" + waktu.getFullYear()
+            const time = ('00'+waktu.getHours()).slice(-2) + ":" + ('00'+waktu.getMinutes()).slice(-2)
+            const dateTime = date + ' ' + time
+            return dateTime
+        },
+        isKraepelin(){
+            this.sectionList[0].question_num = this.sectionList[0].question_num * 27
+            axios
+            .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
+            .then(({data}) => (
+                this.biodata = data,
+                axios
+                .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+                .then(({data}) => (
+                    this.checkTest(5, data)
+                ))
+            ))
+        },
+        async dataInit(){
+            for (let i = 0; i < this.testResult.length; i++) {
+                // console.log(this.testResult[i].result)
+                if(this.testResult[i].result != null && this.testResult[i].result != "")
+                    this.testResult[i].result = JSON.parse(this.testResult[i].result)
+            }
+
+            this.test = []
+            for (let i = 0; i < this.testResult.length; i++) {
+                let data = await axios.get(this.port+'/test/'+this.testResult[i].test_id)
+                this.test.push(data.data)
+            }
+            this.dataNow = {
+                "nama": "abc",
+                "tes": this.test[0].name,
+                "start": this.toDate(this.testResult[0].start_date),
+                "finish": this.toDate(this.testResult[0].finish_date)
+            }
+
+            axios
+            .get(this.port+'/section/all/'+this.test[0].id)
+            .then(({data}) => (
+                this.sectionList = data,
+
+                axios
+                .get(`${this.port}/section_result/getbytest/${this.test[0].id}?email=${this.$route.query.registrant}`)
+                .then(({data}) => {
+                    this.processSectionResult(data)
+                    if(this.test[0].id == 5) this.isKraepelin()
+                })
+            ))
+            
+        },
+        processSectionResult(data){
+            let arr = []
+            if(data!=null){
+                for (let i = 0; i < this.sectionList.length; i++) {
+                    arr[i] = undefined
+                    for (let j = 0; j < data.length; j++) {
+                        // console.log(this.sectionList[i].id+" "+data[j].section_id + (this.sectionList[i].id == data[j].section_id))
+                        // console.log(data[j].section_id)
+                        if (this.sectionList[i].id == data[j].section_id){
+                            arr[i] = data[j]
+                            break;
+                        }
+                            
+                    }
+                }
+                
+                this.sectionResult = arr
+            }
+        },
+        gantiTes(event){
+            this.loaded = 0
+            let id = event.target.value
+            for (let i = 0; i < this.test.length; i++) {
+                if (this.test[i].id == id){
+                    this.dataNow.tes = this.test[i].name
+                    this.dataNow.start = this.toDate(this.testResult[i].start_date)
+                    this.dataNow.finish = this.toDate(this.testResult[i].finish_date)
+                }
+            }
+
+            axios
+            .get(this.port+'/section/all/'+id)
+            .then(({data}) => (
+                this.sectionList = data,
+                axios
+                .get(`${this.port}/section_result/getbytest/${id}?email=${this.$route.query.registrant}`)
+                .then(({data}) => {
+                    this.processSectionResult(data)
+                    if(id == 5) this.isKraepelin()
+                })
+            ))
+        },
         makePDF(){
             window.html2canvas = html2canvas;
             var doc = new jsPDF("p","pt","a4");
@@ -154,17 +266,19 @@ export default {
                 }
             })
         },
-        checkTest(test){
-            // this.dataRegistrant = JSON.parse(data.result),
+        checkTest(test, data){
+            this.dataRegistrant = data
+            console.log(this.dataRegistrant)
+            
             if(this.dataRegistrant!=null){
-                let dataNow = null
+                let dataNow2 = null
                 for (let i = 0; i < this.dataRegistrant.length; i++) {
-                    const data = this.dataRegistrant[i];
-                    if (data.test_id == test)
-                        dataNow = JSON.parse(data.result)
+                    const dat = this.dataRegistrant[i];
+                    if (dat.test_id == test && dat.result != null)
+                        dataNow2 = JSON.parse(dat.result)
                 }
-                if (dataNow!=null){
-                    this.dataRegistrant = dataNow
+                if (dataNow2!=null){
+                    this.dataRegistrant = dataNow2
                     this.loaded = 1
                 }
             }
@@ -175,16 +289,12 @@ export default {
     },
     mounted(){
         axios
-        .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
+        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
         .then(({data}) => (
-            this.biodata = data,
-            axios
-            .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
-            .then(({data}) => (
-                this.dataRegistrant = data,
-                this.checkTest(5)
-            ))
+            this.testResult = data,
+            this.dataInit()
         ))
+
         // axios
         // .get(this.port+'/exam_session/getbyemail/'+this.email)
         // .then(({data}) => (
