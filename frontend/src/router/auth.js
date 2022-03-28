@@ -1,7 +1,15 @@
 import axios from "axios";
 
-export default async function auth({ next, router }) {
+async function auth({ next, router }) {
     await axios.get("/auth/user")
 
     return next();
 }
+
+async function adminAuth({ next, router }) {
+    await axios.get("/auth/user")
+
+    return next();
+}
+
+export { auth, adminAuth}
