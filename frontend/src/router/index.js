@@ -26,7 +26,7 @@ import masterImgMatch from '/src/views/masterImgMatch.vue'
 import masterTestResult from '/src/views/Admin/masterTestResult.vue'
 
 // middleware
-import auth from "./auth";
+import {auth, adminAuth} from "./auth";
 
 const routes = [
     {
@@ -43,9 +43,9 @@ const routes = [
         path: '/',
         name: 'main',
         component: main,
-        // meta: {
-        //     middleware: auth
-        // },
+        meta: {
+            middleware: auth
+        },
         children: [
             {
                 path: '/biodata',
@@ -86,6 +86,9 @@ const routes = [
                 path: '/admin',
                 name: 'admin',
                 component: admin,
+                meta: {
+                    middleware: adminAuth
+                },
                 children: [
                     {
                         path: '',
