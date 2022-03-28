@@ -83,33 +83,40 @@
                     <form class="bg-foreground-4-50 px-5 py-3"
                         @submit.prevent="submitKraepelinData"
                         v-if="this.biodata!=null">
-                        <div class="mb-5 mt-3">
-                            <div class="flex gap-10">
-                                <div class="flex mt-2 items-center w-1/2">
-                                    <label class="w-1/3">PENDIDIKAN TERAKHIR :</label>
-                                    <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl">
-                                        <option value="smea" :selected="this.biodata[0].pendidikan=='smea'">SMEA</option>
-                                        <option value="stm-smk" :selected="this.biodata[0].pendidikan=='stm-smk'">STM/SMK</option>
-                                        <option value="sma" :selected="this.biodata[0].pendidikan=='sma'">SMA</option>
-                                        <option value="sarjana muda" :selected="this.biodata[0].pendidikan=='sarjana muda'">SARJANA MUDA (D3)</option>
-                                        <option value="sarjana" :selected="this.biodata[0].pendidikan=='sarjana'">SARJANA (S1)</option>
-                                    </select>
-                                </div>
-                                <div class="flex mt-2 items-center w-1/2">
-                                    <label class="w-1/4">JENIS KELAMIN :</label>
-                                    <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
-                                        <option value="L" :selected="this.biodata[0].jenis_kelamin=='L'">LAKI-LAKI</option>
-                                        <option value="P" :selected="this.biodata[0].jenis_kelamin=='P'">PEREMPUAN</option>
-                                    </select>
+                        <div class="mb-5 mt-3 flex gap-10">
+                            <div class="w-1/2">
+                                <div class="flex gap-10">
+                                    <div class="text-right">
+                                        <p class="mb-8">PENDIDIKAN TERAKHIR :</p>
+                                        <p>JENIS KELAMIN :</p>
+                                    </div>
+                                    <div class="grow">
+                                        <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl mb-5 w-full">
+                                            <option value="smea" :selected="this.biodata[0].pendidikan=='smea'">SMEA</option>
+                                            <option value="stm-smk" :selected="this.biodata[0].pendidikan=='stm-smk'">STM/SMK</option>
+                                            <option value="sma" :selected="this.biodata[0].pendidikan=='sma'">SMA</option>
+                                            <option value="sarjana muda" :selected="this.biodata[0].pendidikan=='sarjana muda'">SARJANA MUDA (D3)</option>
+                                            <option value="sarjana" :selected="this.biodata[0].pendidikan=='sarjana'">SARJANA (S1)</option>
+                                        </select>
+                                        <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer block w-full">
+                                            <option value="L" :selected="this.biodata[0].jenis_kelamin=='L'">LAKI-LAKI</option>
+                                            <option value="P" :selected="this.biodata[0].jenis_kelamin=='P'">PEREMPUAN</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="flex mt-5 items-center w-1/2 pr-5">
-                                <label class="w-1/3 text-right relative right-2.5">JURUSAN :</label>
-                                <select name="jurusan" id="jurusanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
-                                    <option value="ipa" :selected="this.biodata[0].jurusan=='ipa'">IPA</option>
-                                    <option value="ips" :selected="this.biodata[0].jurusan=='ips'">IPS</option>
-                                </select>
+                            <div class="w-1/2">
+                                <div class="flex gap-10">
+                                    <div class="text-right">
+                                        <p class="mb-8">JURUSAN :</p>
+                                    </div>
+                                    <div class="grow">
+                                        <select name="jurusan" id="jurusanCombobox" class="grow text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer w-full">
+                                            <option value="ipa" :selected="this.biodata[0].jurusan=='ipa'">IPA</option>
+                                            <option value="ips" :selected="this.biodata[0].jurusan=='ips'">IPS</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -142,30 +149,31 @@
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <div v-if="biodata!=null">
+                        <div v-if="biodata!=null" class="flex flex-col h-full">
                             <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
                         </div>
                     </div>
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                        <div v-if="biodata!=null">
+                        <div v-if="biodata!=null" class="flex flex-col h-full">
                             <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
                         </div>
                     </div>
+                    <!-- <div class="absolute -z-20" id="pdf"> -->
                     <div class="absolute -z-20" id="pdf">
-                        <div class="flex flex-col bg-white py-2 px-3 text-black" 
+                        <div class="flex flex-col bg-white py-2 px-3 text-black mb-3" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <div v-if="biodata!=null">
+                            <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'yes'"/>
                             </div>
                         </div>
-                        <div class="flex flex-col bg-white py-2 px-3 text-black" 
-                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
+                        <div class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <div v-if="biodata!=null">
+                            <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
                             </div>
                         </div>
@@ -218,7 +226,8 @@ export default {
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
+            prints: false
         }
     },
     methods:{
@@ -323,13 +332,18 @@ export default {
             ))
         },
         makePDF(){
-            window.html2canvas = html2canvas;
-            var doc = new jsPDF("p","pt","a4");
-            var email = this.email
-            doc.html(document.getElementById('pdf'), {
-                callback: function(pdf) {
-                    pdf.save(email+".pdf");
-                }
+            this.prints = true
+            this.$nextTick(() => {
+                window.html2canvas = html2canvas;
+                var doc = new jsPDF("p","pt","a4");
+                var email = this.email
+                var this2 = this
+                doc.html(document.getElementById('pdf'), {
+                    callback: function(pdf) {
+                        pdf.save(email+".pdf");
+                        this2.prints = false;
+                    }
+                })
             })
         },
         checkTest(test, data){

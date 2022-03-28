@@ -73,6 +73,7 @@ export default {
                             confirmButtonText: 'OK'
                         });
                     }else{
+                        console.log("masuk")
                         let {token, age} = e.data.refresh_token;
                         let data_user = {
                             "test": e.data.tests, 

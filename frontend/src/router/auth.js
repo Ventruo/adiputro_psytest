@@ -8,8 +8,8 @@ async function auth({ next, router }) {
 
 async function adminAuth({ next, router }) {
     await axios.get("/auth/user")
-
+    
     return next();
 }
 
-export { auth, adminAuth}
+export { auth, adminAuth }
