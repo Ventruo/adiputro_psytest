@@ -367,6 +367,7 @@ export default {
     mounted() {
         this.arrTabel = this.data
         this.bio = this.biodata
+        console.log(this.bio)
         // console.log(this.arrTabel)
     },
 }

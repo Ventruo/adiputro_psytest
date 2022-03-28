@@ -10,6 +10,35 @@
             @submit.prevent="submitKraepelinData">
             <h1 class="text-3xl font-bold mb-2">Biodata</h1>
             <div class="mb-5 mt-3">
+                <div class="flex gap-10">
+                    <div class="flex mt-2 items-center w-1/2">
+                        <label class="w-1/3">PENDIDIKAN TERAKHIR :</label>
+                        <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl">
+                            <option value="smea">SMEA</option>
+                            <option value="stm-smk">STM/SMK</option>
+                            <option value="sma">SMA</option>
+                            <option value="sarjana muda">SARJANA MUDA (D3)</option>
+                            <option value="sarjana">SARJANA (S1)</option>
+                        </select>
+                    </div>
+                    <div class="flex mt-2 items-center w-1/2">
+                        <label class="w-1/4">JENIS KELAMIN :</label>
+                        <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
+                            <option value="L">LAKI-LAKI</option>
+                            <option value="P">PEREMPUAN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex mt-5 items-center w-1/2 pr-5">
+                    <label class="w-1/3 text-right relative right-2.5">JURUSAN :</label>
+                    <select name="jurusan" id="jurusanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
+                        <option value="ipa">IPA</option>
+                        <option value="ips">IPS</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="mb-5 mt-3">
                 <p class="mt-2">PENDIDIKAN TERAKHIR :</p>
                 <div class="flex my-2">
                     <div class="w-1/5"><Radio :values="'smea'" :names="'pendidikan'" :id="'SMEA'" :label="'SMEA'"/></div>
@@ -30,7 +59,7 @@
                     <div class="w-1/4"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
                     <div class="w-1/4"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>
                 </div>
-            </div>
+            </div> -->
             
             <div class="text-right">
                 <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
@@ -38,16 +67,16 @@
                 </button>
             </div>
         </form>
-        <div v-else id="soal" v-show="isStarted">
+        <div v-else id="soal" v-show="isStarted==2">
             <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
                         p-5 my-5 flex justify-center items-center text-xl font-bold">
                 Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia.
             </div>
-            <!-- <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
+            <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
                 <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
                 
                 <p class="text-center py-1">Kolom {{kolom>jumKolom ? jumKolom : kolom}}/{{jumKolom}}</p> 
-            </div> -->
+            </div>
 
             <div class="bg-foreground-4-100 py-10 rounded-lg">
                 <div class="text-center font-bold mb-5 text-white" v-if="pertanyaan!=null">
@@ -96,10 +125,10 @@
         </div>
         
         <!-- Transparent Overlay -->
-        <div id="bg" v-show="!isStarted" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
+        <div id="bg" v-show="isStarted==1" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="isStarted==1" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
@@ -143,18 +172,17 @@ export default {
             section_result_id: null,
             dataKraepelin: null,
             port: import.meta.env.VITE_BACKEND_URL,
-            isStarted: false
+            isStarted: 0
         }
     },
     methods: {
         gotData(data){
             if(data!=undefined){
-                document.getElementById("klikAnywhere").classList.remove("hidden"),
-                document.getElementById("bg").classList.remove("hidden")
+                this.isStarted = 1
             }
         },
         mulai(){
-            this.isStarted = true
+            this.isStarted = 2
 
             this.waktu = setInterval(() => {
                 if (this.pertanyaanFull && this.dataKraepelin){
@@ -167,12 +195,9 @@ export default {
             }, 1000);
         },
         submitKraepelinData(e){
-            let pendidikan = ""
-            for (let i = 0; i < 5; i++) {
-                if (e.target[i].checked) pendidikan = e.target[i].value
-            }
-            let jurusan = e.target[5].checked!=false ? e.target[5].value : e.target[6].value
-            let jk = e.target[7].checked!=false ? e.target[7].value : e.target[8].value
+            let pendidikan = e.target["pendidikan"].value
+            let jurusan = e.target["jurusan"].value
+            let jk = e.target["jk"].value
             
             $('#spinner-modal').fadeIn("slow");
 
@@ -194,6 +219,7 @@ export default {
                 })
                 .then((response) => {
                     $('#spinner-modal').fadeOut("slow"),
+                    this.isStarted = 1
                     this.dataKraepelin = response.data,
                     document.getElementById("klikAnywhere").classList.remove("hidden"),
                     document.getElementById("bg").classList.remove("hidden")

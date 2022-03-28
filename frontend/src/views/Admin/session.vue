@@ -62,10 +62,10 @@
         <!-- Create New Session Modal -->
         <div id="modalSession" class="fixed left-1/4 bg-foreground-4-200 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
+                <p class="font-bold text-lg inline-block relative" style="width: 96%">{{headerModal}}</p>
                 <button id="closeNewSession" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
                 </button>
-                <p class="font-bold text-lg text-right inline-block relative" style="width: 96%">{{headerModal}}</p>
             </div>
 
             <div class="text-white p-5 h-5/6 relative">

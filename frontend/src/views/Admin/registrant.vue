@@ -2,7 +2,7 @@
     <div class="absolute w-full flex justify-center h-full">
         <div class="w-5/6 h-full">
             <p class="font-bold text-xl">Cari Nama Registrant : </p>
-            <input type="text" name="token" id="userToken" class="w-1/2 ml-0.5 mb-3 bg-background-100 ring-1 inset ring-stroke-100 
+            <input type="text" name="token" id="userToken" class="w-1/2 ml-0.5 mb-3 bg-white ring-1 inset ring-stroke-100 
                         placeholder-stroke mt-1 px-3 py-1.5 rounded-md outline-none" placeholder="Cari registrant disini...">
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                 <table class="table-fixed w-full font-semibold">

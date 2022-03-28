@@ -3,7 +3,7 @@
         <div class="w-full h-auto">
             <div class="flex mb-5">
                 <label class="text-xl font-bold w-32">Nama Tes : </label>
-                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl appearance-none"
+                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl"
                     @change="gantiTes($event)">
                     <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
@@ -18,7 +18,7 @@
                             <p>Test</p>
                         </div>
                         <div class="text-left">
-                            <p>{{this.$route.query.registrant}}</p>
+                            <p>{{this.email}}</p>
                             <p>{{this.dataNow.nama}}</p>
                             <p>{{this.dataNow.tes}}</p>
                         </div>
@@ -75,13 +75,59 @@
                     </table>
                 </div>
 
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl mb-10" v-show="tesKraepelin">
+                    <div class="bg-foreground-4-100 text-white text-2xl font-bold px-5 py-3">
+                        Biodata
+                    </div>
+
+                    <form class="bg-foreground-4-50 px-5 py-3"
+                        @submit.prevent="submitKraepelinData"
+                        v-if="this.biodata!=null">
+                        <div class="mb-5 mt-3">
+                            <div class="flex gap-10">
+                                <div class="flex mt-2 items-center w-1/2">
+                                    <label class="w-1/3">PENDIDIKAN TERAKHIR :</label>
+                                    <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl">
+                                        <option value="smea" :selected="this.biodata[0].pendidikan=='smea'">SMEA</option>
+                                        <option value="stm-smk" :selected="this.biodata[0].pendidikan=='stm-smk'">STM/SMK</option>
+                                        <option value="sma" :selected="this.biodata[0].pendidikan=='sma'">SMA</option>
+                                        <option value="sarjana muda" :selected="this.biodata[0].pendidikan=='sarjana muda'">SARJANA MUDA (D3)</option>
+                                        <option value="sarjana" :selected="this.biodata[0].pendidikan=='sarjana'">SARJANA (S1)</option>
+                                    </select>
+                                </div>
+                                <div class="flex mt-2 items-center w-1/2">
+                                    <label class="w-1/4">JENIS KELAMIN :</label>
+                                    <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
+                                        <option value="L" :selected="this.biodata[0].jenis_kelamin=='L'">LAKI-LAKI</option>
+                                        <option value="P" :selected="this.biodata[0].jenis_kelamin=='P'">PEREMPUAN</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="flex mt-5 items-center w-1/2 pr-5">
+                                <label class="w-1/3 text-right relative right-2.5">JURUSAN :</label>
+                                <select name="jurusan" id="jurusanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
+                                    <option value="ipa" :selected="this.biodata[0].jurusan=='ipa'">IPA</option>
+                                    <option value="ips" :selected="this.biodata[0].jurusan=='ips'">IPS</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="text-right mb-2">
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2"
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2 shadow-xl"
                                     @click="makePDF">
                                     <i class="fa fa-print mr-2"></i>
                                     <span>Print PDF</span>
                                     </button>
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2">
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 shadow-xl">
                                     <i class="fa fa-download mr-2"></i>
                                     <span>Download Excel</span>
                                     </button>
@@ -96,11 +142,15 @@
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                         <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <Kraepelin :data="dataRegistrant" :biodata="biodata" :print="'no'"/>
+                        <div v-if="biodata!=null">
+                            <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
+                        </div>
                     </div>
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                        <KraepelinGraphics :data="dataRegistrant" :biodata="biodata" :id="'pChart'"/>
+                        <div v-if="biodata!=null">
+                            <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
+                        </div>
                     </div>
                     <div class="absolute -z-20" id="pdf">
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
@@ -108,17 +158,25 @@
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <Kraepelin :data="dataRegistrant" :biodata="biodata" :print="'yes'"/>
+                            <div v-if="biodata!=null">
+                                <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'yes'"/>
+                            </div>
                         </div>
                         <div class="flex flex-col bg-white py-2 px-3 text-black" 
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif">
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <KraepelinGraphics :data="dataRegistrant" :biodata="biodata" :id="'printChart'"/>
+                            <div v-if="biodata!=null">
+                                <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
+        </div>
+        
+        <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
+            <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
     </div>
     
@@ -128,6 +186,8 @@
 import axios from 'axios'
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
+
+import Radio from '../../components/radiobutton.vue'
 
 import Tintum from "../../components/report/tintum.vue"
 
@@ -141,7 +201,7 @@ import KraepelinGraphics from "../../components/report/kraepelinGraphics.vue"
 
 export default {
     components: { 
-        axios, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics
+        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics
     },
     data () {
         return {
@@ -154,10 +214,10 @@ export default {
             sectionList: null,
             sectionResult: null,
             loaded: 0,
+            tesKraepelin: false,
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
-            nama: 'Mr. X',
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -170,15 +230,19 @@ export default {
             return dateTime
         },
         isKraepelin(){
-            this.sectionList[0].question_num = this.sectionList[0].question_num * 27
+            this.sectionList[0].question_num = 1350
             axios
             .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
             .then(({data}) => (
-                this.biodata = data,
+                this.biodata = null,
+                this.$nextTick(() => {
+                    this.biodata = data
+                }),
                 axios
                 .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
                 .then(({data}) => (
-                    this.checkTest(5, data)
+                    this.checkTest(5, data),
+                    this.tesKraepelin = true
                 ))
             ))
         },
@@ -236,6 +300,7 @@ export default {
         },
         gantiTes(event){
             this.loaded = 0
+            this.tesKraepelin = false
             let id = event.target.value
             for (let i = 0; i < this.test.length; i++) {
                 if (this.test[i].id == id){
@@ -260,9 +325,10 @@ export default {
         makePDF(){
             window.html2canvas = html2canvas;
             var doc = new jsPDF("p","pt","a4");
+            var email = this.email
             doc.html(document.getElementById('pdf'), {
                 callback: function(pdf) {
-                    pdf.save("Mr. X.pdf");
+                    pdf.save(email+".pdf");
                 }
             })
         },
@@ -282,6 +348,37 @@ export default {
                     this.loaded = 1
                 }
             }
+        },
+        submitKraepelinData(e){
+            let pendidikan = e.target["pendidikan"].value
+            let jurusan = e.target["jurusan"].value
+            let jk = e.target["jk"].value
+
+            $('#spinner-modal').fadeIn("slow");
+            axios.post(this.port+'/kreapelin_data/update',{
+                "section_result_id": this.sectionResult[0].id,
+                "email": this.email,
+                "pendidikan": pendidikan,
+                "jurusan": jurusan,
+                "jenis_kelamin": jk
+            })
+            .then((response) => {
+                axios.post(this.port+'/test_result/calculateresult',{
+                    test_id: 5,
+                    email: this.email
+                })
+                .then((response) => {
+                    $('#spinner-modal').fadeOut("slow"),
+                    axios
+                    .get(`${this.port}/section_result/getbytest/5?email=${this.email}`)
+                    .then(({data}) => {
+                        this.processSectionResult(data)
+                        this.isKraepelin()
+                    })
+                })
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
     },
     created(){

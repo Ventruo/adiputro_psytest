@@ -82,11 +82,11 @@
                 <p >{{timestamp||""}}</p>
             </div>
             <div class="overflow-auto no-scrollbar h-screen w-full relative mt-2">
-                <div class="overflow-hidden absolute w-full h-72 -z-10">
+                <!-- <div class="overflow-hidden absolute w-full h-72 -z-10">
                     <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="h-full w-full">
                         <path d="M0.00,92.27 C216.83,192.92 304.30,8.39 500.00,109.03 L500.00,0.00 L0.00,0.00 Z" class="fill-foreground-4-50"></path>
                     </svg>
-                </div>
+                </div> -->
                 <div class="w-full p-8 pr-10 flex justify-between">
                     <h1 class="text-4xl font-bold">{{header}}</h1>
                 </div>
