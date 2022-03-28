@@ -19,9 +19,9 @@
                     <span>Buat Section Baru</span>
                 </button>
             </div>
-            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.sectionList!=null">
+            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                 <table class="table-fixed w-full font-semibold">
-                    <thead class="bg-foreground-4-100 text-white">
+                    <thead class="bg-foreground-4-100 text-white sticky top-0">
                         <tr>
                             <th class="w-1/12 py-3">Section No</th>
                             <th class="w-2/12">Instruction</th>
@@ -32,7 +32,7 @@
                             <th class="w-2/12">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="this.sectionList!=null && this.sectionList.length>0">
                         <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
                             <td>{{i.section_number}}</td>
                             <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
@@ -47,12 +47,12 @@
                             </td>
                             <td>{{i.option_num}}</td>
                             <td class="text-white">
-                                <button class="bg-safe hover:bg-green-800 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click.prevent="gantiSection(i.id)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
-                                <button class="bg-secondary hover:bg-red-800 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
+                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Update</span>
@@ -60,40 +60,16 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tbody v-else>
+                        <tr class="text-center bg-foreground-4-50 text-xl">
+                            <td colspan="7" class="py-5">Belum ada data tersedia</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
-            <div v-show="this.questionList!=null" class="mt-10">
-                <h1 class="font-bold text-4xl">Question</h1>
-                <div class="overflow-auto w-full h-96 no-scrollbar mt-3">
-                    <table class="table-fixed w-full font-semibold">
-                        <thead class="bg-foreground-4-100 text-white">
-                            <tr>
-                                <th class="w-1/12 py-3">No</th>
-                                <th class="w-3/12">Question</th>
-                                <th class="w-3/12">Option Choices</th>
-                                <th class="w-1/12">Answer Key</th>
-                                <th class="w-1/12">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i,idx) in this.questionList" :key="idx">
-                                <td>{{idx+1}}</td>
-                                <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
-                                <td>{{optionToString(i)}}</td>
-                                <td>{{i.answer}}</td>
-                                <td>
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
-                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
-                                        @click="this.$router.push({path: '/admin/question/update'})"> 
-                                        <i class="fa fa-refresh mr-2"></i>
-                                        <span>Update</span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div>
+                <h1 class="font-bold text-4xl mt-10">Question</h1>
 
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
@@ -103,15 +79,51 @@
                         <span>Add New Question</span>
                     </button>
                 </div>
+
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white sticky top-0">
+                            <tr>
+                                <th class="w-1/12 py-3">No</th>
+                                <th class="w-3/12">Question</th>
+                                <th class="w-3/12">Option Choices</th>
+                                <th class="w-1/12">Answer Key</th>
+                                <th class="w-1/12">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody v-if="this.questionList!=null && this.questionList.length>0">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i,idx) in this.questionList" :key="idx">
+                                <td>{{idx+1}}</td>
+                                <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
+                                <td>{{optionToString(i)}}</td>
+                                <td>{{i.answer}}</td>
+                                <td>
+                                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
+                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click="this.$router.push({path: '/admin/question/update'})"> 
+                                        <i class="fa fa-refresh mr-2"></i>
+                                        <span>Update</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        
+                        <tbody v-else>
+                            <tr class="text-center bg-foreground-4-50 text-xl">
+                                <td colspan="5" class="py-5">Belum ada data tersedia</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="w-1 h-64 relative top-10"></div>
         </div>
         
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
-        <div id="modalSection" class="fixed left-1/3 bg-primary-1000 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
+        <div id="modalSection" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <button id="closeNewSection" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
@@ -212,8 +224,14 @@ export default {
             axios
             .get(this.port+'/section/all/'+this.test[0].id)
             .then(({data}) => (
-                this.sectionList = data
-                // console.log(this.sectionList)
+                this.sectionList = data,
+                // console.log(this.sectionList[0].id)
+                
+                axios
+                .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
+                .then(({data}) => (
+                    this.questionList = data
+                ))
             ))
         },
         gantiTes(event){
@@ -221,7 +239,12 @@ export default {
             axios
             .get(this.port+'/section/all/'+event.target.value)
             .then(({data}) => (
-                this.sectionList = data
+                this.sectionList = data,
+                axios
+                .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
+                .then(({data}) => (
+                    this.questionList = data
+                ))
             ))
         },
         gantiSection(id){

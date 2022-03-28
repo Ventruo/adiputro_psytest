@@ -8,7 +8,7 @@
         </div>
         
         <div class="mb-5">
-            <button class="bg-secondary px-3 py-1 rounded-full text-black" @click="this.$router.push({path: '/dashboard'})">
+            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
                 <span class="font-bold text-xl">Back</span>
             </button>
@@ -755,7 +755,7 @@
             </div>
 
             <div class="mt-10 mb-5 flex justify-end">
-                <button class="bg-safe text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2"
+                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2"
                     @click.prevent="aaa">
                     Submit
                 </button>
