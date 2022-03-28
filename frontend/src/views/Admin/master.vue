@@ -77,11 +77,11 @@
         -->
 
         <div class="relative w-full h-screen text-black">
-            <div class="w-full p-5 px-10 flex justify-between font-bold text-white text-2xl">
+            <div class="w-full py-5 px-10 flex justify-between font-bold text-white text-2xl">
                 <p >Hi, Admin</p>
                 <p >{{timestamp||""}}</p>
             </div>
-            <div class="overflow-auto no-scrollbar h-screen w-full relative">
+            <div class="overflow-auto no-scrollbar h-screen w-full relative mt-2">
                 <div class="overflow-hidden absolute w-full h-72 -z-10">
                     <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="h-full w-full">
                         <path d="M0.00,92.27 C216.83,192.92 304.30,8.39 500.00,109.03 L500.00,0.00 L0.00,0.00 Z" class="fill-foreground-4-50"></path>

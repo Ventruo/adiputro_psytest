@@ -95,7 +95,7 @@
                 </div>
                 
                 <div class="mt-10 mb-5 flex justify-end">
-                    <button type="submit" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2">
+                    <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
                         Submit
                     </button>
                 </div>

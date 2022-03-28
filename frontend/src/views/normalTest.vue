@@ -7,69 +7,75 @@
             </div>
         </div>
 
-        <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
-            <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-            <button id="btnDaftarSoal" class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold">
-                <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
-                <span id="btnDaftarSoal3">Daftar Soal</span>
-            </button>
-        </div>
-        
-        <div class="relative hidden z-10" id="daftarSoal">
-            <div class="absolute bg-foreground-3-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
-                <div class="font-bold text-lg mb-2">
-                    <i class="fa fa-th-large mr-3"></i>
-                    <span>Daftar Soal</span>
-                </div>
-                <div v-for="i in jumSoal" :key="i" class="inline-block">
-                    <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
-                        {{i}}
-                    </button>
-                    <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
-                        {{i}}
-                    </button>
-                </div>
+        <div v-show="isStarted">
+            <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
+                <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <button id="btnDaftarSoal" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold">
+                    <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
+                    <span id="btnDaftarSoal3">Daftar Soal</span>
+                </button>
             </div>
-        </div>
-
-        <div class="relative w-full mb-2">
-            <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-xl overflow-x-hidden">
-                <div class="h-8 bg-foreground-3-300 ring-1 ring-inset ring-black" id="progress" style="width: 0px;"></div>
-            </div>    
-            <div class="w-full text-center absolute top-0">
-                <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
-            </div>
-        </div>
-        
-        <div id="soal" class="mb-10 h-full font-semibold" v-if="pertanyaan!=null">
-        <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
-        <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-            <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
-            <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
             
-            <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
-            <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
-            <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
-        </div>
+            <div class="relative hidden z-10" id="daftarSoal">
+                <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                    <div class="font-bold text-white text-lg mb-2">
+                        <i class="fa fa-th-large mr-3"></i>
+                        <span>Daftar Soal</span>
+                    </div>
+                    <div v-for="i in jumSoal" :key="i" class="inline-block">
+                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                            {{i}}
+                        </button>
+                        <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                            {{i}}
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-        <div class="flex justify-between">
-            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
-                <i class="fa fa-chevron-left mr-3"></i>
-                <span>Sebelumnya</span>
-            </button>
-            <button class="bg-foreground-3-100 hover:bg-foreground-3-300 duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
-                <span id="nextBtn">Selanjutnya</span>
-                <i class="fa fa-chevron-right ml-3"></i>
-            </button>
+            <div class="relative w-full mb-2">
+                <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-lg overflow-x-hidden">
+                    <div class="h-8 bg-primary-300 ring-1 ring-inset ring-black" id="progress" style="width: 0px;"></div>
+                </div>    
+                <div class="w-full text-center absolute top-0">
+                    <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
+                </div>
+            </div>
+            
+            <div id="soal" class="mb-10 h-full font-semibold" v-if="pertanyaan!=null">
+            <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
+            <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
+                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
+                
+                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
+                <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
+                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
+            </div>
+
+            <div class="flex justify-between">
+                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
+                    <i class="fa fa-chevron-left mr-3"></i>
+                    <span>Sebelumnya</span>
+                </button>
+                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
+                    <span id="nextBtn">Selanjutnya</span>
+                    <i class="fa fa-chevron-right ml-3"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Transparent Overlay -->
-        <!-- <div id="bg" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-primary-800 bg-opacity-90 z-40"></div> -->
+        <div id="bg" v-show="!isStarted" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <!-- <div id="counterDiv" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-9xl font-bold z-50">
-            <p id="counter">3</p>
-        </div> -->
+        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+            @click.prevent="mulai">
+            Klik dimanapun untuk memulai
+        </div>
+        <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
+            <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
+        </div>
     </div>
 </template>
 <script>
@@ -102,10 +108,38 @@ export default {
             section_id: this.$route.query.current_section,
             test_id: null,
             exam_session: 13,
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
+            isStarted: false
         }
     },
     methods: {
+        mulai(){
+            this.isStarted = true
+            this.waktu = setInterval(() => {
+                this.detik--
+                if (this.detik<0){
+                    this.detik = 59
+                    this.menit--
+                }
+                
+                if (this.menit<0){
+                    this.detik = 0
+                    this.menit = 0
+                    clearInterval(this.waktu)
+                    
+                    Swal.fire({
+                        title: 'Waktu Habis...',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Kembali ke Dashboard'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
+                } 
+            }, 1000)
+        },
         nextSoal(){
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
@@ -278,48 +312,7 @@ export default {
     },
 
     created () {
-        // this.$emit('updateJudul', this.judulHalaman)
-        // this.countdownTimer = setInterval(() => {
-        //     var element = document.getElementById("counter")
-        //     if(this.countdown<4 && this.countdown>0){
-        //         element.innerHTML = this.countdown
-        //     }else if(this.countdown==0){
-        //         element.innerHTML = "GO!!!"
-        //     }else if(this.countdown==-1){
-        //         element.classList.add("hidden")
-        //         document.getElementById("bg").classList.add("hidden")
-        //         document.getElementById("counterDiv").classList.add("hidden")
-        //         document.getElementById("bg").classList.remove("z-50")
-        //         document.getElementById("soal").classList.remove("hidden")
-                
-        //         clearInterval(this.countdownTimer)
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
-                    
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 0
-                        clearInterval(this.waktu)
-                        
-                        Swal.fire({
-                            title: 'Waktu Habis...',
-                            icon: 'warning',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Kembali ke Dashboard'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.submitJawaban()
-                            }
-                        });
-                    } 
-                }, 1000)
-        //     }
-        //     this.countdown--
-        // },1000)
+        
     },
 
     beforeDestroy() {

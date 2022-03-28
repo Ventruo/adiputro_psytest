@@ -11,9 +11,9 @@
                     </button>
                 </div>
 
-                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.exam_session!=null">
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                     <table class="table-fixed w-full font-semibold">
-                        <thead class="bg-foreground-4-100 text-white">
+                        <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-2/12 py-3">E-Mail</th>
                                 <th class="w-1/12">Start</th>
@@ -24,7 +24,7 @@
                                 <th class="w-1/12">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="this.exam_session!=null && this.exam_session.length>0">
                             <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.exam_session" :key="i">
                                 <td>{{i.email}}</td>
                                 <td>{{toDate(i.start_date)}}</td>
@@ -36,7 +36,7 @@
                                     <span v-else>Non-Active</span>
                                 </td>
                                 <td>
-                                    <button class="bg-safe hover:bg-green-800 duration-200 rounded-md text-white
+                                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto px-5 py-1 mr-1" 
                                         @click="openModal"> 
                                         <i class="fa fa-refresh mr-2"></i>
@@ -45,22 +45,22 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tbody v-else>
+                            <tr class="text-center bg-foreground-4-50 text-xl">
+                                <td colspan="7" class="py-5">Belum ada data tersedia</td>
+                            </tr>
+                        </tbody>
                     </table>
-                </div>
-                <div v-else class="flex items-center justify-center w-full h-full">
-                    <div class="bg-foreground-3-500 w-full rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
-                        Belum ada data tersedia.
-                    </div>
                 </div>
                 <div class="w-1 h-64 relative top-10"></div>
             </div>
         </div>
 
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-80 hidden" @click="closeModal"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
-        <div id="modalSession" class="fixed left-1/4 bg-primary-1000 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
+        <div id="modalSession" class="fixed left-1/4 bg-foreground-4-200 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <button id="closeNewSession" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="flex items-center gap-3 py-4">
                     <input name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
-                        class="rounded-lg py-2 px-3 w-full my-2 bg-primary-600 outline-none placeholder-gray-300 mb-5"><br>
+                        class="rounded-lg py-2 px-3 w-full bg-primary-600 outline-none placeholder-gray-300"><br>
                     <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                     @click.prevent="tambahEmail">Tambahkan</button>
                 </div>

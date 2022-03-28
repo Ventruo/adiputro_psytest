@@ -4,7 +4,7 @@
             <img src="../assets/logo.png" alt="" class="w-20 mb-5">
         </div>
         <div>
-            <button class="bg-secondary px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
+            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
                 <span class="font-bold text-xl">Back</span>
             </button>
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button class="bg-safe w-2/3 py-1 rounded-full" @click.prevent="doTest">
+                            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white w-2/3 py-1 rounded-full" @click.prevent="doTest">
                                 <i class="fa fa-play mr-2 text-xl"></i>
                                 <span class="font-bold text-xl">Start</span>
                             </button>
@@ -79,7 +79,8 @@ export default {
             if(this.$route.query.current_section==53)
                 this.$router.push({path: '/kraepelin', query: {current_section: this.$route.query.current_section}})
             else
-                this.$router.push({path: '/test', query: {current_section: this.$route.query.current_section}})
+                // this.$router.push({path: '/test', query: {current_section: this.$route.query.current_section}})
+                this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
         }
     },
     created(){
