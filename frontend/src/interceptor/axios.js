@@ -25,6 +25,8 @@ axios.interceptors.response.use(resp => resp, async error => {
     
     if(error.response.data == "Admin Not Authenticated"){
         router.push('/dashboard')
+    }else if(error.response.data == "Session Expired"){
+        router.push('/')
     }
 
     refresh = false;
