@@ -115,6 +115,7 @@ export default {
             axios
             .get(this.port+'/section/all/5')
             .then(({data}) => (
+                this.$cookies.set('current_test', '5'),
                 this.section = data
                 // console.log(this.section)
             ))

@@ -16,14 +16,14 @@
                 </button>
             </div>
 
-            <div class="relative hidden z-10" id="daftarSoal">
+            <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
                 <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
                     <div class="font-bold text-white text-lg mb-2">
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
                     </div>
                     <div v-for="i in 225" :key="i" class="inline-block">
-                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
                         <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
@@ -112,7 +112,8 @@ export default {
             // test_id: null,
             exam_session: 9,
             port: import.meta.env.VITE_BACKEND_URL,
-            isStarted: false
+            isStarted: false,
+            tampilDaftarSoal: false,
         }
     },
     methods: {
@@ -303,16 +304,18 @@ export default {
             else if (event.keyCode==39||event.keyCode==68)
                 thi.nextSoal()
 
-            if (!$('#daftarSoal').hasClass('hidden')) 
-                $('#daftarSoal').addClass("hidden")
+            // if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+            thi.tampilDaftarSoal = false
         });
-
+        
         $('body').click(function(e) {
             var target = $(e.target)
             if(!target.is('#btnNoSoal') && !target.is('#btnDaftarSoal') && !target.is('#btnDaftarSoal2') && !target.is('#btnDaftarSoal3') && !target.is('#daftarSoal')) {
-                if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+                // if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+                thi.tampilDaftarSoal = false
             }else{
-                if ($('#daftarSoal').hasClass('hidden')) $('#daftarSoal').removeClass("hidden")
+                // if ($('#daftarSoal').hasClass('hidden')) $('#daftarSoal').removeClass("hidden")
+                thi.tampilDaftarSoal = true
             }
         });
     }

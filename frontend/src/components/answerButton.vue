@@ -1,6 +1,13 @@
 <template>
-    <button id="label" class="duration-200 py-2 w-full h-40 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold 
-                ring-1 ring-inset ring-stroke-100 relative answer-btn" @click.prevent="choose(label)">
+    <button id="label" class="duration-200 w-full h-40 py-2 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold 
+                ring-1 ring-inset ring-stroke-100 relative answer-btn" 
+                :class="{
+                    'w-full': jenis!='epps', 
+                    'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
+                    'h-32': jenis=='ekspresi',
+                    'w-1/2 h-14': jenis=='epps'
+                        }"
+                @click.prevent="choose(label)">
         <div v-if="jenis === 'add'" class="flex justify-center px-4">
             <p>{{label}}.</p>
             <input type="text" name="question" id="question" class="w-full ml-2 text-xl bg-transparent outline-none
@@ -46,23 +53,23 @@ export default {
                     if(this.aksi=='x' && temp[1]!=id+'o') this.jawaban[this.noSoal-1] = id+'x,'+temp[1]
                     else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+','+id+'o'
                 }
-            }else this.jawaban[this.noSoal-1] = id
+            }
+            else if(this.jenis=="mmpi"){
+                if (id=="+") this.jawaban[this.noSoal-1] = 0
+                else if (id=="-") this.jawaban[this.noSoal-1] = 1
+            }
+            else if(this.jenis=="sdi"){
+                if (id=="Ya") this.jawaban[this.noSoal-1] = 1
+                else if (id=="Tidak") this.jawaban[this.noSoal-1] = 0
+            }
+            else this.jawaban[this.noSoal-1] = id
         },
-        eppsStyle(){
-            $('.answer-btn').removeClass('w-full h-40')
-            $('.answer-btn').addClass('w-1/2 h-14')
-        },
-        ekspresiStyle(){
-            $('.answer-btn').removeClass('h-40')
-            $('.answer-btn').addClass('h-32')
-        }
     },
     created(){
         
     },
     mounted(){
-        if(this.jenis=="epps") this.eppsStyle()
-        else if(this.jenis=="ekspresi") this.ekspresiStyle()
+        // else if(this.jenis=="ekspresi") this.ekspresiStyle()
     }
 }
 </script>

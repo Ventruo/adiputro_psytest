@@ -79,8 +79,8 @@ export default {
             if(this.$route.query.current_section==53)
                 this.$router.push({path: '/kraepelin', query: {current_section: this.$route.query.current_section}})
             else
-                // this.$router.push({path: '/test', query: {current_section: this.$route.query.current_section}})
-                this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
+                this.$router.push({path: '/test', query: {current_section: this.$route.query.current_section}})
+                // this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
         }
     },
     created(){

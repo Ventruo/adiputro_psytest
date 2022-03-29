@@ -1,7 +1,7 @@
 <template>
     <div class="h-full w-9/12 m-auto relative mt-3 text-black">
         <div class="flex justify-between mb-7">
-            <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaTes}}</h1>
+            <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaSection}}</h1>
             <div class="flex justify-center">
                 <img src="../assets/logo.png" alt="" class="w-20">
             </div>
@@ -16,14 +16,14 @@
                 </button>
             </div>
             
-            <div class="relative hidden z-10" id="daftarSoal">
+            <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
                 <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
                     <div class="font-bold text-white text-lg mb-2">
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
                     </div>
                     <div v-for="i in jumSoal" :key="i" class="inline-block">
-                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
                         <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
@@ -50,7 +50,7 @@
                 
                 <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
                 <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
-                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="''" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
+                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
             </div>
 
             <div class="flex justify-between">
@@ -92,7 +92,8 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes 1',
+            namaSection: 'Tes 1',
+            jenis: '',
             noSoal: 1,
             jumSoal: 5,
             jumChoice: 5,
@@ -109,7 +110,8 @@ export default {
             test_id: null,
             exam_session: 13,
             port: import.meta.env.VITE_BACKEND_URL,
-            isStarted: false
+            isStarted: false,
+            tampilDaftarSoal: false,
         }
     },
     methods: {
@@ -321,6 +323,16 @@ export default {
     },
 
     mounted(){
+        let tes = this.$cookies.get('current_test')
+        let nama_tes = ""
+        axios
+        .get(this.port+'/test/'+tes)
+        .then(({data}) => {
+            nama_tes = data.name.split(" ")
+            nama_tes.splice(0,1)
+            this.jenis = nama_tes.join(" ")
+        })
+
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
@@ -334,7 +346,7 @@ export default {
         ))
 
         axios
-        .get(this.port+'/api/section/'+this.section_id)
+        .get(this.port+'/section/'+this.section_id)
         .then(({data}) => (
             this.test_id = data.test_id
         ))
@@ -351,15 +363,18 @@ export default {
             else if(event.keyCode==68) thi.chooseWithKeyboard('d')
             else if(event.keyCode==69) thi.chooseWithKeyboard('e')
             
-            if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+            // if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+            thi.tampilDaftarSoal = false
         });
         
         $('body').click(function(e) {
             var target = $(e.target)
             if(!target.is('#btnNoSoal') && !target.is('#btnDaftarSoal') && !target.is('#btnDaftarSoal2') && !target.is('#btnDaftarSoal3') && !target.is('#daftarSoal')) {
-                if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+                // if (!$('#daftarSoal').hasClass('hidden')) $('#daftarSoal').addClass("hidden")
+                thi.tampilDaftarSoal = false
             }else{
-                if ($('#daftarSoal').hasClass('hidden')) $('#daftarSoal').removeClass("hidden")
+                // if ($('#daftarSoal').hasClass('hidden')) $('#daftarSoal').removeClass("hidden")
+                thi.tampilDaftarSoal = true
             }
         });
     }
