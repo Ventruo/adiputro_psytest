@@ -17,6 +17,33 @@ const KreapelinDataRouter = require("./express_routers/kreapelin_data_route");
 const ClockRouter = require("./express_routers/clock_route");
 const AuthRouter = require("./express_routers/auth_route");
 
+// Middleware Before Route
+app.use(function (req, res, next) {
+  res.on("finish", function () {
+    // Logs Route Path and Method
+    let date_now = new Date();
+    let date_string =
+      date_now.getFullYear() +
+      "-" +
+      date_now.getMonth() +
+      "-" +
+      date_now.getDate() +
+      "T" +
+      date_now.getHours() +
+      ":" +
+      date_now.getMinutes() +
+      ":" +
+      date_now.getSeconds();
+
+    console.log(
+      "[" + date_string + "]",
+      req.route.stack[0].method.toUpperCase(),
+      req.route.path
+    );
+  });
+  next();
+});
+
 // Routers
 router.use("/exam_session", ExamSessionRouter);
 router.use("/question", QuestionRouter);
