@@ -85,9 +85,9 @@
                         v-if="this.biodata!=null">
                         <div class="mb-5 mt-3 flex gap-10">
                             <div class="w-1/2">
-                                <div class="flex gap-10">
+                                <div class="flex gap-3">
                                     <div class="text-right">
-                                        <p class="mb-8">PENDIDIKAN TERAKHIR :</p>
+                                        <p class="mb-8 mt-1">PENDIDIKAN TERAKHIR :</p>
                                         <p>JENIS KELAMIN :</p>
                                     </div>
                                     <div class="grow">
@@ -106,9 +106,9 @@
                                 </div>
                             </div>
                             <div class="w-1/2">
-                                <div class="flex gap-10">
+                                <div class="flex gap-3">
                                     <div class="text-right">
-                                        <p class="mb-8">JURUSAN :</p>
+                                        <p class="mb-8 mt-1">JURUSAN :</p>
                                     </div>
                                     <div class="grow">
                                         <select name="jurusan" id="jurusanCombobox" class="grow text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer w-full">
@@ -130,9 +130,14 @@
 
                 <div class="text-right mb-2">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2 shadow-xl"
-                                    @click="makePDF">
+                                    @click="makePDF('print')">
                                     <i class="fa fa-print mr-2"></i>
                                     <span>Print PDF</span>
+                                    </button>
+                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2 shadow-xl"
+                                    @click="makePDF('download')">
+                                    <i class="fa fa-download mr-2"></i>
+                                    <span>Download PDF</span>
                                     </button>
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 shadow-xl">
                                     <i class="fa fa-download mr-2"></i>
@@ -143,7 +148,7 @@
 
 
             <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-2" style="height: 48rem;">
-                <h1 class="font-bold text-xl mb-2">Print Preview</h1>
+                <h1 class="font-bold text-2xl mb-2">Report</h1>
                 <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
@@ -331,7 +336,7 @@ export default {
                 })
             ))
         },
-        makePDF(){
+        makePDF(jenis){
             this.prints = true
             this.$nextTick(() => {
                 window.html2canvas = html2canvas;
@@ -340,7 +345,11 @@ export default {
                 var this2 = this
                 doc.html(document.getElementById('pdf'), {
                     callback: function(pdf) {
-                        pdf.save(email+".pdf");
+                        if(jenis=='print')
+                            window.open(doc.output('bloburl'), '_blank');
+                        else if(jenis=='download')
+                            pdf.save(email+".pdf");
+
                         this2.prints = false;
                     }
                 })
@@ -393,7 +402,7 @@ export default {
             }).catch( error => { 
                 console.log('error: ' + error) 
             });
-        },
+        }
     },
     created(){
         this.$emit('updateHeader', this.judulHalaman)

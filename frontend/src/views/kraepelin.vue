@@ -9,33 +9,40 @@
         <form v-if="this.dataKraepelin==null" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5"
             @submit.prevent="submitKraepelinData">
             <h1 class="text-3xl font-bold mb-2">Biodata</h1>
-            <div class="mb-5 mt-3">
-                <div class="flex gap-10">
-                    <div class="flex mt-2 items-center w-1/2">
-                        <label class="w-1/3">PENDIDIKAN TERAKHIR :</label>
-                        <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl">
-                            <option value="smea">SMEA</option>
-                            <option value="stm-smk">STM/SMK</option>
-                            <option value="sma">SMA</option>
-                            <option value="sarjana muda">SARJANA MUDA (D3)</option>
-                            <option value="sarjana">SARJANA (S1)</option>
-                        </select>
-                    </div>
-                    <div class="flex mt-2 items-center w-1/2">
-                        <label class="w-1/4">JENIS KELAMIN :</label>
-                        <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
-                            <option value="L">LAKI-LAKI</option>
-                            <option value="P">PEREMPUAN</option>
-                        </select>
+            <div class="mb-5 mt-3 flex gap-10">
+                <div class="w-1/2">
+                    <div class="flex gap-3">
+                        <div class="text-right">
+                            <p class="mb-8 mt-1">PENDIDIKAN TERAKHIR :</p>
+                            <p>JENIS KELAMIN :</p>
+                        </div>
+                        <div class="grow">
+                            <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl mb-5 w-full">
+                                <option value="smea">SMEA</option>
+                                <option value="stm-smk">STM/SMK</option>
+                                <option value="sma">SMA</option>
+                                <option value="sarjana muda">SARJANA MUDA (D3)</option>
+                                <option value="sarjana">SARJANA (S1)</option>
+                            </select>
+                            <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer block w-full">
+                                <option value="L">LAKI-LAKI</option>
+                                <option value="P">PEREMPUAN</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-
-                <div class="flex mt-5 items-center w-1/2 pr-5">
-                    <label class="w-1/3 text-right relative right-2.5">JURUSAN :</label>
-                    <select name="jurusan" id="jurusanCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer">
-                        <option value="ipa">IPA</option>
-                        <option value="ips">IPS</option>
-                    </select>
+                <div class="w-1/2">
+                    <div class="flex gap-3">
+                        <div class="text-right">
+                            <p class="mb-8 mt-1">JURUSAN :</p>
+                        </div>
+                        <div class="grow">
+                            <select name="jurusan" id="jurusanCombobox" class="grow text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer w-full">
+                                <option value="ipa">IPA</option>
+                                <option value="ips">IPS</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- <div class="mb-5 mt-3">
