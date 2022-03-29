@@ -42,6 +42,11 @@ ExamSession.init(
       defaultValue: 0,
       comment: "1: logged in, 0: logged out",
     },
+    is_admin: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,
