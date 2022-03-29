@@ -7,7 +7,7 @@ async function auth({ next, router }) {
 }
 
 async function adminAuth({ next, router }) {
-    await axios.get("/auth/user")
+    await axios.get("/auth/admin")
     
     return next();
 }
