@@ -7,6 +7,7 @@ router.get("/all", controller.getAll);
 
 router.post("/create", controller.create.bind(controller));
 router.post("/update", controller.update.bind(controller));
+router.post("/openTest", controller.openTest.bind(controller));
 router.post(
   "/refresh_test_token",
   controller.refresh_test_token.bind(controller)

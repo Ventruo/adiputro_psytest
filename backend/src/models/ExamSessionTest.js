@@ -17,6 +17,11 @@ ExamSessionTest.init(
       primaryKey: true,
       allowNull: false,
     },
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
   },
   {
     sequelize,

@@ -67,7 +67,7 @@ class AuthController {
         session.save();
 
         ExamSessionTest.findAll({
-          where: { exam_session_id: session.id },
+          where: { exam_session_id: session.id, status: 1 },
         }).then((assigned_tests) => {
           let temp_tests = [];
 
@@ -104,6 +104,7 @@ class AuthController {
                   token: refresh_token,
                   age: refresh_age / 1000,
                 },
+                is_admin: session.is_admin,
               });
             }
           );
@@ -131,13 +132,49 @@ class AuthController {
 
           if (!payload) return res.status(401).send("Not Authenticated");
 
-          return res.status(200).send(session);
+          return res.status(200).send({
+            email: session.email,
+            start_date: session.start_date,
+            finish_date: session.finish_date,
+            test_token: session.test_token,
+          });
         } catch (error) {
           return res.status(401).send("Not Authenticated");
         }
       });
     } catch (error) {
       return res.status(401).send("Not Authenticated");
+    }
+  }
+
+  authenticatedAdmin(req, res) {
+    console.log("Getting Authenticated Admin");
+
+    try {
+      const { session_id } = jwt.decode(req.cookies["refresh_token"]);
+
+      ExamSession.findOne({ where: { id: session_id } }).then((session) => {
+        if (!session) return res.status(401).send("Admin Not Authenticated");
+
+        try {
+          const access_token = req.header("Authorization")?.split(" ")[1] || "";
+
+          const payload = jwt.verify(
+            access_token,
+            process.env.ACCESS_KEY + session.auth_token
+          );
+
+          if (!payload) return res.status(401).send("Admin Not Authenticated");
+          if (!session.is_admin)
+            return res.status(401).send("Admin Not Authenticated");
+
+          return res.status(200).send(session);
+        } catch (error) {
+          return res.status(401).send("Admin Not Authenticated");
+        }
+      });
+    } catch (error) {
+      return res.status(401).send("Admin Not Authenticated");
     }
   }
 

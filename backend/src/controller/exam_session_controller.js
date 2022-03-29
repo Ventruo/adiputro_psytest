@@ -25,6 +25,8 @@ class ExamSessionController {
         return;
       }
 
+      delete session.dataValues.is_admin;
+
       success_response(res, session, "Get One Data Successful!");
     });
   }
@@ -44,6 +46,8 @@ class ExamSessionController {
           return;
         }
 
+        delete session.dataValues.is_admin;
+
         success_response(res, session, "Get One Data Successful!");
       }
     );
@@ -58,6 +62,11 @@ class ExamSessionController {
         return;
       }
 
+      for (let i = 0; i < sessions.length; i++) {
+        if (sessions[i].is_admin) delete sessions[i];
+        else delete sessions[i].dataValues.is_admin;
+      }
+
       success_response(res, sessions, "Get All Data Successful!");
     });
   }
@@ -69,7 +78,7 @@ class ExamSessionController {
       !validate_required_columns(
         req,
         ExamSession,
-        ["is_logged", "status", "test_token", "auth_token"],
+        ["is_logged", "status", "test_token", "auth_token", "is_admin"],
         ["tests"]
       )
     ) {
@@ -135,7 +144,7 @@ class ExamSessionController {
       !validate_required_columns(
         req,
         ExamSession,
-        ["is_logged", "status", "test_token", "auth_token"],
+        ["is_logged", "status", "test_token", "auth_token", "is_admin"],
         ["updating_id"]
       )
     ) {
@@ -158,13 +167,86 @@ class ExamSessionController {
         });
         session.save();
 
+        delete session.dataValues.is_admin;
+
         success_response(res, session?.toJSON(), "Update successful!");
       }
     );
   }
 
-  // TODO: Tambah function utk update Test apa yang bisa dibuka lagi utk sebuah exam session
-  // TODO: Kalau test nya ada dibiairn, kalau test gaada dihapus, kalau test baru dibuat
+  async openTest(req, res) {
+    console.log("Open Test for Exam Session...");
+
+    if (
+      !req.body.tests ||
+      !req.body.id ||
+      !req.body.start_date ||
+      !req.body.finish_date ||
+      !req.body.duration
+    ) {
+      missing_param_response(res);
+      return;
+    }
+
+    ExamSession.findOne({ where: { id: req.body.id } }).then((session) => {
+      if (!session) {
+        data_not_found_response(res);
+        return;
+      }
+
+      session.set({
+        start_date: req.body.start_date,
+        finish_date: req.body.finish_date,
+        duration: req.body.duration,
+      });
+      session.save();
+
+      delete session.dataValues.is_admin;
+
+      ExamSessionTest.findAll({ where: { exam_session_id: session.id } }).then(
+        async (tests) => {
+          let tests_id = req.body.tests;
+
+          let tests_to_create = [];
+          for (let i = 0; i < tests_id.length; i++) {
+            tests_to_create.push({
+              exam_session_id: session.id,
+              test_id: tests_id[i],
+            });
+          }
+
+          // get test id to create
+          for (let i = 0; i < tests_id.length; i++) {
+            for (let j = 0; j < tests.length; j++) {
+              if (tests_id[i] == tests[j].test_id) {
+                tests_to_create = tests_to_create.filter(
+                  (t) => t.test_id != tests_id[i]
+                );
+
+                break;
+              }
+            }
+          }
+
+          // get test to nonactivate
+          let tests_to_update = tests.filter((x) =>
+            tests_id.includes(parseInt(x.test_id))
+          );
+
+          for (let i = 0; i < tests_to_update.length; i++) {
+            tests_to_update[i].set({
+              status: 0,
+            });
+            await tests_to_update[i].save();
+          }
+
+          await ExamSessionTest.bulkCreate(tests_to_create);
+
+          success_response(res, session?.toJSON(), "Update successful!");
+        }
+      );
+    });
+  }
 
   async refresh_test_token(req, res) {
     console.log("Refreshing Exam Session Test Token...");
@@ -185,6 +267,8 @@ class ExamSessionController {
         test_token: test_key,
       });
       session.save();
+
+      delete session.dataValues.is_admin;
 
       success_response(res, session?.toJSON(), "Refresh Token successful!");
     });
