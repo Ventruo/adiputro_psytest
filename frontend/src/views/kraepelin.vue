@@ -72,11 +72,11 @@
                         p-5 my-5 flex justify-center items-center text-xl font-bold">
                 Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia.
             </div>
-            <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
+            <!-- <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
                 <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
                 
                 <p class="text-center py-1">Kolom {{kolom>jumKolom ? jumKolom : kolom}}/{{jumKolom}}</p> 
-            </div>
+            </div> -->
 
             <div class="bg-foreground-4-100 py-10 rounded-lg">
                 <div class="text-center font-bold mb-5 text-white" v-if="pertanyaan!=null">
