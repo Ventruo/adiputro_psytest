@@ -97,7 +97,12 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+    components: {
+        axios
+    },
     data(){
         return {
             header: null,
@@ -119,17 +124,24 @@ export default {
             const dateTime = date + ' ' + time
             this.timestamp = dateTime
         },
+        
         logout(){
             Swal.fire({
-                title: 'Yakin Ingin Logout',
+                title: 'Yakin Ingin Logout?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/'
+                    await axios.post("/auth/logout", {}, { withCredentials: true });
+
+                    axios.defaults.headers.common['Authorization'] = '';
+                    this.$cookies.remove('refresh_token')
+                    this.$cookies.remove('data_registrant')
+
+                    window.location="/"
                 }
             });
         },

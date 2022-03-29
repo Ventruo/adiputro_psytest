@@ -79,15 +79,26 @@ export default {
             this.timestamp = dateTime
         },
 
-        async logout() {
-            await axios.post("/auth/logout", {}, { withCredentials: true });
+        logout() {
+            Swal.fire({
+                title: 'Yakin Ingin Logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await axios.post("/auth/logout", {}, { withCredentials: true });
 
-            axios.defaults.headers.common['Authorization'] = '';
-            this.$cookies.remove('refresh_token')
-            this.$cookies.remove('data_registrant')
+                    axios.defaults.headers.common['Authorization'] = '';
+                    this.$cookies.remove('refresh_token')
+                    this.$cookies.remove('data_registrant')
 
-            window.location="/"
-        }
+                    window.location="/"
+                }
+            });
+        },
     },
     mounted(){
         // console.log(this.$cookies.get('refresh_token'));
