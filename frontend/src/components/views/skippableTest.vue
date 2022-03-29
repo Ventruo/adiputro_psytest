@@ -7,7 +7,7 @@
                 <div class="h-2/3 w-full px-5 py-2 text-black">
                     <div class="mb-1">
                         <i class="fas fa-file-alt mr-2"></i>
-                        <span class="text-lg font-bold">Tes {{idx+1}}</span>
+                        <span class="text-lg font-bold">Tes {{section.section_number}}</span>
                     </div>
                     <div class="flex">
                         <div class="mr-2 inline-block">
