@@ -22,6 +22,10 @@ axios.interceptors.response.use(resp => resp, async error => {
             router.push('/');
         }
     }
+    
+    if(error.response.data == "Admin Not Authenticated"){
+        router.push('/dashboard')
+    }
 
     refresh = false;
     return error;

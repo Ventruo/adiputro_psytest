@@ -3,7 +3,7 @@
         <div class="w-5/6 h-full">
             <div class="flex">
                 <label class="text-xl font-bold w-32">Nama Tes : </label>
-                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl appearance-none"
+                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl"
                     @change="gantiTes($event)">
                     <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
@@ -125,10 +125,10 @@
         <!-- Create New Session Modal -->
         <div id="modalSection" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
+                <p class="font-bold text-lg inline-block relative" style="width: 96%">{{headerModal}}</p>
                 <button id="closeNewSection" class="relative inline-block" @click="closeModal">
                     <i class="fa fa-times fa-lg"></i>
                 </button>
-                <p class="font-bold text-lg text-right inline-block relative" style="width: 96%">{{headerModal}}</p>
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
@@ -203,12 +203,12 @@ export default {
     },
     methods: {
         openModal(){
-            this.headerModal = "Update A Section";
+            this.headerModal = "Update Section";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
         openModalCreate(){
-            this.headerModal = "Create A New Section";
+            this.headerModal = "Buat Section Baru";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },

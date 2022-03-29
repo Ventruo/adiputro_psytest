@@ -83,7 +83,8 @@ export default {
                         this.$cookies.set('data_registrant', JSON.stringify(data_user), age);
                         axios.defaults.headers.common['Authorization'] = `Bearer ${e.data.token}`
                         
-                        this.$router.push('/dashboard')
+                        if(e.data.is_admin) this.$router.push('/admin')
+                        else this.$router.push('/dashboard')
                     }
                 });
             })();

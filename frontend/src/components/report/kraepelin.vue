@@ -6,6 +6,9 @@
     <hr v-if="print=='yes'" style="border-top: 2px solid black; margin-top: 10px;">
     <hr v-else style="border-top: 2px solid black;">
 
+    <div>
+        
+    </div>
     <div class="flex mt-2" v-if="this.bio!=null">
         <div class="flex">
             <div class="font-bold text-sm">
@@ -367,6 +370,7 @@ export default {
     mounted() {
         this.arrTabel = this.data
         this.bio = this.biodata
+        // console.log(this.bio)
         // console.log(this.arrTabel)
     },
 }

@@ -82,11 +82,11 @@
                 <p >{{timestamp||""}}</p>
             </div>
             <div class="overflow-auto no-scrollbar h-screen w-full relative mt-2">
-                <div class="overflow-hidden absolute w-full h-72 -z-10">
+                <!-- <div class="overflow-hidden absolute w-full h-72 -z-10">
                     <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="h-full w-full">
                         <path d="M0.00,92.27 C216.83,192.92 304.30,8.39 500.00,109.03 L500.00,0.00 L0.00,0.00 Z" class="fill-foreground-4-50"></path>
                     </svg>
-                </div>
+                </div> -->
                 <div class="w-full p-8 pr-10 flex justify-between">
                     <h1 class="text-4xl font-bold">{{header}}</h1>
                 </div>
@@ -97,7 +97,12 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+    components: {
+        axios
+    },
     data(){
         return {
             header: null,
@@ -119,17 +124,24 @@ export default {
             const dateTime = date + ' ' + time
             this.timestamp = dateTime
         },
+        
         logout(){
             Swal.fire({
-                title: 'Yakin Ingin Logout',
+                title: 'Yakin Ingin Logout?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/'
+                    await axios.post("/auth/logout", {}, { withCredentials: true });
+
+                    axios.defaults.headers.common['Authorization'] = '';
+                    this.$cookies.remove('refresh_token')
+                    this.$cookies.remove('data_registrant')
+
+                    window.location="/"
                 }
             });
         },
