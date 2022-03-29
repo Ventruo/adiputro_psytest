@@ -21,8 +21,7 @@ class AuthController {
       },
       process.env.ACCESS_KEY + user_key,
       {
-        expiresIn: "30s",
-        // 60 * 60 * 1000
+        expiresIn: "5m",
       }
     );
   }
@@ -50,11 +49,19 @@ class AuthController {
     ExamSession.findOne({ where: { email: req.body.email } }).then(
       (session) => {
         if (!session) {
-          return res.status(401).send("Invalid Credential");
+          return res.status(401).send("Email atau Token Tidak Sesuai");
         }
 
         if (session.test_token != req.body.test_token)
-          return res.status(401).send("Invalid Credential");
+          return res.status(401).send("Email atau Token Tidak Sesuai");
+
+        // Check Is Still in Session
+        let date_now = new Date();
+        let start_date = this.convertToGMT(new Date(session.start_date));
+        let finish_date = this.convertToGMT(new Date(session.finish_date));
+        if (!(date_now >= start_date && date_now < finish_date)) {
+          return res.status(401).send("Anda Tidak Sedang Melakukan Ujian");
+        }
 
         const refresh_token = this.createRefreshToken(session);
 
@@ -87,8 +94,8 @@ class AuthController {
                 tests.push(temp_test);
               }
 
-              // TODO: Refresh Token isnt set in browser
-              let refresh_age = 7 * 24 * 60 * 60 * 1000;
+              // let refresh_age = 1 * 24 * 60 * 60 * 1000; // 1 day
+              let refresh_age = 10 * 60 * 1000; // 10 mins
               res.cookie("refresh_token", refresh_token, {
                 httpOnly: true,
                 maxAge: refresh_age,
@@ -132,12 +139,21 @@ class AuthController {
 
           if (!payload) return res.status(401).send("Not Authenticated");
 
-          return res.status(200).send({
-            email: session.email,
-            start_date: session.start_date,
-            finish_date: session.finish_date,
-            test_token: session.test_token,
-          });
+          // Check Is Still on Session Date
+          let date_now = new Date();
+          let start_date = this.convertToGMT(new Date(session.start_date));
+          let finish_date = this.convertToGMT(new Date(session.finish_date));
+
+          if (date_now >= start_date && date_now < finish_date) {
+            return res.status(200).send({
+              email: session.email,
+              start_date: session.start_date,
+              finish_date: session.finish_date,
+              test_token: session.test_token,
+            });
+          } else {
+            return res.status(401).send("Session Expired");
+          }
         } catch (error) {
           return res.status(401).send("Not Authenticated");
         }
@@ -145,6 +161,12 @@ class AuthController {
     } catch (error) {
       return res.status(401).send("Not Authenticated");
     }
+  }
+
+  convertToGMT(datetime) {
+    let date_second = datetime.getTime();
+    let minus_hour = 7 * 60 * 60 * 1000;
+    return new Date(date_second - minus_hour);
   }
 
   authenticatedAdmin(req, res) {
