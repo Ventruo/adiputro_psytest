@@ -10,7 +10,7 @@
         <div class="mb-5">
             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
-                <span class="font-bold text-xl">Back</span>
+                <span class="font-bold text-xl">Kembali</span>
             </button>
         </div>
 
@@ -745,7 +745,7 @@
                     <div class="text-center mb-2">
                         <input type="file" name="imgSign" id="files" class="hidden" @change="signChange">
                         <label for="files" class="bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 hover:bg-foreground-3-400
-                                                    duration-200 rounded-xl py-1 px-5">Upload Tanda Tangan</label>
+                                                    duration-200 rounded-xl py-1 px-5">Unggah Tanda Tangan</label>
                     </div>
                     
                     <div class="text-center">
@@ -757,7 +757,7 @@
             <div class="mt-10 mb-5 flex justify-end">
                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2"
                     @click.prevent="aaa">
-                    Submit
+                    Kirim
                 </button>
             </div>
         </form>

@@ -1,7 +1,7 @@
 <template>
-    <div class="mb-2 rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100">
+    <div class="mb-2 rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black">
         <div class="flex">
-            <p class="text-lg font-bold my-2 mx-3">{{label}}</p>
+            <p class="text-lg text-white font-bold my-2 mx-3">{{label}}</p>
             <div v-if="jenis === 'add'" class="my-2 mx-3">
                 <input type="file" name="imgSoal" id="" class="mb-2" @change="soalChange"> <br>
             </div>

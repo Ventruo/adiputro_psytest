@@ -21,11 +21,11 @@
                 <div class="w-full h-auto text-center">
                     <h1 class="font-bold text-4xl">LOGIN</h1>
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
-                        <label for="userEmail">Email</label>
+                        <label for="userEmail">E-Mail</label>
                         <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
                                     mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
 
-                        <label for="userToken">Test Token</label>
+                        <label for="userToken">Token Tes</label>
                         <input type="text" name="test_token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
                                     mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
 

@@ -6,7 +6,7 @@
         <div>
             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
-                <span class="font-bold text-xl">Back</span>
+                <span class="font-bold text-xl">Kembali</span>
             </button>
         </div>
 
@@ -25,22 +25,22 @@
                                 <i class="fa fa-check"></i> <br>
                             </div>
                             <div class="mb-2 text-xl">
-                                <p>{{section.question_num}} Questions</p>
+                                <p>{{section.question_num}} Pertanyaan</p>
 
-                                <p>{{section.duration}} Minutes</p>
+                                <p>{{section.duration}} Menit</p>
                                 
-                                <p v-if="section.option_num==5">Multiple Choices (A - E)</p>
-                                <p v-else-if="section.option_num==4">Multiple Choices (A - D)</p>
-                                <p v-else-if="section.option_num==3">Multiple Choices (A - C)</p>
-                                <p v-else-if="section.option_num==2">Multiple Choices (True or False)</p>
-                                <p v-else class="mb-6">Essay</p>
+                                <p v-if="section.option_num==5">Pilihan Ganda (A - E)</p>
+                                <p v-else-if="section.option_num==4">Pilihan Ganda (A - D)</p>
+                                <p v-else-if="section.option_num==3">Pilihan Ganda (A - C)</p>
+                                <p v-else-if="section.option_num==2">Pilihan Ganda (Benar/Salah)</p>
+                                <p v-else class="mb-6">Esai</p>
                             </div>
                         </div>
 
                         <div class="text-center">
                             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white w-2/3 py-1 rounded-full" @click.prevent="doTest">
                                 <i class="fa fa-play mr-2 text-xl"></i>
-                                <span class="font-bold text-xl">Start</span>
+                                <span class="font-bold text-xl">Mulai</span>
                             </button>
                         </div>
                     </div>

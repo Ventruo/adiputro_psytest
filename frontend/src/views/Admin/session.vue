@@ -7,7 +7,7 @@
                                     duration-200 rounded-md px-10 py-2 mt-5 h-auto w-auto shadow-xl"
                             id="btnCreateSession" @click="openModalCreate">
                         <i class="fa fa-calendar-alt fa-lg mr-2"></i>   
-                        <span>Buat Session Baru</span>
+                        <span>Buat Sesi Baru</span>
                     </button>
                 </div>
 
@@ -16,12 +16,12 @@
                         <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-2/12 py-3">E-Mail</th>
-                                <th class="w-1/12">Start</th>
-                                <th class="w-1/12">Finish</th>
-                                <th class="w-1/12">Duration</th>
+                                <th class="w-1/12">Mulai</th>
+                                <th class="w-1/12">Berakhir</th>
+                                <th class="w-1/12">Durasi</th>
                                 <th class="w-2/12">Token</th>
                                 <th class="w-1/12">Status</th>
-                                <th class="w-1/12">Action</th>
+                                <th class="w-1/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.exam_session!=null && this.exam_session.length>0">
@@ -29,18 +29,18 @@
                                 <td>{{i.email}}</td>
                                 <td>{{toDate(i.start_date)}}</td>
                                 <td>{{toDate(i.finish_date)}}</td>
-                                <td>{{i.duration}} Minutes</td>
+                                <td>{{i.duration/60}} Jam</td>
                                 <td>{{i.test_token}}</td>
                                 <td class="py-5">
-                                    <span v-if="i.status%2==1">Active</span>
-                                    <span v-else>Non-Active</span>
+                                    <span v-if="i.status%2==1">Aktif</span>
+                                    <span v-else>Non-Aktif</span>
                                 </td>
                                 <td>
                                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto px-5 py-1 mr-1" 
                                         @click="openModal"> 
                                         <i class="fa fa-refresh mr-2"></i>
-                                        <span>Update</span>
+                                        <span>Perbarui</span>
                                     </button>
                                 </td>
                             </tr>
@@ -70,7 +70,7 @@
 
             <div class="text-white p-5 h-5/6 relative">
                 <div class="flex">
-                    <p class="w-2/12">Emails :</p>
+                    <p class="w-2/12">Email :</p>
                     <div class="grow h-auto">
                         <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in emails" :key="i">
                             <span>{{i}}</span>
@@ -79,29 +79,29 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3 py-4">
-                    <input name="email" id="user_email" placeholder="Registrant's Email" v-model="isiEmail"
+                    <input name="email" id="user_email" placeholder="Email Registrant" v-model="isiEmail"
                         class="rounded-lg py-2 px-3 w-full bg-primary-600 outline-none placeholder-gray-300"><br>
                     <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                     @click.prevent="tambahEmail">Tambahkan</button>
                 </div>
 
-                <label>Test Date</label><br>
+                <label>Tanggal Tes</label><br>
                 <div class="flex gap-2">
-                    <div class="w-1/2">
-                        <label for="start">From :</label>
+                    <div class="w-1/2 flex items-center">
+                        <label for="start">Dari :</label>
                         <input type="datetime-local" name="start_date" id="start" v-model="start"
-                                class="ml-2 rounded-lg py-2 px-3 w-10/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
+                                class="ml-2 rounded-lg py-2 px-3 my-2 bg-primary-600 outline-none placeholder-gray-300">
                     </div>
-                    <div class="w-1/2">
-                        <label for="finish">To: </label>
+                    <div class="w-1/2 flex items-center">
+                        <label for="finish">Sampai : </label>
                         <input type="datetime-local" name="finish_date" id="finish" v-model="finish"
-                                class="ml-2 rounded-lg py-2 px-3 w-10/12 my-2 bg-primary-600 outline-none placeholder-gray-300"><br>
+                                class="ml-2 rounded-lg py-2 px-3 my-2 bg-primary-600 outline-none placeholder-gray-300"><br>
                     </div>
                 </div>
 
                 <button id="submit_new_session" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
                                                         hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
-                                                @click.prevent="createSession">Create</button>
+                                                @click.prevent="createSession">Buat</button>
 
             </div>
         </div>
@@ -116,7 +116,7 @@ export default {
     },
     data() {
         return {
-            headerModal: "Buat Session Baru",
+            headerModal: "Buat Sesi Baru",
             exam_session: null,
             port: import.meta.env.VITE_BACKEND_URL,
             emails: [],
@@ -126,7 +126,8 @@ export default {
         }
     },
     created() {
-        this.$emit('updateHeader', 'Exam Session')
+        this.$emit('updateHeader', 'Sesi')
+        this.$emit('updateMenu', 'session')
     },
     methods: {
         toDate(timeString){
@@ -145,7 +146,7 @@ export default {
         //     return token;
         // },
         openModal(){
-            this.headerModal = "Update Session";
+            this.headerModal = "Perbarui Sesi";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
@@ -223,13 +224,21 @@ export default {
             }
         },
         openModalCreate(){
-            this.headerModal = "Buat Session Baru";
+            this.headerModal = "Buat Sesi Baru";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
         closeModal(){
             $('#modalSession').fadeOut("fast");
             $('#bg').fadeOut("slow");
+        },
+        validation(data){
+            let valid_session = []
+            for (let i = 0; i < data.length; i++) {
+                if (data[i]!=null)
+                    valid_session.push(data[i])
+            }
+            this.exam_session = valid_session
         }
 
     },
@@ -237,7 +246,7 @@ export default {
         axios
         .get(this.port+'/exam_session/all')
         .then(({data}) => (
-            this.exam_session = data
+            this.validation(data)
         ))
         
     }

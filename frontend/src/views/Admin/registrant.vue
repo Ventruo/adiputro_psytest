@@ -10,7 +10,7 @@
                         <tr>
                             <th class="w-4/12 py-3">E-Mail</th>
                             <th class="w-4/12">Status</th>
-                            <th class="w-4/12">Action</th>
+                            <th class="w-4/12">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="this.registrantList!=null && this.registrantList.length>0">
@@ -18,11 +18,11 @@
                             <td>{{i.email}}</td>
                             <td class="py-5">
                                 <span v-if="i.status==1"> 
-                                    Available
+                                    Aktif
                                 </span>
                                 
                                 <span v-if="i.status==0"> 
-                                    Deleted
+                                    Dihapus
                                 </span>
                             </td>
                             <td class="text-white">
@@ -34,7 +34,7 @@
                                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-1/3 py-1" 
                                     @click="this.$router.push({path: '/'})"> 
                                     <i class="fa fa-trash-alt mr-2"></i>
-                                    <span>Delete</span>
+                                    <span>Hapus</span>
                                 </button>
                             </td>
                         </tr>
@@ -68,6 +68,7 @@ export default {
     },
     created() {
         this.$emit('updateHeader', 'Registrant')
+        this.$emit('updateMenu', 'registrant')
     },
     mounted(){
         axios

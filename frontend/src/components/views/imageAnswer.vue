@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100">
+    <div class="rounded-lg text-white bg-foreground-4-100 ring-1 ring-inset ring-black">
         <div class="mb-5">
             <div class="flex">
                 <p class="text-lg font-bold my-2 mx-3">{{judul}}</p>

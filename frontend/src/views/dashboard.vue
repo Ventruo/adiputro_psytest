@@ -139,17 +139,17 @@ export default {
         
         let ada = false
         tes.forEach(t => {
-            if (t[0]==1)
+            if (t[0]==5)
                 ada = true
         });
         if(ada){
             axios
-            .get(this.port+'/section/all/1')
+            .get(this.port+'/section/all/5')
             .then(({data}) => (
-                this.$cookies.set('current_test', '1'),
+                this.$cookies.set('current_test', '5'),
                 this.section = data,
                 axios
-                .get(this.port+'/section_result/getbytest/1?email='+this.$cookies.get('data_registrant').email)
+                .get(this.port+'/section_result/getbytest/5?email='+this.$cookies.get('data_registrant').email)
                 .then(({data}) => (
                     this.cekSelesai(data)
                 ))

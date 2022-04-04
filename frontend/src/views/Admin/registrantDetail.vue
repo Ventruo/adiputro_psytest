@@ -3,7 +3,7 @@
         <div class="w-full h-auto">
             <div class="flex mb-5">
                 <label class="text-xl font-bold w-32">Nama Tes : </label>
-                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl"
+                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer"
                     @change="gantiTes($event)">
                     <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
@@ -13,9 +13,9 @@
                 <div class="flex mb-3 mt-2" v-if="this.dataNow!=null">
                     <div class="w-6/12 flex text-lg">
                         <div class="text-right mr-5 text-gray-700">
-                            <p>Email</p>
-                            <p>Nama</p>
-                            <p>Test</p>
+                            <p>E-Mail :</p>
+                            <p>Nama :</p>
+                            <p>Jenis Tes :</p>
                         </div>
                         <div class="text-left">
                             <p>{{this.email}}</p>
@@ -25,8 +25,8 @@
                     </div>
                     <div class="w-6/12 flex text-lg">
                         <div class="text-right mr-5 text-gray-700">
-                            <p>Start Date</p>
-                            <p>Finish Date</p>
+                            <p>Tanggal Mulai :</p>
+                            <p>Tanggal Selesai :</p>
                         </div>
                         <div class="text-left">
                             <p>{{this.dataNow.start}}</p>
@@ -39,20 +39,20 @@
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
-                                <th class="w-1/12 py-2">Section No.</th>
-                                <th class="w-2/12">Answer Type</th>
-                                <th class="w-2/12">Start</th>
-                                <th class="w-2/12">Finish</th>
-                                <th class="w-1/12">Correct</th>
-                                <th class="w-2/12">Action</th>
+                                <th class="w-1/12 py-2">No. Seksi</th>
+                                <th class="w-2/12">Tipe Jawaban</th>
+                                <th class="w-2/12">Mulai</th>
+                                <th class="w-2/12">Selesai</th>
+                                <th class="w-1/12">Skor</th>
+                                <th class="w-2/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.sectionList!=null && this.sectionResult!=null">
                             <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i, idx) in this.sectionList" :key="idx">
                                 <td>{{i.section_number}}</td>
                                 <td>
-                                    <span v-if="i.section_type==1">Essay</span>
-                                    <span v-else>Multiple Choice</span>
+                                    <span v-if="i.section_type==1">Esai</span>
+                                    <span v-else>Pilihan Ganda</span>
                                 </td>
                                 <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].finish_date)}}</td>
                                 <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].start_date)}}</td>
@@ -61,7 +61,7 @@
                                     <button v-if="i.section_type==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/reviewEssay'})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
-                                        <span>Review Answer</span>
+                                        <span>Review Jawaban</span>
                                     </button>
                                     <span v-else>-</span>
                                 </td>
@@ -91,7 +91,7 @@
                                         <p>JENIS KELAMIN :</p>
                                     </div>
                                     <div class="grow">
-                                        <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl mb-5 w-full">
+                                        <select name="pendidikan" id="pendidikanCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl mb-5 w-full cursor-pointer">
                                             <option value="smea" :selected="this.biodata[0].pendidikan=='smea'">SMEA</option>
                                             <option value="stm-smk" :selected="this.biodata[0].pendidikan=='stm-smk'">STM/SMK</option>
                                             <option value="sma" :selected="this.biodata[0].pendidikan=='sma'">SMA</option>
@@ -132,23 +132,23 @@
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2 shadow-xl"
                                     @click="makePDF('print')">
                                     <i class="fa fa-print mr-2"></i>
-                                    <span>Print PDF</span>
+                                    <span>Cetak PDF</span>
                                     </button>
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 mr-2 shadow-xl"
                                     @click="makePDF('download')">
                                     <i class="fa fa-download mr-2"></i>
-                                    <span>Download PDF</span>
+                                    <span>Unduh PDF</span>
                                     </button>
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 shadow-xl">
                                     <i class="fa fa-download mr-2"></i>
-                                    <span>Download Excel</span>
+                                    <span>Unduh Excel</span>
                                     </button>
                 </div>
             </div>
 
 
             <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-2" style="height: 48rem;">
-                <h1 class="font-bold text-2xl mb-2">Report</h1>
+                <h1 class="font-bold text-2xl mb-2">Laporan</h1>
                 <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
                         <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
@@ -347,9 +347,15 @@ export default {
                     callback: function(pdf) {
                         if(jenis=='print')
                             window.open(doc.output('bloburl'), '_blank');
-                        else if(jenis=='download')
-                            pdf.save(email+".pdf");
-
+                        else if(jenis=='download'){
+                            //not firefox
+                            if(navigator.userAgent.indexOf("Firefox")==-1)
+                                pdf.save(email+".pdf")
+                            //firefox
+                            else {
+                                pdf.save(email+".pdf")
+                            }
+                        }
                         this2.prints = false;
                     }
                 })
@@ -357,7 +363,7 @@ export default {
         },
         checkTest(test, data){
             this.dataRegistrant = data
-            console.log(this.dataRegistrant)
+            // console.log(this.dataRegistrant)
             
             if(this.dataRegistrant!=null){
                 let dataNow2 = null

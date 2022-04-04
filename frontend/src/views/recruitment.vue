@@ -8,7 +8,7 @@
     <div class="z-10">
         <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden">
             <div class="flex justify-between mb-7">
-                <h1 class="text-white text-3xl text-center font-bold mt-2">Recruitment</h1>
+                <h1 class="text-white text-3xl text-center font-bold mt-2">Rekrutmen</h1>
                 <div class="flex justify-center">
                     <img src="../assets/logo.png" alt="" class="w-20">
                 </div>
@@ -90,13 +90,13 @@
                             <p>Silahkan mengupload lampiran file berekstensi .pdf (batas 20 mb).</p>
                             <p>lampiran yang diupload (dijadikan 1 file):</p>
                         </div>
-                        <input type="file" name="lampiran" id="">
+                        <input type="file" name="lampiran" id="" >
                     </div>
                 </div>
                 
                 <div class="mt-10 mb-5 flex justify-end">
                     <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
-                        Submit
+                        Kirim
                     </button>
                 </div>
             </form>
@@ -120,7 +120,7 @@ export default {
     },
     data(){
         return{
-            judulHalaman: 'Biodata',
+            judulHalaman: 'Rekrutmen',
             url: null,
             lowongan: null,
             pekerjaan: null,
@@ -177,8 +177,8 @@ export default {
                 if (response.status==200){
                     $('#spinner-modal').fadeOut("slow");
                     Swal.fire(
-                        'Submitted!',
-                        'Lamaran Successfully Submitted.',
+                        'Terkirim!',
+                        'Lamaran Berhasil Dikirim.',
                         'success'
                     )
                     .then(function(){
@@ -206,7 +206,7 @@ export default {
         ))
     },
     created(){
-        this.$emit('updateJudul', this.judulHalaman)
+        
     }
 }
 </script>

@@ -16,15 +16,15 @@
                             <i class="fa fa-check"></i> <br>
                         </div>
                         <div>
-                            <p>{{section.question_num}} Questions</p>
+                            <p>{{section.question_num}} Pertanyaan</p>
 
-                            <p>{{section.duration}} Minutes</p>
+                            <p>{{section.duration}} Menit</p>
                             
-                            <p v-if="section.section_type==1" class="mb-6">Essay</p>
-                            <p v-else-if="section.option_num==5">Multiple Choices (A - E)</p>
-                            <p v-else-if="section.option_num==4">Multiple Choices (A - D)</p>
-                            <p v-else-if="section.option_num==3">Multiple Choices (A - C)</p>
-                            <p v-else-if="section.option_num==2">Multiple Choices (True or False)</p>
+                            <p v-if="section.section_type==1" class="mb-6">Esai</p>
+                            <p v-else-if="section.option_num==5">Pilihan Ganda (A - E)</p>
+                            <p v-else-if="section.option_num==4">Pilihan Ganda (A - D)</p>
+                            <p v-else-if="section.option_num==3">Pilihan Ganda (A - C)</p>
+                            <p v-else-if="section.option_num==2">Pilihan Ganda (Benar/Salah)</p>
                         </div>
                     </div>
                 </div>

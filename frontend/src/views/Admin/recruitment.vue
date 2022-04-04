@@ -20,7 +20,7 @@
                             <th class="w-2/12">Lowongan</th>
                             <th class="w-2/12">Dibuat Pada</th>
                             <th class="w-1/12">Status</th>
-                            <th class="w-2/12">Action</th>
+                            <th class="w-2/12">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +45,7 @@
                                                 h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
-                                    <span>Update</span>
+                                    <span>Perbarui</span>
                                 </button>
                             </td>
                         </tr>
@@ -68,7 +68,7 @@
                                 <th class="w-2/12">Nama</th>
                                 <th class="w-2/12">Jenis Kelamin</th>
                                 <th class="w-2/12">Melamar Pada</th>
-                                <th class="w-1/12">Action</th>
+                                <th class="w-1/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.applicant!=null && this.applicant.length>0">
@@ -135,7 +135,7 @@
 
             <button type="submit" id="submit_new_Recruitment" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
                                                     hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
-                                                    >Create</button>
+                                                    >Buat</button>
 
         </form>
     </div>
@@ -152,7 +152,7 @@ export default {
     components: {
         axios
     },
-    emits: ["updateHeader"],
+    emits: ["updateHeader","updateMenu"],
     data() {
         return {
             headerModal: "Buat Rekrutmen Baru",
@@ -163,9 +163,6 @@ export default {
             lowongan: [],
             port: import.meta.env.VITE_BACKEND_URL
         }
-    },
-    created() {
-        this.$emit('updateHeader', 'Recruitment')
     },
     methods: {
         toDate(timeString){
@@ -180,7 +177,7 @@ export default {
             return "https://drive.google.com/uc?export="+exports+"&id="+id[1]
         },
         openModal(){
-            this.headerModal = "Update Rekrutmen";
+            this.headerModal = "Perbarui Rekrutmen";
             $('#modalRecruitment').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
@@ -254,11 +251,10 @@ export default {
         }
     },
     created() {
-        this.$emit('updateHeader', 'Recruitment')
+        this.$emit('updateHeader', 'Rekrutmen')
+        this.$emit('updateMenu', 'recruitment')
     },
     mounted(){
-        let this2 = this;
-
         axios
         .get(this.port+'/job_vacancy/all')
         .then(({data}) => (

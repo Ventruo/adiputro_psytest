@@ -3,33 +3,33 @@
         <div class="w-5/6 h-full">
             <div class="flex">
                 <label class="text-xl font-bold w-32">Nama Tes : </label>
-                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl"
+                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer"
                     @change="gantiTes($event)">
                     <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
             </div>
 
-            <h1 class="font-bold text-4xl mt-5">Section</h1>
+            <h1 class="font-bold text-4xl mt-5">Seksi</h1>
 
             <div class="flex justify-end">
                 <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
                     id="btnCreateSection" @click="openModalCreate">
                     <i class="fa fa-feather fa-lg mr-2"></i>   
-                    <span>Buat Section Baru</span>
+                    <span>Buat Seksi Baru</span>
                 </button>
             </div>
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                 <table class="table-fixed w-full font-semibold">
                     <thead class="bg-foreground-4-100 text-white sticky top-0">
                         <tr>
-                            <th class="w-1/12 py-3">Section No</th>
-                            <th class="w-2/12">Instruction</th>
-                            <th class="w-1/12">Duration</th>
-                            <th class="w-1/12">Question Type</th>
-                            <th class="w-1/12">Option Type</th>
-                            <th class="w-1/12">Option Number</th>
-                            <th class="w-2/12">Action</th>
+                            <th class="w-1/12 py-3">No. Seksi</th>
+                            <th class="w-3/12">Instruksi</th>
+                            <th class="w-2/12">Durasi</th>
+                            <th class="w-2/12">Tipe Jawaban</th>
+                            <th class="w-2/12">Tipe Pertanyaan</th>
+                            <th class="w-2/12">Jumlah Jawaban</th>
+                            <th class="w-3/12">Aksi</th>
                         </tr>
                     </thead>
                     <tbody v-if="this.sectionList!=null && this.sectionList.length>0">
@@ -55,7 +55,7 @@
                                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
                                     @click="openModal"> 
                                     <i class="fa fa-refresh mr-2"></i>
-                                    <span>Update</span>
+                                    <span>Perbarui</span>
                                 </button>
                             </td>
                         </tr>
@@ -69,14 +69,14 @@
             </div>
 
             <div>
-                <h1 class="font-bold text-4xl mt-10">Question</h1>
+                <h1 class="font-bold text-4xl mt-10">Pertanyaan</h1>
 
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
                         @click="this.$router.push({path: '/admin/question/add'})">
                         <i class="fa fa-feather fa-lg mr-2"></i>   
-                        <span>Add New Question</span>
+                        <span>Buat Pertanyaan Baru</span>
                     </button>
                 </div>
 
@@ -85,10 +85,10 @@
                         <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-1/12 py-3">No</th>
-                                <th class="w-3/12">Question</th>
-                                <th class="w-3/12">Option Choices</th>
-                                <th class="w-1/12">Answer Key</th>
-                                <th class="w-1/12">Action</th>
+                                <th class="w-3/12">Pertanyaan</th>
+                                <th class="w-3/12">Pilihan Jawaban</th>
+                                <th class="w-1/12">Kunci Jawaban</th>
+                                <th class="w-1/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.questionList!=null && this.questionList.length>0">
@@ -102,7 +102,7 @@
                                                     h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
-                                        <span>Update</span>
+                                        <span>Perbarui</span>
                                     </button>
                                 </td>
                             </tr>
@@ -122,7 +122,7 @@
         <!-- Transparent Overlay -->
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
-        <!-- Create New Session Modal -->
+        <!-- Create New Section Modal -->
         <div id="modalSection" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">{{headerModal}}</p>
@@ -132,37 +132,37 @@
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
-                <label for="instruction">Instruction</label><br>
-                <textarea name="instruction" id="instruction" placeholder="Section Instruction"
+                <label for="instruction">Instruksi</label><br>
+                <textarea name="instruction" id="instruction" placeholder="Instruksi"
                     class="rounded-lg py-2 px-3 w-full h-1/3 my-2 bg-primary-600 outline-none placeholder-gray-300"></textarea><br>
                 
                 <div class="flex">
                     <div class="w-1/3">
-                        <p class="mt-4 mb-3">Duration</p>
-                        <p class="mb-3">Question Type</p>
-                        <p class="mb-4">Answer Type</p>
-                        <p class="hidden non-essay">Option Number</p>
+                        <p class="mt-4 mb-3">Durasi</p>
+                        <p class="mb-3">Tipe Pertanyaan</p>
+                        <p class="mb-4">Tipe Jawaban</p>
+                        <p class="non-essay" v-show="non_essay">Jumlah Jawaban</p>
                     </div>
                     <div>
                         <p class="mt-4 mb-3">:</p>
                         <p class="mb-3">:</p>
                         <p class="mb-4">:</p>
-                        <p class="hidden non-essay">:</p>
+                        <p class="non-essay" v-show="non_essay">:</p>
                     </div>
                     <div class="grow ml-2">
                         <div>
                             <input type="number" name="duration" id="duration" placeholder="0-9"
                                 class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
-                            <label for="duration"> Minutes</label><br>
+                            <label for="duration"> Menit</label><br>
                         </div>
                         <div class="flex gap-2 mb-2">
-                            <Radio :values="'question_text'" :names="'Question_Type'" :id="'question_text'" :label="'Text'"/>
-                            <Radio :values="'question_Image'" :names="'Question_Type'" :id="'question_Image'" :label="'Image'"/>
+                            <Radio :values="'question_text'" :names="'Question_Type'" :id="'question_text'" :label="'Teks'"/>
+                            <Radio :values="'question_Image'" :names="'Question_Type'" :id="'question_Image'" :label="'Gambar'"/>
                         </div>
                         <div class="flex gap-2">
-                            <Radio :values="'answer_text'" :names="'Answer_Type'" :id="'answer_text'" :label="'Text'" @change="non_essay=false"/>
-                            <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Multiple Choice'" @change="non_essay=true"/>
-                            <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Image'" @change="non_essay=true"/>
+                            <Radio :values="'answer_text'" :names="'Answer_Type'" :id="'answer_text'" :label="'Teks'" @change="non_essay=false"/>
+                            <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Pilihan Ganda'" @change="non_essay=true"/>
+                            <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Gambar'" @change="non_essay=true"/>
                         </div>
                         <div class="flex non-essay" v-show="non_essay">
                             <input type="number" name="option_number" id="option_number" placeholder="2-5"
@@ -173,7 +173,7 @@
                 
 
                 <button id="submit_new_section" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
-                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">Create</button>
+                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">Buat</button>
 
             </div>
         </div>
@@ -199,16 +199,17 @@ export default {
         }
     },
     created() {
-        this.$emit('updateHeader', 'Test')
+        this.$emit('updateHeader', 'Tes')
+        this.$emit('updateMenu', 'test')
     },
     methods: {
         openModal(){
-            this.headerModal = "Update Section";
+            this.headerModal = "Perbarui Seksi";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
         openModalCreate(){
-            this.headerModal = "Buat Section Baru";
+            this.headerModal = "Buat Seksi Baru";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },

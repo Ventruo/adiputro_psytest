@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
+            <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
                         p-3 my-5 h-16 flex justify-center items-center text-xl font-bold">
                 Pilih salah satu pernyataan yang paling menggambarkan diri anda!
             </div>
