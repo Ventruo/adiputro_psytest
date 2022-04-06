@@ -144,7 +144,7 @@ class ExamSessionController {
       !validate_required_columns(
         req,
         ExamSession,
-        ["is_logged", "status", "test_token", "auth_token", "is_admin"],
+        ["is_logged", "test_token", "auth_token", "is_admin"],
         ["updating_id"]
       )
     ) {
@@ -164,6 +164,7 @@ class ExamSessionController {
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
           duration: req.body.duration,
+          status: req.body.status,
         });
         session.save();
 
