@@ -9,7 +9,7 @@ const Question = require("../models/Question");
 const SectionResult = require("../models/SectionResult");
 const ExamSession = require("../models/ExamSession");
 const Section = require("../models/Section");
-const Test = require("../models/Test");
+const TestResult = require("../models/TestResult");
 
 class QuestionResultController {
   async getOne(req, res) {
@@ -446,6 +446,55 @@ class QuestionResultController {
         );
       }
     );
+  }
+
+  async resetQuestion(req, res) {
+    console.log("Resetting A Question Results...");
+
+    if (!req.body.exam_session || !req.body.section_id) {
+      missing_param_response(res);
+      return;
+    }
+
+    // Delete Question REsult  Section Result
+    SectionResult.findOne({
+      where: {
+        section_id: req.body.section_id,
+        exam_session: req.body.exam_session,
+      },
+    }).then(async (secres) => {
+      if (!secres) {
+        data_not_found_response(res);
+        return;
+      }
+
+      await QuestionResult.destroy({
+        where: { section_result_id: secres.id },
+      });
+
+      // Remove Result on Test Result
+      Section.findOne({
+        where: {
+          id: req.body.section_id,
+        },
+      }).then(async (sec) => {
+        TestResult.findOne({
+          where: {
+            id: sec.test_id,
+            exam_session: req.body.exam_session,
+          },
+        }).then(async (testres) => {
+          testres.set({
+            result: "",
+          });
+          testres.save();
+
+          return res
+            .status(200)
+            .send({ message: "Reset Questions Result Successful!" });
+        });
+      });
+    });
   }
 }
 
