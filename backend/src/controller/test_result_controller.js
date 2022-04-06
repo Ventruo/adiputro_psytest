@@ -120,7 +120,7 @@ class TestResultController {
   async create(req, res) {
     console.log("Creating A New Test Result...");
 
-    if (!validate_required_columns(req, TestResult, ["status"])) {
+    if (!validate_required_columns(req, TestResult, ["status", "result"])) {
       missing_param_response(res);
       return;
     }
@@ -200,6 +200,9 @@ class TestResultController {
           calculate_tintum_test(test.test_type, testres, res);
         } else if (test.test_type == 2) {
           calculate_EPPS_test(test.test_type, testres, res);
+        } else if (test.test_type == 3) {
+          //SDI mirip dengan Nine Tests
+          calculate_nine_tests(test.test_type, testres, res);
         } else if (
           test.test_type == 6 ||
           test.test_type == 7 ||

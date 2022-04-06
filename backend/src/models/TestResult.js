@@ -32,6 +32,7 @@ TestResult.init(
     result: {
       type: DataTypes.TEXT,
       allowNull: false,
+      defaultValue: "",
     },
     status: {
       type: DataTypes.INTEGER,

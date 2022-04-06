@@ -306,6 +306,7 @@ class QuestionResultController {
           async (question) => {
             let status_correct = false;
 
+            data.answer = data.answer + "";
             if (data.answer.includes("&")) {
               let a1 = data.answer.split("&")[0];
               let a2 = data.answer.split("&")[1];
