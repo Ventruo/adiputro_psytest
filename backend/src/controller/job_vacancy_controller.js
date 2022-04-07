@@ -54,7 +54,8 @@ class JobVacancyController {
   async getAll(req, res) {
     console.log("Getting All Job Vacancy...");
 
-    JobVacancy.findAll({ where: { status: 1 } }).then((vacancy) => {
+    // JobVacancy.findAll({ where: { status: 1 } }).then((vacancy) => {
+    JobVacancy.findAll().then((vacancy) => {
       if (vacancy.length == 0) {
         data_not_found_response(res);
         return;
@@ -158,19 +159,19 @@ class JobVacancyController {
         qr_link = link;
       }
 
-      let start_date = vacancy.start_date;
-      if (req.body.start_date) {
-        let split_date = req.body.start_date.split(" ")[0];
-        let split_time = req.body.start_date.split(" ")[1];
-        start_date =
-          split_date.split("/")[2] +
-          "-" +
-          split_date.split("/")[1] +
-          "-" +
-          split_date.split("/")[0] +
-          " " +
-          split_time;
-      }
+      // let start_date = vacancy.start_date;
+      // if (req.body.start_date) {
+      //   let split_date = req.body.start_date.split(" ")[0];
+      //   let split_time = req.body.start_date.split(" ")[1];
+      //   start_date =
+      //     split_date.split("/")[2] +
+      //     "-" +
+      //     split_date.split("/")[1] +
+      //     "-" +
+      //     split_date.split("/")[0] +
+      //     " " +
+      //     split_time;
+      // }
 
       vacancy.set({
         name: req.body.name ?? vacancy.name,
@@ -178,7 +179,8 @@ class JobVacancyController {
         list_pekerjaan: req.body.list_pekerjaan
           ? req.body.list_pekerjaan.join()
           : vacancy.list_pekerjaan,
-        start_date: start_date,
+        start_date: req.body.start_date,
+        // start_date: start_date,
       });
       await vacancy.save();
 
