@@ -458,7 +458,7 @@ class QuestionResultController {
     }
 
     // Delete Question REsult  Section Result
-    SectionResult.findOne({
+    await SectionResult.findOne({
       where: {
         section_id: req.body.section_id,
         exam_session: req.body.exam_session,
@@ -481,7 +481,7 @@ class QuestionResultController {
       }).then(async (sec) => {
         TestResult.findOne({
           where: {
-            id: sec.test_id,
+            test_id: sec.test_id,
             exam_session: req.body.exam_session,
           },
         }).then(async (testres) => {
@@ -489,13 +489,20 @@ class QuestionResultController {
             result: "",
           });
           testres.save();
-
           return res
             .status(200)
             .send({ message: "Reset Questions Result Successful!" });
         });
       });
     });
+
+    SectionResult.destroy({
+      where: {
+        section_id: req.body.section_id,
+        exam_session: req.body.exam_session
+      },
+    });
+    
   }
 }
 
