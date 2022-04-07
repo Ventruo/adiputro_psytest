@@ -137,7 +137,8 @@ export default {
             finish: null,
             isiEmail: "",
             aktif: true,
-            statusAdd: true
+            statusAdd: true,
+            updating: -1
         }
     },
     created() {
@@ -176,6 +177,7 @@ export default {
             this.start = data.start_date.split(".")[0]
             this.finish = data.finish_date.split(".")[0]
             this.isiEmail = ""
+            this.updating = data.id
             this.headerModal = "Perbarui Sesi";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
@@ -237,10 +239,6 @@ export default {
                             .then(function(){
                                 $('#modalSession').fadeOut("fast")
                                 $('#bg').fadeOut("slow")
-                                this.emails = []
-                                this.start = null
-                                this.finish = null
-                                // window.location = '/'
                             })
                         }else{
                             throw response
@@ -255,6 +253,36 @@ export default {
                     });
                 }else{
                     console.log("update")
+                    axios.post(this.port+'/exam_session/update',{
+                        "updating_id": this.updating,
+                        "email": this.emails[0],
+                        "start_date": dateStart,
+                        "finish_date": dateFinish,
+                        "duration": duration,
+                        "status": this.aktif?2:1
+                    })
+                    .then((response) => {
+                        if (response.status==200){
+                            Swal.fire(
+                                'Updated!',
+                                'Sesi Berhasil Diperbarui!',
+                                'success'
+                            )
+                            .then(function(){
+                                $('#modalSession').fadeOut("fast")
+                                $('#bg').fadeOut("slow")
+                            })
+                        }else{
+                            throw response
+                        }
+                    }).catch( error => {
+                        $('#spinner-modal').fadeOut("slow");
+                        Swal.fire(
+                            'Warning!',
+                            error.response.data,
+                            'warning'
+                        )
+                    });
                 }
             }
         },

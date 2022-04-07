@@ -174,7 +174,9 @@ export default {
             lowongan: [],
             port: import.meta.env.VITE_BACKEND_URL,
             aktif: true,
-            statusAdd: true
+            statusAdd: true,
+            updating: -1,
+            tanggalUpdating: null
         }
     },
     methods: {
@@ -195,6 +197,10 @@ export default {
             this.isiLowongan = ""
             this.lowongan = data.list_pekerjaan.split(",")
             this.aktif = data.status==1?true:false
+            this.updating = data.id
+            this.tanggalUpdating = data.start_date
+            // console.log(this.tanggalUpdating)
+            // console.log(data)
             this.headerModal = "Perbarui Rekrutmen";
             $('#modalRecruitment').fadeIn("slow");
             $('#bg').fadeIn("slow");
@@ -214,7 +220,6 @@ export default {
             $('#bg').fadeOut("slow");
         },
         createRecruitment(e){
-            let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
             let date = Date.now()
             if(this.nama==""||this.lowongan.length==0)
                 Swal.fire({
@@ -226,6 +231,7 @@ export default {
                 $('#spinner-modal').fadeIn("slow");
                 if(this.statusAdd){
                     console.log("create")
+                    let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
                     axios.post(this.port+'/job_vacancy/create',{
                         "name": this.nama,
                         "list_pekerjaan": this.lowongan,
@@ -255,6 +261,36 @@ export default {
                     });
                 }else{
                     console.log("update")
+                    let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+this.updating
+                    axios.post(this.port+'/job_vacancy/update',{
+                        "name": this.nama,
+                        "list_pekerjaan": this.lowongan,
+                        "start_date": this.tanggalUpdating,
+                        "url": url,
+                        "updating_id": this.updating,
+                        // "status": this.aktif?2:1
+                    })
+                    .then((response) => {
+                        axios
+                        .get(this.port+'/job_vacancy/all')
+                        .then(({data}) => (
+                            this.recruitment = data,
+                            this.lowongan = [],
+                            this.nama = "",
+                            $('#spinner-modal').fadeOut("slow"),
+                            $('#modalRecruitment').fadeOut("fast"),
+                            $('#bg').fadeOut("slow"),
+                            Swal.fire(
+                                'Updated!',
+                                'Rekrutmen Berhasil Diperbarui!',
+                                'success'
+                            )
+                            .then(function(){
+                            })
+                        ))
+                    }).catch( error => { 
+                        console.log('error: ' + error) 
+                    });
                 }
             }
         },
