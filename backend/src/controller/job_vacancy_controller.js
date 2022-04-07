@@ -113,12 +113,7 @@ class JobVacancyController {
     console.log("Updating A Job Vacancy...");
 
     if (
-      !validate_required_columns(
-        req,
-        JobVacancy,
-        ["status", "qr_link"],
-        ["updating_id"]
-      )
+      !validate_required_columns(req, JobVacancy, ["qr_link"], ["updating_id"])
     ) {
       missing_param_response(res);
       return;
@@ -181,6 +176,7 @@ class JobVacancyController {
           : vacancy.list_pekerjaan,
         start_date: req.body.start_date,
         // start_date: start_date,
+        status: req.body.status - 1,
       });
       await vacancy.save();
 
@@ -189,7 +185,7 @@ class JobVacancyController {
   }
 
   async refreshQR(req, res) {
-    console.log("Refresh QR Job Vacancy...");
+    console.log("Refreshing QR Job Vacancy...");
 
     if (!req.body.url || !req.body.updating_id) {
       missing_param_response(res);
