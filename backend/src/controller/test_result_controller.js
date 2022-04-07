@@ -10,6 +10,7 @@ const Test = require("../models/Test");
 
 const { calculate_kreapelin } = require("./test_result_calc/kreapelin_calc");
 const { calculate_EPPS_test } = require("./test_result_calc/epps_calc");
+const { calculate_sdi_tests } = require("./test_result_calc/sdi_calc");
 const { calculate_mmpi_tests } = require("./test_result_calc/mmpi_calc");
 const { calculate_tintum_test } = require("./test_result_calc/tintum_calc");
 const { calculate_nine_tests } = require("./test_result_calc/nine_calc");
@@ -203,7 +204,7 @@ class TestResultController {
           calculate_EPPS_test(test.test_type, testres, res);
         } else if (test.test_type == 3) {
           //SDI mirip dengan Nine Tests
-          calculate_nine_tests(test.test_type, testres, res);
+          calculate_sdi_tests(test.test_type, testres, res);
         } else if (test.test_type == 4) {
           calculate_mmpi_tests(test.test_type, testres, res);
         } else if (
