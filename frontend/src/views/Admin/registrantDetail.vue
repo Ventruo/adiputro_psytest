@@ -151,21 +151,33 @@
             </div>
 
 
-            <div class="w-full rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-2" style="height: 48rem;">
+            <div class="w-full h-auto rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-2">
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
-                <div class="flex gap-2 justify-center w-full h-full" v-if="loaded==1">
-                    <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
-                        <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                        <div v-if="biodata!=null" class="flex flex-col h-full">
-                            <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
+                <div class="w-full h-full" v-if="loaded==1">
+                    <div class="w-1/2 h-[48rem] inline-block">
+                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
+                            <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                            <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                            <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                            <!-- <SDI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/> -->
+                            <MMPI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                            <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
+                                <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
+                            </div> -->
                         </div>
                     </div>
-                    <div class="w-1/2 h-full flex flex-col bg-white py-2 px-3 text-black">
-                        <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                        <div v-if="biodata!=null" class="flex flex-col h-full">
-                            <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
+                    <div class="w-1/2 h-[48rem] inline-block">
+                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
+                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
+                            <div v-if="biodata!=null" class="flex flex-col h-full">
+                                <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
+                            </div> -->
+                            <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                        </div>
+                    </div>
+                    <div class="w-1/2 h-[48rem] inline-block mt-5">
+                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
+                            <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                         </div>
                     </div>
                     <!-- <div class="absolute -z-20" id="pdf"> -->
@@ -175,16 +187,23 @@
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <div v-if="biodata!=null" class="flex flex-col h-full">
+                            <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'yes'"/>
-                            </div>
+                            </div> -->
+                            <!-- <SDI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/> -->
+                            <MMPI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
                         <div class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <div v-if="biodata!=null" class="flex flex-col h-full">
+                            <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
-                            </div>
+                            </div> -->
+                            <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                        </div>
+                        <div class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                            <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
                     </div>
                 </div>
@@ -216,9 +235,15 @@ import Kecil from "../../components/report/kecilkecil.vue"
 import Kraepelin from "../../components/report/kraepelin.vue"
 import KraepelinGraphics from "../../components/report/kraepelinGraphics.vue"
 
+import SDI from "../../components/report/SDI.vue"
+
+import MMPI from "../../components/report/MMPI.vue"
+import MMPI2 from "../../components/report/MMPI2.vue"
+import MMPI3 from "../../components/report/MMPI3.vue"
+
 export default {
     components: { 
-        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics
+        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, MMPI2, MMPI3
     },
     data () {
         return {
@@ -237,7 +262,8 @@ export default {
             exam_session: null,
             port: import.meta.env.VITE_BACKEND_URL,
             prints: false,
-            selectedTes: 1
+            selectedTes: 1,
+            nama: "Widean"
         }
     },
     methods:{
@@ -260,8 +286,8 @@ export default {
                 axios
                 .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
                 .then(({data}) => (
-                    this.checkTest(5, data),
-                    this.tesKraepelin = true
+                    this.checkTest(4, data)
+                    // this.tesKraepelin = true
                 ))
             ))
         },
@@ -277,6 +303,7 @@ export default {
                 let data = await axios.get(this.port+'/test/'+this.testResult[i].test_id)
                 this.test.push(data.data)
             }
+            this.selectedTes = this.test[0].id
             this.dataNow = {
                 "nama": "abc",
                 "tes": this.test[0].name,
@@ -292,7 +319,7 @@ export default {
                 .get(`${this.port}/section_result/getbytest/${this.test[0].id}?email=${this.$route.query.registrant}`)
                 .then(({data}) => {
                     this.processSectionResult(data)
-                    if(this.test[0].id == 5) this.isKraepelin()
+                    if(this.test[0].id == 3) this.isKraepelin()
                 })
             ))
             
@@ -345,7 +372,7 @@ export default {
                 .get(`${this.port}/section_result/getbytest/${id}?email=${this.$route.query.registrant}`)
                 .then(({data}) => {
                     this.processSectionResult(data)
-                    if(id == 5) this.isKraepelin()
+                    if(id == 4) this.isKraepelin()
                 })
             ))
         },

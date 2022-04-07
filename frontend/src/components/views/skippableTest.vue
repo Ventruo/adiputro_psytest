@@ -18,7 +18,8 @@
                         <div>
                             <p>{{section.question_num}} Pertanyaan</p>
 
-                            <p>{{section.duration}} Menit</p>
+                            <p v-if="section.duration!=-1">{{section.duration}} Menit</p>
+                            <p v-else>Tidak ada batas waktu</p>
                             
                             <p v-if="section.section_type==1" class="mb-6">Esai</p>
                             <p v-else-if="section.option_num==5">Pilihan Ganda (A - E)</p>

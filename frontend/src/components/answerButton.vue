@@ -55,14 +55,14 @@ export default {
                     else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+','+id+'o'
                 }
             }
-            else if(this.jenis=="mmpi"){
-                if (id=="+") this.jawaban[this.noSoal-1] = 0
-                else if (id=="-") this.jawaban[this.noSoal-1] = 1
-            }
-            else if(this.jenis=="sdi"){
-                if (id=="Ya") this.jawaban[this.noSoal-1] = 1
-                else if (id=="Tidak") this.jawaban[this.noSoal-1] = 0
-            }
+            // else if(this.jenis=="MMPI"){
+            //     if (id=="A. +") this.jawaban[this.noSoal-1] = 1
+            //     else if (id=="B. -") this.jawaban[this.noSoal-1] = 0
+            // }
+            // else if(this.jenis=="SDI"){
+            //     if (id=="Ya") this.jawaban[this.noSoal-1] = 1
+            //     else if (id=="Tidak") this.jawaban[this.noSoal-1] = 0
+            // }
             else this.jawaban[this.noSoal-1] = id
         },
     },

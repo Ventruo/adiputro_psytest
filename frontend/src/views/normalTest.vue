@@ -9,7 +9,8 @@
 
         <div v-show="isStarted">
             <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
-                <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <p v-if="menit!=-99">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <p v-else></p>
                 <button id="btnDaftarSoal" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold">
                     <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
                     <span id="btnDaftarSoal3">Daftar Soal</span>
@@ -108,7 +109,9 @@ export default {
             pilihanJawaban: null,
             section_id: this.$route.query.current_section,
             test_id: null,
-            exam_session: 13,
+            email: null,
+            exam_session: null,
+            test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
@@ -117,32 +120,35 @@ export default {
     methods: {
         mulai(){
             this.isStarted = true
-            this.waktu = setInterval(() => {
-                this.detik--
-                if (this.detik<0){
-                    this.detik = 59
-                    this.menit--
-                }
-                
-                if (this.menit<0){
-                    this.detik = 0
-                    this.menit = 0
-                    clearInterval(this.waktu)
+            if(this.menit!=-99){
+                this.waktu = setInterval(() => {
+                    this.detik--
+                    if (this.detik<0){
+                        this.detik = 59
+                        this.menit--
+                    }
                     
-                    Swal.fire({
-                        title: 'Waktu Habis...',
-                        icon: 'warning',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Kembali ke Dashboard'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.submitJawaban()
-                        }
-                    });
-                } 
-            }, 1000)
+                    if (this.menit<0){
+                        this.detik = 0
+                        this.menit = 0
+                        clearInterval(this.waktu)
+                        
+                        Swal.fire({
+                            title: 'Waktu Habis...',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Kembali ke Dashboard'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.submitJawaban()
+                            }
+                        });
+                    } 
+                }, 1000)
+            }
         },
         nextSoal(){
+            console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
@@ -249,6 +255,14 @@ export default {
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
+                else if (this.jenis=="MMPI"){
+                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
+                    this.jawabanFinal[i]["answer"] = ans=="+"?1:0
+                }
+                else if (this.jenis=="SDI"){
+                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
+                    this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?0:1
+                }
                 else if(this.jumChoice==2){
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
                 }
@@ -264,10 +278,10 @@ export default {
             }
 
             axios.post(this.port+'/section_result/create',{
-                "test_result_id": 63,
+                "test_result_id": this.test_result_id,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
-                "start_date": "2022-01-28 15:00:00",
+                "start_date": parseInt(this.$cookies.get("start_time")),
                 "finish_date": Date.now()
             })
             .then((response) => {
@@ -275,7 +289,7 @@ export default {
                 .then((response) => {
                     axios.post(this.port+'/test_result/calculateresult',{
                         test_id: this.test_id,
-                        email: "moh.fharhan@x.com"
+                        email: this.email
                     })
                     .then((response) => {
                         Swal.fire(
@@ -319,7 +333,6 @@ export default {
 
     beforeDestroy() {
         clearInterval(this.waktu)
-        clearInterval(this.countdownTimer)
     },
 
     mounted(){
@@ -337,9 +350,10 @@ export default {
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
-            this.menit = this.pertanyaan[0]["section"]["duration"],
+            this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
             this.jumChoice = this.pertanyaan[0]["option_num"],
             this.jumSoal = this.pertanyaan.length,
+            // this.jumSoal = 5,
             this.gantiPilihanJawaban(),
             this.jawaban = Array(225),
             this.progress(true)
@@ -347,9 +361,24 @@ export default {
 
         axios
         .get(this.port+'/section/'+this.section_id)
-        .then(({data}) => (
+        .then(({data}) => {
+            let datas = this.$cookies.get("data_registrant")
             this.test_id = data.test_id
-        ))
+            let tests = datas.test;
+            for (let i = 0; i < tests.length; i++) {
+                if (tests[i][0]==this.test_id)
+                    this.test_result_id = tests[i][1]
+            }
+            this.email = datas.email;
+            this.exam_session = datas.exam_session;
+            this.section_id = this.$route.query.current_section;
+
+            // console.log(this.test_id)
+            // console.log(this.email)
+            // console.log(this.exam_session)
+            // console.log(this.section_id)
+            // console.log(this.test_result_id)
+        })
 
         let thi = this
         $('body').keydown(function(event) {

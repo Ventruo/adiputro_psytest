@@ -268,7 +268,7 @@ export default {
                         "start_date": this.tanggalUpdating,
                         "url": url,
                         "updating_id": this.updating,
-                        // "status": this.aktif?2:1
+                        "status": this.aktif?2:1
                     })
                     .then((response) => {
                         axios

@@ -27,7 +27,8 @@
                             <div class="mb-2 text-xl">
                                 <p>{{section.question_num}} Pertanyaan</p>
 
-                                <p>{{section.duration}} Menit</p>
+                                <p v-if="section.duration!=-1">{{section.duration}} Menit</p>
+                                <p v-else>Tidak ada batas waktu</p>
                                 
                                 <p v-if="section.option_num==5">Pilihan Ganda (A - E)</p>
                                 <p v-else-if="section.option_num==4">Pilihan Ganda (A - D)</p>
