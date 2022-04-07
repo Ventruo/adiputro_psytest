@@ -3,8 +3,8 @@
         <div class="w-full h-auto">
             <div class="flex mb-5">
                 <label class="text-xl font-bold w-32">Nama Tes : </label>
-                <select name="" id="testCombobox" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer"
-                    @change="gantiTes($event)">
+                <select name="" id="testCombobox" v-model="selectedTes" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer"
+                    @change="selectChange($event)">
                     <option v-for="i in test" :key="i" v-bind:value="i.id">{{i.name}}</option>
                 </select>
             </div>
@@ -58,12 +58,16 @@
                                 <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].start_date)}}</td>
                                 <td>{{this.sectionResult[idx]==undefined? "-" : this.sectionResult[idx].num_correct}}/{{i.question_num}}</td>
                                 <td class="h-12">
-                                    <button v-if="i.section_type==1" class="bg-safe text-white hover:bg-green-800 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                    <button v-if="i.section_type==1 && this.sectionResult[idx]!=undefined" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/reviewEssay'})"> 
                                         <i class="fa fa-info-circle mr-2"></i>
-                                        <span>Review Jawaban</span>
+                                        <span>Review</span>
                                     </button>
-                                    <span v-else>-</span>
+                                    <button v-if="this.sectionResult[idx]!=undefined" class="bg-foreground-4-100 text-white hover:bg-red-500 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click.prevent="resetHasil(i.id)"> 
+                                        <i class="fa-solid fa-circle-exclamation mr-2"></i>
+                                        <span>Reset</span>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -232,7 +236,8 @@ export default {
             email: this.$route.query.registrant,
             exam_session: null,
             port: import.meta.env.VITE_BACKEND_URL,
-            prints: false
+            prints: false,
+            selectedTes: 1
         }
     },
     methods:{
@@ -283,7 +288,6 @@ export default {
             .get(this.port+'/section/all/'+this.test[0].id)
             .then(({data}) => (
                 this.sectionList = data,
-
                 axios
                 .get(`${this.port}/section_result/getbytest/${this.test[0].id}?email=${this.$route.query.registrant}`)
                 .then(({data}) => {
@@ -292,6 +296,11 @@ export default {
                 })
             ))
             
+            axios
+            .get(`${this.port}/exam_session/getbyemail/${this.$route.query.registrant}`)
+            .then(({data}) => {
+                this.exam_session = data.id
+            })
         },
         processSectionResult(data){
             let arr = []
@@ -308,14 +317,18 @@ export default {
                             
                     }
                 }
-                
+                this.sectionResult = []
                 this.sectionResult = arr
             }
         },
-        gantiTes(event){
+        selectChange(event){
+            let id = event.target.value
+            this.gantiTes(id)
+        },
+        gantiTes(id){
+            this.sectionResult = []
             this.loaded = 0
             this.tesKraepelin = false
-            let id = event.target.value
             for (let i = 0; i < this.test.length; i++) {
                 if (this.test[i].id == id){
                     this.dataNow.tes = this.test[i].name
@@ -408,7 +421,42 @@ export default {
             }).catch( error => { 
                 console.log('error: ' + error) 
             });
-        }
+        },
+        resetHasil(sec_id){
+            Swal.fire({
+                title: 'Yakin mereset hasil jawaban ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner-modal').fadeIn("slow");
+                    axios.post(this.port+'/question_result/resetQuestion',{
+                        exam_session: this.exam_session,
+                        section_id: sec_id
+                    })
+                    .then((response) => {
+                        axios
+                        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+                        .then(({data}) => (
+                            this.testResult = data,
+                            this.dataInit(),
+                            $('#spinner-modal').fadeOut("slow"),
+                            Swal.fire({
+                                title: 'Sukses mereset jawaban!',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Tutup',
+                            }),
+                            this.gantiTes(this.selectedTes)
+                        ))
+                    })
+                }
+            });
+        },
     },
     created(){
         this.$emit('updateHeader', this.judulHalaman)

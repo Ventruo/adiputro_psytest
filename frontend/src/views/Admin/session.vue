@@ -29,7 +29,7 @@
                                 <td>{{i.email}}</td>
                                 <td>{{toDate(i.start_date)}}</td>
                                 <td>{{toDate(i.finish_date)}}</td>
-                                <td>{{i.duration/60}} Jam</td>
+                                <td>{{Math.round(i.duration/60 * 10)/10}} Jam</td>
                                 <td>{{i.test_token}}</td>
                                 <td class="py-5">
                                     <span v-if="i.status%2==1">Aktif</span>
@@ -38,7 +38,7 @@
                                 <td>
                                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto px-5 py-1 mr-1" 
-                                        @click="openModal"> 
+                                        @click="openModal(i)"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Perbarui</span>
                                     </button>
@@ -74,11 +74,11 @@
                     <div class="grow h-auto">
                         <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in emails" :key="i">
                             <span>{{i}}</span>
-                            <i class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusEmail(`${i}`)"></i>
+                            <i v-if="this.statusAdd" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusEmail(`${i}`)"></i>
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 py-4">
+                <div class="flex items-center gap-3 py-4" v-if="this.statusAdd">
                     <input name="email" id="user_email" placeholder="Email Registrant" v-model="isiEmail"
                         class="rounded-lg py-2 px-3 w-full bg-primary-600 outline-none placeholder-gray-300"><br>
                     <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
@@ -99,9 +99,22 @@
                     </div>
                 </div>
 
+                <div>
+                    <div class="flex items-center mt-5" v-if="!this.statusAdd">
+                        Status Aktif :
+                        <label for="toggle" class="flex items-center cursor-pointer ml-2">
+                            <div class="relative">
+                                <input type="checkbox" id="toggle" class="sr-only" v-model="aktif">
+                                <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <button id="submit_new_session" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
                                                         hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
-                                                @click.prevent="createSession">Buat</button>
+                                                @click.prevent="createSession">{{this.statusAdd?"Buat":"Perbarui"}}</button>
 
             </div>
         </div>
@@ -122,7 +135,9 @@ export default {
             emails: [],
             start: null,
             finish: null,
-            isiEmail: ""
+            isiEmail: "",
+            aktif: true,
+            statusAdd: true
         }
     },
     created() {
@@ -145,7 +160,22 @@ export default {
         //     }
         //     return token;
         // },
-        openModal(){
+        openModalCreate(){
+            this.statusAdd = true
+            this.emails = []
+            this.start = null
+            this.finish = null
+            this.isiEmail = ""
+            this.headerModal = "Buat Sesi Baru";
+            $('#modalSession').fadeIn("slow");
+            $('#bg').fadeIn("slow");
+        },
+        openModal(data){
+            this.statusAdd = false
+            this.emails = [data.email]
+            this.start = data.start_date.split(".")[0]
+            this.finish = data.finish_date.split(".")[0]
+            this.isiEmail = ""
             this.headerModal = "Perbarui Sesi";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
@@ -188,45 +218,45 @@ export default {
                 var dateFinish = new Date(this.finish);
                 var duration = (dateFinish.getTime()-dateStart.getTime())/(1000*60)
 
-                axios.post(this.port+'/exam_session/create',{
-                    "email": this.emails,
-                    "start_date": dateStart,
-                    "finish_date": dateFinish,
-                    "duration": duration,
-                    "tests": [5]
-                })
-                .then((response) => {
-                    if (response.status==200){
+                if (this.statusAdd){
+                    console.log("create")
+                    axios.post(this.port+'/exam_session/create',{
+                        "email": this.emails,
+                        "start_date": dateStart,
+                        "finish_date": dateFinish,
+                        "duration": duration,
+                        "tests": [5]
+                    })
+                    .then((response) => {
+                        if (response.status==200){
+                            Swal.fire(
+                                'Created!',
+                                'Sesi Baru Berhasil Dibuat!',
+                                'success'
+                            )
+                            .then(function(){
+                                $('#modalSession').fadeOut("fast")
+                                $('#bg').fadeOut("slow")
+                                this.emails = []
+                                this.start = null
+                                this.finish = null
+                                // window.location = '/'
+                            })
+                        }else{
+                            throw response
+                        }
+                    }).catch( error => {
+                        $('#spinner-modal').fadeOut("slow");
                         Swal.fire(
-                            'Created!',
-                            'Sesi Baru Berhasil Dibuat!',
-                            'success'
+                            'Warning!',
+                            error.response.data,
+                            'warning'
                         )
-                        .then(function(){
-                            $('#modalSession').fadeOut("fast")
-                            $('#bg').fadeOut("slow")
-                            this.emails = []
-                            this.start = null
-                            this.finish = null
-                            // window.location = '/'
-                        })
-                    }else{
-                        throw response
-                    }
-                }).catch( error => {
-                    $('#spinner-modal').fadeOut("slow");
-                    Swal.fire(
-                        'Warning!',
-                        error.response.data,
-                        'warning'
-                    )
-                });
+                    });
+                }else{
+                    console.log("update")
+                }
             }
-        },
-        openModalCreate(){
-            this.headerModal = "Buat Sesi Baru";
-            $('#modalSession').fadeIn("slow");
-            $('#bg').fadeIn("slow");
         },
         closeModal(){
             $('#modalSession').fadeOut("fast");
@@ -254,5 +284,8 @@ export default {
 </script>
 
 <style>
-
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #33CCFF;
+}
 </style>
