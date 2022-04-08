@@ -54,8 +54,8 @@
                                     <span v-if="i.section_type==1">Esai</span>
                                     <span v-else>Pilihan Ganda</span>
                                 </td>
-                                <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].finish_date)}}</td>
                                 <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].start_date)}}</td>
+                                <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].finish_date)}}</td>
                                 <td>{{this.sectionResult[idx]==undefined? "-" : this.sectionResult[idx].num_correct}}/{{i.question_num}}</td>
                                 <td class="h-12">
                                     <button v-if="i.section_type==1 && this.sectionResult[idx]!=undefined" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
@@ -159,14 +159,14 @@
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                            <!-- <SDI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/> -->
-                            <MMPI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                            <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                            <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                             <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
                             </div> -->
                         </div>
                     </div>
-                    <div class="w-1/2 h-[48rem] inline-block">
+                    <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block">
                         <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
                             <div v-if="biodata!=null" class="flex flex-col h-full">
@@ -175,7 +175,7 @@
                             <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                         </div>
                     </div>
-                    <div class="w-1/2 h-[48rem] inline-block mt-5">
+                    <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block mt-5">
                         <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
                             <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                         </div>
@@ -190,10 +190,10 @@
                             <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'yes'"/>
                             </div> -->
-                            <!-- <SDI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/> -->
-                            <MMPI :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                            <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                            <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
-                        <div class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
                             <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
@@ -201,7 +201,7 @@
                             </div> -->
                             <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
-                        <div class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
@@ -252,6 +252,7 @@ export default {
             dataNow: null,
             biodata: null,
             test: null,
+            idTes: null,
             testResult: null,
             sectionList: null,
             sectionResult: null,
@@ -286,8 +287,8 @@ export default {
                 axios
                 .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
                 .then(({data}) => (
-                    this.checkTest(4, data)
-                    // this.tesKraepelin = true
+                    this.checkTest(5, data),
+                    this.tesKraepelin = true
                 ))
             ))
         },
@@ -311,6 +312,7 @@ export default {
                 "finish": this.toDate(this.testResult[0].finish_date)
             }
 
+            this.idTes = this.test[0].id
             axios
             .get(this.port+'/section/all/'+this.test[0].id)
             .then(({data}) => (
@@ -319,7 +321,14 @@ export default {
                 .get(`${this.port}/section_result/getbytest/${this.test[0].id}?email=${this.$route.query.registrant}`)
                 .then(({data}) => {
                     this.processSectionResult(data)
-                    if(this.test[0].id == 3) this.isKraepelin()
+                    if(this.test[0].id == 5) this.isKraepelin()
+                    else{
+                        axios
+                        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+                        .then(({data}) => (
+                            this.checkTest(this.test[0].id,data)
+                        ))
+                    }
                 })
             ))
             
@@ -353,6 +362,7 @@ export default {
             this.gantiTes(id)
         },
         gantiTes(id){
+            this.idTes = id
             this.sectionResult = []
             this.loaded = 0
             this.tesKraepelin = false
@@ -372,7 +382,14 @@ export default {
                 .get(`${this.port}/section_result/getbytest/${id}?email=${this.$route.query.registrant}`)
                 .then(({data}) => {
                     this.processSectionResult(data)
-                    if(id == 4) this.isKraepelin()
+                    if(id == 5) this.isKraepelin()
+                    else{
+                        axios
+                        .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+                        .then(({data}) => (
+                            this.checkTest(id,data)
+                        ))
+                    }
                 })
             ))
         },
@@ -416,6 +433,7 @@ export default {
                     this.dataRegistrant = dataNow2
                     this.loaded = 1
                 }
+                console.log(data)
             }
         },
         submitKraepelinData(e){

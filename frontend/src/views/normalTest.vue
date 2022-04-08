@@ -148,7 +148,7 @@ export default {
             }
         },
         nextSoal(){
-            console.log(this.jawaban)
+            // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]

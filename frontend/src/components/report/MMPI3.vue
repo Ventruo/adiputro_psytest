@@ -56,7 +56,9 @@
             <table class="table-fixed border-collapse border-2 border-black w-1/3" v-for="idx in [7,8]" :key="idx">
                 <thead class="bg-primary-900 text-white">
                     <tr>
-                        <th class="font-bold" colspan="3">{{arrTabel[idx].jenis}} ({{arrTabel[idx].sum_correct}} - {{arrTabel[idx].keterangan}})</th>
+                        <th class="font-bold" colspan="3">
+                            <span class="relative bottom-2">{{arrTabel[idx].jenis}} ({{arrTabel[idx].sum_correct}} - {{arrTabel[idx].keterangan}})</span>
+                        </th>
                     </tr>
                     <tr>
                         <th class="font-bold w-1/3"><span class="relative bottom-2">No.</span></th>
