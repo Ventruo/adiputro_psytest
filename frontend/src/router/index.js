@@ -19,6 +19,7 @@ import session from '/src/views/Admin/session.vue'
 import masterRecruitment from '/src/views/Admin/recruitment.vue'
 import applicant from '/src/views/Admin/applicant.vue'
 import registrantDetail from '/src/views/Admin/registrantDetail.vue'
+import biodataRegistrant from '/src/views/Admin/biodata.vue'
 import reviewEssay from '/src/views/Admin/reviewEssay.vue'
 import addQuestion from '/src/views/Admin/addQuestion.vue'
 
@@ -118,6 +119,10 @@ const routes = [
                         path: '/admin/registrantDetail',
                         name: 'registrantDetail',
                         component: registrantDetail,
+                    },{
+                        path: '/admin/biodata',
+                        name: 'biodataRegistrant',
+                        component: biodataRegistrant,
                     },
                     {
                         path: '/admin/reviewEssay',

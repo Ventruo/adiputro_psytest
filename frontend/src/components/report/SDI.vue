@@ -44,7 +44,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold">{{this.arrTabel.numbers[idx-1]}}</td>
-                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx-1]==0?"Ya":"Tidak"}}</td>
+                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx-1]==1?"Ya":"Tidak"}}</td>
                         <td class="border-black border-r-2 text-xs">{{this.arrTabel.correct_data[idx-1]}}</td>
 
                         <!-- <td class="border-black border-r-2 text-xs font-bold">{{this.arrTabel.ori_datas[idx-1].x}}</td>
@@ -63,7 +63,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold">{{this.arrTabel.numbers[idx+12]}}</td>
-                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx+12]==0?"Ya":"Tidak"}}</td>
+                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx+12]==1?"Ya":"Tidak"}}</td>
                         <td class="border-black border-r-2 text-xs">{{this.arrTabel.correct_data[idx+12]}}</td>
                     </tr>
                 </tbody>
@@ -79,7 +79,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold">{{this.arrTabel.numbers[idx+25]}}</td>
-                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx+25]==0?"Ya":"Tidak"}}</td>
+                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx+25]==1?"Ya":"Tidak"}}</td>
                         <td class="border-black border-r-2 text-xs">{{this.arrTabel.correct_data[idx+25]}}</td>
                     </tr>
                 </tbody>
@@ -95,7 +95,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold">{{this.arrTabel.numbers[idx+38]}}</td>
-                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx+38]==0?"Ya":"Tidak"}}</td>
+                        <td class="border-black border-r-2 text-xs">{{this.arrTabel.answers[idx+38]==1?"Ya":"Tidak"}}</td>
                         <td class="border-black border-r-2 text-xs">{{this.arrTabel.correct_data[idx+38]}}</td>
                     </tr>
                 </tbody>
@@ -114,7 +114,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold"><span class="relative bottom-2">{{this.arrTabel.numbers[idx-1]}}</span></td>
-                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx-1]==0?"Ya":"Tidak"}}</span></td>
+                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx-1]==1?"Ya":"Tidak"}}</span></td>
                         <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.correct_data[idx-1]}}</span></td>
 
                         <!-- <td class="border-black border-r-2 text-xs font-bold">{{this.arrTabel.ori_datas[idx-1].x}}</td>
@@ -133,7 +133,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold"><span class="relative bottom-2">{{this.arrTabel.numbers[idx+12]}}</span></td>
-                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+12]==0?"Ya":"Tidak"}}</span></td>
+                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+12]==1?"Ya":"Tidak"}}</span></td>
                         <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.correct_data[idx+12]}}</span></td>
                     </tr>
                 </tbody>
@@ -149,7 +149,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold"><span class="relative bottom-2">{{this.arrTabel.numbers[idx+25]}}</span></td>
-                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+25]==0?"Ya":"Tidak"}}</span></td>
+                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+25]==1?"Ya":"Tidak"}}</span></td>
                         <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.correct_data[idx+25]}}</span></td>
                     </tr>
                 </tbody>
@@ -165,7 +165,7 @@
                 <tbody class="divide-y-2 divide-black">
                     <tr class="text-center" v-for="idx in 13" :key="idx">
                         <td class="border-black border-r-2 text-xs font-bold"><span class="relative bottom-2">{{this.arrTabel.numbers[idx+38]}}</span></td>
-                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+38]==0?"Ya":"Tidak"}}</span></td>
+                        <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+38]==1?"Ya":"Tidak"}}</span></td>
                         <td class="border-black border-r-2 text-xs"><span class="relative bottom-2">{{this.arrTabel.correct_data[idx+38]}}</span></td>
                     </tr>
                 </tbody>

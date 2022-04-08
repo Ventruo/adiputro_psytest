@@ -261,7 +261,7 @@ export default {
                 }
                 else if (this.jenis=="SDI"){
                     let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
-                    this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?0:1
+                    this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?1:0
                 }
                 else if(this.jumChoice==2){
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
