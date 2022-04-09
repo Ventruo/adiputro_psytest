@@ -11,17 +11,17 @@
                 <p class="text-lg font-bold">Tenggat Waktu : </p>
                 <p>{{tenggat}}</p>
             </div>
-            <h1 class="text-xl font-bold mt-3">Tes Selesai: </h1>
+            <h1 class="text-xl font-bold mt-3">Persoalan Selesai: </h1>
             <div class="grow w-auto h-1 my-2 overflow-x-hidden overflow-y-auto no-scrollbar text-foreground-4-800">
-                <!-- <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in hasil" :key="i">
+                <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in hasil" :key="i">
                     <div class="flex items-center">
                         <i class="fas fa-file-alt mr-3 text-2xl"></i>
                         <div>
-                            <p class="text-lg font-bold">Tes {{i.section_number}}</p>
+                            <p class="text-lg font-bold">Persoalan {{i.section_number}}</p>
                             <p class="text-foreground-4-300 font-bold text-sm">Diselesaikan Pada {{toDate(i.createdAt)}}</p>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <button @click="logout" type="button" class="w-full text-left text-xl font-bold mb-3">
                 <i class="mr-5 fa fa-sign-out-alt"></i>
@@ -32,7 +32,7 @@
         <div class="w-full h-screen overflow-hidden">
             <p class="text-2xl font-bold text-white ml-5 my-6">{{judulHalaman}}</p>
             <div class="overflow-auto no-scrollbar h-screen w-full relative px-10">
-                <Test v-if="this.test_list!=null" :testList="this.test_list"/>
+                <Section v-if="this.sectionList!=null" :sectionList="this.sectionList"/>
                 <div class="w-1 h-28"></div>
             </div>
         </div>
@@ -42,13 +42,11 @@
 
 <script>
 import axios from 'axios'
-import Test from '../components/views/Test.vue'
-// import { useRouter } from 'vue-router'
-// import { onMounted } from '@vue/runtime-core'
+import Section from '../components/views/Section.vue'
 
 export default {
     components: {
-        axios, Test
+        axios, Section
     },
     data() {
         return {
@@ -58,7 +56,7 @@ export default {
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
-            test_list: null,
+            section_list: null,
             port: import.meta.env.VITE_BACKEND_URL,
             hasil: null,
         }
@@ -105,10 +103,10 @@ export default {
         cekSelesai(hasil){
             if(hasil!=null){
                 this.hasil = []
-                for (let i = this.section.length-1; i >= 0 ; i--) {
+                for (let i = this.sectionList.length-1; i >= 0 ; i--) {
                     for (let j = 0; j < hasil.length; j++) {
-                        if(this.section[i].id==hasil[j].section_id){
-                            let temp = this.section.splice(i,1)
+                        if(this.sectionList[i].id==hasil[j].section_id){
+                            let temp = this.sectionList.splice(i,1)
                             this.hasil.push({
                                 "section_number": temp[0].section_number,
                                 "createdAt": temp[0].createdAt,
@@ -125,37 +123,27 @@ export default {
                     return db - da;
                 });
             }
+            // console.log(this.hasil)
+            // console.log(this.sectionList)
         }
     },
     mounted(){
         // console.log(this.$cookies.get('refresh_token'));
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
-        let tes = this.$cookies.get('data_registrant').test
-        this.test_list = tes
-        console.log(this.test_list)
-        // console.log(this.$cookies.get('data_registrant'))
+        let tes = this.$route.query.current_test
         
-        // let ada = true
-        // let idTes = 4
-        // tes.forEach(t => {
-        //     if (t[0]==5)
-        //         ada = true
-        // });
-        // if(ada){
-        //     axios
-        //     .get(this.port+`/section/all/${idTes}`)
-        //     .then(({data}) => (
-        //         console.log("")
-        //         // this.$cookies.set('current_test', idTes),
-        //         // this.section = data,
-        //         // axios
-        //         // .get(this.port+`/section_result/getbytest/${idTes}?email=${this.$cookies.get('data_registrant').email}`)
-        //         // .then(({data}) => (
-        //         //     this.cekSelesai(data)
-        //         // ))
-        //     ))
-        // }
+        axios
+        .get(this.port+`/section/all/${tes}`)
+        .then(({data}) => (
+            this.$cookies.set('current_test', tes),
+            this.sectionList = data,
+            axios
+            .get(this.port+`/section_result/getbytest/${tes}?email=${this.$cookies.get('data_registrant').email}`)
+            .then(({data}) => (
+                this.cekSelesai(data)
+            ))
+        ))
     },
 }
 </script>

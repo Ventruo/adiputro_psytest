@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import main from '/src/views/main_layout.vue'
 
 import dashboard from '/src/views/dashboard.vue'
+import section_dashboard from '/src/views/section_dashboard.vue'
 import normalTest from '/src/views/normalTest.vue'
 import epps from '/src/views/epps.vue'
 import ekspresi from '/src/views/ekspresi.vue'
@@ -57,6 +58,11 @@ const routes = [
                 path: '/dashboard',
                 name: 'dashboard',
                 component: dashboard,
+            },
+            {
+                path: '/section',
+                name: 'section',
+                component: section_dashboard,
             },
             {
                 path: '/preExam',

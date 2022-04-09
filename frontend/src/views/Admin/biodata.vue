@@ -3,10 +3,10 @@
         <div method="" action="" autocomplete="off" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5">
             <div class="flex justify-between">
                 <h1 class="text-3xl font-bold mb-2">Biodata</h1>
-                <router-link :to="routerBack" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-2 rounded-md">
+                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-2 rounded-md" @click="this.$router.go(-1)">
                     <i class="fa fa-chevron-left mr-2 text-xl"></i>
                     <span class="font-bold text-xl">Kembali</span>
-                </router-link>
+                </button>
             </div>
             <div class="flex mb-5">
                 <div class="mr-2 font-bold">
@@ -629,7 +629,6 @@ export default {
     },
     data(){
         return{
-            routerBack: "",
             biodata: null,
             port: import.meta.env.VITE_BACKEND_URL,
         }
@@ -638,7 +637,6 @@ export default {
 
     },
     mounted() {
-        this.routerBack = "/admin/registrantDetail?registrant="+this.$route.query.registrant
         axios
         .get(this.port+'/registrant/'+this.$route.query.registrant)
         .then(({data}) => (
