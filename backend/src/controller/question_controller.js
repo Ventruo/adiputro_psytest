@@ -145,7 +145,7 @@ class QuestionController {
 
   async createFromExcel(req, res) {
     populateQuestion(
-      "./src/data/JAWABAN TES TINTUM.xlsx",
+      "./src/data/" + req.body.excel_name,
       req.body.sheet_name,
       req.body.section,
       Question,
