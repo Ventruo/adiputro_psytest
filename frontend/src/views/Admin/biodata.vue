@@ -1,12 +1,12 @@
 <template>
-    <div class="w-9/12 h-full m-auto text-white relative flex flex-col flex-grow pb-3 overflow-hidden">
+    <div v-if="this.biodata!=null" class="w-9/12 h-full m-auto text-white relative flex flex-col flex-grow pb-3 overflow-hidden">
         <div method="" action="" autocomplete="off" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5">
             <div class="flex justify-between">
                 <h1 class="text-3xl font-bold mb-2">Biodata</h1>
-                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
+                <router-link :to="routerBack" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-2 rounded-md">
                     <i class="fa fa-chevron-left mr-2 text-xl"></i>
                     <span class="font-bold text-xl">Kembali</span>
-                </button>
+                </router-link>
             </div>
             <div class="flex mb-5">
                 <div class="mr-2 font-bold">
@@ -29,14 +29,14 @@
                         <p class="mt-4" v-for="i in 7" :key="i">:</p>
                     </div>
                     <div>
-                        <p class="mt-2">NAMA LENGKAP :</p>
-                        <p class="mt-4">NAMA PANGGILAN :</p>
-                        <p class="mt-4">ALAMAT DI KTP :</p>
-                        <p class="mt-4">ALAMAT SEKARANG :</p>
-                        <p class="mt-4">TELEPON/HP :</p>
-                        <p class="mt-4">TEMPAT & TGL LAHIR :</p>
-                        <p class="mt-4">KEWARGANEGARAAN :</p>
-                        <p class="mt-4">SUKU :</p>
+                        <p class="mt-2">{{biodata.nama_lengkap}}</p>
+                        <p class="mt-4">{{biodata.nama_panggilan}}</p>
+                        <p class="mt-4">{{biodata.alamat_ktp}}</p>
+                        <p class="mt-4">{{biodata.alamat_skg}}</p>
+                        <p class="mt-4">{{biodata.no_hp}}</p>
+                        <p class="mt-4">{{biodata.ttl}}</p>
+                        <p class="mt-4">{{biodata.kewarganegaraan}}</p>
+                        <p class="mt-4">{{biodata.suku}}</p>
                     </div>
                 </div>
 
@@ -61,14 +61,14 @@
                         <p class="mt-4" v-for="i in 7" :key="i">:</p>
                     </div>
                     <div>
-                        <p class="mt-2">AGAMA</p>
-                        <p class="mt-4">USIA</p>
-                        <p class="mt-4">TINGGI BADAN</p>
-                        <p class="mt-4">BERAT BADAN</p>
-                        <p class="mt-4">NO KTP / SIM / PASPOR</p>
-                        <p class="mt-4">GOLONGAN DARAH</p>
-                        <p class="mt-4">NO NPWP</p>
-                        <p class="mt-4">E-MAIL</p>
+                        <p class="mt-2">{{biodata.agama}}</p>
+                        <p class="mt-4">{{biodata.usia}} Tahun</p>
+                        <p class="mt-4">{{biodata.tinggi_badan}} cm</p>
+                        <p class="mt-4">{{biodata.berat_badan}} kg</p>
+                        <p class="mt-4">{{biodata.no_identitas}}</p>
+                        <p class="mt-4">{{biodata.golongan_darah}}</p>
+                        <p class="mt-4">{{biodata.no_npwp}}</p>
+                        <p class="mt-4">{{biodata.email}}</p>
                     </div>
                 </div>
             </div>
@@ -78,18 +78,18 @@
                     <div class="w-1/2">
                         <div class="mr-4 flex gap-2">
                             <p class="mb-1 font-bold">Keadaan Kesehatan pada saat ini : </p>
-                            <p>Baik</p>
+                            <p>{{biodata.kesehatan.keadaan}}</p>
                         </div>
-                        <div class="mt-2 flex gap-2">
+                        <div class="mt-2">
                             <p id="sakitKeras" class="mb-1 font-bold">Apakah anda pernah sakit keras/kecelakaan?</p>
-                            <p>Ya, 2 bulan yang lalu</p>
+                            <p>{{biodata.kesehatan.sakit_keras}}, {{biodata.kesehatan.kapan}}</p>
                         </div>
                     </div>
                     <div class="w-1/2">
                         <div>
                             <div class="flex gap-2">
                                 <p class="font-bold">Apakah ada cacat tubuh? </p>
-                                <p> Tidak</p>
+                                <p>{{biodata.kesehatan.cacat}}</p>
                             </div>
                             <p class="mb-1 text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
                         </div>
@@ -102,7 +102,7 @@
                     <div>
                         <div class="flex w-full gap-2">
                             <p class="mb-1 font-bold">Apakah anda belum menikah/menikah? </p>
-                            <p>Sudah Menikah</p>
+                            <p>{{biodata.status_nikah.menikah}}</p>
                         </div>
                         <div class="flex gap-2">
                             <div class="font-bold">
@@ -113,8 +113,8 @@
                                 <p class="mt-2" v-for="i in 2" :key="i">:</p>
                             </div>
                             <div>
-                                <p class="mt-2">Rahasia</p>
-                                <p class="mt-2">Gaada</p>
+                                <p class="mt-2">{{biodata.status_nikah.nama_suami_istri}}</p>
+                                <p class="mt-2">{{biodata.status_nikah.nama_anak}}</p>
                             </div>
                         </div>
                     </div>
@@ -127,23 +127,23 @@
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TINGKAT/GELAR</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JURUSAN</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA SEKOLAH</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">KOTA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TAHUN KELULUSAN</th>
+                                <th class="font-semibold w-2/12">TINGKAT/GELAR</th>
+                                <th class="font-semibold w-2/12">JURUSAN</th>
+                                <th class="font-semibold w-3/12">NAMA SEKOLAH</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">TAHUN KELULUSAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in pendidikanCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'pendidikan[][tingkat]'" :placeHolder="'Tingkat / Gelar'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][jurusan]'" :placeHolder="'Jurusan'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][sekolah]'" :placeHolder="'Nama Sekolah'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][kota]'" :placeHolder="'Kota'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][tahun]'" :placeHolder="'Tahun Kelulusan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.pendidikan" :key="i">
+                                <td class="py-1">{{i.tingkat}}</td>
+                                <td>{{i.jurusan}}</td>
+                                <td>{{i.nama_sekolah}}</td>
+                                <td>{{i.kota}}</td>
+                                <td>{{i.tahun_lulus}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -156,7 +156,7 @@
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-7">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque sunt vero unde suscipit quas expedita? Totam suscipit maxime eos? Quod accusantium, quia aut magnam est iste ducimus modi aliquid earum?                
+                    {{biodata.alasan_bekerja}}
                 </div>
             </div>
 
@@ -167,96 +167,96 @@
                 </div>
 
                 <!-- orang tua -->
-                <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <div class="ml-7 mb-2">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ORANG TUA</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ORANG TUA</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[0]" :key="i">
-                                <InputTable :modelValue="''" :nama="'orangTua[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.keluarga.orang_tua" :key="i">
+                                <td class="py-1">{{i.nama}}</td>
+                                <td>{{i.ttl}}</td>
+                                <td>{{i.alamat}}</td>
+                                <td>{{i.pendidikan}}</td>
+                                <td>{{i.pekerjaan}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- istri/suami -->
-                <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <div class="ml-7 mb-2">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ISTRI/SUAMI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ISTRI/SUAMI</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-3/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-3/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[1]" :key="i">
-                                <InputTable :modelValue="''" :nama="'pasangan[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.keluarga.istri_suami" :key="i">
+                                <td class="py-1">{{i.nama}}</td>
+                                <td>{{i.ttl}}</td>
+                                <td>{{i.alamat}}</td>
+                                <td>{{i.pendidikan}}</td>
+                                <td>{{i.pekerjaan}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- anak kandung -->
-                <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <div class="ml-7 mb-2">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ANAK KANDUNG</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ANAK KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[2]" :key="i">
-                                <InputTable :modelValue="''" :nama="'anak[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'anak[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'anak[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'anak[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'anak[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.keluarga.anak_kandung" :key="i">
+                                <td class="py-1">{{i.nama}}</td>
+                                <td>{{i.ttl}}</td>
+                                <td>{{i.alamat}}</td>
+                                <td>{{i.pendidikan}}</td>
+                                <td>{{i.pekerjaan}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- saudara kandung -->
-                <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                <div class="ml-7 mb-2">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA SAUDARA KANDUNG</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA SAUDARA KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[3]" :key="i">
-                                <InputTable :modelValue="''" :nama="'saudara[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.keluarga.saudara_kandung" :key="i">
+                                <td class="py-1">{{i.nama}}</td>
+                                <td>{{i.ttl}}</td>
+                                <td>{{i.alamat}}</td>
+                                <td>{{i.pendidikan}}</td>
+                                <td>{{i.pekerjaan}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -269,25 +269,25 @@
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12 border border-stroke-100">DARI TGL/TAHUN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">SAMPAI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA PERUSAHAAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">KOTA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">BID. USAHA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JABATAN/BAGIAN</th>
+                                <th class="font-semibold w-2/12">DARI TGL/TAHUN</th>
+                                <th class="font-semibold w-2/12">SAMPAI</th>
+                                <th class="font-semibold w-3/12">NAMA PERUSAHAAN</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">BID. USAHA</th>
+                                <th class="font-semibold w-2/12">JABATAN/BAGIAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in riwayatCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][dari]'" :placeHolder="'Tgl/Tahun'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][sampai]'" :placeHolder="'Tgl/Tahun'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][perusahaan]'" :placeHolder="'Nama Perusahaan'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][kota]'" :placeHolder="'Kota'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][usaha]'" :placeHolder="'Bidang Usaha'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][jabatan]'" :placeHolder="'Jabatan/Bagian'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.riwayat_pekerjaan.riwayat" :key="i">
+                                <td class="py-1">{{i.dari}}</td>
+                                <td>{{i.sampai}}</td>
+                                <td>{{i.nama_perusahaan}}</td>
+                                <td>{{i.kota}}</td>
+                                <td>{{i.bidang_usaha}}</td>
+                                <td>{{i.jabatan}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -295,12 +295,12 @@
                 <div class="ml-7">
                     <p class="font-bold mb-1 mt-3">Apabila Anda pernah bekerja di tempat lain coba sebutkan gaji yang anda peroleh? </p>
                     <p class="mb-2">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque, a at facere ipsa iusto voluptate nulla iure maiores nam neque maxime, consectetur consequatur minima eum explicabo recusandae sed fugiat architecto.
+                        {{biodata.riwayat_pekerjaan.gaji_diperoleh}}
                     </p>
 
                     <p class="mb-1 font-bold">Mengapa Anda berhenti dari pekerjaan yang lama, jelaskan secara singkat:</p>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae provident deleniti, voluptates perferendis voluptate aspernatur illum eaque quae, praesentium veniam molestias eligendi vitae possimus dolor nihil necessitatibus numquam similique dolores?
+                        {{biodata.riwayat_pekerjaan.alasan_berhenti}}
                     </p>
                 </div>
             </div>
@@ -311,21 +311,21 @@
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">MATERI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">PENYELENGGARA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TAHUN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TEMPAT</th>
+                                <th class="font-semibold w-3/12">MATERI</th>
+                                <th class="font-semibold w-3/12">PENYELENGGARA</th>
+                                <th class="font-semibold w-2/12">TAHUN</th>
+                                <th class="font-semibold w-2/12">TEMPAT</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in trainingCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'training[][materi]'" :placeHolder="'Materi'" />
-                                <InputTable :modelValue="''" :nama="'training[][penyelenggara]'" :placeHolder="'Penyelenggara'" />
-                                <InputTable :modelValue="''" :nama="'training[][tahun]'" :placeHolder="'Tahun'" />
-                                <InputTable :modelValue="''" :nama="'training[][tempat]'" :placeHolder="'Tempat'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.training_kursus" :key="i">
+                                <td class="py-1">{{i.materi}}</td>
+                                <td>{{i.penyelenggara}}</td>
+                                <td>{{i.tahun}}</td>
+                                <td>{{i.tempat}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -338,21 +338,21 @@
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ORGANISASI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MASA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JABATAN</th>
+                                <th class="font-semibold w-3/12">ORGANISASI</th>
+                                <th class="font-semibold w-3/12">TEMPAT</th>
+                                <th class="font-semibold w-2/12">MASA</th>
+                                <th class="font-semibold w-2/12">JABATAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in organisasiCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'organisasi[][organisasi]'" :placeHolder="'Organisasi'" />
-                                <InputTable :modelValue="''" :nama="'organisasi[][tempat]'" :placeHolder="'Tempat'" />
-                                <InputTable :modelValue="''" :nama="'organisasi[][masa]'" :placeHolder="'Masa'" />
-                                <InputTable :modelValue="''" :nama="'organisasi[][jabatan]'" :placeHolder="'Jabatan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.organisasi" :key="i">
+                                <td class="py-1">{{i.nama}}</td>
+                                <td>{{i.tempat}}</td>
+                                <td>{{i.masa}}</td>
+                                <td>{{i.jabatan}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -365,26 +365,26 @@
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th rowspan="2" class="font-semibold w-3/12 border border-stroke-100">BAHASA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">BERBICARA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MENDENGAR</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MENULIS</th>
+                                <th rowspan="2" class="font-semibold w-3/12">BAHASA</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">BERBICARA</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">MENDENGAR</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">MENULIS</th>
                             </tr>
                             <tr>
-                                <th class="font-normal text-sm w-3/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-3/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in bahasaCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'bahasa[][bahasa]'" :placeHolder="'Bahasa'" />
-                                <InputTable :modelValue="''" :nama="'bahasa[][berbicara]'" :placeHolder="'Kurang / Cukup / Baik'" />
-                                <InputTable :modelValue="''" :nama="'bahasa[][mendengar]'" :placeHolder="'Kurang / Cukup / Baik'" />
-                                <InputTable :modelValue="''" :nama="'bahasa[][menulis]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in biodata.bahasa_dikuasai" :key="i">
+                                <td class="py-1">{{i.bahasa}}</td>
+                                <td>{{i.berbicara}}</td>
+                                <td>{{i.mendengar}}</td>
+                                <td>{{i.menulis}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -395,17 +395,17 @@
                 <div class="flex">
                     <p class="mr-2 font-bold">26.</p>
                     <p class="font-bold mr-2">Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja :</p>
-                    <p>1 bulan sebelumnya</p>
+                    <p>{{biodata.keterangan_kerja.lama_berhenti_kerja}}</p>
                 </div>
                 <div class="ml-7">
                     <div class="mt-2 flex gap-2">
                         <p class="font-bold">Dan mulai kapan Anda dapat mulai bekerja jika Anda di terima di PT. Adiputro Wirasejati :</p>
-                        <p>Minggu depan</p>
+                        <p>{{biodata.keterangan_kerja.bisa_mulai_bekerja}}</p>
                     </div>
 
                     <div class="mt-2 flex gap-2">
                         <p class="mb-1 font-bold">Apakah Anda memiliki saudara / kenalan di perusahaan ini: </p>
-                        <p>Ya</p>
+                        <p>{{biodata.keterangan_kerja.kenalan_perusahaan}}</p>
                     </div>
                     
                     <div>
@@ -420,9 +420,9 @@
                                 <p class="mt-1" v-for="i in 3" :key="i">:</p>
                             </div>
                             <div>
-                                <p class="mt-1">Nama</p>
-                                <p class="mt-1">Alamat</p>
-                                <p class="mt-1">Jabatan</p>
+                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan.nama}}</p>
+                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan.alamat}}</p>
+                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan.jabatan}}</p>
                             </div>
                         </div>
                     </div>
@@ -433,7 +433,7 @@
                 <p class="mr-2 font-bold">27.</p>
                 <div class="flex gap-2">
                     <p class="font-bold">Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
-                    <p>Ya</p>
+                    <p>{{biodata.pelatihan_kerja}}</p>
                 </div>
             </div>
 
@@ -443,7 +443,7 @@
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-7">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, harum. Aspernatur beatae quod, voluptatum officiis facilis eaque laudantium ducimus reiciendis blanditiis? Tempore doloremque amet nesciunt voluptatum eos, dicta nemo delectus?                 
+                    {{biodata.tujuan_kerja}}
                 </div>
             </div>
             
@@ -453,24 +453,24 @@
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-7 mb-2">
-                    Mobil L 1234 AB                  
+                    {{biodata.kendaraan.keterangan}}                
                 </div>
             </div>
 
             <div>
                 <div class="mb-2 ml-7 flex gap-2">
                     <p class="font-bold">Kendaraan tersebut milik :</p>
-                    <p>Pribadi</p>
+                    <p>{{biodata.kendaraan.kepemilikan}} </p>
                 </div>
             </div>
 
             <div class="mb-2">
-                <div class="flex">
+                <div class="flex font-bold">
                     <p class="mr-2">30.</p>
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-7">
-                    membaca buku                
+                    {{biodata.hobi}}               
                 </div>
             </div>
 
@@ -480,7 +480,7 @@
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-7">
-                    20 juta                    
+                    {{biodata.harapan_gaji}}                    
                 </div>
             </div>
 
@@ -490,7 +490,7 @@
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-7">
-                    pernah, saya nyolong keong                   
+                    {{biodata.masalah_hukum}}                
                 </div>
             </div>
 
@@ -500,7 +500,7 @@
                     <p>Apakah yang menjadi kelebihan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
-                    Kelebihan beban hidup, pengen liburan  
+                    {{biodata.kelebihan}} 
                 </div>
             </div>
 
@@ -510,7 +510,7 @@
                     <p>Apakah yang menjadi kekurangan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
-                    Kekurangan waktu bersantai                    
+                    {{biodata.kekurangan}}                   
                 </div>
             </div>
 
@@ -520,7 +520,7 @@
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-7">
-                    G                
+                    {{biodata.kepuasan_keadaan_diri}}               
                 </div>
             </div>
 
@@ -530,7 +530,10 @@
                     <p>Apakah anda mempunyai prestasi / penghargaan selama ini? Bila ada silahkan disebutkan (jenis, bidang, dan tahun)</p>
                 </div>
                 <div class="ml-7">
-                    Bisa ganti galon, airnya ga tumpah                   
+                    <div class="flex gap-2" v-for="i in biodata.prestasi.length" :key="i">
+                        <p>{{i}}.</p>
+                        <p>{{biodata.prestasi[i-1].jenis}} ({{biodata.prestasi[i-1].bidang}} - {{biodata.prestasi[i-1].tahun}})</p>
+                    </div>
                 </div>
             </div>
 
@@ -540,7 +543,8 @@
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-7">
-                    Ledakan            
+                    <span>{{biodata.seni_dikuasai.jenis[0]}}</span>
+                    <span v-for="i in biodata.seni_dikuasai.jenis.length-1" :key="i">, {{biodata.seni_dikuasai.jenis[i]}}</span>
                 </div>
             </div>
 
@@ -563,9 +567,9 @@
                                     <p v-for="i in 3" :key="i">:</p>
                                 </div>
                                 <div>
-                                    <p>Nama</p>
-                                    <p>Alamat</p>
-                                    <p>No. Telepon</p>
+                                    <p>{{biodata.orang_terdekat[0].nama}}</p>
+                                    <p>{{biodata.orang_terdekat[0].alamat}}</p>
+                                    <p>{{biodata.orang_terdekat[0].telepon}}</p>
                                 </div>
                             </div>
                         </div>
@@ -581,9 +585,9 @@
                                     <p v-for="i in 3" :key="i">:</p>
                                 </div>
                                 <div>
-                                    <p>Nama</p>
-                                    <p>Alamat</p>
-                                    <p>No. Telepon</p>
+                                    <p>{{biodata.orang_terdekat[1].nama}}</p>
+                                    <p>{{biodata.orang_terdekat[1].alamat}}</p>
+                                    <p>{{biodata.orang_terdekat[1].telepon}}</p>
                                 </div>
                             </div>
                         </div>
@@ -595,20 +599,20 @@
             <div class="flex justify-end font-bold">
                 <div>
                     <div class="mb-2">
-                        Malang, 20 Januari 2022
+                        {{biodata.tanggal_biodata}}
                     </div>
                     <p class="mb-2 text-center">Pelamar,</p>
                     <div class="text-center">
-                        <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
-                        <div v-else class="h-32 w-32 mb-2 inline-block bg-[#C4C4C4]">
+                        <!-- <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
+                        <div v-else class="h-32 w-32 mb-2 inline-block bg-[#C4C4C4]"> -->
                             <!-- <div class="flex justify-center items-center h-full">
                                 <p>Tanda Tangan</p>
                             </div> -->
-                        </div>
+                        <!-- </div> -->
                     </div>
                     
                     <div class="text-center">
-                        Widean Nagari
+                        {{biodata.nama_lengkap}}
                     </div>
                 </div>
             </div>
@@ -618,63 +622,28 @@
 </template>
 
 <script>
-// import InputBio from '../components/input.vue'
-// import InputTable from '../components/table_input.vue'
-// import TextArea from '../components/textarea.vue'
-// import Radio from '../components/radiobutton.vue'
+import axios from 'axios'
 export default {
     components: {
-        // InputBio, InputTable, TextArea, Radio
+        axios
     },
     data(){
         return{
-            judulHalaman: 'Biodata',
-            url: null,
-            fullname: "",
-            sudahMenikah: false,
-            sakitKeras: false,
-            adaKenalan: false,
-            pendidikanCount: 1,
-            keluargaCount:[1,1,1,1],
-            riwayatCount: 1,
-            trainingCount: 1,
-            organisasiCount: 1,
-            bahasaCount: 1,
-            month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+            routerBack: "",
+            biodata: null,
+            port: import.meta.env.VITE_BACKEND_URL,
         }
     },
     methods: {
-        signChange(e){
-            var input = e.target;
-            if (input.files) {
-                var reader = new FileReader();
-                reader.onload = (e) => {
-                    this.url = e.target.result;
-                }
-                this.image=input.files[0];
-                reader.readAsDataURL(input.files[0]);
-            }
-        },
-        subPendidikanCount(){ if (this.pendidikanCount>1) this.pendidikanCount-- },
-        subKeluargaCount(idx){ 
-            console.log(this.keluargaCount)
-            if (this.keluargaCount[idx]>1) this.keluargaCount[idx]-- 
-        },
-        subRiwayatCount(){ if (this.riwayatCount>1) this.riwayatCount-- },
-        subTrainingCount(){ if (this.trainingCount>1) this.trainingCount-- },
-        subOrganisasiCount(){ if (this.organisasiCount>1) this.organisasiCount-- },
-        subBahasaCount(){ if (this.bahasaCount>1) this.bahasaCount-- },
-        getDate(){
-            const today = new Date()
-            const date = ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
-            return date
-        },
-        aaa(){
-            console.log(this.adaKenalan)
-        }
+
     },
     mounted() {
-        
+        this.routerBack = "/admin/registrantDetail?registrant="+this.$route.query.registrant
+        axios
+        .get(this.port+'/registrant/'+this.$route.query.registrant)
+        .then(({data}) => (
+            this.biodata = data.biodata
+        ))
     },
     created() {
         this.$emit('updateHeader', '')

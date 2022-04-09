@@ -138,7 +138,7 @@ export default {
         // console.log(this.$cookies.get('data_registrant'))
         
         let ada = true
-        let idTes = 3
+        let idTes = 4
         // tes.forEach(t => {
         //     if (t[0]==5)
         //         ada = true

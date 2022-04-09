@@ -8,7 +8,7 @@
         </div>
         
         <div class="mb-5">
-            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
+            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md" @click="this.$router.push({path: '/dashboard'})">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
                 <span class="font-bold text-xl">Kembali</span>
             </button>
@@ -153,18 +153,18 @@
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TINGKAT/GELAR</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JURUSAN</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA SEKOLAH</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">KOTA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TAHUN KELULUSAN</th>
+                                <th class="font-semibold w-2/12">TINGKAT/GELAR</th>
+                                <th class="font-semibold w-2/12">JURUSAN</th>
+                                <th class="font-semibold w-3/12">NAMA SEKOLAH</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">TAHUN KELULUSAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in pendidikanCount" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in pendidikanCount" :key="i">
                                 <InputTable :modelValue="''" :nama="'pendidikan[][tingkat]'" :placeHolder="'Tingkat / Gelar'" />
                                 <InputTable :modelValue="''" :nama="'pendidikan[][jurusan]'" :placeHolder="'Jurusan'" />
                                 <InputTable :modelValue="''" :nama="'pendidikan[][sekolah]'" :placeHolder="'Nama Sekolah'" />
@@ -174,15 +174,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subPendidikanCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subPendidikanCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="pendidikanCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="pendidikanCount++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -208,18 +206,18 @@
 
                 <!-- orang tua -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ORANG TUA</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ORANG TUA</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[0]" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluargaCount[0]" :key="i">
                                 <InputTable :modelValue="''" :nama="'orangTua[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable :modelValue="''" :nama="'orangTua[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable :modelValue="''" :nama="'orangTua[][alamat]'" :placeHolder="'Alamat'" />
@@ -229,15 +227,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(0)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(0)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[0]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluargaCount[0]++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -246,18 +242,18 @@
 
                 <!-- istri/suami -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ISTRI/SUAMI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ISTRI/SUAMI</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[1]" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluargaCount[1]" :key="i">
                                 <InputTable :modelValue="''" :nama="'pasangan[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable :modelValue="''" :nama="'pasangan[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable :modelValue="''" :nama="'pasangan[][alamat]'" :placeHolder="'Alamat'" />
@@ -267,15 +263,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(1)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(1)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[1]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluargaCount[1]++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -284,18 +278,18 @@
 
                 <!-- anak kandung -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ANAK KANDUNG</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ANAK KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[2]" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluargaCount[2]" :key="i">
                                 <InputTable :modelValue="''" :nama="'anak[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable :modelValue="''" :nama="'anak[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable :modelValue="''" :nama="'anak[][alamat]'" :placeHolder="'Alamat'" />
@@ -305,15 +299,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(2)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(2)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[2]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluargaCount[2]++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -322,18 +314,18 @@
 
                 <!-- saudara kandung -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA SAUDARA KANDUNG</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA SAUDARA KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[3]" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluargaCount[3]" :key="i">
                                 <InputTable :modelValue="''" :nama="'saudara[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable :modelValue="''" :nama="'saudara[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable :modelValue="''" :nama="'saudara[][alamat]'" :placeHolder="'Alamat'" />
@@ -343,15 +335,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(3)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(3)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[3]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluargaCount[3]++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -365,19 +355,19 @@
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12 border border-stroke-100">DARI TGL/TAHUN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">SAMPAI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA PERUSAHAAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">KOTA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">BID. USAHA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JABATAN/BAGIAN</th>
+                                <th class="font-semibold w-2/12">DARI TGL/TAHUN</th>
+                                <th class="font-semibold w-2/12">SAMPAI</th>
+                                <th class="font-semibold w-3/12">NAMA PERUSAHAAN</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">BID. USAHA</th>
+                                <th class="font-semibold w-2/12">JABATAN/BAGIAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in riwayatCount" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in riwayatCount" :key="i">
                                 <InputTable :modelValue="''" :nama="'riwayatKerja[][dari]'" :placeHolder="'Tgl/Tahun'" />
                                 <InputTable :modelValue="''" :nama="'riwayatKerja[][sampai]'" :placeHolder="'Tgl/Tahun'" />
                                 <InputTable :modelValue="''" :nama="'riwayatKerja[][perusahaan]'" :placeHolder="'Nama Perusahaan'" />
@@ -388,15 +378,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subRiwayatCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subRiwayatCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="riwayatCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="riwayatCount++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -418,17 +406,17 @@
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">MATERI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">PENYELENGGARA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TAHUN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TEMPAT</th>
+                                <th class="font-semibold w-3/12">MATERI</th>
+                                <th class="font-semibold w-3/12">PENYELENGGARA</th>
+                                <th class="font-semibold w-2/12">TAHUN</th>
+                                <th class="font-semibold w-2/12">TEMPAT</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in trainingCount" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in trainingCount" :key="i">
                                 <InputTable :modelValue="''" :nama="'training[][materi]'" :placeHolder="'Materi'" />
                                 <InputTable :modelValue="''" :nama="'training[][penyelenggara]'" :placeHolder="'Penyelenggara'" />
                                 <InputTable :modelValue="''" :nama="'training[][tahun]'" :placeHolder="'Tahun'" />
@@ -437,15 +425,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subTrainingCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subTrainingCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="trainingCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="trainingCount++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -459,17 +445,17 @@
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ORGANISASI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MASA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JABATAN</th>
+                                <th class="font-semibold w-3/12">ORGANISASI</th>
+                                <th class="font-semibold w-3/12">TEMPAT</th>
+                                <th class="font-semibold w-2/12">MASA</th>
+                                <th class="font-semibold w-2/12">JABATAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in organisasiCount" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in organisasiCount" :key="i">
                                 <InputTable :modelValue="''" :nama="'organisasi[][organisasi]'" :placeHolder="'Organisasi'" />
                                 <InputTable :modelValue="''" :nama="'organisasi[][tempat]'" :placeHolder="'Tempat'" />
                                 <InputTable :modelValue="''" :nama="'organisasi[][masa]'" :placeHolder="'Masa'" />
@@ -478,15 +464,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subOrganisasiCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subOrganisasiCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="organisasiCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="organisasiCount++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -500,22 +484,22 @@
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th rowspan="2" class="font-semibold w-3/12 border border-stroke-100">BAHASA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">BERBICARA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MENDENGAR</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MENULIS</th>
+                                <th rowspan="2" class="font-semibold w-3/12">BAHASA</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">BERBICARA</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">MENDENGAR</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">MENULIS</th>
                             </tr>
                             <tr>
-                                <th class="font-normal text-sm w-3/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-3/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in bahasaCount" :key="i">
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in bahasaCount" :key="i">
                                 <InputTable :modelValue="''" :nama="'bahasa[][bahasa]'" :placeHolder="'Bahasa'" />
                                 <InputTable :modelValue="''" :nama="'bahasa[][berbicara]'" :placeHolder="'Kurang / Cukup / Baik'" />
                                 <InputTable :modelValue="''" :nama="'bahasa[][mendengar]'" :placeHolder="'Kurang / Cukup / Baik'" />
@@ -524,15 +508,13 @@
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subBahasaCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subBahasaCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="bahasaCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="bahasaCount++" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>

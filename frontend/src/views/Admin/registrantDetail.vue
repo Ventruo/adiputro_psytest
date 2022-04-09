@@ -1,7 +1,11 @@
 <template>
     <div class="w-9/12 h-full m-auto relative mt-3 flex flex-col flex-grow pb-3">
         <div class="w-full h-auto">
-            <div class="flex mb-5">
+            <router-link :to="routerBiodata" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 shadow-xl">
+                <i class="fa fa-info-circle mr-2"></i>
+                <span>Lihat Biodata</span>
+            </router-link>
+            <div class="flex my-5">
                 <label class="text-xl font-bold w-32">Nama Tes : </label>
                 <select name="" id="testCombobox" v-model="selectedTes" class="text-black text-lg rounded-xl py-1 px-2 w-10/12 outline-none shadow-xl cursor-pointer"
                     @change="selectChange($event)">
@@ -155,7 +159,7 @@
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
                 <div class="w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-[48rem] inline-block">
-                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
+                        <div class="w-full h-full flex flex-col bg-white text-black relative">
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
@@ -166,23 +170,22 @@
                             </div> -->
                         </div>
                     </div>
-                    <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block">
-                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
+                    <!-- <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block">
+                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black"> -->
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
                             <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
                             </div> -->
-                            <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                            <!-- <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                         </div>
                     </div>
                     <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block mt-5">
                         <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
                             <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                         </div>
-                    </div>
-                    <!-- <div class="absolute -z-20" id="pdf"> -->
-                    <div class="absolute -z-20" id="pdf">
-                        <div class="flex flex-col bg-white py-2 px-3 text-black mb-3" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                    </div> -->
+                    <div class="absolute" id="pdf">
+                        <div class="flex flex-col bg-white text-black mb-3 relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
@@ -193,22 +196,22 @@
                             <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
-                        <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
-                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                        <!-- <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" > -->
                             <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
                             <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
                             </div> -->
-                            <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                            <!-- <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
                         <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
-            
+            <div class="h-40"></div>
         </div>
         
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
@@ -264,7 +267,8 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             prints: false,
             selectedTes: 1,
-            nama: "Widean"
+            nama: "Widean",
+            routerBiodata: "",
         }
     },
     methods:{
@@ -507,6 +511,7 @@ export default {
         this.$emit('updateHeader', this.judulHalaman)
     },
     mounted(){
+        this.routerBiodata = "/admin/biodata?registrant="+this.$route.query.registrant
         axios
         .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
         .then(({data}) => (

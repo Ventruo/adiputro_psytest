@@ -80,7 +80,7 @@ export default {
                             "exam_session": e.data.exam_session
                         };
                         this.$cookies.set('refresh_token', token, age);
-                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age);
+                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
                         axios.defaults.headers.common['Authorization'] = `Bearer ${e.data.token}`
                         
                         if(e.data.is_admin) this.$router.push('/admin')
