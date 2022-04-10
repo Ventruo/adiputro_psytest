@@ -185,6 +185,7 @@ export default {
     methods: {
         gotData(data){
             if(data!=undefined){
+                this.section_result_id = data[0].section_result_id
                 this.isStarted = 1
             }
         },
@@ -195,7 +196,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 15
+                        this.detik = 1
                         this.reset()
                     }
                 }
@@ -378,6 +379,7 @@ export default {
                         email: this.email
                     })
                     .then((response) => {
+                        this.$cookies.remove('current_section')
                         this.$cookies.remove("start_time"),
                         Swal.fire(
                             'Submitted!',
@@ -385,7 +387,7 @@ export default {
                             'success'
                         )
                         .then(function(){
-                            window.location = '/dashboard'
+                            window.location = '/section'
                         })
                     })
                     // .catch( error => 

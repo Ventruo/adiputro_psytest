@@ -13,15 +13,15 @@
             </div>
             <h1 class="text-xl font-bold mt-3">Tes Selesai: </h1>
             <div class="grow w-auto h-1 my-2 overflow-x-hidden overflow-y-auto no-scrollbar text-foreground-4-800">
-                <!-- <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in hasil" :key="i">
+                <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in this.hasil" :key="i">
                     <div class="flex items-center">
                         <i class="fas fa-file-alt mr-3 text-2xl"></i>
                         <div>
-                            <p class="text-lg font-bold">Tes {{i.section_number}}</p>
-                            <p class="text-foreground-4-300 font-bold text-sm">Diselesaikan Pada {{toDate(i.createdAt)}}</p>
+                            <p class="text-lg font-bold">{{i.nama}}</p>
+                            <p class="text-foreground-4-300 font-bold text-sm">Diselesaikan Pada {{toDate(i.finish_date)}}</p>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <button @click="logout" type="button" class="w-full text-left text-xl font-bold mb-3">
                 <i class="mr-5 fa fa-sign-out-alt"></i>
@@ -54,13 +54,14 @@ export default {
         return {
             judulHalaman: 'Dashboard',
             timestamp: '',
-            tenggat: 'Jumat, 21 Januari 2022 23:59:59',
+            tenggat: '',
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
             test_list: null,
             port: import.meta.env.VITE_BACKEND_URL,
             hasil: null,
+            abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
         }
     },
     created() {
@@ -127,14 +128,56 @@ export default {
             }
         }
     },
-    mounted(){
+    async mounted(){
         // console.log(this.$cookies.get('refresh_token'));
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
         let tes = this.$cookies.get('data_registrant').test
-        this.test_list = tes
+        let email = this.$cookies.get('data_registrant').email
+
+        axios
+        .get(this.port+`/exam_session/getbyemail/${email}`)
+        .then(({data}) => {
+            this.tenggat = this.toDate(data.finish_date)
+        })
+
+        this.test_list = []
+        for (let i = 0; i < tes.length; i++) {
+            await axios
+            .get(this.port+`/test/${tes[i][0]}`)
+            .then(({data}) => (
+                this.test_list.push(data)
+            ))
+        }
+
+        this.hasil  = []
+        await axios
+        .get(this.port+`/test_result/getbyemail/${email}`)
+        .then(({data}) => {
+            data.forEach(d => {
+                if (d.status==0) this.hasil.push(d)
+            });
+        })
+
+        let len = this.test_list.length-1
+        for (let i = len; i >= 0 ; i--) {
+            for (let j = 0; j < this.hasil.length; j++) {
+                if(this.test_list[i].id == this.hasil[j].test_id){
+                    this.test_list.splice(i,1)
+                    this.hasil[j].nama = "Tes "+this.abjad[i]
+                    break;
+                }
+            }
+        }
+
+        this.hasil.sort((a, b) => {
+            let da = new Date(a.finish_date),
+                db = new Date(b.finish_date);
+            return db - da;
+        });
+    
         console.log(this.test_list)
-        // console.log(this.$cookies.get('data_registrant'))
+        console.log(this.hasil)
         
         // let ada = true
         // let idTes = 4

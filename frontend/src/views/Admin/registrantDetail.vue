@@ -48,7 +48,7 @@
                                 <th class="w-2/12">Mulai</th>
                                 <th class="w-2/12">Selesai</th>
                                 <th class="w-1/12">Skor</th>
-                                <th class="w-2/12">Aksi</th>
+                                <th class="w-3/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.sectionList!=null && this.sectionResult!=null">
@@ -160,34 +160,28 @@
                 <div class="w-full h-full" v-if="loaded==1">
                     <div class="w-1/2 h-[48rem] inline-block">
                         <div class="w-full h-full flex flex-col bg-white text-black relative">
-                            <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                            <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
                             <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                             <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                            <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
-                                <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
-                            </div> -->
+                            <div v-if="biodata!=null" class="flex flex-col h-full">
+                                <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
+                            </div>
                         </div>
                     </div>
-                    <!-- <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block">
-                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black"> -->
-                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/>
+                    <div v-if="idTes==5" class="w-1/2 h-[48rem] inline-block">
+                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
+                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
                             <div v-if="biodata!=null" class="flex flex-col h-full">
                                 <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
-                            </div> -->
-                            <!-- <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                            </div>
                         </div>
                     </div>
-                    <div v-if="idTes==4" class="w-1/2 h-[48rem] inline-block mt-5">
-                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
-                            <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                        </div>
-                    </div> -->
                     <div class="absolute" id="pdf">
                         <div class="flex flex-col bg-white text-black mb-3 relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                            <!-- <Tintum :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                            <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
                             <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
                             <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
@@ -196,18 +190,13 @@
                             <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
                         </div>
-                        <!-- <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
-                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" > -->
-                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
-                                <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
-                            </div> -->
-                            <!-- <MMPI2 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                        </div>
-                        <div v-if="idTes==4" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-if="idTes==5" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                            <MMPI3 :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                        </div> -->
+                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
+                            <div v-if="biodata!=null" class="flex flex-col h-full">
+                                <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -241,12 +230,10 @@ import KraepelinGraphics from "../../components/report/kraepelinGraphics.vue"
 import SDI from "../../components/report/SDI.vue"
 
 import MMPI from "../../components/report/MMPI.vue"
-import MMPI2 from "../../components/report/MMPI2.vue"
-import MMPI3 from "../../components/report/MMPI3.vue"
 
 export default {
     components: { 
-        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, MMPI2, MMPI3
+        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI
     },
     data () {
         return {
@@ -437,7 +424,6 @@ export default {
                     this.dataRegistrant = dataNow2
                     this.loaded = 1
                 }
-                console.log(data)
             }
         },
         submitKraepelinData(e){

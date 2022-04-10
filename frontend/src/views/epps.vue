@@ -107,7 +107,6 @@ export default {
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
-            // section_id: this.$route.query.current_section,
             section_id: 11,
             // test_id: null,
             exam_session: 9,
@@ -250,13 +249,14 @@ export default {
                         email: "saifullah@x.com"
                     })
                     .then((response) => {
+                        this.$cookies.remove('current_section')
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
                             'success'
                         )
                         .then(function(){
-                            window.location = '/dashboard'
+                            window.location = '/section'
                         })
                     })
                     // .catch( error => 

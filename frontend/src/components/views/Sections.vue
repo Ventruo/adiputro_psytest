@@ -58,10 +58,23 @@
                         </div>
                     </div>
                     
-                    <div class="text-xl mt-5">
-                        <button class="ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
-                                    duration-300 px-5 py-2.5 rounded-full"
-                                    @click="this.$router.push({path: '/preExam', query: {current_section: section.id}})">Kerjakan Persoalan Ini</button>
+                    <div class="text-xl mt-5 text-center">
+                        <div v-if="section.id<=this.now" class="w-1/3 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
+                            <span>Persoalan sudah selesai</span>
+                            <i class="fa fa-check ml-5"></i>
+                        </div>
+
+                        <button v-if="section.id==this.now+1" class="w-1/3 ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
+                                    duration-300 px-5 py-2.5 rounded-full cursor-pointer"
+                                    @click="kePreExam(section.id)">
+                            <span>Kerjakan persoalan ini</span>
+                            <i class="fa fa-feather ml-5"></i>
+                        </button>
+                                    
+                        <div v-if="section.id>this.now+1" class="w-1/2 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
+                            <span>Selesaikan persoalan sebelumnya dahulu</span>
+                            <i class="fa fa-lock ml-5"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -152,8 +165,31 @@
 export default {
     props: {
         "sectionList": { type: Array, default: [], required: true },
+        "now": { type: Number, default: 0, required: true },
+    },
+    data() {
+        return {
+
+        }
+    },
+    methods: {
+        persoalanSekarang(){
+            let idx = 0;
+            for (let i = 0; i < this.sectionList.length; i++) {
+                if (this.sectionList[i].id == this.now+1){
+                    idx = i
+                }
+            }
+            let instance = M.Carousel.getInstance($('.carousel.carousel-slider'))
+            instance.set(idx)
+        },
+        kePreExam(id){
+            this.$cookies.set('current_section', id)
+            this.$router.push({path: '/preExam'})
+        }
     },
     mounted() {
+        // console.log(this.sectionList)
         $('.carousel.carousel-slider').carousel({
             fullWidth: true,
             indicators: true
@@ -170,7 +206,9 @@ export default {
                 e.stopPropagation();
                 $('.carousel').carousel('prev');
         });
-    }
+
+        this.persoalanSekarang()
+    },
 };
 </script>
 

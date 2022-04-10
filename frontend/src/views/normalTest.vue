@@ -292,13 +292,14 @@ export default {
                         email: this.email
                     })
                     .then((response) => {
+                        this.$cookies.remove('current_section')
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
                             'success'
                         )
                         .then(function(){
-                            window.location = '/dashboard'
+                            window.location = '/section'
                         })
                     })
                     // .catch( error => 
@@ -336,6 +337,7 @@ export default {
     },
 
     mounted(){
+        this.section_id = this.$cookies.get('current_section');
         let tes = this.$cookies.get('current_test')
         let nama_tes = ""
         axios
@@ -371,7 +373,6 @@ export default {
             }
             this.email = datas.email;
             this.exam_session = datas.exam_session;
-            this.section_id = this.$route.query.current_section;
 
             // console.log(this.test_id)
             // console.log(this.email)

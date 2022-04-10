@@ -70,6 +70,7 @@ export default {
         return{
             judulHalaman: 'Persiapan Tes',
             section: null,
+            sectionId: null,
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -77,10 +78,10 @@ export default {
         doTest(){
             let age =  7 * 24 * 60 * 60 * 1000;
             this.$cookies.set('start_time', Date.now())
-            if(this.$route.query.current_section==53)
-                this.$router.push({path: '/kraepelin', query: {current_section: this.$route.query.current_section}})
+            if(this.sectionId==53)
+                this.$router.push({path: '/kraepelin'})
             else
-                this.$router.push({path: '/test', query: {current_section: this.$route.query.current_section}})
+                this.$router.push({path: '/test'})
                 // this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
         }
     },
@@ -88,8 +89,9 @@ export default {
         this.$emit('updateJudul', this.judulHalaman)
     },
     mounted(){
+        this.sectionId = this.$cookies.get('current_section')
         axios
-        .get(this.port+'/section/'+this.$route.query.current_section)
+        .get(this.port+'/section/'+this.sectionId)
         .then(({data}) => (
             this.section = data
         ))

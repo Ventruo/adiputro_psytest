@@ -2,7 +2,7 @@
     <h1 class="text-black text-2xl font-bold mt-7">Tes Belum Diselesaikan</h1>
     <div class="w-auto h-auto mt-2">
         <div class="h-56 w-60 mb-2 mr-2 inline-block align-top relative overflow-hidden cursor-pointer" v-for="(tes, i) in this.testList" :key="i">
-            <div class="w-full h-full bg-white ring-1 ring-inset ring-stroke-200 rounded-lg overflow-hidden" @click="this.$router.push({path: '/section', query: {current_test: tes[0]}})">
+            <div class="w-full h-full bg-white ring-1 ring-inset ring-stroke-200 rounded-lg overflow-hidden" @click="keSection(tes)">
                 <div class="h-1/3 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
                 <div class="h-2/3 w-full px-5 py-2 text-black flex items-center justify-center">
                     <div class="text-3xl">
@@ -43,6 +43,12 @@ export default {
     },
     props: {
         "testList": { type: Array, default: [], required: true },
+    },
+    methods: {
+        keSection(tes){
+            this.$cookies.set('current_test', tes.id),
+            this.$router.push({path: '/section'})
+        }
     },
 }
 </script>

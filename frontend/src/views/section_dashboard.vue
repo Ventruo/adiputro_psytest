@@ -32,7 +32,7 @@
         <div class="w-full h-screen overflow-hidden">
             <p class="text-2xl font-bold text-white ml-5 my-6">{{judulHalaman}}</p>
             <div class="overflow-auto no-scrollbar h-screen w-full relative px-10">
-                <Section v-if="this.sectionList!=null" :sectionList="this.sectionList"/>
+                <Section v-if="this.sectionList!=null" :sectionList="this.sectionList" :now="this.now"/>
                 <div class="w-1 h-28"></div>
             </div>
         </div>
@@ -42,7 +42,7 @@
 
 <script>
 import axios from 'axios'
-import Section from '../components/views/Section.vue'
+import Section from '../components/views/Sections.vue'
 
 export default {
     components: {
@@ -52,13 +52,15 @@ export default {
         return {
             judulHalaman: 'Dashboard',
             timestamp: '',
-            tenggat: 'Jumat, 21 Januari 2022 23:59:59',
+            tenggat: '',
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
             section_list: null,
             port: import.meta.env.VITE_BACKEND_URL,
             hasil: null,
+            now: -1,
+            id_tes: null
         }
     },
     created() {
@@ -100,19 +102,26 @@ export default {
                 }
             });
         },
-        cekSelesai(hasil){
-            if(hasil!=null){
+        cekSelesai(result){
+            if(result!=null){
+                result.sort((a, b) => {
+                    let da = a.section_id,
+                        db = b.section_id;
+                    return db - da;
+                });
+                this.now = result[0].section_id
+
                 this.hasil = []
-                for (let i = this.sectionList.length-1; i >= 0 ; i--) {
-                    for (let j = 0; j < hasil.length; j++) {
-                        if(this.sectionList[i].id==hasil[j].section_id){
-                            let temp = this.sectionList.splice(i,1)
+                for (let i = 0; i < this.sectionList.length ; i++) {
+                    for (let j = 0; j < result.length; j++) {
+                        if(this.sectionList[i].id==result[j].section_id){
+                            let temp = this.sectionList[i]
                             this.hasil.push({
-                                "section_number": temp[0].section_number,
-                                "createdAt": temp[0].createdAt,
-                                "question_num": temp[0].question_num,
-                                "section_type": temp[0].section_type,
-                                "option_num": temp[0].option_num,
+                                "section_number": temp.section_number,
+                                "createdAt": result[j].finish_date,
+                                "question_num": temp.question_num,
+                                "section_type": temp.section_type,
+                                "option_num": temp.option_num,
                             })
                         }
                     }
@@ -122,6 +131,8 @@ export default {
                         db = new Date(b.createdAt);
                     return db - da;
                 });
+            }else{
+                this.now = this.sectionList[0].id-1
             }
             // console.log(this.hasil)
             // console.log(this.sectionList)
@@ -131,15 +142,22 @@ export default {
         // console.log(this.$cookies.get('refresh_token'));
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
-        let tes = this.$route.query.current_test
+        let email = this.$cookies.get('data_registrant').email
+        axios
+        .get(this.port+`/exam_session/getbyemail/${email}`)
+        .then(({data}) => {
+            this.tenggat = this.toDate(data.finish_date)
+        })
+
+        this.id_tes = this.$cookies.get('current_test')
         
         axios
-        .get(this.port+`/section/all/${tes}`)
+        .get(this.port+`/section/all/${this.id_tes}`)
         .then(({data}) => (
-            this.$cookies.set('current_test', tes),
+            this.$cookies.set('current_test', this.id_tes),
             this.sectionList = data,
             axios
-            .get(this.port+`/section_result/getbytest/${tes}?email=${this.$cookies.get('data_registrant').email}`)
+            .get(this.port+`/section_result/getbytest/${this.id_tes}?email=${this.$cookies.get('data_registrant').email}`)
             .then(({data}) => (
                 this.cekSelesai(data)
             ))
