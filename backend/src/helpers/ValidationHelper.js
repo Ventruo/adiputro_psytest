@@ -13,7 +13,7 @@ module.exports = {
     const attributes = model_attributes.concat(fillable);
     for (let attr of attributes) {
       if (guards.includes(attr)) continue;
-      if (!req.body[attr]) return false; // TODO FIX attr exist but nullable. ex : empty string
+      if (!req.body[attr]) return attr; // TODO FIX attr exist but nullable. ex : empty string
     }
     if (hasFile && req.file == undefined) return false;
 
