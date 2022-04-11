@@ -7,7 +7,7 @@
                 <div class="h-2/3 w-full px-5 py-2 text-black flex items-center justify-center">
                     <div class="text-3xl">
                         <i class="fas fa-file-alt mr-2"></i>
-                        <span class="font-bold">Tes {{abjad[i]}}</span>
+                        <span class="font-bold">{{tes.nama}}</span>
                     </div>
                     <!-- <div class="flex">
                         <div class="mr-2 inline-block">

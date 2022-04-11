@@ -157,44 +157,48 @@
 
             <div class="w-full h-auto rounded-lg bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 py-2 px-5 flex flex-col flex-grow mt-2">
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
-                <div class="w-full h-full" v-if="loaded==1">
-                    <div class="w-1/2 h-[48rem] inline-block">
-                        <div class="w-full h-full flex flex-col bg-white text-black relative">
-                            <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
-                            <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                            <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                            <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                            <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                            <div v-if="biodata!=null" class="flex flex-col h-full">
-                                <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
+                <div class="w-full h-full">
+                    <div v-if="loaded==1">
+                        <div class="w-1/2 h-[48rem] inline-block">
+                            <div class="w-full h-full flex flex-col bg-white text-black relative">
+                                <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                                <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                                <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                                <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                                <div v-if="biodata!=null" class="flex flex-col h-full">
+                                    <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="idTes==5" class="w-1/2 h-[48rem] inline-block">
+                            <div class="w-full h-full flex flex-col bg-white text-black">
+                                <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
+                                <div v-if="biodata!=null" class="flex flex-col h-full">
+                                    <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'" :print="'no'"/>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div v-if="idTes==5" class="w-1/2 h-[48rem] inline-block">
-                        <div class="w-full h-full flex flex-col bg-white py-2 px-3 text-black">
-                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                            <div v-if="biodata!=null" class="flex flex-col h-full">
-                                <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'"/>
+                    <div class="absolute" id="pdf" v-if="fullLoaded==1">
+                        <div v-for="report in dataFull" :key="report">
+                            <div v-if="report.result!==''" class="flex flex-col bg-white text-black mb-3 relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                                style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                                <!-- <Tintum v-if="report.test_id==1" :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                                <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                                <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                                <div v-if="biodata!=null && report.test_id==5"  class="flex flex-col h-full">
+                                    <Kraepelin :data="JSON.parse(report.result)" :biodata="this.biodata" :print="'yes'"/>
+                                </div>
+                                <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             </div>
-                        </div>
-                    </div>
-                    <div class="absolute" id="pdf">
-                        <div class="flex flex-col bg-white text-black mb-3 relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
-                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                            <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'yes'"/>
-                            <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                            <!-- <div v-if="biodata!=null" class="flex flex-col h-full">
-                                <Kraepelin :data="this.dataRegistrant" :biodata="this.biodata" :print="'yes'"/>
-                            </div> -->
-                            <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                            <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                        </div>
-                        <div v-if="idTes==5" class="flex flex-col bg-white py-2 px-3 text-black" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
-                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                            <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                            <div v-if="biodata!=null" class="flex flex-col h-full">
-                                <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'printChart'"/>
+                            <div v-if="report.test_id==5 && report.result!==''" class="flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-100': prints==false}"
+                                style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                                <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
+                                <div v-if="biodata!=null" class="flex flex-col h-full">
+                                    <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChart'" :print="'no'"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -239,6 +243,7 @@ export default {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
+            dataFull: [],
             dataNow: null,
             biodata: null,
             test: null,
@@ -247,6 +252,7 @@ export default {
             sectionList: null,
             sectionResult: null,
             loaded: 0,
+            fullLoaded: 0,
             tesKraepelin: false,
             keyData: null,
             email: this.$route.query.registrant,
@@ -269,18 +275,10 @@ export default {
         isKraepelin(){
             this.sectionList[0].question_num = 1350
             axios
-            .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
+            .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
             .then(({data}) => (
-                this.biodata = null,
-                this.$nextTick(() => {
-                    this.biodata = data
-                }),
-                axios
-                .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
-                .then(({data}) => (
-                    this.checkTest(5, data),
-                    this.tesKraepelin = true
-                ))
+                this.checkTest(5, data),
+                this.tesKraepelin = true
             ))
         },
         async dataInit(){
@@ -305,6 +303,15 @@ export default {
 
             this.idTes = this.test[0].id
             axios
+            .get(this.port+'/kreapelin_data/getbyemail/'+this.$route.query.registrant)
+            .then(({data}) => (
+                this.biodata = null,
+                this.$nextTick(() => {
+                    this.biodata = data
+                })
+            ))
+
+            axios
             .get(this.port+'/section/all/'+this.test[0].id)
             .then(({data}) => (
                 this.sectionList = data,
@@ -316,9 +323,17 @@ export default {
                     else{
                         axios
                         .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
-                        .then(({data}) => (
+                        .then(({data}) => {
+                            this.dataFull = data
+                            // this.dataFull.sort((a, b) => {
+                            // let da = new Date(a.test_id),
+                            //     db = new Date(b.test_id);
+                            //     return db - da;
+                            // });
+                            this.fullLoaded = 1
                             this.checkTest(this.test[0].id,data)
-                        ))
+
+                        })
                     }
                 })
             ))
@@ -388,25 +403,55 @@ export default {
             this.prints = true
             this.$nextTick(() => {
                 window.html2canvas = html2canvas;
-                var doc = new jsPDF("p","pt","a4");
-                var email = this.email
-                var this2 = this
-                doc.html(document.getElementById('pdf'), {
-                    callback: function(pdf) {
-                        if(jenis=='print')
-                            window.open(doc.output('bloburl'), '_blank');
-                        else if(jenis=='download'){
-                            //not firefox
-                            if(navigator.userAgent.indexOf("Firefox")==-1)
-                                pdf.save(email+".pdf")
-                            //firefox
-                            else {
-                                pdf.save(email+".pdf")
-                            }
-                        }
-                        this2.prints = false;
+                let email = this.email
+                let this2 = this
+                html2canvas(document.querySelector('#pdf'),{"scale": 2}).then(canvas => {
+                    var imgData = canvas.toDataURL('image/jpeg');
+                    var imgWidth = 210; 
+                    var pageHeight = 295;  
+                    var imgHeight = canvas.height * imgWidth / canvas.width;
+                    var heightLeft = imgHeight;
+                    var doc = new jsPDF('p', 'mm', 'a4', true);
+                    var position = 0;
+                    
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft >= 0) {
+                        position += heightLeft - imgHeight - 4; // top padding for other pages
+                        doc.addPage();
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
                     }
-                })
+                    doc.deletePage(doc.internal.getNumberOfPages())
+
+                    if(jenis=='print')
+                        window.open(doc.output('bloburl'), '_blank');
+                    else if(jenis=='download'){
+                        doc.save(email+".pdf")
+                    }
+                    
+                    this2.prints = false;
+                });
+
+            //     var doc = new jsPDF("p","pt","a4", "abc");
+            //     var this2 = this
+            //     doc.html(document.getElementById('pdf'), {
+            //         callback: function(pdf) {
+            //             if(jenis=='print')
+            //                 window.open(doc.output('bloburl'), '_blank');
+            //             else if(jenis=='download'){
+            //                 //not firefox
+            //                 // if(navigator.userAgent.indexOf("Firefox")==-1)
+            //                     pdf.save(email+".pdf")
+            //                 //firefox
+            //                 // else {
+            //                     // pdf.save(email+".pdf")
+            //                 // }
+            //             }
+            //             this2.prints = false;
+            //         }
+            //     })
             })
         },
         checkTest(test, data){

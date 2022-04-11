@@ -146,6 +146,7 @@ export default {
             await axios
             .get(this.port+`/test/${tes[i][0]}`)
             .then(({data}) => (
+                data.nama = "Tes "+this.abjad[i],
                 this.test_list.push(data)
             ))
         }
@@ -175,9 +176,6 @@ export default {
                 db = new Date(b.finish_date);
             return db - da;
         });
-    
-        console.log(this.test_list)
-        console.log(this.hasil)
         
         // let ada = true
         // let idTes = 4

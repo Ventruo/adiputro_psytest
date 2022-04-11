@@ -56,7 +56,7 @@ export default {
             timerWaktu: null,
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             day: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
-            section_list: null,
+            sectionList: null,
             port: import.meta.env.VITE_BACKEND_URL,
             hasil: null,
             now: -1,
@@ -102,7 +102,7 @@ export default {
                 }
             });
         },
-        cekSelesai(result){
+        async cekSelesai(result){
             if(result!=null){
                 result.sort((a, b) => {
                     let da = a.section_id,
@@ -134,6 +134,49 @@ export default {
             }else{
                 this.now = this.sectionList[0].id-1
             }
+            if(this.now==this.sectionList[this.sectionList.length-1].id){
+                //update test result
+                let dataReg = this.$cookies.get('data_registrant')
+                let res = -1
+                dataReg.test.forEach(t => {
+                    if(t[0]==this.id_tes){
+                        res = t[1]
+                    }
+                });
+                let data_result = null
+
+                axios
+                .get(this.port+`/test_result/${res}`)
+                .then(({data}) => (
+                    data_result = data,
+                    axios.post(this.port+'/test_result/update',{
+                        "updating_id": data_result.id,
+                        "test_id": this.id_tes,
+                        "exam_session": dataReg.exam_session,
+                        "start_date": data_result.start_date,
+                        "finish_date": Date.now(),
+                        "status": 1,
+                        "result": data_result.result
+                    })
+                    .then((response) => {
+                        this.$cookies.remove('current_test')
+                        window.location = '/dashboard'
+                    }).catch( error => { 
+                        console.log('error: ' + error) 
+                    })
+                )).catch( error => { 
+                    console.log('error: ' + error) 
+                })
+
+                // console.log(data_result.id)
+                // console.log(this.id_tes)
+                // console.log(dataReg.exam_session)
+                // console.log(data_result.start_date)
+                // console.log(Date.now())
+                // console.log("1")
+                // console.log(data_result.result)
+                
+            }
             // console.log(this.hasil)
             // console.log(this.sectionList)
         }
@@ -154,8 +197,8 @@ export default {
         axios
         .get(this.port+`/section/all/${this.id_tes}`)
         .then(({data}) => (
-            this.$cookies.set('current_test', this.id_tes),
             this.sectionList = data,
+            console.log(this.sectionList),
             axios
             .get(this.port+`/section_result/getbytest/${this.id_tes}?email=${this.$cookies.get('data_registrant').email}`)
             .then(({data}) => (

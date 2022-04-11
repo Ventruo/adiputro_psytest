@@ -1,65 +1,48 @@
 <template>
-    <div class="flex justify-center mb-1">
-        <img src="../../assets/logo.png" alt="" class="w-32 bg-primary-900 py-2 px-3 rounded-xl">
-    </div>
-    
-    <hr style="border-top: 2px solid black;">
-    <div class="flex mt-2" v-if="this.bio!=null">
-        <div class="flex">
-            <div class="font-bold text-sm">
-                <p>Nama</p>
-                <p>Jenis Kelamin (L/P)</p>
-            </div>
-            <div class="ml-2 text-sm">
-                <p>: {{this.bio[0].email}}</p>
-                <p>: {{this.bio[0].jenis_kelamin}}</p>
+    <div class="flex items-center w-full bg-foreground-4-100 px-4 py-2">
+        <img src="../../assets/logo.png" alt="" class="w-14 h-10">
+        <div class="text-white text-center w-full relative bottom-2" v-if="print==='yes'">
+            <p class="font-bold text-sm">PT. Adiputro Wirasejati</p>
+            <div class="text-xs">
+                <p>Jl. Raya Balearjosari no. 35, Malang, Jawa Timur - Indonesia 65126</p>
+                <p>+62 (0) 341 491 139 | Adiputrogroup.com</p>
             </div>
         </div>
-        
-        <div class="flex ml-3">
-            <div class="font-bold text-sm">
-                <p>Pendidikan</p>
-                <p>Jurusan</p>
-            </div>
-            <div class="ml-3 text-sm">
-                <p>: {{this.bio[0].pendidikan}}</p>
-                <p>: {{this.bio[0].jurusan.toUpperCase()}}</p>
+        <div class="text-white text-center w-full" v-if="print==='no'">
+            <p class="font-bold text-sm">PT. Adiputro Wirasejati</p>
+            <div class="text-[0.6rem]">
+                <p>Jl. Raya Balearjosari no. 35, Malang, Jawa Timur - Indonesia 65126</p>
+                <p>+62 (0) 341 491 139 | Adiputrogroup.com</p>
             </div>
         </div>
     </div>
-
-    <div class="grow text-sm mt-3">
-        <canvas :id="id" width="400" height="350"></canvas>
-    </div>
-
-    <div class="text-xs mb-2">
-        <div class="w-full">
-            <p class="font-bold">PT. Adiputro Wirasejati</p>
-            <div class="flex justify-between relative w-full">
-                <div>
-                    <div>
-                        <p>Jl. Raya Balearjosari no. 35</p>
-                        <p>Malang, Jawa Timur - Indonesia 65126</p>
-                    </div>
+    <div class="px-2 py-1">
+        <div class="flex mt-2" v-if="this.bio!=null">
+            <div class="flex">
+                <div class="font-bold text-sm">
+                    <p>Nama</p>
+                    <p>Jenis Kelamin (L/P)</p>
                 </div>
-                <div>
-                    <div>
-                        <div class="flex gap-2">
-                            <p class="font-bold">T</p>
-                            <p>+62 (0) 341 491 139</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex gap-2">
-                            <p class="font-bold">F</p>
-                            <p>+62 (0) 341 491 904</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-end">
-                    <p class="font-bold">Adiputrogroup.com</p>
+                <div class="ml-2 text-sm">
+                    <p>: {{this.bio[0].email}}</p>
+                    <p>: {{this.bio[0].jenis_kelamin}}</p>
                 </div>
             </div>
+            
+            <div class="flex ml-3">
+                <div class="font-bold text-sm">
+                    <p>Pendidikan</p>
+                    <p>Jurusan</p>
+                </div>
+                <div class="ml-3 text-sm">
+                    <p>: {{this.bio[0].pendidikan}}</p>
+                    <p>: {{this.bio[0].jurusan.toUpperCase()}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grow text-sm mt-3">
+            <canvas :id="id" width="400" height="350"></canvas>
         </div>
     </div>
 </template>
@@ -70,6 +53,7 @@ export default {
         "data": { type: Object, default: [], required: true },
         "biodata": { type: Object, default: [], required: true },
         "id": { type: String, required: true },
+        "print": { type: String, default: 'no', required: true },
     },
     data() {
         return {
