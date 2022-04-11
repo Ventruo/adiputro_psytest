@@ -141,7 +141,7 @@ class TestResultController {
     console.log("Updating A Test Result...");
 
     if (
-      !validate_required_columns(req, TestResult, ["status"], ["updating_id"])
+      !validate_required_columns(req, TestResult, [], ["updating_id"])
     ) {
       missing_param_response(res);
       return;
@@ -159,6 +159,7 @@ class TestResultController {
           exam_session: req.body.exam_session,
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
+          status: req.body.status-1
         });
         result.save();
 
