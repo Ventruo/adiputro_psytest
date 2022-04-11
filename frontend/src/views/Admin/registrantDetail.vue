@@ -180,8 +180,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="absolute" id="pdf" v-if="fullLoaded==1">
-                        <div v-for="report in dataFull" :key="report">
+                    <div v-else class="w-10 h-96"></div>
+                    <div class="absolute" v-if="fullLoaded==1">
+                        <div v-for="report in dataFull" :key="report" class="printPdf">
                             <div v-if="report.result!==''" class="flex flex-col bg-white text-black mb-3 relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <!-- <Tintum v-if="report.test_id==1" :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
@@ -193,11 +194,11 @@
                                 <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             </div>
-                            <div v-if="report.test_id==5 && report.result!==''" class="flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-100': prints==false}"
+                            <div v-if="report.test_id==5 && report.result!==''" class="flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
                                 <div v-if="biodata!=null" class="flex flex-col h-full">
-                                    <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChart'" :print="'no'"/>
+                                    <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChart'" :print="'yes'"/>
                                 </div>
                             </div>
                         </div>
@@ -405,34 +406,54 @@ export default {
                 window.html2canvas = html2canvas;
                 let email = this.email
                 let this2 = this
-                html2canvas(document.querySelector('#pdf'),{"scale": 2}).then(canvas => {
-                    var imgData = canvas.toDataURL('image/jpeg');
-                    var imgWidth = 210; 
-                    var pageHeight = 295;  
-                    var imgHeight = canvas.height * imgWidth / canvas.width;
-                    var heightLeft = imgHeight;
-                    var doc = new jsPDF('p', 'mm', 'a4', true);
-                    var position = 0;
+                
+                var doc = new jsPDF('p', 'mm', 'a4', true);
+                var imgWidth = 210; 
+                var pageHeight = 295;  
+                var position = 0;
+                let ctr = 0
+                let temp = document.querySelectorAll('.printPdf')
+                let fullReport = []
+                for (let i = 0; i < this.dataFull.length; i++) {
+                    if(this.dataFull[i].result!=""){
+                        fullReport.push(temp[i])
+                    }
                     
-                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-
-                    while (heightLeft >= 0) {
-                        position += heightLeft - imgHeight - 4; // top padding for other pages
-                        doc.addPage();
-                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                }
+                fullReport.forEach(report => {
+                    // console.log(report)
+                    html2canvas(report,{"scale": 2}).then(canvas => {
+                        var imgHeight = canvas.height * imgWidth / canvas.width;
+                        var heightLeft = imgHeight;
+                        var imgData = canvas.toDataURL('image/jpeg');
+                        
+                        let moreThan1 = false
+                        doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
                         heightLeft -= pageHeight;
-                    }
-                    doc.deletePage(doc.internal.getNumberOfPages())
+                        while (heightLeft >= 0) {
+                            position += heightLeft - imgHeight - 4; // top padding for other pages
+                            doc.addPage();
+                            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= pageHeight;
+                            moreThan1 = true
+                        }
 
-                    if(jenis=='print')
-                        window.open(doc.output('bloburl'), '_blank');
-                    else if(jenis=='download'){
-                        doc.save(email+".pdf")
-                    }
-                    
-                    this2.prints = false;
+                        if (!moreThan1)
+                            doc.addPage()
+                        
+                        ctr++
+                        if(ctr == fullReport.length){
+                            doc.deletePage(doc.internal.getNumberOfPages())
+                            if(jenis=='print')
+                                window.open(doc.output('bloburl'), '_blank');
+                            else if(jenis=='download'){
+                                doc.save(email+".pdf")
+                            }
+                        }
+                    })
                 });
+
+                this2.prints = false;
 
             //     var doc = new jsPDF("p","pt","a4", "abc");
             //     var this2 = this
@@ -462,7 +483,7 @@ export default {
                 let dataNow2 = null
                 for (let i = 0; i < this.dataRegistrant.length; i++) {
                     const dat = this.dataRegistrant[i];
-                    if (dat.test_id == test && dat.result != null)
+                    if (dat.test_id == test && dat.result != null && dat.result!='')
                         dataNow2 = JSON.parse(dat.result)
                 }
                 if (dataNow2!=null){
