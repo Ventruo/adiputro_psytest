@@ -92,30 +92,8 @@
                     <p v-if="currentRow<27">Berikutnya: {{pertanyaan[26-currentRow]}} + {{pertanyaan[27-currentRow]}} = ...</p>
                     <p v-else>Berikutnya: -</p>
                 </div>
-                <!-- <div class="h-full pt-2" v-if="pertanyaan!=null"> -->
                 <div class="h-full pt-2 font-bold mt-10">
                     <div class="flex gap-5 justify-center">
-                        <!-- <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row1[i-1]}}</p></div>
-                        <div class="mt-5 mr-5">
-                            <input type="number" name="" :id="'baris'+(10-i)" v-for="i in 9" :key="i" @keyup="ngisi"
-                                    class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
-                                    bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
-                        </div>
-
-                        <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row2[i-1]}}</p></div>
-                        <div class="mt-5 mr-5">
-                            <input type="number" name="" :id="'baris'+(19-i)" v-for="i in 9" :key="i" @keyup="ngisi"
-                                    class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
-                                    bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
-                        </div>
-
-                        <div><p v-for="i in 10" :key="i" class="text-2xl mb-2">{{row3[i-1]}}</p></div>
-                        <div class="mt-5 mr-5">
-                            <input type="number" name="" :id="'baris'+(28-i)" v-for="i in 9" :key="i" @keyup="ngisi"
-                                    class="w-10 px-3 py-1 mb-2 block rounded-xl text-center outline-none 
-                                    bg-background-200 ring-1 ring-inset ring-stroke-100" disabled>
-                        </div> -->
-                        
                         <div>
                             <div v-for="i in 3" :key="i" class="mb-5">
                                 <button v-for="j in 3" :key="j" class="px-10 py-1 bg-background-200 ring-1 ring-inset ring-stroke-100 text-xl mr-5 rounded-lg font-bold

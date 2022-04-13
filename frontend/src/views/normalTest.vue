@@ -50,7 +50,8 @@
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
                 
                 <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
-                <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice />
+                <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" 
+                                :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id"/>
                 <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
             </div>
 
@@ -107,7 +108,7 @@ export default {
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
-            section_id: this.$route.query.current_section,
+            section_id: null,
             test_id: null,
             email: null,
             exam_session: null,
@@ -115,6 +116,7 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
+            maxLength: 0
         }
     },
     methods: {
@@ -148,7 +150,7 @@ export default {
             }
         },
         nextSoal(){
-            // console.log(this.jawaban)
+            console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
@@ -325,6 +327,16 @@ export default {
                 else if(pilihan=='d'&&this.jumChoice>=4) komponen.keyChoose(pilihan)
                 else if(pilihan=='e'&&this.jumChoice==5) komponen.keyChoose(pilihan)
             }
+        },
+        getMaxLength(){
+            let x = 0;
+            this.pertanyaan.forEach(p => {
+                let jawaban = p.answer.split('&')
+                jawaban.forEach(j => {
+                    if (j.length>x) x = j.length
+                });
+            });
+            this.maxLength = x
         }
     },
 
@@ -352,6 +364,7 @@ export default {
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
+            this.getMaxLength(),
             this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
             this.jumChoice = this.pertanyaan[0]["option_num"],
             this.jumSoal = this.pertanyaan.length,

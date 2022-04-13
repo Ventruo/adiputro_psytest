@@ -13,10 +13,10 @@
         <div class="text-center w-full grow">
             <div class="h-5/6 w-9/12 mt-5 mr-2 inline-block align-top relative">
                 <div class="w-full h-full bg-foreground-3-500 rounded-lg overflow-hidden">
-                    <div class="h-1/3 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
-                    <div class="h-2/3 w-full px-10 py-5 text-black font-bold text-left" v-if="section!=null">
+                    <div class="h-1/4 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
+                    <div class="h-3/4 w-full px-10 py-5 text-black font-bold text-left" v-if="section!=null">
                         <p class="mb-1 text-3xl">Tes 1</p>
-                        <p class="mb-2 text-lg">{{section.instruction}}</p>
+                        <p class="mb-2 text-lg font-semibold" v-html="section.instruction"></p>
                         
                         <div class="flex p-2">
                             <div class="mr-2 text-xl">
@@ -71,6 +71,7 @@ export default {
             judulHalaman: 'Persiapan Tes',
             section: null,
             sectionId: null,
+            testId: null,
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -80,6 +81,8 @@ export default {
             this.$cookies.set('start_time', Date.now())
             if(this.sectionId==53)
                 this.$router.push({path: '/kraepelin'})
+            else if(this.testId==20)
+                this.$router.push({path: '/gambar'})
             else
                 this.$router.push({path: '/test'})
                 // this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
@@ -89,6 +92,7 @@ export default {
         this.$emit('updateJudul', this.judulHalaman)
     },
     mounted(){
+        this.testId = this.$cookies.get('current_test')
         this.sectionId = this.$cookies.get('current_section')
         axios
         .get(this.port+'/section/'+this.sectionId)
