@@ -9,6 +9,7 @@ import ekspresi from '/src/views/ekspresi.vue'
 import kraepelin from '/src/views/kraepelin.vue'
 import gambar from '/src/views/gambarTest.vue'
 import hafalan from '/src/views/hafalan.vue'
+import hafalanIST from '/src/views/hafalanIST.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
@@ -95,6 +96,11 @@ const routes = [
                 path: '/hafalan',
                 name: 'hafalan',
                 component: hafalan,
+            },
+            {
+                path: '/hafalanIST',
+                name: 'hafalanIST',
+                component: hafalanIST,
             },
             {
                 path: '/gambar',

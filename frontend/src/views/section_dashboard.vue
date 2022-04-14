@@ -32,7 +32,7 @@
         <div class="w-full h-screen overflow-hidden">
             <p class="text-2xl font-bold text-white ml-5 my-6">{{judulHalaman}}</p>
             <div class="overflow-auto no-scrollbar h-screen w-full relative px-10">
-                <Section v-if="this.sectionList!=null" :sectionList="this.sectionList" :now="this.now"/>
+                <Section v-if="this.sectionList!=null && this.now!=-99" :sectionList="this.sectionList" :now="this.now"/>
                 <div class="w-1 h-28"></div>
             </div>
         </div>
@@ -59,7 +59,7 @@ export default {
             sectionList: null,
             port: import.meta.env.VITE_BACKEND_URL,
             hasil: null,
-            now: -1,
+            now: -99,
             id_tes: null
         }
     },
@@ -198,7 +198,7 @@ export default {
         .get(this.port+`/section/all/${this.id_tes}`)
         .then(({data}) => (
             this.sectionList = data,
-            console.log(this.sectionList),
+            // console.log(this.sectionList),
             axios
             .get(this.port+`/section_result/getbytest/${this.id_tes}?email=${this.$cookies.get('data_registrant').email}`)
             .then(({data}) => (

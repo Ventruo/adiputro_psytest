@@ -85,6 +85,8 @@ export default {
                 this.$router.push({path: '/gambar'})
             else if(this.testId==21)
                 this.$router.push({path: '/hafalan'})
+            else if(this.sectionId==69)
+                this.$router.push({path: '/hafalanIST'})
             else
                 this.$router.push({path: '/test'})
                 // this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
