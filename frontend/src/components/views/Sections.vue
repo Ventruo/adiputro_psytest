@@ -9,20 +9,6 @@
                     </a>
                     
                     <div class="text-xl inline-block center">
-                        <!-- <button class="bg-primary-500 px-5 py-2.5 rounded-full">
-                            <i class="fa fa-check mr-2"></i>
-                            <span>Sudah Selesai</span>
-                        </button> -->
-                        
-                        <!-- <button class="ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
-                                    duration-300 px-5 py-2.5 rounded-full"
-                                    @click="this.$router.push({path: '/preExam'})">Kerjakan Tes Ini</button> -->
-
-                        
-                        <!-- <button class="bg-primary-300 px-5 py-2.5 rounded-full">
-                            <i class="fa fa-lock mr-2"></i>
-                            <span>Kerjakan Tes Sebelumnya Terlebih Dahulu</span>
-                        </button> -->
                     </div>
                     <a id="carousel-next" class="next btn waves-effect blue white-text right">
                         <span>next</span>
@@ -169,7 +155,7 @@ export default {
     },
     data() {
         return {
-
+            
         }
     },
     methods: {
@@ -189,7 +175,6 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.sectionList)
         $('.carousel.carousel-slider').carousel({
             fullWidth: true,
             indicators: true

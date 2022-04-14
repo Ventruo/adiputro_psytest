@@ -8,6 +8,7 @@ import epps from '/src/views/epps.vue'
 import ekspresi from '/src/views/ekspresi.vue'
 import kraepelin from '/src/views/kraepelin.vue'
 import gambar from '/src/views/gambarTest.vue'
+import hafalan from '/src/views/hafalan.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
@@ -89,6 +90,11 @@ const routes = [
                 path: '/kraepelin',
                 name: 'kraepelin',
                 component: kraepelin,
+            },
+            {
+                path: '/hafalan',
+                name: 'hafalan',
+                component: hafalan,
             },
             {
                 path: '/gambar',

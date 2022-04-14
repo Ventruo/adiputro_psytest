@@ -17,7 +17,8 @@
                 <span class="font-bold text-xl">Kembali</span>
             </button>
             <div class="flex justify-center">
-                <label for="gambar" class="ring-2 ring-gray-400 ring-inset rounded-md w-96 h-auto min-h-[20rem] my-3 flex justify-center items-center text-center 
+                <label for="gambar" class="border-dashed border-4 border-gray-400 border-inset rounded-md w-auto min-w-[20rem] 
+                            h-auto min-h-[20rem] my-3 flex justify-center items-center text-center 
                             font-semibold text-xl">
                     <img v-if="url!=null" :src="url" alt="" class="h-auto w-auto">
                     <p v-else>Upload gambar anda (klik disini)</p>
