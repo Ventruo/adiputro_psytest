@@ -2,20 +2,20 @@
     <div class="w-full text-center mt-5">
         <div v-if="jumlahJawaban==1">
             <input v-if="needValidate" type="text" name="" id="answer" class="text-center text-white rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-stroke-100
-                px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawab Di Sini" @keypress="validasi($event)">
+                px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawab Di Sini" @keypress="validasi($event)" autocomplete="off">
             <input v-else type="text" name="" id="answer" class="text-center text-white rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-stroke-100
-                px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawab Di Sini" @keyup="noValidation">
+                px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawab Di Sini" @keyup="noValidation" autocomplete="off">
         </div>
         <div v-if="jumlahJawaban==2" class="flex gap-2 justify-center">
             <input v-if="needValidate" type="text" name="" id="answer" class="text-center text-white rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black
-            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban pertama" @keypress="validasi($event)">
+            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban pertama" @keypress="validasi($event)" autocomplete="off">
             <input v-else type="text" name="" id="answer" class="text-center text-white rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black
-            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban pertama" @keyup="noValidation">
+            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban pertama" @keyup="noValidation" autocomplete="off">
             
             <input v-if="needValidate" type="text" name="" id="answer2" class="text-center text-white rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black
-            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban kedua" @keypress="validasi2($event)">
+            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban kedua" @keypress="validasi2($event)" autocomplete="off">
             <input v-else type="text" name="" id="answer2" class="text-center text-white rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black
-            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban kedua" @keyup="noValidation">
+            px-5 py-2 w-full text-lg outline-none placeholder-gray-300" placeholder="Jawaban kedua" @keyup="noValidation" autocomplete="off">
         </div>
     </div>
 </template>

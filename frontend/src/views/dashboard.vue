@@ -65,6 +65,11 @@ export default {
         }
     },
     created() {
+        let adaTest = -1
+        adaTest = this.$cookies.get('current_test')
+        if(adaTest)
+            this.$router.push({path: '/section'})
+
         this.timerWaktu = setInterval(() => {
             this.getNow()
             // console.log(this.$store.state.access_token);
