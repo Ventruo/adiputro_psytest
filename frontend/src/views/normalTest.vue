@@ -118,6 +118,7 @@ export default {
             tampilDaftarSoal: false,
             maxLength: 0,
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            angka: ["1","2","3","4","5","6","7","8","9","10"],
         }
     },
     methods: {
@@ -227,10 +228,21 @@ export default {
             let banyak = this.pertanyaan[this.noSoal-1]['option_a'].split(';')
             if (banyak.length>1){
                 let temp = []
+                let rujukan = []
+                if(this.section_id==78) rujukan = this.angka
+                else rujukan = this.alphabet
                 for (let i = 0; i < banyak.length; i++) {
-                    temp.push(this.alphabet[i]+". "+banyak[i])
+                    temp.push(rujukan[i]+". "+banyak[i])
                 }
                 this.pilihanJawaban = temp
+            }else if(this.section_id==73 || this.section_id==74 || this.section_id==79){
+                this.pilihanJawaban = [
+                    '1. '+this.pertanyaan[this.noSoal-1]['option_a'],
+                    '2. '+this.pertanyaan[this.noSoal-1]['option_b'],
+                    '3. '+this.pertanyaan[this.noSoal-1]['option_c'],
+                    '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
+                    '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
+                ]
             }else{
                 this.pilihanJawaban = [
                     'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
