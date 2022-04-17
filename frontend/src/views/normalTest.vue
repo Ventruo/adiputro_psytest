@@ -116,7 +116,8 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
-            maxLength: 0
+            maxLength: 0,
+            alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
         }
     },
     methods: {
@@ -223,13 +224,22 @@ export default {
             this.gantiPilihanJawaban()
         },
         gantiPilihanJawaban(){
-            this.pilihanJawaban = [
-                'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
-                'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
-                'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
-                'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
-                'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
-            ]
+            let banyak = this.pertanyaan[this.noSoal-1]['option_a'].split(';')
+            if (banyak.length>1){
+                let temp = []
+                for (let i = 0; i < banyak.length; i++) {
+                    temp.push(this.alphabet[i]+". "+banyak[i])
+                }
+                this.pilihanJawaban = temp
+            }else{
+                this.pilihanJawaban = [
+                    'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
+                    'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
+                    'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
+                    'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
+                    'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
+                ]
+            }
         },
         progress(maju){
             const elements = document.getElementById("progress")
@@ -272,6 +282,7 @@ export default {
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
+            console.log(this.jawabanFinal)
 
             let formData = {
                 exam_session: this.exam_session,

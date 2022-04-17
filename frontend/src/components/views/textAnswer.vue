@@ -98,7 +98,7 @@ export default {
         }
     },
     mounted() {
-        if(this.section==5 || this.section==6) this.needValidate = true
+        if(this.section==5 || this.section==6 || this.section==58) this.needValidate = true
     },
 }
 </script>

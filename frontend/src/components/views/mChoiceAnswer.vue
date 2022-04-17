@@ -1,12 +1,17 @@
 <template>
     <div class="w-full">
         <p class="text-lg font-bold mb-2">{{judul}}</p>
-        <div class="flex gap-3 w-full">
+        <div class="flex gap-3 w-full" v-if="numberOfChoices<=5">
             <AnswerButton ref="answerA" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[0]" />
             <AnswerButton ref="answerB" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[1]" />
             <AnswerButton ref="answerC" v-if="numberOfChoices>2" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[2]" />
             <AnswerButton ref="answerD" v-if="numberOfChoices>3" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" />
             <AnswerButton ref="answerE" v-if="numberOfChoices>4" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[4]" />
+        </div>
+        <div class="flex gap-3 w-full" v-else>
+            <div v-for="(i,idx) in numberOfChoices" :key="idx" class="w-full">
+                <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[idx]" />
+            </div>
         </div>
     </div>
 </template>
