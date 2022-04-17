@@ -92,7 +92,7 @@ async function process_tintum(excel_path, sheet, correct_data, res, testres) {
 
       if (norms_lookup[i][j] > correct_data[i]) j--;
 
-      norms_result.push(norms_value[j]);
+      norms_result.push(norms_value[j] ?? 0);
     }
     console.log("Values: ", correct_data);
     console.log("Norms: ", norms_result);
