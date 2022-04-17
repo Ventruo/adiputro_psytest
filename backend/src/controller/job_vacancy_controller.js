@@ -167,7 +167,7 @@ class JobVacancyController {
       //     " " +
       //     split_time;
       // }
-
+      
       vacancy.set({
         name: req.body.name ?? vacancy.name,
         qr_link: qr_link,

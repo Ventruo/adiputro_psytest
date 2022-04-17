@@ -94,7 +94,10 @@ async function process_akudak(excel_path, sheet, correct_data, res, testres) {
       }
     }
 
-    console.log("Result JSON: ", results);
+    results.push({
+      "norma": results["norma"],
+      "keterangan": results["keterangan"]
+    })
 
     testres.set({
       result: JSON.stringify(results),
