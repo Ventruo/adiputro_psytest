@@ -375,19 +375,6 @@ class QuestionResultController {
               data.answer = data.answer.toString();
               status_correct = temp_status_correct;
             } 
-            // else if (question.answer == "O") {
-            //   // UNTUK AKUDAK
-            //   if (data.answer == 1) {
-            //     status_correct = true;
-            //     ctr_correct++;
-            //   }
-            // } else if (question.answer == "X") {
-            //   // UNTUK AKUDAK
-            //   if (data.answer == 0) {
-            //     status_correct = true;
-            //     ctr_correct++;
-            //   }
-            // } 
             else {
               if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
                 status_correct = true;

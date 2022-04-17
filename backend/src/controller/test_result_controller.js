@@ -15,6 +15,9 @@ const { calculate_mmpi_tests } = require("./test_result_calc/mmpi_calc");
 const { calculate_kreapelin } = require("./test_result_calc/kreapelin_calc");
 const { calculate_nine_tests } = require("./test_result_calc/nine_calc");
 const { calculate_akudak_test } = require("./test_result_calc/akudak_calc");
+const {
+  calculate_tintum_anak_test,
+} = require("./test_result_calc/tintum_anak_calc");
 
 class TestResultController {
   async getOne(req, res) {
@@ -223,6 +226,8 @@ class TestResultController {
           calculate_kreapelin(test.test_type, testres, res);
         } else if (test.test_type == 10) {
           calculate_akudak_test(test.test_type, testres, res);
+        } else if (test.test_type == 16) {
+          calculate_tintum_anak_test(test.test_type, testres, res);
         }
       });
     });
