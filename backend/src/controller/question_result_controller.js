@@ -316,7 +316,7 @@ class QuestionResultController {
                 let q1 = question.answer.split("&")[0];
                 let q2 = question.answer.split("&")[1];
 
-                if (question.section_id == 6) {
+                if (question.section_id == 6 || question.section_id == 77) {
                   // Answer and Correct Answer has fractions
                   a1 = eval(a1);
                   a2 = eval(a2);
