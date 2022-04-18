@@ -18,7 +18,7 @@
     </div>
     <div class="px-2 py-1">
         <div class="flex justify-between items-center relative" :class="{'bottom-2': print==='yes'}">
-            <h1 class="font-bold">Hasil Tes Adkudak</h1>
+            <h1 class="font-bold">Hasil Tes Tintum Anak</h1>
             <div class="flex">
                 <div class="font-bold text-sm">
                     <p>E-Mail :</p>
@@ -43,7 +43,13 @@
                         <tr class="text-center" v-for="(i, idx) in arrTabel" :key="idx">
                             <td class="border-black border-r-[0.5px] text-xs font-bold p-0">{{idx+1}}</td>
                             <td class="border-black border-r-[0.5px] text-xs p-0">{{this.arrTabel[idx].num_correct}}</td>
-                            <td class="border-black border-r-[0.5px] text-xs p-0">{{this.arrTabel[idx].value}}</td>
+                            <td class="border-black border-r-[0.5px] text-xs p-0">
+                                <div class="flex gap-2">
+                                    <div class="w-1/3 text-right">{{this.arrTabel[idx].value}}</div>
+                                    <div class="w-1/4"> - </div>
+                                    <div class="w-1/3 text-left">{{this.arrTabel[idx].keterangan}}</div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -62,12 +68,18 @@
                         <tr class="text-center" v-for="(i, idx) in arrTabel" :key="idx">
                             <td class="border-black border-r-[0.5px] text-xs font-bold"><span class="relative bottom-2">{{idx+1}}</span></td>
                             <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel[idx].num_correct}}</span></td>
-                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel[idx].value}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">
+                                <div class="flex gap-2">
+                                    <div class="w-1/3 text-right">{{this.arrTabel[idx].value}}</div>
+                                    <div class="w-1/4"> - </div>
+                                    <div class="w-1/3 text-left">{{this.arrTabel[idx].keterangan}}</div>
+                                </div>
+                            </span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="flex justify-end mt-5">
+            <!-- <div class="flex justify-end mt-5">
                 <div class="text-right mr-2 font-bold">
                     <p>Total :</p>
                     <p>Keterangan :</p>
@@ -76,7 +88,7 @@
                     <p>{{this.hasil.norma}}</p>
                     <p>{{this.hasil.keterangan}}</p>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -93,17 +105,15 @@ export default {
     data() {
         return {
             arrTabel: null,
-            hasil: null,
             bio: null
         }
     },
     mounted() {
-        this.hasil = this.data[5]
-        this.arrTabel = this.data.splice(0,5)
+        // this.hasil = this.data[5]
+        this.arrTabel = this.data
         // this.bio = this.biodata
         // console.log(this.bio)
-        // console.log(this.arrTabel)
-        // console.log(this.hasil)
+        console.log(this.arrTabel)
     },
 }
 </script>

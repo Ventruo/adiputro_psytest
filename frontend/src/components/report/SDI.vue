@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="px-2 py-1">
-        <div class="flex gap-2 items-center relative" :class="{'bottom-2': print==='yes'}">
+        <div class="flex justify-between items-center relative" :class="{'bottom-2': print==='yes'}">
             <!-- <div class="flex w-1/2">
                 <div class="font-bold text-sm">
                     <p>Nama :</p>
@@ -27,8 +27,8 @@
                 </div>
             </div> -->
             
-            <h1 class="font-bold w-1/2">Hasil Jawaban Tes SDI</h1>
-            <div class="flex w-1/2">
+            <h1 class="font-bold">Hasil Jawaban Tes SDI</h1>
+            <div class="flex">
                 <div class="font-bold text-sm">
                     <p>E-Mail :</p>
                 </div>
@@ -139,9 +139,6 @@ export default {
     },
     mounted() {
         this.arrTabel = this.data[0]
-        // this.bio = this.biodata
-        // console.log(this.bio)
-        // console.log(this.arrTabel)
     },
 }
 </script>

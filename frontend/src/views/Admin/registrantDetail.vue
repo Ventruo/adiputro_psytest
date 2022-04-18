@@ -167,6 +167,7 @@
                                 <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <Adkudak v-if="idTes==10" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                                <TintumAnak v-if="idTes==16" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <div v-if="biodata!=null" class="flex flex-col h-full">
                                     <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
                                 </div>
@@ -195,6 +196,7 @@
                                 <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <Adkudak v-if="report.test_id==10" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             </div>
                             <div v-if="report.test_id==5 && report.result!==''" class="flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
@@ -240,9 +242,11 @@ import MMPI from "../../components/report/MMPI.vue"
 
 import Adkudak from "../../components/report/Adkudak.vue"
 
+import TintumAnak from "../../components/report/TintumAnak.vue"
+
 export default {
     components: { 
-        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, Adkudak
+        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, Adkudak, TintumAnak
     },
     data () {
         return {
@@ -481,7 +485,6 @@ export default {
         },
         checkTest(test, data){
             this.dataRegistrant = data
-            // console.log(this.dataRegistrant)
             
             if(this.dataRegistrant!=null){
                 let dataNow2 = null

@@ -18,7 +18,7 @@
     </div>
 
     <div class="px-2 py-1">
-        <div class="flex gap-2 items-center relative" :class="{'bottom-2': print==='yes'}">
+        <div class="flex justify-between items-center relative" :class="{'bottom-2': print==='yes'}">
             <!-- <div class="flex w-1/2">
                 <div class="font-bold text-xs">
                     <p>Nama :</p>
@@ -28,8 +28,8 @@
                 </div>
             </div> -->
             
-            <h1 class="font-bold w-1/2">Hasil Jawaban Tes MMPI</h1>
-            <div class="flex w-1/2">
+            <h1 class="font-bold">Hasil Jawaban Tes MMPI</h1>
+            <div class="flex">
                 <div class="font-bold text-sm">
                     <p>E-Mail :</p>
                 </div>
