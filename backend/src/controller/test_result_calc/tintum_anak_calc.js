@@ -6,6 +6,7 @@ const {
 const xlsxFile = require("read-excel-file/node");
 const SectionResult = require("../../models/SectionResult");
 const Section = require("../../models/Section");
+const { now } = require("moment");
 
 async function calculate_tintum_anak_test(test_type, testres, res) {
   // Get correct answers per Section from Section Results
@@ -87,7 +88,7 @@ async function process_tintum_anak(
         let split = norms[i]["lookup"][j].split("-");
         let low = split[0];
         let high = split[1];
-
+        
         if (correct_data[i] >= low && correct_data[i] <= high) {
           let result = {
             num_correct: correct_data[i],
@@ -97,13 +98,13 @@ async function process_tintum_anak(
           break;
         }
       }
-
+      
       for (let j = 0; j < norms[i]["norm_lookup"].length; j++) {
         let split = norms[i]["norm_lookup"][j].split("-");
         let low = split[0];
         let high = split[1];
-
-        if (results[i]["value"] >= low && results[i]["value"] <= high) {
+        
+        if (results[i]!==undefined && results[i]["value"] >= low && results[i]["value"] <= high) {
           results[i]["keterangan"] = norms[i]["norm_keterangan"][j];
           break;
         }

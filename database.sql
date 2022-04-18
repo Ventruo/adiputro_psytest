@@ -1,6 +1,6 @@
 /*
-SQLyog Professional v13.1.1 (64 bit)
-MySQL - 10.6.5-MariaDB-1:10.6.5+maria~focal : Database - adiputro_psytest
+SQLyog Community
+MySQL - 10.4.22-MariaDB : Database - adiputro_psytest
 *********************************************************************
 */
 
@@ -9,7 +9,6 @@ MySQL - 10.6.5-MariaDB-1:10.6.5+maria~focal : Database - adiputro_psytest
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`adiputro_psytest` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
@@ -1953,21 +1952,21 @@ insert  into `question`(`id`,`instruction`,`section_id`,`option_num`,`option_a`,
 (2063,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','4',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2064,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','4',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2065,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','4',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2066,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','4',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2066,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2067,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2068,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2069,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','1',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2070,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2068,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','1',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2069,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2070,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2071,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2072,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2073,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2074,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2075,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2076,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2077,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2078,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2079,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
-(2080,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','1',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2075,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2076,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2077,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2078,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','3',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2079,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','1',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
+(2080,'Beringin adalah nama...',73,4,'Kendaraan','Tumbuh-tumbuhan','Danau','Alat rumah tangga','-','2',1,1,1,'2022-04-09 16:11:20','2022-04-09 16:11:20'),
 (2081,'Burung : terbang   = ikan :   ?',74,4,'1','2','3','4','-','3',1,1,1,'2022-04-09 16:11:23','2022-04-09 16:11:23'),
 (2082,'Burung : terbang   = ikan :   ?',74,4,'1','2','3','4','-','4',1,1,1,'2022-04-09 16:11:23','2022-04-09 16:11:23'),
 (2083,'Burung : terbang   = ikan :   ?',74,4,'1','2','3','4','-','2',1,1,1,'2022-04-09 16:11:23','2022-04-09 16:11:23'),
@@ -3533,6 +3532,5 @@ END */$$
 DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
