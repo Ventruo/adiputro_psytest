@@ -9,7 +9,8 @@
 
         <div v-show="isStarted">
             <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
-                <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <p v-if="menit!=-99">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <p v-else></p>
                 <button id="btnDaftarSoal" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold">
                     <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
                     <span id="btnDaftarSoal3">Daftar Soal</span>
@@ -22,7 +23,7 @@
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
                     </div>
-                    <div v-for="i in 225" :key="i" class="inline-block">
+                    <div v-for="i in this.jumSoal" :key="i" class="inline-block">
                         <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
@@ -97,19 +98,21 @@ export default {
             namaTes: 'Tes EPPS',
             judulHalaman: 'EPPS',
             page: 1,
-            jumHalaman: 45,
+            jumHalaman: null,
             menit: 1,
             detik: 0,
             waktu: null,
+            jumSoal: null,
             // countdownTimer: null,
             // countdown: 2,
             jawaban: [],
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
-            section_id: 11,
-            // test_id: null,
-            exam_session: 9,
+            test_id: null,
+            email: null,
+            exam_session: null,
+            test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
@@ -118,30 +121,33 @@ export default {
     methods: {
         mulai(){
             this.isStarted = true
-            this.waktu = setInterval(() => {
-                this.detik--
-                if (this.detik<0){
-                    this.detik = 59
-                    this.menit--
-                }
-                
-                if (this.menit<0){
-                    this.detik = 0
-                    this.menit = 0
-                    clearInterval(this.waktu)
+            
+            if(this.menit!=-99){
+                this.waktu = setInterval(() => {
+                    this.detik--
+                    if (this.detik<0){
+                        this.detik = 59
+                        this.menit--
+                    }
                     
-                    Swal.fire({
-                        title: 'Waktu Habis...',
-                        icon: 'warning',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Kembali ke Dashboard'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.submitJawaban()
-                        }
-                    });
-                } 
-            }, 1000)
+                    if (this.menit<0){
+                        this.detik = 0
+                        this.menit = 0
+                        clearInterval(this.waktu)
+                        
+                        Swal.fire({
+                            title: 'Waktu Habis...',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Kembali ke Dashboard'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.submitJawaban()
+                            }
+                        });
+                    } 
+                }, 1000)
+            }
         },
         nextSoal(){
             if (this.page<this.jumHalaman){
@@ -153,7 +159,7 @@ export default {
                 var isi = 0
                 this.jawaban.forEach(e => { if (e != null) isi++; });
                 // isi = this.jumSoal;
-                if(isi!=225){
+                if(isi!=this.jumSoal){
                     Swal.fire({
                         title: 'Ada Pertanyaan yang Belum Dijawab!',
                         icon: 'warning',
@@ -220,7 +226,7 @@ export default {
             }
         },
         submitJawaban(){
-            for (let i = 0; i < 225; i++) {
+            for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
                 this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
@@ -235,18 +241,18 @@ export default {
             }
 
             axios.post(this.port+'/section_result/create',{
-                "test_result_id": 29,
-                "section_id": 11,
+                "test_result_id": this.test_result_id,
+                "section_id": this.section_id,
                 "exam_session": this.exam_session,
-                "start_date": "2022-01-28 15:00:00",
+                "start_date": parseInt(this.$cookies.get("start_time")),
                 "finish_date": Date.now()
             })
             .then((response) => {
                 axios.post(this.port+'/question_result/createmultiple',formData)
                 .then((response) => {
                     axios.post(this.port+'/test_result/calculateresult',{
-                        test_id: 2,
-                        email: "saifullah@x.com"
+                        test_id: this.test_id,
+                        email: this.email
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
@@ -279,14 +285,27 @@ export default {
     },
 
     mounted(){
+        this.section_id = this.$cookies.get('current_section');
+        this.test_id = this.$cookies.get('current_test');
+        let datas = this.$cookies.get("data_registrant");
+        this.email = datas.email;
+        this.exam_session = datas.exam_session;
+
+        let tests = datas.test;
+        for (let i = 0; i < tests.length; i++) {
+            if (tests[i][0]==this.test_id)
+                this.test_result_id = tests[i][1]
+        }
+
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
             // console.log(data),
-            this.menit = this.pertanyaan[0]["section"]["duration"],
-            // this.jumSoal = this.pertanyaan.length,
-            this.jawaban = Array(225),
+            this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
+            this.jumSoal = this.pertanyaan.length,
+            this.jumHalaman = this.jumSoal/5,
+            this.jawaban = Array(this.jumSoal),
             this.progress(true)
         ))
 

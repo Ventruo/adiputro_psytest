@@ -135,6 +135,7 @@
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
             <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
+        <div class="w-2 h-10"></div>
     </div>
 </template>
 <script>
@@ -196,7 +197,7 @@ export default {
             }
         },
         async mulai2(){
-            this.menit = 3
+            this.menit = 20
             this.detik = 0
             this.jumSoal = this.pertanyaan2.length
             this.state = 4
@@ -229,8 +230,12 @@ export default {
 
                 this.progress(true)
             }else{
-                clearInterval(this.waktu)
-                this.state = 3
+                if (this.state==2){
+                    clearInterval(this.waktu)
+                    this.state = 3
+                }else if (this.state==4){
+                    this.submitJawaban()
+                }
             }
             this.gantiPilihanJawaban()
         },
@@ -295,22 +300,10 @@ export default {
         submitJawaban(){
             for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
-                this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
-                if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
-                else if (this.jenis=="MMPI"){
-                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-                    this.jawabanFinal[i]["answer"] = ans=="+"?1:0
-                }
-                else if (this.jenis=="SDI"){
-                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
-                    this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?1:0
-                }
-                else if(this.jumChoice==2){
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-                }
-                else
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
+                this.jawabanFinal[i]["question_id"] = this.pertanyaan2[i]['id']
+                
+                this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
+
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
 
@@ -455,7 +448,7 @@ export default {
         ))
         
         axios
-        .get(this.port+'/question/all?section_id=71')
+        .get(this.port+'/question/all?section_id='+(parseInt(this.section_id)+1))
         .then(({data}) => (
             this.splitQuestion(data,2),
             this.menit = 3,
