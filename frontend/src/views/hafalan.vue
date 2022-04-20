@@ -195,7 +195,7 @@ export default {
                 }, 1000)
             }
         },
-        mulai2(){
+        async mulai2(){
             this.menit = 3
             this.detik = 0
             this.jumSoal = this.pertanyaan2.length
@@ -249,7 +249,6 @@ export default {
             var width = ((this.noSoal/this.jumSoal)*100)
             elements.style.width = width +'%'
             
-            console.log(this.noSoal<this.jumSoal)
             if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
             else $('#nextBtn').text('Submit')
 
@@ -367,7 +366,7 @@ export default {
                 else if(pilihan=='e'&&this.jumChoice==5) komponen.keyChoose(pilihan)
             }
         },
-        splitQuestion(questionList){
+        splitQuestion(questionList, state){
             let q1 = []
             let q2 = []
             questionList.forEach(question => {
@@ -376,8 +375,11 @@ export default {
                 else
                     q2.push(question)
             });
-            this.pertanyaan1 = q1
-            this.pertanyaan2 = q2
+
+            if(state == 1)
+                this.pertanyaan1 = q1
+            else
+                this.pertanyaan2 = q2
 
             // console.log("Pertanyaan 1")
             // console.log(this.pertanyaan1)
@@ -447,7 +449,15 @@ export default {
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
-            this.splitQuestion(data),
+            this.splitQuestion(data,1),
+            this.menit = 3,
+            this.jawaban = []
+        ))
+        
+        axios
+        .get(this.port+'/question/all?section_id=71')
+        .then(({data}) => (
+            this.splitQuestion(data,2),
             this.menit = 3,
             this.jawaban = []
         ))

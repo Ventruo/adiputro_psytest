@@ -82,6 +82,8 @@ export default {
             this.$cookies.set('start_time', Date.now())
             if(this.sectionId==53)
                 this.$router.push({path: '/kraepelin'})
+            else if(this.testId == 18 || this.testId == 2)
+                this.$router.push({path: '/epps'})
             else if(this.testId==20)
                 this.$router.push({path: '/gambar'})
             else if(this.testId==21)
@@ -90,7 +92,6 @@ export default {
                 this.$router.push({path: '/hafalanIST'})
             else
                 this.$router.push({path: '/test'})
-                // this.$router.push({path: '/epps', query: {current_section: this.$route.query.current_section}})
         }
     },
     created(){
