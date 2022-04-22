@@ -86,7 +86,7 @@
                 </div>
 
                 <label>Tanggal Tes</label><br>
-                <div class="flex gap-2">
+                <div class="flex gap-2 mb-3">
                     <div class="w-1/2 flex items-center">
                         <label for="start">Dari :</label>
                         <input type="datetime-local" name="start_date" id="start" v-model="start"
@@ -96,6 +96,39 @@
                         <label for="finish">Sampai : </label>
                         <input type="datetime-local" name="finish_date" id="finish" v-model="finish"
                                 class="ml-2 rounded-lg py-2 px-3 my-2 bg-primary-600 outline-none placeholder-gray-300"><br>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 py-2 items-center" v-if="this.statusAdd">
+                    <label>Paket Tes :</label>
+                    <button class="rounded-lg px-5 py-1 bg-sky-300 text-primary-1000 hover:text-white 
+                                    hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
+                                    @click="pilihPaket('SMK')">Paket SMK</button>
+                    <button class="rounded-lg px-5 py-1 bg-sky-300 text-primary-1000 hover:text-white 
+                                    hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
+                                    @click="pilihPaket('S1')">Paket S1 </button>
+                    <button class="rounded-lg px-5 py-1 bg-sky-300 text-primary-1000 hover:text-white 
+                                    hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
+                                    @click="pilihPaket('S1 Teknik')">Paket S1 Teknik</button>
+                </div>
+
+                <div class="flex gap-2 items-center">
+                    <label>Tes Opsional : </label>
+                    <select name="" id="" class="bg-sky-300 text-primary-1000 text-lg rounded-lg py-1 px-2 w-1/3 outline-none shadow-xl cursor-pointer"
+                            v-model="this.selectedOptional">
+                        <option v-for="i in opsional" :key="i" v-bind:value="i.id">{{i.name}}</option>
+                    </select>
+                    <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
+                                    @click.prevent="tambahTes">Tambahkan</button>
+                </div>
+
+                <div class="flex gap-2 mt-2 w-full">
+                    <p class="w-2/12">Daftar Tes :</p>
+                    <div class="w-9/12">
+                        <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in tests" :key="i">
+                            <span>{{i.name}}</span>
+                            <i v-if="this.statusAdd" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusTest(`${i.id}`)"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -133,12 +166,16 @@ export default {
             exam_session: null,
             port: import.meta.env.VITE_BACKEND_URL,
             emails: [],
+            tests: [],
+            opsional: [],
             start: null,
             finish: null,
             isiEmail: "",
             aktif: true,
             statusAdd: true,
-            updating: -1
+            updating: -1,
+            list_tes: null,
+            selectedOptional: -1
         }
     },
     created() {
@@ -164,6 +201,7 @@ export default {
         openModalCreate(){
             this.statusAdd = true
             this.emails = []
+            this.tests = []
             this.start = null
             this.finish = null
             this.isiEmail = ""
@@ -174,6 +212,7 @@ export default {
         openModal(data){
             this.statusAdd = false
             this.emails = [data.email]
+            // this.tests = [data.email]
             this.start = data.start_date.split(".")[0]
             this.finish = data.finish_date.split(".")[0]
             this.isiEmail = ""
@@ -194,6 +233,57 @@ export default {
                 this.emails.splice(idx, 1);
             }
         },
+        pilihPaket(paket){
+            this.tests = []
+            let temp = []
+            if(paket == "SMK"){
+                for (let i = 0; i < 5; i++) {
+                    temp.push(this.list_tes[i])
+                }
+            }else if(paket == "S1"){
+                for (let i = 5; i < 10; i++) {
+                    temp.push(this.list_tes[i])
+                }
+            }else if(paket == "S1 Teknik"){
+                for (let i = 10; i < 15; i++) {
+                    temp.push(this.list_tes[i])
+                }
+            }
+            this.tests = temp
+        },
+        hapusTest(tes){
+            let idx = -1;
+            for (let i = 0; i < this.tests.length; i++) {
+                if (this.tests[i].id == tes){
+                    idx = i;
+                    break;
+                }
+            }
+
+            if (idx !== -1) {
+                this.tests.splice(idx, 1);
+            }
+        },
+        tambahTes(){
+            let ada = -1;
+            for (let i = 0; i < this.tests.length; i++) {
+                if (this.tests[i].id == this.selectedOptional){
+                    ada = i;
+                    break;
+                }
+            }
+            if (ada == -1) {
+                let idx = -1;
+                for (let i = 0; i < this.opsional.length; i++) {
+                    if (this.opsional[i].id == this.selectedOptional){
+                        idx = i;
+                        break;
+                    }
+                }
+                if (idx!==-1)
+                    this.tests.push(this.opsional[idx]);
+            }
+        },
         emailFormatCheck(email){
             let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
             let result = email.match(pattern)
@@ -203,7 +293,7 @@ export default {
                 return true
         },
         createSession(){
-            if(this.emails.length==0||this.start==null||this.finish==null)
+            if(this.emails.length==0 || this.tests.length==0 ||this.start==null||this.finish==null)
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
                     icon: 'warning',
@@ -220,6 +310,10 @@ export default {
                 var dateFinish = new Date(this.finish);
                 var duration = (dateFinish.getTime()-dateStart.getTime())/(1000*60)
 
+                let daftarTes = []
+                this.tests.forEach(t => {
+                    daftarTes.push(t.id)
+                });
                 if (this.statusAdd){
                     console.log("create")
                     axios.post(this.port+'/exam_session/create',{
@@ -227,7 +321,7 @@ export default {
                         "start_date": dateStart,
                         "finish_date": dateFinish,
                         "duration": duration,
-                        "tests": [5]
+                        "tests": daftarTes
                     })
                     .then((response) => {
                         if (response.status==200){
@@ -306,7 +400,18 @@ export default {
         .then(({data}) => (
             this.validation(data)
         ))
-        
+        axios
+        .get(this.port+'/test/all')
+        .then(({data}) => {
+            this.list_tes = data
+            
+            let temp = []
+            for (let i = 15; i < this.list_tes.length; i++) {
+                temp.push(this.list_tes[i])
+            }
+            this.opsional = temp
+            this.selectedOptional = this.opsional[0].id
+        })
     }
 }
 </script>
