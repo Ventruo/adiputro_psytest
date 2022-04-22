@@ -42,22 +42,24 @@
                     </thead>
                 </table>
                 <table class="table-fixed border-y-[1px] border-l-[1px] border-black w-full">
-                    <tbody class="divide-y-[1px] divide-black w-full">
-                        <div v-for="i in this.arrTabel" :key="i" class="w-full divide-y-[1px] divide-black">
-                            <tr>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] font-bold p-0 px-1 w-2/12" :rowspan="i.data.length">{{i.jenis}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 pt-0 px-1 pb-1 w-3/12">{{i.data[0].aspek}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12">{{i.data[0].faktor}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12">{{i.data[0].nilai}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-5/12">{{i.data[0].keterangan}}</td>
-                            </tr>
-                            <tr v-for="j in i.data.length-1" :key="j">
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-3/12">{{i.data[j].aspek}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12">{{i.data[j].faktor}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12">{{i.data[j].nilai}}</td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-5/12">{{i.data[j].keterangan}}</td>
-                            </tr>
-                        </div>
+                    <tbody class="border-black border-b-[0.5px] w-full" v-for="i in this.arrTabel" :key="i">
+                        <tr>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center font-bold p-0 px-1 w-2/12" :rowspan="i.data.length">{{i.jenis}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 pt-0 px-1 pb-1 w-3/12 bg-background-300">{{i.data[0].aspek}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12 bg-background-300">{{i.data[0].faktor}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12 bg-background-300">{{i.data[0].nilai}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-5/12 bg-background-300">{{i.data[0].keterangan}}</td>
+                        </tr>
+                        <tr v-for="j in i.data.length-1" :key="j">
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-3/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0}">{{i.data[j].aspek}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0}">{{i.data[j].faktor}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0}">{{i.data[j].nilai}}</td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-5/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0}">{{i.data[j].keterangan}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -74,22 +76,24 @@
                     </thead>
                 </table>
                 <table class="table-fixed border-y-[1px] border-l-[1px] border-black w-full">
-                    <tbody class="w-full divide-y-[1px] divide-black">
-                        <div v-for="i in this.arrTabel" :key="i" class="w-full divide-y-[1px] divide-black">
-                            <tr>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] font-bold p-0 px-1 w-2/12" :rowspan="i.data.length"><span class="relative bottom-1.5">{{i.jenis}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 w-3/12"><span class="relative bottom-1.5">{{i.data[0].aspek}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"><span class="relative bottom-1.5">{{i.data[0].faktor}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"><span class="relative bottom-1.5">{{i.data[0].nilai}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 w-5/12"><span class="relative bottom-1.5">{{i.data[0].keterangan}}</span></td>
-                            </tr> 
-                            <tr v-for="j in i.data.length-1" :key="j">
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-3/12"><span class="relative bottom-1.5">{{i.data[j].aspek}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"><span class="relative bottom-1.5">{{i.data[j].faktor}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"><span class="relative bottom-1.5">{{i.data[j].nilai}}</span></td>
-                                <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-5/12"><span class="relative bottom-1.5">{{i.data[j].keterangan}}</span></td>
-                            </tr>
-                        </div>
+                    <tbody class="border-black border-b-[0.5px] w-full" v-for="i in this.arrTabel" :key="i" >
+                        <tr>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center font-bold p-0 px-1 w-2/12" :rowspan="i.data.length"><span class="relative bottom-1.5">{{i.jenis}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 w-3/12 bg-background-300"><span class="relative bottom-1.5">{{i.data[0].aspek}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12 bg-background-300"><span class="relative bottom-1.5">{{i.data[0].faktor}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12 bg-background-300"><span class="relative bottom-1.5">{{i.data[0].nilai}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 w-5/12 bg-background-300"><span class="relative bottom-1.5">{{i.data[0].keterangan}}</span></td>
+                        </tr> 
+                        <tr v-for="j in i.data.length-1" :key="j">
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-3/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0, 'border-b-[0.5px]': j==i.data.length-1}"><span class="relative bottom-1.5">{{i.data[j].aspek}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0, 'border-b-[0.5px]': j==i.data.length-1}"><span class="relative bottom-1.5">{{i.data[j].faktor}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-center text-xs p-0 w-1/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0, 'border-b-[0.5px]': j==i.data.length-1}"><span class="relative bottom-1.5">{{i.data[j].nilai}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-[0.6rem] text-xs leading-3 p-0 px-1 pb-1 w-5/12"
+                            :class="{'bg-background-200': j%2==1, 'bg-background-300': j%2==0, 'border-b-[0.5px]': j==i.data.length-1}"><span class="relative bottom-1.5">{{i.data[j].keterangan}}</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

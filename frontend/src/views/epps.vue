@@ -256,6 +256,7 @@ export default {
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
@@ -285,8 +286,8 @@ export default {
     },
 
     mounted(){
-        this.section_id = this.$cookies.get('current_section');
-        this.test_id = this.$cookies.get('current_test');
+        this.section_id = this.$cookies.get('current_section').id;
+        this.test_id = this.$cookies.get('current_test').id;
         let datas = this.$cookies.get("data_registrant");
         this.email = datas.email;
         this.exam_session = datas.exam_session;

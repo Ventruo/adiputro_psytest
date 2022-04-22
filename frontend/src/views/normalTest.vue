@@ -152,7 +152,7 @@ export default {
             }
         },
         nextSoal(){
-            console.log(this.jawaban)
+            // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
@@ -318,6 +318,7 @@ export default {
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
@@ -372,8 +373,8 @@ export default {
     },
 
     mounted(){
-        this.section_id = this.$cookies.get('current_section');
-        let tes = this.$cookies.get('current_test')
+        this.section_id = this.$cookies.get('current_section').id;
+        let tes = this.$cookies.get('current_test').id
         let nama_tes = ""
         axios
         .get(this.port+'/test/'+tes)

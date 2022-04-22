@@ -116,15 +116,15 @@ export default {
             detik: 0,
             waktu: null,
             aksi: 'x',
-            // countdownTimer: null,
-            // countdown: 2,
             jawaban: [],
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
-            section_id: 45,
-            // test_id: null,
-            exam_session: 14,
+            section_id: null,
+            test_id: null,
+            email: null,
+            exam_session: null,
+            test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
@@ -256,21 +256,22 @@ export default {
             }
 
             axios.post(this.port+'/section_result/create',{
-                "test_result_id": 59,
+                "test_result_id": this.test_result_id,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
-                "start_date": "2022-01-28 15:00:00",
+                "start_date": parseInt(this.$cookies.get("start_time")),
                 "finish_date": Date.now()
             })
             .then((response) => {
                 axios.post(this.port+'/question_result/createmultiple',formData)
                 .then((response) => {
                     axios.post(this.port+'/test_result/calculateresult',{
-                        test_id: 7,
-                        email: "ivan.christianto@x.com"
+                        test_id: this.test_id,
+                        email: this.email
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
@@ -300,6 +301,9 @@ export default {
     },
 
     mounted(){
+        this.section_id = this.$cookies.get('current_section').id;
+        // let tes = this.$cookies.get('current_test').id;
+
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
@@ -308,6 +312,20 @@ export default {
             this.jawaban = Array(19),
             this.progress(true)
         ))
+
+        axios
+        .get(this.port+'/section/'+this.section_id)
+        .then(({data}) => {
+            let datas = this.$cookies.get("data_registrant")
+            this.test_id = data.test_id
+            let tests = datas.test;
+            for (let i = 0; i < tests.length; i++) {
+                if (tests[i][0]==this.test_id)
+                    this.test_result_id = tests[i][1]
+            }
+            this.email = datas.email;
+            this.exam_session = datas.exam_session;
+        })
         
         let thi = this
         $('body').keydown(function(event) {

@@ -61,7 +61,7 @@ export default {
     data () {
         return {
             namaSection: 'Tes 1',
-            section_id: this.$route.query.current_section,
+            section_id: null,
             test_id: null,
             email: null,
             exam_session: null,
@@ -133,6 +133,7 @@ export default {
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
@@ -161,8 +162,8 @@ export default {
     },
 
     mounted(){
-        this.section_id = this.$cookies.get('current_section');
-        let tes = this.$cookies.get('current_test')
+        this.section_id = this.$cookies.get('current_section').id;
+        let tes = this.$cookies.get('current_test').id
 
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)

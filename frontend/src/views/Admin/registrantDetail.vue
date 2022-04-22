@@ -52,7 +52,21 @@
                             </tr>
                         </thead>
                         <tbody v-if="this.sectionList!=null && this.sectionResult!=null">
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i, idx) in this.sectionList" :key="idx">
+                            <tr v-if="this.idTes==21" class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10">
+                                <td>{{this.sectionList[0].section_number}}</td>
+                                <td>Pilihan Ganda</td>
+                                <td>{{this.sectionResult[0]==undefined? "-" : toDate(this.sectionResult[0].start_date)}}</td>
+                                <td>{{this.sectionResult[0]==undefined? "-" : toDate(this.sectionResult[0].finish_date)}}</td>
+                                <td>{{this.sectionResult[0]==undefined? "-" : this.sectionResult[0].num_correct}}/{{this.sectionList[1]==undefined? 0:this.sectionList[1].question_num}}</td>
+                                <td class="h-12">
+                                    <button v-if="this.sectionResult[0]!=undefined" class="bg-foreground-4-100 text-white hover:bg-red-500 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click.prevent="resetHasil(i.id)"> 
+                                        <i class="fa-solid fa-circle-exclamation mr-2"></i>
+                                        <span>Reset</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-else class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i, idx) in this.sectionList" :key="idx">
                                 <td>{{i.section_number}}</td>
                                 <td>
                                     <span v-if="i.section_type==1">Esai</span>

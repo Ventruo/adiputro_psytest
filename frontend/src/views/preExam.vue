@@ -82,6 +82,8 @@ export default {
             this.$cookies.set('start_time', Date.now())
             if(this.sectionId==53)
                 this.$router.push({path: '/kraepelin'})
+            else if(this.testId==7)
+                this.$router.push({path: '/ekspresi'})
             else if(this.testId == 18 || this.testId == 2)
                 this.$router.push({path: '/epps'})
             else if(this.testId==20)
@@ -98,8 +100,8 @@ export default {
         this.$emit('updateJudul', this.judulHalaman)
     },
     mounted(){
-        this.testId = this.$cookies.get('current_test')
-        this.sectionId = this.$cookies.get('current_section')
+        this.testId = this.$cookies.get('current_test').id
+        this.sectionId = this.$cookies.get('current_section').id
         axios
         .get(this.port+'/section/'+this.sectionId)
         .then(({data}) => (

@@ -197,7 +197,7 @@ export default {
             }
         },
         async mulai2(){
-            this.menit = 20
+            this.menit = 3
             this.detik = 0
             this.jumSoal = this.pertanyaan2.length
             this.state = 4
@@ -230,12 +230,42 @@ export default {
 
                 this.progress(true)
             }else{
-                if (this.state==2){
-                    clearInterval(this.waktu)
-                    this.state = 3
-                }else if (this.state==4){
-                    this.submitJawaban()
+                var isi = 0
+                this.jawaban.forEach(e => { if (e != null) isi++; });
+                // isi = this.jumSoal;
+                if(isi!=this.jumSoal){
+                    let pesan = ""
+                    if (this.state==2){
+                        pesan = "Tetap Lanjut"
+                    }else if (this.state==4){
+                        pesan = "Tetap Submit"
+                    }
+                    Swal.fire({
+                        title: 'Ada Pertanyaan yang Belum Dijawab!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: pesan
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (this.state==2){
+                                clearInterval(this.waktu)
+                                this.state = 3
+                            }else if (this.state==4){
+                                this.submitJawaban()
+                            }
+                        }
+                    });
+                }else{
+                    if (this.state==2){
+                        clearInterval(this.waktu)
+                        this.state = 3
+                    }else if (this.state==4){
+                        this.submitJawaban()
+                    }
                 }
+                
             }
             this.gantiPilihanJawaban()
         },
@@ -329,6 +359,7 @@ export default {
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
@@ -428,8 +459,8 @@ export default {
             ]
         ]
 
-        this.section_id = this.$cookies.get('current_section');
-        let tes = this.$cookies.get('current_test')
+        this.section_id = this.$cookies.get('current_section').id;
+        let tes = this.$cookies.get('current_test').id
         let nama_tes = ""
         axios
         .get(this.port+'/test/'+tes)

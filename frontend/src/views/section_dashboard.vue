@@ -108,6 +108,9 @@ export default {
             });
         },
         async cekSelesai(result){
+            if(this.id_tes==21){
+                this.sectionList.pop()
+            }
             if(result!=null){
                 result.sort((a, b) => {
                     let da = a.section_id,
@@ -198,7 +201,7 @@ export default {
         })
 
         this.id_tes = this.$cookies.get('current_test')
-        
+        if(this.id_tes) this.id_tes = this.id_tes.id
         axios
         .get(this.port+`/section/all/${this.id_tes}`)
         .then(({data}) => (

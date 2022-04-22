@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         keSection(tes){
-            this.$cookies.set('current_test', tes.id),
+            this.$cookies.set('current_test', {"id":tes.id}),
             this.$router.push({path: '/section'})
         }
     },

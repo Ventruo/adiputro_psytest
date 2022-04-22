@@ -170,7 +170,7 @@ export default {
             instance.set(idx)
         },
         kePreExam(id){
-            this.$cookies.set('current_section', id)
+            this.$cookies.set('current_section', {"id": id})
             this.$router.push({path: '/preExam'})
         }
     },

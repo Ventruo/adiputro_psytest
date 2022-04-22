@@ -358,7 +358,7 @@ export default {
                     })
                     .then((response) => {
                         this.$cookies.remove('current_section')
-                        this.$cookies.remove("start_time"),
+                        this.$cookies.remove("start_time")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
