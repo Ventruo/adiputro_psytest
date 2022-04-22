@@ -290,7 +290,7 @@ export default {
         this.arrTabel = this.data
         // this.bio = this.biodata
         // console.log(this.bio)
-        console.log(this.arrTabel)
+        // console.log(this.arrTabel)
     },
 }
 </script>

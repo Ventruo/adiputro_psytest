@@ -98,12 +98,11 @@ export default {
         }
     },
     mounted() {
-        this.hasil = this.data[5]
-        this.arrTabel = this.data.splice(0,5)
+        // this.hasil = this.data[5]
+        // this.arrTabel = this.data.splice(0,5)
         // this.bio = this.biodata
         // console.log(this.bio)
         // console.log(this.arrTabel)
-        // console.log(this.hasil)
     },
 }
 </script>

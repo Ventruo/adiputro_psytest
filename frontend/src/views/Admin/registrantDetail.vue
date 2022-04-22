@@ -176,12 +176,13 @@
                         <div class="w-1/2 h-[48rem] inline-block">
                             <div class="w-full h-full flex flex-col bg-white text-black relative">
                                 <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
-                                <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
-                                <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'no'"/> -->
+                                <Epps v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                                 <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                                <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(idTes))" :data="dataTesKecil" :nama="this.nama" :print="'no'"/>
                                 <Adkudak v-if="idTes==10" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <TintumAnak v-if="idTes==16" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                                <!-- IST  -->
                                 <PapiKostick v-if="idTes==18" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <Hafalan v-if="idTes==21" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <div v-if="biodata!=null" class="flex flex-col h-full">
@@ -189,38 +190,42 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="idTes==5" class="w-1/2 h-[48rem] inline-block">
+                        <div v-if="idTes==2 || idTes==5" class="w-1/2 h-[48rem] inline-block">
                             <div class="w-full h-full flex flex-col bg-white text-black">
-                                <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'pChart'"/> -->
-                                <div v-if="biodata!=null" class="flex flex-col h-full">
-                                    <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChart'" :print="'no'"/>
+                                <EppsGraphics v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :id="'pChart'" :print="'no'"/>
+                                <div v-if="biodata!=null && idTes==5" class="flex flex-col h-full">
+                                    <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChartKraepelin'" :print="'no'"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div v-else class="w-10 h-96"></div>
                     <div class="absolute" v-if="fullLoaded==1">
-                        <div v-for="report in dataFull" :key="report" class="printPdf">
-                            <div v-if="report.result!==''" class="flex flex-col bg-white text-black mb-3 relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-for="report in dataFull" :key="report" class="">
+                            <!-- <p>{{dataFull}}</p> -->
+                            <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <!-- <Tintum v-if="report.test_id==1" :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                                <!-- <Epps :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
-                                <!-- <Kecil :data="dataRegistrant" :nama="this.nama" :print="'yes'"/> -->
+                                <Tintum v-if="report.test_id==1" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <Epps v-if="report.test_id==2" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <div v-if="biodata!=null && report.test_id==5"  class="flex flex-col h-full">
                                     <Kraepelin :data="JSON.parse(report.result)" :biodata="this.biodata" :print="'yes'"/>
                                 </div>
-                                <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(report.test_id))" :data="dataTesKecil" :nama="this.nama" :print="'yes'"/>
                                 <Adkudak v-if="report.test_id==10" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <!-- IST  -->
                                 <PapiKostick v-if="report.test_id==18" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <Hafalan v-if="report.test_id==21" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             </div>
-                            <div v-if="report.test_id==5 && report.result!==''" class="flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <div v-if="(report.test_id==2 || report.test_id==5) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <!-- <EppsGraphics :data="dataRegistrant" :nama="this.nama" :id="'printChart'"/> -->
-                                <div v-if="biodata!=null" class="flex flex-col h-full">
-                                    <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChart'" :print="'yes'"/>
+                                <div class="a flex flex-col h-full" v-if="report.test_id==2">
+                                    <EppsGraphics :data="JSON.parse(report.result)" :nama="this.nama" :id="'printChart'" :print="'yes'"/>
+                                </div>
+                                <div v-if="biodata!=null && report.test_id==5">
+                                    <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartKraepelin'" :print="'yes'"/>
                                 </div>
                             </div>
                         </div>
@@ -274,6 +279,7 @@ export default {
         return {
             judulHalaman: 'Registrant Detail',
             dataRegistrant: [],
+            dataTesKecil: [],
             dataFull: [],
             dataNow: null,
             biodata: null,
@@ -309,15 +315,25 @@ export default {
             .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
             .then(({data}) => (
                 this.checkTest(5, data),
-                this.tesKraepelin = true
+                this.dataFull = data,
+                this.tesKraepelin = true,
+                this.fullLoaded = 1
             ))
         },
         async dataInit(){
+            let temp = []
             for (let i = 0; i < this.testResult.length; i++) {
-                // console.log(this.testResult[i].result)
-                if(this.testResult[i].result != null && this.testResult[i].result != "")
+                if(this.testResult[i].result != null && this.testResult[i].result != ""){
+                    if ([6,7,8,9,11,12,13,14,15].includes(Number(this.testResult[i].test_id))){
+                        temp.push({"hasil": JSON.parse(this.testResult[i].result), "id": this.testResult[i].test_id})
+                    }
                     this.testResult[i].result = JSON.parse(this.testResult[i].result)
+                }
             }
+            this.dataTesKecil = temp
+            // console.log(this.testResult)
+            // console.log("==============")
+            // console.log(this.dataTesKecil)
 
             this.test = []
             for (let i = 0; i < this.testResult.length; i++) {
@@ -356,11 +372,6 @@ export default {
                         .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
                         .then(({data}) => {
                             this.dataFull = data
-                            // this.dataFull.sort((a, b) => {
-                            // let da = new Date(a.test_id),
-                            //     db = new Date(b.test_id);
-                            //     return db - da;
-                            // });
                             this.fullLoaded = 1
                             this.checkTest(this.test[0].id,data)
 
@@ -423,9 +434,9 @@ export default {
                     else{
                         axios
                         .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
-                        .then(({data}) => (
-                            this.checkTest(id,data)
-                        ))
+                        .then(({data}) => {
+                            this.checkTest(id,data)    
+                        })
                     }
                 })
             ))
@@ -447,29 +458,31 @@ export default {
                 for (let i = 0; i < this.dataFull.length; i++) {
                     if(this.dataFull[i].result!=""){
                         fullReport.push(temp[i])
-                    }
-                    
+                    }   
                 }
                 fullReport.forEach(report => {
-                    // console.log(report)
                     html2canvas(report,{"scale": 2}).then(canvas => {
                         var imgHeight = canvas.height * imgWidth / canvas.width;
                         var heightLeft = imgHeight;
                         var imgData = canvas.toDataURL('image/jpeg');
-                        
+
                         let moreThan1 = false
                         doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                        
                         heightLeft -= pageHeight;
+                        // console.log(heightLeft)
                         while (heightLeft >= 0) {
                             position += heightLeft - imgHeight - 4; // top padding for other pages
                             doc.addPage();
                             doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+
                             heightLeft -= pageHeight;
                             moreThan1 = true
                         }
-
-                        if (!moreThan1)
+                        
+                        if (!moreThan1){
                             doc.addPage()
+                        }
                         
                         ctr++
                         if(ctr == fullReport.length){
@@ -508,11 +521,12 @@ export default {
         checkTest(test, data){
             this.dataRegistrant = data
             
+            // console.log(this.dataRegistrant)
             if(this.dataRegistrant!=null){
                 let dataNow2 = null
                 for (let i = 0; i < this.dataRegistrant.length; i++) {
                     const dat = this.dataRegistrant[i];
-                    if (dat.test_id == test && dat.result != null && dat.result!='')
+                    if (dat.test_id == test && dat.result != null && dat.result!='' && ![6,7,8,9,11,12,13,14,15].includes(Number(dat.test_id)))
                         dataNow2 = JSON.parse(dat.result)
                 }
                 if (dataNow2!=null){
@@ -520,6 +534,9 @@ export default {
                     this.loaded = 1
                 }
             }
+
+            if([6,7,8,9,11,12,13,14,15].includes(Number(this.idTes)))
+                this.loaded = 1
         },
         submitKraepelinData(e){
             let pendidikan = e.target["pendidikan"].value

@@ -41,9 +41,9 @@
             </div>
         </div>
 
-        <div class="grow text-sm mt-3">
+        <!-- <div class="grow text-sm mt-3">
             <canvas :id="id" width="400" height="350"></canvas>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -73,6 +73,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.id)
         this.bio = this.biodata
         var temp = this.data
         var data = []
