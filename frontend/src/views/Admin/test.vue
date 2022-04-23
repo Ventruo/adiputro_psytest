@@ -23,7 +23,7 @@
                 <table class="table-fixed w-full font-semibold">
                     <thead class="bg-foreground-4-100 text-white sticky top-0">
                         <tr>
-                            <th class="w-1/12 py-3">No. Seksi</th>
+                            <th class="w-1/12 py-3">Persoalan</th>
                             <th class="w-3/12">Instruksi</th>
                             <th class="w-2/12">Durasi</th>
                             <th class="w-2/12">Tipe Jawaban</th>
@@ -36,13 +36,13 @@
                         <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
                             <td>{{i.section_number}}</td>
                             <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
-                            <td>{{i.duration}} Minutes</td>
+                            <td>{{i.duration}} Menit</td>
                             <td>
                                 <span v-if="i.question_type==1">Teks</span>
                                 <span v-else-if="i.question_type==2">Gambar</span>
                             </td>
                             <td>
-                                <span v-if="i.section_type==1">Essay</span>
+                                <span v-if="i.section_type==1">Esai</span>
                                 <span v-else-if="i.section_type==2">Pilihan Ganda</span>
                             </td>
                             <td>{{i.option_num}}</td>

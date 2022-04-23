@@ -4,7 +4,7 @@
         <div class="h-56 w-60 mb-2 mr-2 inline-block align-top relative overflow-hidden cursor-pointer" v-for="(tes, i) in this.testList" :key="i">
             <div class="w-full h-full bg-white ring-1 ring-inset ring-stroke-200 rounded-lg overflow-hidden" @click="keSection(tes)">
                 <div class="h-1/3 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
-                <div class="h-2/3 w-full px-5 py-2 text-black flex items-center justify-center">
+                <div class="h-2/3 w-full px-5 py-2 text-black flex items-center justify-center" v-if="tes.id!=19">
                     <div class="text-3xl">
                         <i class="fas fa-file-alt mr-2"></i>
                         <span class="font-bold">{{tes.nama}}</span>
@@ -29,6 +29,12 @@
                         </div>
                     </div> -->
                 </div>
+                <div class="h-2/3 w-full px-5 py-2 text-black flex items-center justify-center" v-else>
+                    <div class="text-3xl">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span class="font-bold">Isi Biodata</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -46,8 +52,12 @@ export default {
     },
     methods: {
         keSection(tes){
-            this.$cookies.set('current_test', {"id":tes.id}),
-            this.$router.push({path: '/section'})
+            this.$cookies.set('current_test', {"id":tes.id})
+            if(tes.id==19){
+                this.$router.push({path: '/biodata'})
+            }else{
+                this.$router.push({path: '/section'})
+            }
         }
     },
 }

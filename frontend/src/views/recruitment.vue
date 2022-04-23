@@ -202,6 +202,7 @@ export default {
         .get(this.port+'/job_vacancy/'+this.$route.query.id)
         .then(({data}) => (
             this.lowongan = data,
+            console.log(this.lowongan),
             this.pekerjaan = this.lowongan.list_pekerjaan.split(",")
         ))
     },

@@ -33,13 +33,13 @@
                     <InputBio :type="'text'" :modelValue="''" :nama="'alamat_ktp'" :placeHolder="'Alamat di KTP'" />
 
                     <p class="mt-4">ALAMAT SEKARANG :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'alamat_skg'" :placeHolder="'Alamat Sekarang'" />
+                    <InputBio :type="'text'" v-model="alamat" :nama="'alamat_skg'" :placeHolder="'Alamat Sekarang'" />
 
                     <p class="mt-4">TELEPON/HP :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'no_hp'" :placeHolder="'081234567890'" />
+                    <InputBio :type="'number'" v-model="noHp" :nama="'no_hp'" :placeHolder="'081234567890'" />
 
                     <p class="mt-4">TEMPAT & TGL LAHIR :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
+                    <InputBio :type="'text'" v-model="ttl" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
 
                     <p class="mt-4">KEWARGANEGARAAN :</p>
                     <InputBio :type="'text'" :modelValue="''" :nama="'kewarganegaraan'" :placeHolder="'Kewarganegaraan'" />
@@ -58,16 +58,16 @@
                     <InputBio :type="'text'" :modelValue="''" :nama="'agama'" :placeHolder="'Agama'" />
 
                     <p class="mt-4">USIA :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'usia'" :placeHolder="'20 Tahun'" />
+                    <InputBio :type="'number'" v-model="usia" :nama="'usia'" :placeHolder="'20'" />
 
                     <p class="mt-4">TINGGI BADAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150 cm'" />
+                    <InputBio :type="'number'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150'" />
 
                     <p class="mt-4">BERAT BADAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50 kg'" />
+                    <InputBio :type="'number'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50'" />
 
                     <p class="mt-4">NO KTP / SIM / PASPOR :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'no_identitas'" :placeHolder="'0123456789'" />
+                    <InputBio :type="'number'" v-model="ktp" :nama="'no_identitas'" :placeHolder="'0123456789'" />
 
                     <p class="mt-4">GOLONGAN DARAH :</p>
                     <InputBio :type="'text'" :modelValue="''" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
@@ -76,7 +76,7 @@
                     <InputBio :type="'number'" :modelValue="''" :nama="'no_npwp'" :placeHolder="'01234567890'" />
 
                     <p class="mt-4">E-MAIL :</p>
-                    <InputBio :type="'email'" :modelValue="''" :nama="'email'" :placeHolder="'contoh@example.com'" />
+                    <InputBio :type="'email'" v-model="email" :nama="'email'" :placeHolder="'contoh@example.com'" :readonly="true" />
                 </div>
             </div>
             <div class="mb-2">
@@ -129,8 +129,8 @@
                         </div>
                         
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'belum menikah'" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
-                            <div class="w-1/2"><Radio :values="'sudah menikah'" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
+                            <div class="w-1/2"><Radio :values="'belum menikah'" v-model="status_perkawinan" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
+                            <div class="w-1/2"><Radio :values="'sudah menikah'" v-model="status_perkawinan" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
                         </div>
                     </div>
 
@@ -793,6 +793,13 @@ export default {
             judulHalaman: 'Biodata',
             url: null,
             fullname: "",
+            ktp: "",
+            ttl: "",
+            jenis_kelamin: "",
+            alamat: "",
+            usia: "",
+            noHp: "",
+            status_perkawinan: "",
             sudahMenikah: false,
             sakitKeras: false,
             adaKenalan: false,
@@ -809,6 +816,8 @@ export default {
             orang_terdekat: [{nama:'', alamat:'',telepon:''},{nama:'', alamat:'',telepon:''}],
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             email: null,
+            id_tes_result: null,
+            exam_session: null,
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -838,8 +847,9 @@ export default {
             const date = ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
             return date
         },
-        toArray(raw){
-
+        dateFormatting(date){
+            let arr = date.split('-')
+            return arr[2]+"-"+arr[1]+"-"+arr[0]
         },
         submitForm(e){
             let data = Object.fromEntries(new FormData(e.target).entries());
@@ -940,18 +950,41 @@ export default {
             // formData.append('lampiran',fileLamaran)
 
             $('#spinner-modal').fadeIn("slow");
-
+            
+            let data_result = null
             axios.post(this.port+'/registrant/update', formData2)
             .then((response) => {
                 if (response.status==200){
-                    $('#spinner-modal').fadeOut("slow");
-                    Swal.fire(
-                        'Sukses!',
-                        'Biodata berhasil disimpan.',
-                        'success'
-                    )
-                    .then(function(){
-                        // window.location = '/'
+                    axios
+                    .get(this.port+`/test_result/${this.id_tes_result}`)
+                    .then(({data}) => (
+                        data_result = data,
+                        axios.post(this.port+'/test_result/update',{
+                            "updating_id": data_result.id,
+                            "test_id": 19,
+                            "exam_session": this.exam_session,
+                            "start_date": data_result.start_date,
+                            "finish_date": Date.now(),
+                            "status": 1,
+                            "result": formData
+                        })
+                        .then((response) => {
+                            console.log(response)
+                            $('#spinner-modal').fadeOut("slow");
+                            this.$cookies.remove("current_test")
+                            Swal.fire(
+                                'Sukses!',
+                                'Biodata berhasil disimpan.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/dashboard'
+                            })
+                        }).catch( error => { 
+                            console.log('error: ' + error) 
+                        })
+                    )).catch( error => { 
+                        console.log('error: ' + error) 
                     })
                 }else{
                     throw response
@@ -968,6 +1001,34 @@ export default {
     },
     mounted() {
         this.email = this.$cookies.get('data_registrant').email
+
+        axios
+        .get(this.port+"/applicant/"+this.email)
+        .then(({data}) => {
+            if(data!==undefined){
+                this.fullname = data.nama
+                this.ktp = data.no_ktp
+                this.ttl = data.tempat_lahir+" / "+this.dateFormatting(data.tanggal_lahir)
+                this.jenis_kelamin = data.jenis_kelamin
+                this.alamat = data.alamat_domisili
+                this.usia = data.usia
+                this.sudahMenikah = data.status_perkawinan=="belum menikah"?false:true
+                this.status_perkawinan = data.status_perkawinan
+                this.noHp = data.nomor_hp
+                this.pendidikan[0].tingkat = data.pendidikan_terakhir
+                this.pendidikan[0].nama_sekolah = data.nama_sekolah
+                this.pendidikan[0].jurusan = data.jurusan
+            }
+        })
+
+        let datas = this.$cookies.get("data_registrant")
+        this.exam_session = datas.exam_session;
+        let tests = datas.test;
+        for (let i = 0; i < tests.length; i++) {
+            if (tests[i][0]==19)
+                this.id_tes_result = tests[i][1]
+        }
+        
     },
     created(){
         this.$emit('updateJudul', this.judulHalaman)

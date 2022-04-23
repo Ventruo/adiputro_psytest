@@ -1,13 +1,13 @@
 <template>
     <input :type="type" v-model="inputValue" :name="nama" :id="nama"
         class="w-full px-4 py-2 my-1 rounded-lg outline-none bg-background-400 ring-1 ring-inset ring-stroke-100 placeholder-stroke-100" 
-        :placeholder="placeHolder" autocomplete="off"/>
+        :placeholder="placeHolder" autocomplete="off" :readonly="readonly"/>
 </template>
 
 <script>
 export default {
     props: [
-        "type", "modelValue", "placeHolder", "nama"
+        "type", "modelValue", "placeHolder", "nama", "readonly"
     ],
     computed: {
         inputValue: {

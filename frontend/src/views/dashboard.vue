@@ -103,6 +103,8 @@ export default {
                     axios.defaults.headers.common['Authorization'] = '';
                     this.$cookies.remove('refresh_token')
                     this.$cookies.remove('data_registrant')
+                    this.$cookies.remove('current_section')
+                    this.$cookies.remove("start_time")
 
                     window.location="/"
                 }
@@ -170,7 +172,10 @@ export default {
             for (let j = 0; j < this.hasil.length; j++) {
                 if(this.test_list[i].id == this.hasil[j].test_id){
                     this.test_list.splice(i,1)
-                    this.hasil[j].nama = "Tes "+this.abjad[i]
+                    if(this.hasil[j].test_id==19)
+                        this.hasil[j].nama = "Biodata"
+                    else
+                        this.hasil[j].nama = "Tes "+this.abjad[i]
                     break;
                 }
             }

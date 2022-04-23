@@ -60,7 +60,7 @@
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
-        <div id="modalSession" class="fixed left-1/4 bg-foreground-4-200 h-3/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 20%">
+        <div id="modalSession" class="fixed left-1/4 bg-foreground-4-200 h-4/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 10%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">{{headerModal}}</p>
                 <button id="closeNewSession" class="relative inline-block" @click="closeModal">
@@ -114,11 +114,11 @@
 
                 <div class="flex gap-2 items-center">
                     <label>Tes Opsional : </label>
-                    <select name="" id="" class="bg-sky-300 text-primary-1000 text-lg rounded-lg py-1 px-2 w-1/3 outline-none shadow-xl cursor-pointer"
+                    <select name="" id="" class="bg-sky-300 text-primary-1000 rounded-lg py-1 px-2 w-1/3 outline-none shadow-xl cursor-pointer"
                             v-model="this.selectedOptional">
                         <option v-for="i in opsional" :key="i" v-bind:value="i.id">{{i.name}}</option>
                     </select>
-                    <button class="rounded-lg px-3 h-10 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
+                    <button class="rounded-lg px-3 h-8 bg-sky-300 text-primary-1000 hover:bg-primary-600 hover:text-sky-200 duration-300"
                                     @click.prevent="tambahTes">Tambahkan</button>
                 </div>
 

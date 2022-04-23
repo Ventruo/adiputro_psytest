@@ -400,7 +400,7 @@
                 <div class="ml-7">
                     <div class="mt-2 flex gap-2">
                         <p class="font-bold">Dan mulai kapan Anda dapat mulai bekerja jika Anda di terima di PT. Adiputro Wirasejati :</p>
-                        <p>{{biodata.keterangan_kerja.bisa_mulai_bekerja}}</p>
+                        <p>{{biodata.keterangan_kerja.bisa_mulai_kerja}}</p>
                     </div>
 
                     <div class="mt-2 flex gap-2">
@@ -619,6 +619,11 @@
             </div>
         </div>
         <div class="w-1 h-40"></div>
+    </div>
+    <div v-else class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-2/3 w-1/2">
+        <div class="bg-foreground-3-500 w-full h-full px-10 py-20 rounded-xl flex items-center justify-center text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
+            Biodata belum diisi :(
+        </div>
     </div>
 </template>
 
