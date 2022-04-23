@@ -127,7 +127,7 @@
                     <div class="w-9/12">
                         <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in tests" :key="i">
                             <span>{{i.name}}</span>
-                            <i v-if="this.statusAdd" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusTest(`${i.id}`)"></i>
+                            <i v-if="this.statusAdd || (!this.statusAdd && !this.current_test_list.includes(i))" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusTest(`${i.id}`)"></i>
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,9 @@ export default {
             statusAdd: true,
             updating: -1,
             list_tes: null,
-            selectedOptional: -1
+            selectedOptional: -1,
+            current_test_list: null,
+            current_exam_session: null
         }
     },
     created() {
@@ -209,14 +211,33 @@ export default {
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
-        openModal(data){
+        async openModal(data2){
+            this.current_test_list = []
+            this.tests = []
+            await axios
+            .get(`${this.port}/test/getbyExamSession/${data2.id}`)
+            .then(({data}) => {
+                if(data!=undefined){
+                    let idx = -1;
+                    for (let i = 0; i < this.list_tes.length; i++) {
+                        for (let j = 0; j < data.length; j++) {
+                            if (this.list_tes[i].id == data[j].test_id){
+                                this.tests.push(this.list_tes[i])
+                                this.current_test_list.push(this.list_tes[i])
+                                break;
+                            }
+                        }
+                    }
+                }
+            })
+
+            this.current_exam_session = data2.id
             this.statusAdd = false
-            this.emails = [data.email]
-            // this.tests = [data.email]
-            this.start = data.start_date.split(".")[0]
-            this.finish = data.finish_date.split(".")[0]
+            this.emails = [data2.email]
+            this.start = data2.start_date.split(".")[0]
+            this.finish = data2.finish_date.split(".")[0]
             this.isiEmail = ""
-            this.updating = data.id
+            this.updating = data2.id
             this.headerModal = "Perbarui Sesi";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
@@ -347,28 +368,39 @@ export default {
                     });
                 }else{
                     console.log("update")
-                    axios.post(this.port+'/exam_session/update',{
-                        "updating_id": this.updating,
-                        "email": this.emails[0],
-                        "start_date": dateStart,
-                        "finish_date": dateFinish,
-                        "duration": duration,
-                        "status": this.aktif?2:1
+                    let addTest = this.tests.filter(n => !this.current_test_list.includes(n))
+                    let addingTest = []
+                    addTest.forEach(at => { addingTest.push(at.id) });
+                    // console.log(addingTest)
+
+                    axios.post(this.port+'/test/addTest',{
+                        "test_id": addingTest,
+                        "exam_session_id": this.current_exam_session
                     })
                     .then((response) => {
-                        if (response.status==200){
-                            Swal.fire(
-                                'Updated!',
-                                'Sesi Berhasil Diperbarui!',
-                                'success'
-                            )
-                            .then(function(){
-                                $('#modalSession').fadeOut("fast")
-                                $('#bg').fadeOut("slow")
-                            })
-                        }else{
-                            throw response
-                        }
+                        axios.post(this.port+'/exam_session/update',{
+                            "updating_id": this.updating,
+                            "email": this.emails[0],
+                            "start_date": dateStart,
+                            "finish_date": dateFinish,
+                            "duration": duration,
+                            "status": this.aktif?2:1
+                        })
+                        .then((response) => {
+                            if (response.status==200){
+                                Swal.fire(
+                                    'Updated!',
+                                    'Sesi Berhasil Diperbarui!',
+                                    'success'
+                                )
+                                .then(function(){
+                                    $('#modalSession').fadeOut("fast")
+                                    $('#bg').fadeOut("slow")
+                                })
+                            }else{
+                                throw response
+                            }
+                        }).catch( error => {});
                     }).catch( error => {
                         $('#spinner-modal').fadeOut("slow");
                         Swal.fire(
