@@ -1,4 +1,6 @@
 const Test = require("../models/Test");
+const TestResult = require("../models/TestResult");
+const ExamSessionTest = require("../models/ExamSessionTest");
 const {
   missing_param_response,
   data_not_found_response,
@@ -36,6 +38,55 @@ class TestController {
 
       success_response(res, tests, "Get All Data Successful!");
     });
+  }
+
+  async getbyExamSession(req, res) {
+    console.log("Getting Tests By Exam Session...");
+
+    ExamSessionTest.findAll({
+      where: {
+        exam_session_id: req.params.exam_session_id,
+      },
+    }).then((results) => {
+      if (results.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
+      success_response(res, results, "Get Data Successful!");
+    });
+  }
+
+  async addtest(req, res) {
+    console.log("Add Tests to Exam Session Test...");
+
+    if (!req.body.test_id || !req.body.exam_session_id) {
+      missing_param_response(res);
+      return;
+    }
+
+    const { test_id, exam_session_id } = req.body;
+    let test_to_add = [];
+    let test_result_to_add = [];
+    let now = new Date();
+    for (let i = 0; i < test_id.length; i++) {
+      test_to_add.push({
+        exam_session_id: exam_session_id,
+        test_id: test_id[i],
+      });
+
+      test_result_to_add.push({
+        test_id: test_id[i],
+        exam_session: exam_session_id,
+        start_date: now,
+        finish_date: now,
+      });
+    }
+
+    await ExamSessionTest.bulkCreate(test_to_add);
+    await TestResult.bulkCreate(test_result_to_add);
+
+    success_response(res, test_to_add, "Create Successful!");
   }
 
   async create(req, res) {
