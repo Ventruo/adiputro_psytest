@@ -10,6 +10,7 @@ const SectionResult = require("../models/SectionResult");
 const ExamSession = require("../models/ExamSession");
 const Section = require("../models/Section");
 const TestResult = require("../models/TestResult");
+const { q_result_ist } = require("./test_result_calc/ist_calc");
 
 class QuestionResultController {
   async getOne(req, res) {
@@ -301,97 +302,110 @@ class QuestionResultController {
 
       let results = [];
       let ctr_correct = secres.num_correct;
-      for (const data of req.body.data) {
-        await Question.findOne({ where: { id: data.question_id } }).then(
-          async (question) => {
-            let status_correct = false;
 
-            data.answer = data.answer + "";
-            if (data.answer.includes("&")) {
-              let a1 = data.answer.split("&")[0];
-              let a2 = data.answer.split("&")[1];
+      // Calculate IST using excel formula
+      if (req.body.section_id >= 61 && req.body.section_id <= 69) {
+        return q_result_ist(
+          req.body.data,
+          req.body.section_id,
+          ctr_correct,
+          secres,
+          res
+        );
+      } else {
+        for (const data of req.body.data) {
+          await Question.findOne({ where: { id: data.question_id } }).then(
+            async (question) => {
+              let status_correct = false;
 
-              if (question.answer.includes("&")) {
-                // Both answer must equal to the question
-                let q1 = question.answer.split("&")[0];
-                let q2 = question.answer.split("&")[1];
+              data.answer = data.answer + "";
+              if (data.answer.includes("&")) {
+                let a1 = data.answer.split("&")[0];
+                let a2 = data.answer.split("&")[1];
 
-                if (question.section_id == 6 || question.section_id == 77) {
-                  // Answer and Correct Answer has fractions
-                  a1 = eval(a1);
-                  a2 = eval(a2);
-                  q1 = eval(q1);
-                  q2 = eval(q2);
+                if (question.answer.includes("&")) {
+                  // Both answer must equal to the question
+                  let q1 = question.answer.split("&")[0];
+                  let q2 = question.answer.split("&")[1];
+
+                  if (question.section_id == 6 || question.section_id == 77) {
+                    // Answer and Correct Answer has fractions
+                    a1 = eval(a1);
+                    a2 = eval(a2);
+                    q1 = eval(q1);
+                    q2 = eval(q2);
+                  }
+
+                  if (a1 == q1 && a2 == q2) {
+                    status_correct = true;
+                    ctr_correct++;
+                  }
+                } else if (question.answer.includes("-")) {
+                  // Each answer corresponds one question
+                  console.log("?");
+                  let q1 = question.answer.split("-")[0];
+                  let q2 = question.answer.split("-")[1];
+
+                  let temp_ctr = 0;
+                  console.log(
+                    a1 + " - " + q1,
+                    a1.toUpperCase() == q1.toUpperCase()
+                  );
+                  console.log(
+                    a2 + " - " + q2,
+                    a2.toUpperCase() == q2.toUpperCase()
+                  );
+                  if (a1.toUpperCase() == q1.toUpperCase()) temp_ctr++;
+                  if (a2.toUpperCase() == q2.toUpperCase()) temp_ctr++;
+                  if (temp_ctr > 0) status_correct = true;
+                  console.log(temp_ctr);
+                  ctr_correct += temp_ctr;
+                  console.log(ctr_correct);
                 }
+              } else if (question.answer.includes("|")) {
+                // Only 1 answer is needed to be true
+                let q1 = question.answer.split("|")[0];
+                let q2 = question.answer.split("|")[1];
 
-                if (a1 == q1 && a2 == q2) {
+                if (
+                  data.answer.toUpperCase() == q1.toUpperCase() ||
+                  data.answer.toUpperCase() == q2.toUpperCase()
+                ) {
                   status_correct = true;
                   ctr_correct++;
                 }
-              } else if (question.answer.includes("-")) {
-                // Each answer corresponds one question
-                console.log("?");
-                let q1 = question.answer.split("-")[0];
-                let q2 = question.answer.split("-")[1];
+              } else if (question.answer.includes(",")) {
+                // for kreapelin
+                let correct_answer = question.answer.split(",");
+                let user_answer = data.answer;
+                let temp_status_correct = true;
+                for (let i = 0; i < user_answer.length; i++) {
+                  if (user_answer[i] == correct_answer[i]) ctr_correct++;
+                  else temp_status_correct = false;
+                }
 
-                let temp_ctr = 0;
-                console.log(
-                  a1 + " - " + q1,
-                  a1.toUpperCase() == q1.toUpperCase()
-                );
-                console.log(
-                  a2 + " - " + q2,
-                  a2.toUpperCase() == q2.toUpperCase()
-                );
-                if (a1.toUpperCase() == q1.toUpperCase()) temp_ctr++;
-                if (a2.toUpperCase() == q2.toUpperCase()) temp_ctr++;
-                if (temp_ctr > 0) status_correct = true;
-                console.log(temp_ctr);
-                ctr_correct += temp_ctr;
-                console.log(ctr_correct);
-              }
-            } else if (question.answer.includes("|")) {
-              // Only 1 answer is needed to be true
-              let q1 = question.answer.split("|")[0];
-              let q2 = question.answer.split("|")[1];
-
-              if (
-                data.answer.toUpperCase() == q1.toUpperCase() ||
-                data.answer.toUpperCase() == q2.toUpperCase()
-              ) {
-                status_correct = true;
-                ctr_correct++;
-              }
-            } else if (question.answer.includes(",")) {
-              // for kreapelin
-              let correct_answer = question.answer.split(",");
-              let user_answer = data.answer;
-              let temp_status_correct = true;
-              for (let i = 0; i < user_answer.length; i++) {
-                if (user_answer[i] == correct_answer[i]) ctr_correct++;
-                else temp_status_correct = false;
+                data.answer = data.answer.toString();
+                status_correct = temp_status_correct;
+              } else {
+                if (
+                  data.answer.toUpperCase() == question.answer.toUpperCase()
+                ) {
+                  status_correct = true;
+                  ctr_correct++;
+                }
               }
 
-              data.answer = data.answer.toString();
-              status_correct = temp_status_correct;
-            } 
-            else {
-              if (data.answer.toUpperCase() == question.answer.toUpperCase()) {
-                status_correct = true;
-                ctr_correct++;
-              }
+              const new_result = await QuestionResult.create({
+                section_result_id: secres.id,
+                question_id: data.question_id,
+                answer: data.answer,
+                status_correct: status_correct,
+              });
+
+              results.push(new_result);
             }
-
-            const new_result = await QuestionResult.create({
-              section_result_id: secres.id,
-              question_id: data.question_id,
-              answer: data.answer,
-              status_correct: status_correct,
-            });
-
-            results.push(new_result);
-          }
-        );
+          );
+        }
       }
 
       secres.set({

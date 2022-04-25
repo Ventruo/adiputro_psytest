@@ -22,6 +22,7 @@ const {
   calculate_papi_kostick_test,
 } = require("./test_result_calc/papi_kostick_calc");
 const { calculate_hafalan_test } = require("./test_result_calc/hafalan_calc");
+const { calculate_ist_test } = require("./test_result_calc/ist_calc");
 
 class TestResultController {
   async getOne(req, res) {
@@ -232,6 +233,8 @@ class TestResultController {
           calculate_akudak_test(test.test_type, testres, res);
         } else if (test.test_type == 16) {
           calculate_tintum_anak_test(test.test_type, testres, res);
+        } else if (test.test_type == 17) {
+          calculate_ist_test(test.test_type, testres, res);
         } else if (test.test_type == 18) {
           calculate_papi_kostick_test(test.test_type, testres, res);
         } else if (test.test_type == 21) {
