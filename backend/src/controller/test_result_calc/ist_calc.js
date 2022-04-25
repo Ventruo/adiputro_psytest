@@ -8,7 +8,7 @@ const formula = require("excel-formula");
 const SectionResult = require("../../models/SectionResult");
 const Section = require("../../models/Section");
 const QuestionResult = require("../../models/QuestionResult");
-const Question = require("../../models/Question");
+const ISTData = require("../../models/ISTData");
 
 async function q_result_ist(data, section_id, ctr_correct, secres, res) {
   xlsxFile("./src/data/test_norma.xlsx", {
@@ -81,20 +81,39 @@ async function calculate_ist_test(test_type, testres, res) {
           }
         }
 
-        // Calculate with norms
-        process_ist(
-          "./src/data/test_norma.xlsx",
-          test_type,
-          correct_data,
-          res,
-          testres
-        );
+        ISTData.findOne({
+          where: {
+            test_result_id: testres.id,
+          },
+        }).then((ist_data) => {
+          if (!ist_data) {
+            data_not_found_response(res);
+            return;
+          }
+
+          // Calculate with norms
+          process_ist(
+            "./src/data/test_norma.xlsx",
+            test_type,
+            correct_data,
+            res,
+            testres,
+            ist_data
+          );
+        });
       });
     }
   );
 }
 
-async function process_ist(excel_path, sheet, correct_data, res, testres) {
+async function process_ist(
+  excel_path,
+  sheet,
+  correct_data,
+  res,
+  testres,
+  ist_data
+) {
   // Read Norms from Excel
   xlsxFile(excel_path, {
     sheet: sheet,
@@ -103,9 +122,7 @@ async function process_ist(excel_path, sheet, correct_data, res, testres) {
     console.log("Answers: ", correct_data);
 
     let factors = ["SE", "WA", "AN", "GE", "RA", "ZR", "FA", "WU", "ME"];
-
-    // TODO ganti usia dari inputan
-    let usia = 28;
+    let usia = ist_data.usia;
 
     // Load Norms
     let norms_lookup = {};
