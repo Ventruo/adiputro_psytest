@@ -23,7 +23,8 @@ async function calculate_hafalan_test(test_type, testres, res) {
             }
           }
         }
-        correct_data.shift();
+        // correct_data.shift();
+        correct_data = [correct_data.shift()];
 
         // Calculate with norms
         process_hafalan(

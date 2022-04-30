@@ -8,6 +8,22 @@ const SectionResult = require("../../models/SectionResult");
 const Section = require("../../models/Section");
 const { now } = require("moment");
 
+const iq_lookup = {
+  4: 85,
+  5: 88,
+  6: 91,
+  7: 94,
+  8: 97,
+  9: 100,
+  10: 103,
+  11: 106,
+  12: 109,
+  13: 112,
+  14: 115,
+  15: 118,
+  16: 121,
+};
+
 async function calculate_tintum_anak_test(test_type, testres, res) {
   // Get correct answers per Section from Section Results
   SectionResult.findAll({ where: { test_result_id: testres.id } }).then(
@@ -110,10 +126,43 @@ async function process_tintum_anak(
         }
       }
     }
+
+    // Calculate IQ
+    let norms_sum = 0
+    results.forEach(result => { norms_sum += result.value });
+    console.log("Norms Sum: ", norms_sum);
+    let norms_div = norms_sum / 10;
+    let norms_rounded = Math.floor(norms_div);
+
+    let iq =
+      iq_lookup[Object.keys(iq_lookup)[Object.keys(iq_lookup).length - 1]];
+    for (const key in iq_lookup) {
+      if (key >= norms_div) {
+        let iq_keys = Object.keys(iq_lookup);
+        let loc = iq_keys.indexOf(key);
+
+        if (key == norms_div) iq = iq_lookup[key];
+        else if (loc != 0) iq = iq_lookup[iq_keys[loc - 1]];
+        else iq = 0;
+
+        break;
+      }
+    }
+
+    if (!(norms_div - norms_rounded < 0.3)) {
+      iq = iq + Math.floor((norms_div - norms_rounded + 0.000001) / 0.3);
+    }
+    console.log("IQ: ", iq);
+
     console.log("Result JSON: ", results);
 
+    let res_full = {};
+    res_full.norms_sum = norms_sum;
+    res_full.iq = iq;
+    res_full.data = results;
+    
     testres.set({
-      result: JSON.stringify(results),
+      result: JSON.stringify(res_full),
     });
     testres.save();
 
