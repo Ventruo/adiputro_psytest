@@ -79,16 +79,18 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="flex justify-end mt-5">
+            <div class="flex justify-end mr-2">
                 <div class="text-right mr-2 font-bold">
                     <p>Total :</p>
-                    <p>Keterangan :</p>
+                    <p>Total / 10 :</p>
+                    <p>IQ :</p>
                 </div>
                 <div>
-                    <p>{{this.hasil.norma}}</p>
-                    <p>{{this.hasil.keterangan}}</p>
+                    <p>{{data.norms_sum}}</p>
+                    <p>{{data.norms_sum/10}}</p>
+                    <p>{{data.iq}}</p>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -110,7 +112,7 @@ export default {
     },
     mounted() {
         // this.hasil = this.data[5]
-        this.arrTabel = this.data
+        this.arrTabel = this.data.data
         // this.bio = this.biodata
         // console.log(this.bio)
         // console.log(this.arrTabel)

@@ -192,7 +192,7 @@ export default {
                     
                     if (this.menit<0){
                         this.detik = 0
-                        this.menit = 0
+                        this.menit = 3
                         clearInterval(this.waktu)
                         this.submitJawaban()
                     } 
@@ -207,10 +207,10 @@ export default {
 
                 this.progress(true)
             }
-            // else{
-            //     clearInterval(this.waktu)
-            //     this.state = 3
-            // }
+            else{
+                clearInterval(this.waktu)                        
+                this.submitJawaban()
+            }
             this.gantiPilihanJawaban()
         },
         prevSoal(){
@@ -228,8 +228,8 @@ export default {
             var width = ((this.noSoal/this.jumSoal)*100)
             elements.style.width = width +'%'
             
-            if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
-            else $('#nextBtn').text('Submit')
+            // if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
+            // else $('#nextBtn').text('Submit')
 
             this.gantiPilihanJawaban()
         },
@@ -237,11 +237,11 @@ export default {
             this.pilihanJawaban = []
             if(this.state==2){
                 this.pilihanJawaban = [
-                    this.pertanyaan[this.noSoal-1]['option_a'],
-                    this.pertanyaan[this.noSoal-1]['option_b'],
-                    this.pertanyaan[this.noSoal-1]['option_c'],
-                    this.pertanyaan[this.noSoal-1]['option_d'],
-                    this.pertanyaan[this.noSoal-1]['option_e'],
+                    'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
+                    'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
+                    'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
+                    'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
+                    'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
             }
             this.jumChoice = this.pilihanJawaban.length
@@ -267,63 +267,50 @@ export default {
             }
         },
         submitJawaban(){
-            // for (let i = 0; i < this.jumSoal; i++) {
-            //     this.jawabanFinal[i] = []
-            //     this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
-            //     if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-            //         this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
-            //     else if (this.jenis=="MMPI"){
-            //         let ans = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-            //         this.jawabanFinal[i]["answer"] = ans=="+"?1:0
-            //     }
-            //     else if (this.jenis=="SDI"){
-            //         let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
-            //         this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?1:0
-            //     }
-            //     else if(this.jumChoice==2){
-            //         this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-            //     }
-            //     else
-            //         this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
-            //     this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
-            // }
+            console.log("masuk")
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanFinal[i] = []
+                this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
+                this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
+                this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
+            }
 
-            // let formData = {
-            //     exam_session: this.exam_session,
-            //     section_id: this.section_id,
-            //     data: this.jawabanFinal
-            // }
+            let formData = {
+                exam_session: this.exam_session,
+                section_id: this.section_id,
+                data: this.jawabanFinal
+            }
 
-            // axios.post(this.port+'/section_result/create',{
-            //     "test_result_id": this.test_result_id,
-            //     "section_id": this.section_id,
-            //     "exam_session": this.exam_session,
-            //     "start_date": parseInt(this.$cookies.get("start_time")),
-            //     "finish_date": Date.now()
-            // })
-            // .then((response) => {
-            //     axios.post(this.port+'/question_result/createmultiple',formData)
-            //     .then((response) => {
-            //         axios.post(this.port+'/test_result/calculateresult',{
-            //             test_id: this.test_id,
-            //             email: this.email
-            //         })
-            //         .then((response) => {
-            //             this.$cookies.remove('current_section')
-                        // this.$cookies.remove("start_time")
-            //             Swal.fire(
-            //                 'Submitted!',
-            //                 'Task Successfully Submitted.',
-            //                 'success'
-            //             )
-            //             .then(function(){
-            //                 window.location = '/section'
-            //             })
-            //         })
-            //     })
-            // }).catch( error => { 
-            //     console.log('error: ' + error) 
-            // });
+            axios.post(this.port+'/section_result/create',{
+                "test_result_id": this.test_result_id,
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "start_date": parseInt(this.$cookies.get("start_time")),
+                "finish_date": Date.now()
+            })
+            .then((response) => {
+                axios.post(this.port+'/question_result/createmultiple',formData)
+                .then((response) => {
+                    axios.post(this.port+'/test_result/calculateresult',{
+                        test_id: this.test_id,
+                        email: this.email
+                    })
+                    .then((response) => {
+                        this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
+                        Swal.fire(
+                            'Submitted!',
+                            'Task Successfully Submitted.',
+                            'success'
+                        )
+                        .then(function(){
+                            window.location = '/section'
+                        })
+                    })
+                })
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         chooseWithKeyboard(pilihan){
             let komponen = null

@@ -353,14 +353,19 @@ export default {
             }
         },
         getMaxLength(){
-            let x = 0;
-            this.pertanyaan.forEach(p => {
-                let jawaban = p.answer.split('&')
-                jawaban.forEach(j => {
-                    if (j.length>x) x = j.length
+            let id = this.$cookies.get('current_section').id
+            if(id==65) this.maxLength = 3
+            else if (id==66) this.maxLength = 2
+            else{
+                let x = 0;
+                this.pertanyaan.forEach(p => {
+                    let jawaban = p.answer.split('&')
+                    jawaban.forEach(j => {
+                        if (j.length>x) x = j.length
+                    });
                 });
-            });
-            this.maxLength = x
+                this.maxLength = x
+            }
         }
     },
 

@@ -32,7 +32,7 @@ export default {
         "noSoal": { type: Number, default: 1, required: true },
         "jumlahJawaban": { type: Number, default: 1, required: true },
         "maxLength": { type: Number, default: 1, required: true },
-        "section": { type: String, default:"", required: true },
+        "section": { type: Number, default:-1, required: true },
     },
     methods: {
         validasi(evt){
@@ -98,7 +98,8 @@ export default {
         }
     },
     mounted() {
-        if(this.section==5 || this.section==6 || this.section==58) this.needValidate = true
+        if(this.section==5 || this.section==6 || this.section==58 || this.section==65 || this.section==66 || this.section==76 || this.section==77) this.needValidate = true
+        // console.log(this.maxLength)
     },
 }
 </script>

@@ -31,12 +31,12 @@
         
         <div class="grow text-sm mt-2" v-if="arrTabel!=null">
             <div v-if="print==='no'" class="flex justify-center">
-                <table class="table-fixed border-y-[1px] border-l-[1px] border-black w-1/2">
+                <table class="table-fixed border-y-[1px] border-l-[1px] border-black w-2/3">
                     <thead class="bg-primary-900 text-white">
                         <tr>
                             <th class="font-bold w-1/3">Persoalan</th>
-                            <th class="font-bold w-1/3">Benar</th>
-                            <th class="font-bold w-1/3">Norma</th>
+                            <th class="font-bold w-1/3">Benar (R.S.)</th>
+                            <th class="font-bold w-1/3">Norma (W.S.)</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y-[1px] divide-black">
@@ -50,12 +50,12 @@
             </div>
 
             <div class="flex justify-center" v-if="print==='yes'">
-                <table class="table-fixed border-collapse border-y-[1px] border-l-[1px] border-black w-1/2">
+                <table class="table-fixed border-collapse border-y-[1px] border-l-[1px] border-black w-2/3">
                     <thead class="bg-primary-900 text-white">
                         <tr>
                             <th class="font-bold w-1/3"><span class="relative bottom-2">Persoalan</span></th>
-                            <th class="font-bold w-1/3"><span class="relative bottom-2">Benar</span></th>
-                            <th class="font-bold w-1/3"><span class="relative bottom-2">Norma</span></th>
+                            <th class="font-bold w-1/3"><span class="relative bottom-2">Benar (R.S.)</span></th>
+                            <th class="font-bold w-1/3"><span class="relative bottom-2">Norma (W.S.)</span></th>
                         </tr>
                     </thead>
                     <tbody class="divide-y-[1px] divide-black">
@@ -98,8 +98,8 @@ export default {
         }
     },
     mounted() {
-        // this.hasil = this.data[5]
-        // this.arrTabel = this.data.splice(0,5)
+        this.hasil = this.data[5]
+        this.arrTabel = this.data.splice(0,5)
         // this.bio = this.biodata
         // console.log(this.bio)
         // console.log(this.arrTabel)

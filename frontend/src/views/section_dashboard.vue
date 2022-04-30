@@ -28,8 +28,27 @@
                 <span>Logout</span>
             </button>
         </div>
+        
+        <form v-if="this.id_tes!=null && this.id_tes==17 && this.data_ist==false" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5 mt-24 mx-10"
+            @submit.prevent="submitIstData">
+            <h1 class="text-3xl font-bold mb-2">Biodata</h1>
+            <div class="mb-5 mt-3">
+                <label for="tglLahir">Tanggal Lahir :</label><br>
+                <input type="date" name="birth_date" id="birthdate" v-model="tgl_lahir"
+                    class="rounded-lg py-2 px-3 my-2 w-full outline-none"><br>
+                <label for="tglLahir">Tujuan Mengikuti Tes :</label>
+                <input name="alasan" id="alasan_tes" placeholder="Tuliskan disini." v-model="alasan"
+                    class="rounded-lg py-2 px-3 my-2 w-full outline-none"><br>
+            </div>
+            
+            <div class="text-right">
+                <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
+                    Submit dan mulai
+                </button>
+            </div>
+        </form>
 
-        <div class="w-full h-screen overflow-hidden">
+        <div class="w-full h-screen overflow-hidden" v-if="this.id_tes!=null && (this.id_tes!=17 || (this.id_tes==17 && this.data_ist))">
             <p class="text-2xl font-bold text-white ml-5 my-6">{{judulHalaman}}</p>
             <div class="overflow-auto no-scrollbar h-screen w-full relative px-10">
                 <Section v-if="this.sectionList!=null && this.now!=-99" :sectionList="this.sectionList" :now="this.now"/>
@@ -60,7 +79,11 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             hasil: null,
             now: -99,
-            id_tes: null
+            id_tes: null,
+            id_tes_result: null,
+            data_ist: false,
+            tgl_lahir: null,
+            alasan: ""
         }
     },
     created() {
@@ -175,19 +198,40 @@ export default {
                 )).catch( error => { 
                     console.log('error: ' + error) 
                 })
-
-                // console.log(data_result.id)
-                // console.log(this.id_tes)
-                // console.log(dataReg.exam_session)
-                // console.log(data_result.start_date)
-                // console.log(Date.now())
-                // console.log("1")
-                // console.log(data_result.result)
-                
             }
-            // console.log(this.hasil)
-            // console.log(this.sectionList)
-        }
+        },
+        submitIstData(e){
+            if (this.tgl_lahir == null || this.alasan == ""){
+                Swal.fire({
+                    title: 'Mohon Isi Semua Field!',
+                    icon: 'warning',
+                    confirmButtonText: 'Kembali'
+                });
+            } else{
+                $('#spinner-modal').fadeIn("slow");
+
+                axios.post(this.port+'/ist_data/create',{
+                    "test_result_id": this.test_result_id,
+                    "email": this.$cookies.get('data_registrant').email,
+                    "tanggal_lahir": this.tgl_lahir,
+                    "tujuan_tes": this.alasan
+                })
+                .then((dataResponse) => {
+                    const thi = this
+                    Swal.fire(
+                        'Sukses!',
+                        'Data diri berhasil dikirimkan.',
+                        'success'
+                    )
+                    .then(function(){
+                        thi.data_ist = true,
+                        $('#spinner-modal').fadeOut("slow")
+                    })
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }
+        },
     },
     mounted(){
         // console.log(this.$cookies.get('refresh_token'));
@@ -213,6 +257,23 @@ export default {
                 this.cekSelesai(data)
             ))
         ))
+
+        // console.log(this.id_tes)
+        if(this.id_tes === 17){
+            // IST
+            let tes = this.$cookies.get('data_registrant').test
+            this.test_result_id = -1
+            tes.forEach(t => {
+                if (t[0]==this.id_tes) this.test_result_id = t[1]
+            });
+            if(this.test_result_id!=-1){
+                axios
+                .get(this.port+`/ist_data/?test_result_id=${this.test_result_id}`)
+                .then(({data}) => (
+                    this.data_ist = data!=undefined
+                ))
+            }
+        }
     },
 }
 </script>
