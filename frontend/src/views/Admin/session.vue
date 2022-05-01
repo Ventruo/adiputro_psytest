@@ -60,7 +60,7 @@
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create New Session Modal -->
-        <div id="modalSession" class="fixed left-1/4 bg-foreground-4-200 h-4/5 w-1/2 text-primary-1000 rounded-lg hidden" style="top: 10%">
+        <div id="modalSession" class="fixed bg-foreground-4-200 h-4/5 w-2/3 text-primary-1000 rounded-lg hidden" style="top: 10%; left: 16.67%">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">{{headerModal}}</p>
                 <button id="closeNewSession" class="relative inline-block" @click="closeModal">
@@ -103,13 +103,13 @@
                     <label>Paket Tes :</label>
                     <button class="rounded-lg px-5 py-1 bg-sky-300 text-primary-1000 hover:text-white 
                                     hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
-                                    @click="pilihPaket('SMK')">Paket SMK</button>
+                                    @click="pilihPaket('opt')">Paket Tes Opt</button>
                     <button class="rounded-lg px-5 py-1 bg-sky-300 text-primary-1000 hover:text-white 
                                     hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
                                     @click="pilihPaket('S1')">Paket S1 </button>
                     <button class="rounded-lg px-5 py-1 bg-sky-300 text-primary-1000 hover:text-white 
                                     hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
-                                    @click="pilihPaket('S1 Teknik')">Paket S1 Teknik</button>
+                                    @click="pilihPaket('Teknik')">Paket Teknik</button>
                 </div>
 
                 <div class="flex gap-2 items-center">
@@ -257,20 +257,26 @@ export default {
         pilihPaket(paket){
             this.tests = []
             let temp = []
-            if(paket == "SMK"){
-                for (let i = 0; i < 5; i++) {
-                    temp.push(this.list_tes[i])
-                }
+            let tempOpsi = []
+
+            let lisTes = []
+            if(paket == "opt"){
+                lisTes = [1,2,3,4,5,19,20,21]
             }else if(paket == "S1"){
-                for (let i = 5; i < 10; i++) {
+                lisTes = [1,2,3,4,5,6,7,8,9,10,19,20,21]
+            }else if(paket == "Teknik"){                
+                lisTes = [1,2,3,4,5,6,7,8,9,11,12,13,14,15,19,20,21]
+            }
+            for (let i = 0; i < this.list_tes.length; i++) {
+                if(lisTes.includes(this.list_tes[i].id)){
                     temp.push(this.list_tes[i])
                 }
-            }else if(paket == "S1 Teknik"){
-                for (let i = 10; i < 15; i++) {
-                    temp.push(this.list_tes[i])
-                }
+                else
+                    tempOpsi.push(this.list_tes[i])
             }
             this.tests = temp
+            this.opsional = tempOpsi
+            this.selectedOptional = this.opsional[0].id
         },
         hapusTest(tes){
             let idx = -1;
@@ -438,7 +444,7 @@ export default {
             this.list_tes = data
             
             let temp = []
-            for (let i = 15; i < this.list_tes.length; i++) {
+            for (let i = 0; i < this.list_tes.length; i++) {
                 temp.push(this.list_tes[i])
             }
             this.opsional = temp
