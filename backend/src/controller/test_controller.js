@@ -1,6 +1,7 @@
 const Test = require("../models/Test");
 const TestResult = require("../models/TestResult");
 const ExamSessionTest = require("../models/ExamSessionTest");
+const { io } = require("../setup/socketio");
 const {
   missing_param_response,
   data_not_found_response,
@@ -129,6 +130,12 @@ class TestController {
 
       success_response(res, test?.toJSON(), "Update successful!");
     });
+  }
+
+  async tick(req, res) {
+    // send countdown to frontend socket
+    io.emit("test.tick", req.body);
+    return res.status(200).send("OK");
   }
 }
 
