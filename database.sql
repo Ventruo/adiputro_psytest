@@ -3594,6 +3594,30 @@ insert  into `section`(`id`,`test_id`,`section_number`,`instruction`,`duration`,
 (84,20,3,'Di lembar berikutnya ini, tugas Anda menggambar rumah, orang dan pohon. Terserah letaknya bagaimana, asalkan dalam 1 kertas muat 3 gambar tersebut. NB: kertas folio posisi <b>LANDSCAPE</b>. Gambarlah menggunakan <b>PENSIL</b> Setelah di gambar di kertas, silahkan di upload ke sini.',-1,'2','2',1,1,'2022-04-09 17:09:02','2022-04-09 17:09:02'),
 (85,20,4,'Unduh dan cetaklah file template dibawah ini. Nanti di sini sudah terdapat 8 kotak. Di tiap kotak sudah terdapat gambarnya masing-masing. Tugas Anda adalah melanjutkan gambar tersebut. Terserah mau menggambar apa, gambar yang terlintas di pikiran pertama kali itu saja yang di gambar. Cara mengerjakannya, boleh dimulai dari kotak manapun asalkan ditulis nomor pengerjaannya. Yang pertama diberi no 1, no 2 dan seterusnya sampai nomer ke 8. Setelah semuanya selesai di gambar, berilah keterangan di lembar putih di bawah gambar no 1-8 itu gambar apa. Setelah itu pilihlah 1 gambar yang paling disukai, 1 gambar yang paling tidak disukai, 1 gambar yang paling mudah, dan 1 gambar yang paling susah. NB: Gambar Menggunakan <b>PENSIL</b> Setelah di gambar di kertas, silahkan di upload ke sini.',-1,'2','2',1,1,'2022-04-09 17:10:16','2022-04-09 17:10:16');
 
+/*Table structure for table `section_ongoing` */
+
+DROP TABLE IF EXISTS `section_ongoing`;
+
+CREATE TABLE `section_ongoing` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `section_id` bigint(20) NOT NULL,
+  `exam_session_id` bigint(20) NOT NULL,
+  `start_status` int(10) NOT NULL DEFAULT 0 COMMENT '0: not started, 1: running, 2: finished',
+  `temp_answers` longtext NOT NULL,
+  `start_time` datetime NOT NULL,
+  `finish_time` datetime NOT NULL,
+  `duration` int(10) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `section_ongoing` */
+
+insert  into `section_ongoing`(`id`,`section_id`,`exam_session_id`,`start_status`,`temp_answers`,`start_time`,`finish_time`,`duration`,`createdAt`,`updatedAt`) values 
+(1,85,1,1,'A;B;C','2022-05-04 08:58:00','2022-05-04 09:04:00',6,'2022-05-04 04:36:31','2022-05-04 04:38:41'),
+(2,84,1,1,'D;D;A','2022-05-04 09:30:00','2022-05-04 09:34:00',4,'2022-05-04 04:36:31','2022-05-04 04:38:41');
+
 /*Table structure for table `section_result` */
 
 DROP TABLE IF EXISTS `section_result`;
