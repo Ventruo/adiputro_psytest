@@ -53,7 +53,7 @@
                                     <span>Detail</span>
                                 </button>
                                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
-                                    @click="openModal"> 
+                                    @click="openModal(i)"> 
                                     <i class="fa fa-refresh mr-2"></i>
                                     <span>Perbarui</span>
                                 </button>
@@ -133,39 +133,43 @@
 
             <div class="text-white p-5 h-5/6 relative">
                 <label for="instruction">Instruksi</label><br>
-                <textarea name="instruction" id="instruction" placeholder="Instruksi"
-                    class="rounded-lg py-2 px-3 w-full h-1/3 my-2 bg-primary-600 outline-none placeholder-gray-300"></textarea><br>
+                <textarea name="instruction" id="instruction" placeholder="Instruksi" v-model="this.instruksi"
+                    class="rounded-lg py-2 px-3 w-full h-1/3 my-2 bg-primary-600 outline-none placeholder-gray-300 resize-none"></textarea><br>
                 
                 <div class="flex">
                     <div class="w-1/3">
                         <p class="mt-4 mb-3">Durasi</p>
                         <p class="mb-3">Tipe Pertanyaan</p>
                         <p class="mb-4">Tipe Jawaban</p>
-                        <p class="non-essay" v-show="non_essay">Jumlah Jawaban</p>
+                        <p class="non-essay">Jumlah Pilihan Jawaban</p>
                     </div>
                     <div>
                         <p class="mt-4 mb-3">:</p>
                         <p class="mb-3">:</p>
                         <p class="mb-4">:</p>
-                        <p class="non-essay" v-show="non_essay">:</p>
+                        <p class="non-essay">:</p>
                     </div>
                     <div class="grow ml-2">
                         <div>
-                            <input type="number" name="duration" id="duration" placeholder="0-9"
+                            <input type="number" name="duration" id="duration" placeholder="0-9" v-model="this.durasi"
                                 class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
                             <label for="duration"> Menit</label><br>
                         </div>
                         <div class="flex gap-2 mb-2">
-                            <Radio :values="'question_text'" :names="'Question_Type'" :id="'question_text'" :label="'Teks'"/>
-                            <Radio :values="'question_Image'" :names="'Question_Type'" :id="'question_Image'" :label="'Gambar'"/>
+                            <input type="radio" :value="'2'" :name="'Question_Type'" id="question_text" v-model="this.tipePertanyaan" class="w-5 h-5 mr-2" />
+                            <label for="question_text" class="mr-2">Teks</label>
+                            <input type="radio" :value="'1'" :name="'Question_Type'" id="question_image" v-model="this.tipePertanyaan" class="w-5 h-5 mr-2" />
+                            <label for="question_image" class="mr-2">Gambar</label>
                         </div>
                         <div class="flex gap-2">
-                            <Radio :values="'answer_text'" :names="'Answer_Type'" :id="'answer_text'" :label="'Teks'" @change="non_essay=false"/>
-                            <Radio :values="'answer_multiple'" :names="'Answer_Type'" :id="'answer_multiple'" :label="'Pilihan Ganda'" @change="non_essay=true"/>
-                            <Radio :values="'answer_image'" :names="'Answer_Type'" :id="'answer_image'" :label="'Gambar'" @change="non_essay=true"/>
+                            <input type="radio" :value="'2'" :name="'Answer_Type'" v-model="this.tipeJawaban" id="text_answer" class="w-5 h-5 mr-2" @change="non_essay=false" />
+                            <label for="text_answer" class="mr-2">Teks</label>
+                            <input type="radio" :value="'1'" :name="'Answer_Type'" v-model="this.tipeJawaban" id="multiple_choice" class="w-5 h-5 mr-2" @change="non_essay=true" />
+                            <label for="multiple_choice" class="mr-2">Pilihan Ganda</label>
+                            <!-- <Radio :values="'2'" v-model="this.tipeJawaban" :names="'Answer_Type'" :id="'answer_image'" :label="'Gambar'" @change="non_essay=true"/> -->
                         </div>
-                        <div class="flex non-essay" v-show="non_essay">
-                            <input type="number" name="option_number" id="option_number" placeholder="2-5"
+                        <div class="flex non-essay">
+                            <input type="number" v-model="this.jumJawaban" name="option_number" id="option_number" placeholder="2-5"
                                 class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300">
                         </div>
                     </div>
@@ -173,7 +177,9 @@
                 
 
                 <button id="submit_new_section" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
-                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">Buat</button>
+                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
+                                                        @click.prevent="createSection">
+                                                        {{this.statusAdd?"Buat":"Perbarui"}}</button>
 
             </div>
         </div>
@@ -193,7 +199,15 @@ export default {
             questionList: null,
             test: null,
             questionId: 0,
-            non_essay: true,
+            instruksi: "",
+            durasi: "",
+            tipePertanyaan: 0,
+            tipeJawaban: 0,
+            jumJawaban: "",
+            statusAdd: true,
+            test_id: null,
+            section_number: null,
+            section_id: null,
             headerModal: "Create A New Section",
             port: import.meta.env.VITE_BACKEND_URL
         }
@@ -203,12 +217,29 @@ export default {
         this.$emit('updateMenu', 'test')
     },
     methods: {
-        openModal(){
+        openModal(data){
+            this.instruksi = data.instruction
+            this.durasi = data.duration
+            this.tipePertanyaan = data.question_type
+            this.tipeJawaban = data.section_type
+            this.jumJawaban = data.option_num
+            this.section_number = data.section_number
+            this.section_id = data.id
+            this.statusAdd = false
             this.headerModal = "Perbarui Seksi";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
         openModalCreate(){
+            this.instruksi =  ""
+            this.durasi =  ""
+            this.tipePertanyaan =  0
+            this.tipeJawaban =  0
+            this.jumJawaban = ""
+            this.section_number = null
+            this.section_id = null
+            this.section_number = this.sectionList[this.sectionList.length-1].section_number + 1
+            this.statusAdd = true
             this.headerModal = "Buat Seksi Baru";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
@@ -222,12 +253,11 @@ export default {
                 this.testList[i] = this.test[i].name
             }
 
+            this.test_id = this.test[0].id
             axios
-            .get(this.port+'/section/all/'+this.test[0].id)
+            .get(this.port+'/section/all/'+this.test_id)
             .then(({data}) => (
                 this.sectionList = data,
-                // console.log(this.sectionList[0].id)
-                
                 axios
                 .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
                 .then(({data}) => (
@@ -237,8 +267,9 @@ export default {
         },
         gantiTes(event){
             this.questionList = null
+            this.test_id = event.target.value
             axios
-            .get(this.port+'/section/all/'+event.target.value)
+            .get(this.port+'/section/all/'+this.test_id)
             .then(({data}) => (
                 this.sectionList = data,
                 axios
@@ -264,7 +295,102 @@ export default {
             if(question.option_e!="-") hasil += ", E. "+question.option_e
 
             return hasil
-        }
+        },
+        createSection(){
+            // console.log(this.instruksi)
+            // console.log(this.durasi)
+            // console.log(this.tipePertanyaan)
+            // console.log(this.tipeJawaban)
+            // console.log(this.jumJawaban)
+            // console.log(this.test_id)
+            // console.log(this.section_number)
+            if(this.instruksi=="" || this.durasi=="" ||this.tipePertanyaan==null||this.tipeJawaban==null|| this.jumJawaban=="")
+                Swal.fire({
+                    title: 'Mohon Isi Semua Field!',
+                    icon: 'warning',
+                    confirmButtonText: 'Kembali'
+                });
+            else{
+                if (this.statusAdd){
+                    console.log("create")
+                    axios.post(this.port+'/section/create',{
+                        "test_id": this.test_id,
+                        "section_number": this.section_number,
+                        "instruction": this.instruksi,
+                        "duration": parseInt(this.durasi),
+                        "section_type": this.tipePertanyaan,
+                        "question_type": this.tipeJawaban,
+                        "option_num": parseInt(this.jumJawaban)
+                    })
+                    .then((response) => {
+                        if (response.status==200){
+                            let thi = this
+                            axios
+                            .get(this.port+'/section/all/'+this.test_id)
+                            .then(({data}) => (
+                                this.sectionList = data,
+                                Swal.fire(
+                                    'Created!',
+                                    'Seksi Baru Berhasil Dibuat!',
+                                    'success'
+                                )
+                                .then(function(){
+                                    $('#modalSession').fadeOut("fast")
+                                    $('#bg').fadeOut("slow")
+                                    thi.closeModal()
+                                })
+                            ))
+                        }else{
+                            throw response
+                        }
+                    }).catch( error => {
+                        $('#spinner-modal').fadeOut("slow");
+                        Swal.fire(
+                            'Warning!',
+                            error.response.data,
+                            'warning'
+                        )
+                    });
+                }else{
+                    console.log("update")
+                    axios.post(this.port+'/section/update',{
+                        "updating_id": this.section_id,
+                        "test_id": this.test_id,
+                        "section_number": this.section_number,
+                        "instruction": this.instruksi,
+                        "duration": parseInt(this.durasi),
+                        "section_type": this.tipePertanyaan,
+                        "question_type": this.tipeJawaban,
+                        "option_num": parseInt(this.jumJawaban)
+                    })
+                    .then((response) => {
+                        let thi = this
+                        axios
+                        .get(this.port+'/section/all/'+this.test_id)
+                        .then(({data}) => (
+                            this.sectionList = data,
+                            Swal.fire(
+                                'Updated!',
+                                'Seksi Berhasil Diperbarui!',
+                                'success'
+                            )
+                            .then(function(){
+                                $('#modalSession').fadeOut("fast")
+                                $('#bg').fadeOut("slow")
+                                thi.closeModal()
+                            })
+                        ))
+                    }).catch( error => {
+                        $('#spinner-modal').fadeOut("slow");
+                        Swal.fire(
+                            'Warning!',
+                            error.response.data,
+                            'warning'
+                        )
+                    });
+                }
+            }
+        },
     },
     mounted(){
         axios
