@@ -424,7 +424,7 @@ class QuestionResultController {
       !validate_required_columns(
         req,
         QuestionResult,
-        ["status", "status_correct"],
+        ["status"],
         ["updating_id"]
       )
     ) {
@@ -447,7 +447,12 @@ class QuestionResultController {
             }
 
             let status_correct = false;
-            if (question.answer == req.body.answer) status_correct = true;
+            // if (question.answer == req.body.answer) status_correct = true;
+            if (req.body.status_correct==1 || req.body.status_correct==2) status_correct = true;
+            console.log(req.body.section_result_id)
+            console.log(req.body.question_id)
+            console.log(req.body.answer)
+            console.log(status_correct)
 
             result.set({
               section_result_id: req.body.section_result_id,

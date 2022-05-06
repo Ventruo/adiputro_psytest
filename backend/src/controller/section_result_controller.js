@@ -169,7 +169,7 @@ class SectionResultController {
       !validate_required_columns(
         req,
         SectionResult,
-        ["status", "num_correct"],
+        ["status"],
         ["updating_id"]
       )
     ) {
@@ -191,6 +191,7 @@ class SectionResultController {
           exam_session: req.body.exam_session,
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
+          num_correct: req.body.num_correct
         });
         result.save();
 
