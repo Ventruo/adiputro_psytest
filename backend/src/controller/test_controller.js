@@ -2,6 +2,7 @@ const Test = require("../models/Test");
 const TestResult = require("../models/TestResult");
 const ExamSessionTest = require("../models/ExamSessionTest");
 const { io } = require("../setup/socketio");
+const { useUsersSocket } = require("../routers/socket_router");
 const {
   missing_param_response,
   data_not_found_response,
@@ -134,7 +135,21 @@ class TestController {
 
   async tick(req, res) {
     // send countdown to frontend socket
-    io.emit("test.tick", req.body);
+    const clock_data = req.body;
+    let userSocket = useUsersSocket();
+    for (let i = 0; i < clock_data.length; i++) {
+      for (let key in userSocket) {
+        if (clock_data[i].exam_session_id == key) {
+          // Send to each Corresponding Socket Client
+          console.log("user socket", userSocket[key]);
+          io.to(userSocket[key]).emit("test.tick", {
+            countdown: clock_data[i].countdown,
+            total_duration: clock_data[i].total_duration,
+          });
+          break;
+        }
+      }
+    }
     return res.status(200).send("OK");
   }
 }

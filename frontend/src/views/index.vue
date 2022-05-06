@@ -48,7 +48,7 @@ export default {
         return {
             judulHalaman: 'Login',
             info: null,
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
         }
     },
     methods: {
@@ -81,7 +81,10 @@ export default {
                         };
                         this.$cookies.set('refresh_token', token, age);
                         this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
-                        axios.defaults.headers.common['Authorization'] = `Bearer ${e.data.token}`
+
+                        localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
+                        localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
+
                         
                         if(e.data.is_admin) this.$router.push('/admin')
                         else this.$router.push('/dashboard')

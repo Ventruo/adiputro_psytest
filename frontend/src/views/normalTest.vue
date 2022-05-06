@@ -87,6 +87,7 @@ import ImageAnswer from '../components/views/imageAnswer.vue'
 import TextQuestion from '../components/views/textQuestion.vue'
 import TextAnswer from '../components/views/textAnswer.vue'
 import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
+import { socket, buildSocket } from '../utilities/network.js'
 
 export default {
     components: {
@@ -99,6 +100,7 @@ export default {
             noSoal: 1,
             jumSoal: 5,
             jumChoice: 5,
+            durasi: 0,
             menit: 0,
             detik: 0,
             waktu: null,
@@ -124,32 +126,20 @@ export default {
     methods: {
         mulai(){
             this.isStarted = true
-            if(this.menit!=-99){
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
-                    
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 0
-                        clearInterval(this.waktu)
-                        
-                        Swal.fire({
-                            title: 'Waktu Habis...',
-                            icon: 'warning',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Kembali ke Dashboard'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.submitJawaban()
-                            }
-                        });
-                    } 
-                }, 1000)
-            }
+
+            // Create Section Ongoing to indicate Ongoing Section
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": this.section_id,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": this.durasi,
+            })
+            .then((response) => {
+                
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         nextSoal(){
             // console.log(this.jawaban)
@@ -395,6 +385,7 @@ export default {
             this.pertanyaan = data,
             this.getMaxLength(),
             this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
+            this.durasi = this.menit,
             this.jumChoice = this.pertanyaan[0]["option_num"],
             this.jumSoal = this.pertanyaan.length,
             // this.jumSoal = 5,
@@ -422,6 +413,39 @@ export default {
             // console.log(this.section_id)
             // console.log(this.test_result_id)
         })
+
+
+        // Build socket
+        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // console.log(access_token);
+        // console.log(user_key)
+        buildSocket(access_token, user_key).then((socket) => {
+            socket.on("test.tick", (data) => {
+                // console.log("socket", socket)
+                // console.log(data);
+                this.isStarted = true
+                this.duarsi = data.total_duration;
+                var minutes = Math.floor(data.countdown / 60);
+                var seconds = data.countdown - minutes * 60;
+
+                this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+                this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+                if(data.countdown <= 0){
+                    Swal.fire({
+                        title: 'Waktu Habis...',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Kembali ke Dashboard',
+                        allowOutsideClick: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
+                }
+            });
+        });
 
         let thi = this
         $('body').keydown(function(event) {
