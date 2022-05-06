@@ -143,6 +143,7 @@ export default {
                     axios.defaults.headers.common['Authorization'] = '';
                     this.$cookies.remove('refresh_token')
                     this.$cookies.remove('data_registrant')
+                    localStorage.clear();
 
                     window.location="/"
                 }
