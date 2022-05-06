@@ -44,7 +44,7 @@
 
             <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-stroke-100
                         p-3 my-5 h-16 flex justify-center items-center text-xl text-white font-bold">
-                Pilih X sebelum memilih pilihan yang salah, Pilih O sebelum memilih pilihan yang benar.
+                Pilih X sebelum memilih pernyataan yang paling jelek, Pilih O sebelum memilih pernyataan yang paling baik.
             </div>
 
             <div id="soal" class="" v-if="pertanyaan!=null">
