@@ -23,7 +23,10 @@
                         <span>Daftar Soal</span>
                     </div>
                     <div v-for="i in jumSoal" :key="i" class="inline-block">
-                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                            {{i}}
+                        </button>
+                        <button v-else-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
                         <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
@@ -178,6 +181,7 @@ export default {
                         confirmButtonText: 'Tetap Submit'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            clearInterval(this.waktu)
                             this.submitJawaban()
                         }
                     });
@@ -191,6 +195,7 @@ export default {
                         confirmButtonText: 'Yes'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            clearInterval(this.waktu)
                             this.submitJawaban()
                         }
                     });
@@ -235,6 +240,7 @@ export default {
             }
         },
         submitJawaban(){
+            $('#spinner-modal').fadeIn("slow");
             for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
@@ -272,6 +278,7 @@ export default {
                     .then((response) => {
                         this.$cookies.remove('current_section')
                         this.$cookies.remove("start_time")
+                        $('#spinner-modal').fadeOut("slow")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
