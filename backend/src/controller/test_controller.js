@@ -145,6 +145,7 @@ class TestController {
           io.to(userSocket[key]).emit("test.tick", {
             countdown: clock_data[i].countdown,
             total_duration: clock_data[i].total_duration,
+            section_id: clock_data[i].section_id,
           });
           break;
         }
