@@ -1,6 +1,7 @@
 <template>
-    <button id="label" class="duration-200 w-full h-40 py-2 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold 
-                ring-1 ring-inset ring-stroke-100 relative answer-btn" 
+    <!-- <button id="label" class="duration-200 w-full h-40 py-2 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold  -->
+    <button id="label" class="duration-200 w-full h-40 py-2 text-xl text-white rounded-lg bg-foreground-4-100 hover:bg-foreground-4-200 font-semibold 
+                ring-1 ring-inset ring-black relative answer-btn" 
                 :class="{
                     'w-full': jenis!='epps', 
                     'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
@@ -54,14 +55,14 @@ export default {
                     else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+','+id+'o'
                 }
             }
-            else if(this.jenis=="mmpi"){
-                if (id=="+") this.jawaban[this.noSoal-1] = 0
-                else if (id=="-") this.jawaban[this.noSoal-1] = 1
-            }
-            else if(this.jenis=="sdi"){
-                if (id=="Ya") this.jawaban[this.noSoal-1] = 1
-                else if (id=="Tidak") this.jawaban[this.noSoal-1] = 0
-            }
+            // else if(this.jenis=="MMPI"){
+            //     if (id=="A. +") this.jawaban[this.noSoal-1] = 1
+            //     else if (id=="B. -") this.jawaban[this.noSoal-1] = 0
+            // }
+            // else if(this.jenis=="SDI"){
+            //     if (id=="Ya") this.jawaban[this.noSoal-1] = 1
+            //     else if (id=="Tidak") this.jawaban[this.noSoal-1] = 0
+            // }
             else this.jawaban[this.noSoal-1] = id
         },
     },

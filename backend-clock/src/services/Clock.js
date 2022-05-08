@@ -32,4 +32,8 @@ export default class Clock {
     this.expectedTime += this.interval;
     this.timeout = setTimeout(this.round, this.interval - drift);
   };
+
+  static second(endTime, startTime) {
+    return Math.floor((endTime - startTime) / 1000);
+  }
 }

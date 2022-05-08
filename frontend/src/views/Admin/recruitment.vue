@@ -20,7 +20,7 @@
                             <th class="w-2/12">Lowongan</th>
                             <th class="w-2/12">Dibuat Pada</th>
                             <th class="w-1/12">Status</th>
-                            <th class="w-2/12">Action</th>
+                            <th class="w-2/12">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,9 +43,9 @@
                                 </button>
                                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                 h-auto w-auto px-5 py-1 mr-1" 
-                                    @click="openModal"> 
+                                    @click="openModal(i)"> 
                                     <i class="fa fa-refresh mr-2"></i>
-                                    <span>Update</span>
+                                    <span>Perbarui</span>
                                 </button>
                             </td>
                         </tr>
@@ -68,7 +68,7 @@
                                 <th class="w-2/12">Nama</th>
                                 <th class="w-2/12">Jenis Kelamin</th>
                                 <th class="w-2/12">Melamar Pada</th>
-                                <th class="w-1/12">Action</th>
+                                <th class="w-1/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.applicant!=null && this.applicant.length>0">
@@ -133,9 +133,20 @@
                                 @click.prevent="tambahLowongan">Tambahkan</button>
             </div>
 
+            <div class="flex items-center" v-if="!this.statusAdd">
+                Status Aktif :
+                <label for="toggle" class="flex items-center cursor-pointer ml-2">
+                    <div class="relative">
+                        <input type="checkbox" id="toggle" class="sr-only" v-model="aktif">
+                        <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+                        <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                    </div>
+                </label>
+            </div>
+
             <button type="submit" id="submit_new_Recruitment" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
                                                     hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200"
-                                                    >Create</button>
+                                                    >{{this.statusAdd?"Buat":"Perbarui"}}</button>
 
         </form>
     </div>
@@ -152,7 +163,7 @@ export default {
     components: {
         axios
     },
-    emits: ["updateHeader"],
+    emits: ["updateHeader","updateMenu"],
     data() {
         return {
             headerModal: "Buat Rekrutmen Baru",
@@ -161,11 +172,12 @@ export default {
             isiLowongan: "",
             nama: "",
             lowongan: [],
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
+            aktif: true,
+            statusAdd: true,
+            updating: -1,
+            tanggalUpdating: null
         }
-    },
-    created() {
-        this.$emit('updateHeader', 'Recruitment')
     },
     methods: {
         toDate(timeString){
@@ -179,12 +191,26 @@ export default {
             let id = job_vacancy.qr_link.split("d/")
             return "https://drive.google.com/uc?export="+exports+"&id="+id[1]
         },
-        openModal(){
-            this.headerModal = "Update Rekrutmen";
+        openModal(data){
+            this.statusAdd = false
+            this.nama = data.name
+            this.isiLowongan = ""
+            this.lowongan = data.list_pekerjaan.split(",")
+            this.aktif = data.status==1?true:false
+            this.updating = data.id
+            this.tanggalUpdating = data.start_date
+            // console.log(this.tanggalUpdating)
+            // console.log(data)
+            this.headerModal = "Perbarui Rekrutmen";
             $('#modalRecruitment').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
         openModalCreate(){
+            this.statusAdd = true
+            this.nama = ""
+            this.isiLowongan = ""
+            this.lowongan = []
+            this.aktif = true
             this.headerModal = "Buat Rekrutmen Baru";
             $('#modalRecruitment').fadeIn("slow");
             $('#bg').fadeIn("slow");
@@ -194,7 +220,6 @@ export default {
             $('#bg').fadeOut("slow");
         },
         createRecruitment(e){
-            let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
             let date = Date.now()
             if(this.nama==""||this.lowongan.length==0)
                 Swal.fire({
@@ -204,33 +229,69 @@ export default {
                 });
             else{
                 $('#spinner-modal').fadeIn("slow");
-                axios.post(this.port+'/job_vacancy/create',{
-                    "name": this.nama,
-                    "list_pekerjaan": this.lowongan,
-                    "start_date": date,
-                    "url": url
-                })
-                .then((response) => {
-                    axios
-                    .get(this.port+'/job_vacancy/all')
-                    .then(({data}) => (
-                        this.recruitment = data,
-                        this.lowongan = [],
-                        this.nama = "",
-                        $('#spinner-modal').fadeOut("slow"),
-                        $('#modalRecruitment').fadeOut("fast"),
-                        $('#bg').fadeOut("slow"),
-                        Swal.fire(
-                            'Created!',
-                            'Rekrutmen Baru Berhasil Dibuat!',
-                            'success'
-                        )
-                        .then(function(){
-                        })
-                    ))
-                }).catch( error => { 
-                    console.log('error: ' + error) 
-                });
+                if(this.statusAdd){
+                    console.log("create")
+                    let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
+                    axios.post(this.port+'/job_vacancy/create',{
+                        "name": this.nama,
+                        "list_pekerjaan": this.lowongan,
+                        "start_date": date,
+                        "url": url
+                    })
+                    .then((response) => {
+                        axios
+                        .get(this.port+'/job_vacancy/all')
+                        .then(({data}) => (
+                            this.recruitment = data,
+                            this.lowongan = [],
+                            this.nama = "",
+                            $('#spinner-modal').fadeOut("slow"),
+                            $('#modalRecruitment').fadeOut("fast"),
+                            $('#bg').fadeOut("slow"),
+                            Swal.fire(
+                                'Created!',
+                                'Rekrutmen Baru Berhasil Dibuat!',
+                                'success'
+                            )
+                            .then(function(){
+                            })
+                        ))
+                    }).catch( error => { 
+                        console.log('error: ' + error) 
+                    });
+                }else{
+                    console.log("update")
+                    let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+this.updating
+                    axios.post(this.port+'/job_vacancy/update',{
+                        "name": this.nama,
+                        "list_pekerjaan": this.lowongan,
+                        "start_date": this.tanggalUpdating,
+                        "url": url,
+                        "updating_id": this.updating,
+                        "status": this.aktif?2:1
+                    })
+                    .then((response) => {
+                        axios
+                        .get(this.port+'/job_vacancy/all')
+                        .then(({data}) => (
+                            this.recruitment = data,
+                            this.lowongan = [],
+                            this.nama = "",
+                            $('#spinner-modal').fadeOut("slow"),
+                            $('#modalRecruitment').fadeOut("fast"),
+                            $('#bg').fadeOut("slow"),
+                            Swal.fire(
+                                'Updated!',
+                                'Rekrutmen Berhasil Diperbarui!',
+                                'success'
+                            )
+                            .then(function(){
+                            })
+                        ))
+                    }).catch( error => { 
+                        console.log('error: ' + error) 
+                    });
+                }
             }
         },
         tambahLowongan(){
@@ -254,11 +315,10 @@ export default {
         }
     },
     created() {
-        this.$emit('updateHeader', 'Recruitment')
+        this.$emit('updateHeader', 'Rekrutmen')
+        this.$emit('updateMenu', 'recruitment')
     },
     mounted(){
-        let this2 = this;
-
         axios
         .get(this.port+'/job_vacancy/all')
         .then(({data}) => (
@@ -270,5 +330,8 @@ export default {
 </script>
 
 <style>
-
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #33CCFF;
+}
 </style>

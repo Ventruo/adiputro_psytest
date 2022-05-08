@@ -8,10 +8,21 @@ const {
 const { validate_required_columns } = require("../helpers/ValidationHelper");
 const Test = require("../models/Test");
 
-const { calculate_kreapelin } = require("./test_result_calc/kreapelin_calc");
-const { calculate_EPPS_test } = require("./test_result_calc/epps_calc");
 const { calculate_tintum_test } = require("./test_result_calc/tintum_calc");
+const { calculate_EPPS_test } = require("./test_result_calc/epps_calc");
+const { calculate_sdi_tests } = require("./test_result_calc/sdi_calc");
+const { calculate_mmpi_tests } = require("./test_result_calc/mmpi_calc");
+const { calculate_kreapelin } = require("./test_result_calc/kreapelin_calc");
 const { calculate_nine_tests } = require("./test_result_calc/nine_calc");
+const { calculate_akudak_test } = require("./test_result_calc/akudak_calc");
+const {
+  calculate_tintum_anak_test,
+} = require("./test_result_calc/tintum_anak_calc");
+const {
+  calculate_papi_kostick_test,
+} = require("./test_result_calc/papi_kostick_calc");
+const { calculate_hafalan_test } = require("./test_result_calc/hafalan_calc");
+const { calculate_ist_test } = require("./test_result_calc/ist_calc");
 
 class TestResultController {
   async getOne(req, res) {
@@ -120,7 +131,7 @@ class TestResultController {
   async create(req, res) {
     console.log("Creating A New Test Result...");
 
-    if (!validate_required_columns(req, TestResult, ["status"])) {
+    if (!validate_required_columns(req, TestResult, ["status", "result"])) {
       missing_param_response(res);
       return;
     }
@@ -138,9 +149,7 @@ class TestResultController {
   async update(req, res) {
     console.log("Updating A Test Result...");
 
-    if (
-      !validate_required_columns(req, TestResult, ["status"], ["updating_id"])
-    ) {
+    if (!validate_required_columns(req, TestResult, [], ["updating_id"])) {
       missing_param_response(res);
       return;
     }
@@ -157,6 +166,7 @@ class TestResultController {
           exam_session: req.body.exam_session,
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
+          status: req.body.status - 1,
         });
         result.save();
 
@@ -200,6 +210,11 @@ class TestResultController {
           calculate_tintum_test(test.test_type, testres, res);
         } else if (test.test_type == 2) {
           calculate_EPPS_test(test.test_type, testres, res);
+        } else if (test.test_type == 3) {
+          //SDI mirip dengan Nine Tests
+          calculate_sdi_tests(test.test_type, testres, res);
+        } else if (test.test_type == 4) {
+          calculate_mmpi_tests(test.test_type, testres, res);
         } else if (
           test.test_type == 6 ||
           test.test_type == 7 ||
@@ -214,6 +229,16 @@ class TestResultController {
           calculate_nine_tests(test.test_type, testres, res);
         } else if (test.test_type == 5) {
           calculate_kreapelin(test.test_type, testres, res);
+        } else if (test.test_type == 10) {
+          calculate_akudak_test(test.test_type, testres, res);
+        } else if (test.test_type == 16) {
+          calculate_tintum_anak_test(test.test_type, testres, res);
+        } else if (test.test_type == 17) {
+          calculate_ist_test(test.test_type, testres, res);
+        } else if (test.test_type == 18) {
+          calculate_papi_kostick_test(test.test_type, testres, res);
+        } else if (test.test_type == 21) {
+          calculate_hafalan_test(test.test_type, testres, res);
         }
       });
     });

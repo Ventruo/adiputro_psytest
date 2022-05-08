@@ -1,17 +1,7 @@
 class ClockController {
-  start(req, res) {
-    console.log("Starting Clock");
-  }
+  async connect(req, res) {}
 
-  stop(req, res) {
-    console.log("Stopping Clock");
-    res.send("Clock is Stopping");
-  }
-
-  update(req, res) {
-    console.log("Backend Clock is Updating");
-    res.send("Clock is Updating");
-  }
+  async disconnect(req, res) {}
 }
 
 module.exports = ClockController;

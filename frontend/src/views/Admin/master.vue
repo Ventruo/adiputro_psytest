@@ -33,7 +33,7 @@
                         :class="{'bg-background-200': menu=='test', 'text-black':menu=='test'}"
                         @click="menu='test'">
                         <i class="w-1/12 mr-5 fa fa-tasks text-2xl"></i>
-                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Test</span>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Tes</span>
                     </div>
                 </div>
             </router-link>
@@ -44,7 +44,7 @@
                         :class="{'bg-background-200': menu=='session', 'text-black':menu=='session'}"
                         @click="menu='session'">
                         <i class="w-1/12 mr-5 fas fa-calendar-alt text-2xl"></i>
-                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Session</span>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Sesi</span>
                     </div>
                 </div>
             </router-link>
@@ -55,7 +55,7 @@
                         :class="{'bg-background-200': menu=='recruitment', 'text-black':menu=='recruitment'}"
                         @click="menu='recruitment'">
                         <i class="w-1/12 mr-5 fas fa-users text-2xl relative right-1"></i>
-                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Recruitment</span>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Rekrutmen</span>
                     </div>
                 </div>
             </router-link>
@@ -87,10 +87,10 @@
                         <path d="M0.00,92.27 C216.83,192.92 304.30,8.39 500.00,109.03 L500.00,0.00 L0.00,0.00 Z" class="fill-foreground-4-50"></path>
                     </svg>
                 </div> -->
-                <div class="w-full p-8 pr-10 flex justify-between">
+                <div class="w-5/6 m-auto py-8 flex justify-between">
                     <h1 class="text-4xl font-bold">{{header}}</h1>
                 </div>
-                <router-view @updateHeader="updateHeader"/>
+                <router-view @updateHeader="updateHeader" @updateMenu="updateMenu"/>
             </div>
         </div>
     </div>
@@ -117,6 +117,9 @@ export default {
         updateHeader(header){
             this.header = header
         },
+        updateMenu(menu){
+            this.menu = menu
+        },
         getNow() {
             const today = new Date()
             const date = this.day[today.getDay()] + ", " + ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
@@ -140,6 +143,7 @@ export default {
                     axios.defaults.headers.common['Authorization'] = '';
                     this.$cookies.remove('refresh_token')
                     this.$cookies.remove('data_registrant')
+                    localStorage.clear();
 
                     window.location="/"
                 }

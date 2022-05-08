@@ -9,7 +9,8 @@
 
         <div v-show="isStarted">
             <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
-                <p>Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <p v-if="menit!=-99">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                <p v-else></p>
                 <button id="btnDaftarSoal" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold">
                     <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
                     <span id="btnDaftarSoal3">Daftar Soal</span>
@@ -22,8 +23,11 @@
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
                     </div>
-                    <div v-for="i in 225" :key="i" class="inline-block">
-                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                    <div v-for="i in this.jumSoal" :key="i" class="inline-block">
+                        <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                            {{i}}
+                        </button>
+                        <button v-else-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
                         <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
@@ -42,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="rounded-lg bg-background-200 ring-1 ring-inset ring-stroke-100
+            <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
                         p-3 my-5 h-16 flex justify-center items-center text-xl font-bold">
                 Pilih salah satu pernyataan yang paling menggambarkan diri anda!
             </div>
@@ -87,6 +91,7 @@
 <script>
 import axios from 'axios'
 import AnswerButton from '../components/answerButton.vue'
+import { socket, buildSocket } from '../utilities/network.js'
 
 export default {
     components: {
@@ -97,20 +102,22 @@ export default {
             namaTes: 'Tes EPPS',
             judulHalaman: 'EPPS',
             page: 1,
-            jumHalaman: 45,
+            jumHalaman: null,
             menit: 1,
             detik: 0,
             waktu: null,
+            jumSoal: null,
+            durasi: 0,
             // countdownTimer: null,
             // countdown: 2,
             jawaban: [],
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
-            // section_id: this.$route.query.current_section,
-            section_id: 11,
-            // test_id: null,
-            exam_session: 9,
+            test_id: null,
+            email: null,
+            exam_session: null,
+            test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
@@ -119,30 +126,20 @@ export default {
     methods: {
         mulai(){
             this.isStarted = true
-            this.waktu = setInterval(() => {
-                this.detik--
-                if (this.detik<0){
-                    this.detik = 59
-                    this.menit--
-                }
+            
+            // Create Section Ongoing to indicate Ongoing Section
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": this.section_id,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": this.durasi,
+            })
+            .then((response) => {
                 
-                if (this.menit<0){
-                    this.detik = 0
-                    this.menit = 0
-                    clearInterval(this.waktu)
-                    
-                    Swal.fire({
-                        title: 'Waktu Habis...',
-                        icon: 'warning',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Kembali ke Dashboard'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.submitJawaban()
-                        }
-                    });
-                } 
-            }, 1000)
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         nextSoal(){
             if (this.page<this.jumHalaman){
@@ -154,7 +151,7 @@ export default {
                 var isi = 0
                 this.jawaban.forEach(e => { if (e != null) isi++; });
                 // isi = this.jumSoal;
-                if(isi!=225){
+                if(isi!=this.jumSoal){
                     Swal.fire({
                         title: 'Ada Pertanyaan yang Belum Dijawab!',
                         icon: 'warning',
@@ -164,6 +161,7 @@ export default {
                         confirmButtonText: 'Tetap Submit'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            clearInterval(this.waktu)
                             this.submitJawaban()
                         }
                     });
@@ -177,6 +175,7 @@ export default {
                         confirmButtonText: 'Yes'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            clearInterval(this.waktu)
                             this.submitJawaban()
                         }
                     });
@@ -221,7 +220,8 @@ export default {
             }
         },
         submitJawaban(){
-            for (let i = 0; i < 225; i++) {
+            $('#spinner-modal').fadeIn("slow");
+            for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
                 this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
@@ -236,27 +236,30 @@ export default {
             }
 
             axios.post(this.port+'/section_result/create',{
-                "test_result_id": 29,
-                "section_id": 11,
+                "test_result_id": this.test_result_id,
+                "section_id": this.section_id,
                 "exam_session": this.exam_session,
-                "start_date": "2022-01-28 15:00:00",
+                "start_date": parseInt(this.$cookies.get("start_time")),
                 "finish_date": Date.now()
             })
             .then((response) => {
                 axios.post(this.port+'/question_result/createmultiple',formData)
                 .then((response) => {
                     axios.post(this.port+'/test_result/calculateresult',{
-                        test_id: 2,
-                        email: "saifullah@x.com"
+                        test_id: this.test_id,
+                        email: this.email
                     })
                     .then((response) => {
+                        this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
+                        $('#spinner-modal').fadeOut("slow")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
                             'success'
                         )
                         .then(function(){
-                            window.location = '/dashboard'
+                            window.location = '/section'
                         })
                     })
                     // .catch( error => 
@@ -279,14 +282,28 @@ export default {
     },
 
     mounted(){
+        this.section_id = this.$cookies.get('current_section').id;
+        this.test_id = this.$cookies.get('current_test').id;
+        let datas = this.$cookies.get("data_registrant");
+        this.email = datas.email;
+        this.exam_session = datas.exam_session;
+
+        let tests = datas.test;
+        for (let i = 0; i < tests.length; i++) {
+            if (tests[i][0]==this.test_id)
+                this.test_result_id = tests[i][1]
+        }
+
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
             // console.log(data),
-            this.menit = this.pertanyaan[0]["section"]["duration"],
-            // this.jumSoal = this.pertanyaan.length,
-            this.jawaban = Array(225),
+            this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
+            this.durasi = this.menit,
+            this.jumSoal = this.pertanyaan.length,
+            this.jumHalaman = this.jumSoal/5,
+            this.jawaban = Array(this.jumSoal),
             this.progress(true)
         ))
 
@@ -296,6 +313,39 @@ export default {
         //     this.jumChoice = data.option_num,
         //     this.test_id = data.test_id
         // ))
+
+
+        // Build socket
+        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // console.log(access_token);
+        // console.log(user_key)
+        buildSocket(access_token, user_key).then((socket) => {
+            socket.on("test.tick", (data) => {
+                // console.log("socket", socket)
+                // console.log(data);
+                this.isStarted = true
+                this.duarsi = data.total_duration;
+                var minutes = Math.floor(data.countdown / 60);
+                var seconds = data.countdown - minutes * 60;
+
+                this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+                this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+                if(data.countdown <= 0){
+                    Swal.fire({
+                        title: 'Waktu Habis...',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Kembali ke Dashboard',
+                        allowOutsideClick: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
+                }
+            });
+        });
         
         let thi = this
         $('body').keydown(function(event) {

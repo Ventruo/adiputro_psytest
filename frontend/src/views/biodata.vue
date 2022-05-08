@@ -8,13 +8,14 @@
         </div>
         
         <div class="mb-5">
-            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-full" @click="this.$router.push({path: '/dashboard'})">
+            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md" @click="this.$router.go(-1)">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
-                <span class="font-bold text-xl">Back</span>
+                <span class="font-bold text-xl">Kembali</span>
             </button>
         </div>
 
-        <form method="" action="" autocomplete="off" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5">
+        <form method="" action="" autocomplete="off" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar 
+                    py-5 px-5" @submit.prevent="submitForm">
             <h1 class="text-3xl font-bold mb-2">Biodata</h1>
             <div class="flex mb-5">
                 <div class="mr-2">
@@ -23,22 +24,22 @@
                 </div>
                 <div class="w-6/12 mr-10">
                     <p class="mt-2">NAMA LENGKAP :</p>
-                    <InputBio :type="'text'" v-model="fullname" :nama="'fullname'" :placeHolder="'Nama Lengkap'" />
+                    <InputBio :type="'text'" v-model="fullname" :nama="'nama_lengkap'" :placeHolder="'Nama Lengkap'" />
 
                     <p class="mt-4">NAMA PANGGILAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'nickname'" :placeHolder="'Nama Panggilan'" />
+                    <InputBio :type="'text'" :modelValue="''" :nama="'nama_panggilan'" :placeHolder="'Nama Panggilan'" />
 
                     <p class="mt-4">ALAMAT DI KTP :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'alamat_KTP'" :placeHolder="'Alamat di KTP'" />
+                    <InputBio :type="'text'" :modelValue="''" :nama="'alamat_ktp'" :placeHolder="'Alamat di KTP'" />
 
                     <p class="mt-4">ALAMAT SEKARANG :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'alamat_sekarang'" :placeHolder="'Alamat Sekarang'" />
+                    <InputBio :type="'text'" v-model="alamat" :nama="'alamat_skg'" :placeHolder="'Alamat Sekarang'" />
 
                     <p class="mt-4">TELEPON/HP :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'noTelp'" :placeHolder="'081234567890'" />
+                    <InputBio :type="'number'" v-model="noHp" :nama="'no_hp'" :placeHolder="'081234567890'" />
 
                     <p class="mt-4">TEMPAT & TGL LAHIR :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
+                    <InputBio :type="'text'" v-model="ttl" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
 
                     <p class="mt-4">KEWARGANEGARAAN :</p>
                     <InputBio :type="'text'" :modelValue="''" :nama="'kewarganegaraan'" :placeHolder="'Kewarganegaraan'" />
@@ -57,16 +58,16 @@
                     <InputBio :type="'text'" :modelValue="''" :nama="'agama'" :placeHolder="'Agama'" />
 
                     <p class="mt-4">USIA :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'usia'" :placeHolder="'20 Tahun'" />
+                    <InputBio :type="'number'" v-model="usia" :nama="'usia'" :placeHolder="'20'" />
 
                     <p class="mt-4">TINGGI BADAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150 cm'" />
+                    <InputBio :type="'number'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150'" />
 
                     <p class="mt-4">BERAT BADAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50 kg'" />
+                    <InputBio :type="'number'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50'" />
 
                     <p class="mt-4">NO KTP / SIM / PASPOR :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'no_identitas'" :placeHolder="'0123456789'" />
+                    <InputBio :type="'number'" v-model="ktp" :nama="'no_identitas'" :placeHolder="'0123456789'" />
 
                     <p class="mt-4">GOLONGAN DARAH :</p>
                     <InputBio :type="'text'" :modelValue="''" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
@@ -75,7 +76,7 @@
                     <InputBio :type="'number'" :modelValue="''" :nama="'no_npwp'" :placeHolder="'01234567890'" />
 
                     <p class="mt-4">E-MAIL :</p>
-                    <InputBio :type="'email'" :modelValue="''" :nama="'email'" :placeHolder="'contoh@example.com'" />
+                    <InputBio :type="'email'" v-model="email" :nama="'email'" :placeHolder="'contoh@example.com'" :readonly="true" />
                 </div>
             </div>
             <div class="mb-2">
@@ -86,33 +87,33 @@
                             <p class="mb-1">Keadaan Kesehatan pada saat ini : </p>
                         </div>
                         <div class="flex mb-1">
-                            <div class="w-1/2"><Radio :values="'baik'" :names="'kesehatan'" :id="'kesehatanBaik'" :label="'BAIK'"/></div>
-                            <div class="w-1/2"><Radio :values="'kurang sehat'" :names="'kesehatan'" :id="'kesehatanKurang'" :label="'KURANG SEHAT'"/></div>
+                            <div class="w-1/2"><Radio :values="'baik'" :names="'keadaan'" :id="'kesehatanBaik'" :label="'BAIK'" /></div>
+                            <div class="w-1/2"><Radio :values="'kurang sehat'" :names="'keadaan'" :id="'kesehatanKurang'" :label="'KURANG SEHAT'"/></div>
                         </div>
                         
                         <div class="mt-10">
                             <p id="sakitKeras" class="mb-1">Apakah anda pernah sakit keras/kecelakaan?</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'kecelakaanYa'" :names="'kecelakaan'" id="kecelakaanYa" :label="'YA'" @change="sakitKeras=true"/></div>
-                            <div class="w-1/2"><Radio :values="'kecelakaanTidak'" :names="'kecelakaan'" id="kecelakaanTidak" :label="'TIDAK'" @change="sakitKeras=false"/></div>
+                            <div class="w-1/2"><Radio :values="'Ya'" :names="'sakit_keras'" id="kecelakaanYa" :label="'YA'" @change="sakitKeras=true"/></div>
+                            <div class="w-1/2"><Radio :values="'Tidak'" :names="'sakit_keras'" id="kecelakaanTidak" :label="'TIDAK'" @change="sakitKeras=false"/></div>
                         </div>
                     </div>
                     <div class="w-1/2">
-                        <div >
+                        <div>
                             <p>Apakah ada cacat tubuh? </p>
                             <p class="mb-1 text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'cacatYa'" :names="'cacatTubuh'" :id="'cacatYa'" :label="'YA'" /></div>
-                            <div class="w-1/2"><Radio :values="'cacatTidak'" :names="'cacatTubuh'" :id="'cacatTidak'" :label="'TIDAK'"/></div>
+                            <div class="w-1/2"><Radio :values="'Ya'" :names="'cacat'" :id="'cacatYa'" :label="'YA'" /></div>
+                            <div class="w-1/2"><Radio :values="'Tidak'" :names="'cacat'" :id="'cacatTidak'" :label="'TIDAK'"/></div>
                         </div>
 
                         <div v-show="sakitKeras">
                             <div class="mt-2 w-1/3">
                                 <p>Kapan Terjadinya:</p>
                             </div>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'waktuKecelakaan'" :placeHolder="''"/>
+                            <InputBio :type="'text'" :modelValue="''" :nama="'kapan'" :placeHolder="''"/>
                         </div>
                     </div>
                 </div>
@@ -128,18 +129,18 @@
                         </div>
                         
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'belum menikah'" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
-                            <div class="w-1/2"><Radio :values="'sudah menikah'" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
+                            <div class="w-1/2"><Radio :values="'belum menikah'" v-model="status_perkawinan" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
+                            <div class="w-1/2"><Radio :values="'sudah menikah'" v-model="status_perkawinan" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
                         </div>
                     </div>
 
                     <div class="w-1/2">
                         <div v-show="sudahMenikah">
                             <p>Nama Suami/Istri :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'namaSuamiIstri'" :placeHolder="'Nama Suami/Istri'" />
+                            <InputBio :type="'text'" :modelValue="''" :nama="'nama_suami_istri'" :placeHolder="'Nama Suami/Istri'" />
 
                             <p class="mt-2">Nama Anak :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'namaAnak'" :placeHolder="'Nama Anak'" />
+                            <InputBio :type="'text'" :modelValue="''" :nama="'nama_anak'" :placeHolder="'Nama Anak'" />
                         </div>
                     </div>
                 </div>
@@ -153,36 +154,34 @@
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TINGKAT/GELAR</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JURUSAN</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA SEKOLAH</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">KOTA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TAHUN KELULUSAN</th>
+                                <th class="font-semibold w-2/12">TINGKAT/GELAR</th>
+                                <th class="font-semibold w-2/12">JURUSAN</th>
+                                <th class="font-semibold w-3/12">NAMA SEKOLAH</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">TAHUN KELULUSAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in pendidikanCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'pendidikan[][tingkat]'" :placeHolder="'Tingkat / Gelar'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][jurusan]'" :placeHolder="'Jurusan'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][sekolah]'" :placeHolder="'Nama Sekolah'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][kota]'" :placeHolder="'Kota'" />
-                                <InputTable :modelValue="''" :nama="'pendidikan[][tahun]'" :placeHolder="'Tahun Kelulusan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in pendidikan.length" :key="i">
+                                <InputTable v-model="pendidikan[i-1].tingkat" :nama="'pendidikan[][tingkat]'" :placeHolder="'Tingkat / Gelar'" />
+                                <InputTable v-model="pendidikan[i-1].jurusan" :nama="'pendidikan[][jurusan]'" :placeHolder="'Jurusan'" />
+                                <InputTable v-model="pendidikan[i-1].nama_sekolah" :nama="'pendidikan[][nama_sekolah]'" :placeHolder="'Nama Sekolah'" />
+                                <InputTable v-model="pendidikan[i-1].kota" :nama="'pendidikan[][kota]'" :placeHolder="'Kota'" />
+                                <InputTable v-model="pendidikan[i-1].tahun_lulus" :nama="'pendidikan[][tahun_lulus]'" :placeHolder="'Tahun Kelulusan'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subPendidikanCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subPendidikanCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="pendidikanCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="pendidikan.push({tingkat:'', jurusan:'', nama_sekolah:'', kota:'', tahun_lulus:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -196,7 +195,7 @@
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'alasanBekerja'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'alasan_bekerja'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -208,36 +207,34 @@
 
                 <!-- orang tua -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ORANG TUA</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ORANG TUA</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[0]" :key="i">
-                                <InputTable :modelValue="''" :nama="'orangTua[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'orangTua[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[0].length" :key="i">
+                                <InputTable v-model="keluarga[0][i-1].nama" :nama="'orang_tua[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable v-model="keluarga[0][i-1].ttl" :nama="'orang_tua[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable v-model="keluarga[0][i-1].alamat" :nama="'orang_tua[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable v-model="keluarga[0][i-1].pendidikan" :nama="'orang_tua[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable v-model="keluarga[0][i-1].pekerjaan" :nama="'orang_tua[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(0)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(0)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[0]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluarga[0].push({nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -246,36 +243,34 @@
 
                 <!-- istri/suami -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ISTRI/SUAMI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ISTRI/SUAMI</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[1]" :key="i">
-                                <InputTable :modelValue="''" :nama="'pasangan[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'pasangan[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[1].length" :key="i">
+                                <InputTable v-model="keluarga[1][i-1].nama" :nama="'istri_suami[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable v-model="keluarga[1][i-1].ttl" :nama="'istri_suami[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable v-model="keluarga[1][i-1].alamat" :nama="'istri_suami[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable v-model="keluarga[1][i-1].pendidikan" :nama="'istri_suami[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable v-model="keluarga[1][i-1].pekerjaan" :nama="'istri_suami[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(1)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(1)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[1]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluarga[1].push({nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -284,36 +279,34 @@
 
                 <!-- anak kandung -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA ANAK KANDUNG</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA ANAK KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[2]" :key="i">
-                                <InputTable :modelValue="''" :nama="'anak[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'anak[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'anak[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'anak[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'anak[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[2].length" :key="i">
+                                <InputTable v-model="keluarga[2][i-1].nama" :nama="'anak_kandung[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable v-model="keluarga[2][i-1].ttl" :nama="'anak_kandung[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable v-model="keluarga[2][i-1].alamat" :nama="'anak_kandung[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable v-model="keluarga[2][i-1].pendidikan" :nama="'anak_kandung[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable v-model="keluarga[2][i-1].pekerjaan" :nama="'anak_kandung[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(2)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(2)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[2]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluarga[2].push({nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -322,36 +315,34 @@
 
                 <!-- saudara kandung -->
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA SAUDARA KANDUNG</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT & TGL LAHIR</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ALAMAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">PEKERJAAN</th>
+                                <th class="font-semibold w-3/12">NAMA SAUDARA KANDUNG</th>
+                                <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
+                                <th class="font-semibold w-3/12">ALAMAT</th>
+                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12">PEKERJAAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in keluargaCount[3]" :key="i">
-                                <InputTable :modelValue="''" :nama="'saudara[][nama]'" :placeHolder="'Nama'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][alamat]'" :placeHolder="'Alamat'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][pendidikan]'" :placeHolder="'Pendidikan'" />
-                                <InputTable :modelValue="''" :nama="'saudara[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[3].length" :key="i">
+                                <InputTable v-model="keluarga[3][i-1].nama" :nama="'saudara_kandung[][nama]'" :placeHolder="'Nama'" />
+                                <InputTable v-model="keluarga[3][i-1].ttl" :nama="'saudara_kandung[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
+                                <InputTable v-model="keluarga[3][i-1].alamat" :nama="'saudara_kandung[][alamat]'" :placeHolder="'Alamat'" />
+                                <InputTable v-model="keluarga[3][i-1].pendidikan" :nama="'saudara_kandung[][pendidikan]'" :placeHolder="'Pendidikan'" />
+                                <InputTable v-model="keluarga[3][i-1].pekerjaan" :nama="'saudara_kandung[][pekerjaan]'" :placeHolder="'Pekerjaan'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end my-2">
-                        <button @click.prevent="subKeluargaCount(3)" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subKeluargaCount(3)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="keluargaCount[3]++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="keluarga[3].push({nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -365,38 +356,36 @@
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12 border border-stroke-100">DARI TGL/TAHUN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">SAMPAI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">NAMA PERUSAHAAN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">KOTA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">BID. USAHA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JABATAN/BAGIAN</th>
+                                <th class="font-semibold w-2/12">DARI TGL/TAHUN</th>
+                                <th class="font-semibold w-2/12">SAMPAI</th>
+                                <th class="font-semibold w-3/12">NAMA PERUSAHAAN</th>
+                                <th class="font-semibold w-2/12">KOTA</th>
+                                <th class="font-semibold w-2/12">BID. USAHA</th>
+                                <th class="font-semibold w-2/12">JABATAN/BAGIAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in riwayatCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][dari]'" :placeHolder="'Tgl/Tahun'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][sampai]'" :placeHolder="'Tgl/Tahun'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][perusahaan]'" :placeHolder="'Nama Perusahaan'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][kota]'" :placeHolder="'Kota'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][usaha]'" :placeHolder="'Bidang Usaha'" />
-                                <InputTable :modelValue="''" :nama="'riwayatKerja[][jabatan]'" :placeHolder="'Jabatan/Bagian'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in riwayat.length" :key="i">
+                                <InputTable v-model="riwayat[i-1].dari" :nama="'riwayat_pekerjaan[][dari]'" :placeHolder="'Tgl/Tahun'" />
+                                <InputTable v-model="riwayat[i-1].sampai" :nama="'riwayat_pekerjaan[][sampai]'" :placeHolder="'Tgl/Tahun'" />
+                                <InputTable v-model="riwayat[i-1].nama_perusahaan" :nama="'riwayat_pekerjaan[][nama_perusahaan]'" :placeHolder="'Nama Perusahaan'" />
+                                <InputTable v-model="riwayat[i-1].kota" :nama="'riwayat_pekerjaan[][kota]'" :placeHolder="'Kota'" />
+                                <InputTable v-model="riwayat[i-1].bidang_usaha" :nama="'riwayat_pekerjaan[][bidang_usaha]'" :placeHolder="'Bidang Usaha'" />
+                                <InputTable v-model="riwayat[i-1].jabatan" :nama="'riwayat_pekerjaan[][jabatan]'" :placeHolder="'Jabatan/Bagian'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subRiwayatCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subRiwayatCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="riwayatCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="riwayat.push({dari:'', sampai:'', nama_perusahaan:'', kota:'', bidang_usaha:'', jabatan:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -404,10 +393,10 @@
                 </div>
                 <div class="ml-7">
                     <p>Apabila Anda pernah bekerja di tempat lain coba sebutkan gaji yang anda peroleh? </p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'gajiPerusahaanLama'" :placeHolder="'Tulis disini'" />
+                    <InputBio :type="'text'" :modelValue="''" :nama="'gaji_diperoleh'" :placeHolder="'Tulis disini'" />
 
                     <p class="mb-1">Mengapa Anda berhenti dari pekerjaan yang lama, jelaskan secara singkat:</p>
-                    <TextArea :modelValue="''" :nama="'berhentiPekerjaanLama'" :placeHolder="'Tulis di sini'" />
+                    <TextArea :modelValue="''" :nama="'alasan_berhenti'" :placeHolder="'Tulis di sini'" />
 
                 </div>
             </div>
@@ -418,34 +407,32 @@
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">MATERI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">PENYELENGGARA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TAHUN</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">TEMPAT</th>
+                                <th class="font-semibold w-3/12">MATERI</th>
+                                <th class="font-semibold w-3/12">PENYELENGGARA</th>
+                                <th class="font-semibold w-2/12">TAHUN</th>
+                                <th class="font-semibold w-2/12">TEMPAT</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in trainingCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'training[][materi]'" :placeHolder="'Materi'" />
-                                <InputTable :modelValue="''" :nama="'training[][penyelenggara]'" :placeHolder="'Penyelenggara'" />
-                                <InputTable :modelValue="''" :nama="'training[][tahun]'" :placeHolder="'Tahun'" />
-                                <InputTable :modelValue="''" :nama="'training[][tempat]'" :placeHolder="'Tempat'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in training.length" :key="i">
+                                <InputTable v-model="training[i-1].materi" :nama="'training_kursus[][materi]'" :placeHolder="'Materi'" />
+                                <InputTable v-model="training[i-1].penyelenggara" :nama="'training_kursus[][penyelenggara]'" :placeHolder="'Penyelenggara'" />
+                                <InputTable v-model="training[i-1].tahun" :nama="'training_kursus[][tahun]'" :placeHolder="'Tahun'" />
+                                <InputTable v-model="training[i-1].tempat" :nama="'training_kursus[][tempat]'" :placeHolder="'Tempat'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subTrainingCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subTrainingCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="trainingCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="training.push({materi:'', penyelenggara:'', tahun:'', tempat:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -459,34 +446,32 @@
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-3/12 border border-stroke-100">ORGANISASI</th>
-                                <th class="font-semibold w-3/12 border border-stroke-100">TEMPAT</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MASA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">JABATAN</th>
+                                <th class="font-semibold w-3/12">ORGANISASI</th>
+                                <th class="font-semibold w-3/12">TEMPAT</th>
+                                <th class="font-semibold w-2/12">MASA</th>
+                                <th class="font-semibold w-2/12">JABATAN</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in organisasiCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'organisasi[][organisasi]'" :placeHolder="'Organisasi'" />
-                                <InputTable :modelValue="''" :nama="'organisasi[][tempat]'" :placeHolder="'Tempat'" />
-                                <InputTable :modelValue="''" :nama="'organisasi[][masa]'" :placeHolder="'Masa'" />
-                                <InputTable :modelValue="''" :nama="'organisasi[][jabatan]'" :placeHolder="'Jabatan'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in organisasi.length" :key="i">
+                                <InputTable v-model="organisasi[i-1].nama" :nama="'organisasi[][nama]'" :placeHolder="'Organisasi'" />
+                                <InputTable v-model="organisasi[i-1].tempat" :nama="'organisasi[][tempat]'" :placeHolder="'Tempat'" />
+                                <InputTable v-model="organisasi[i-1].masa" :nama="'organisasi[][masa]'" :placeHolder="'Masa'" />
+                                <InputTable v-model="organisasi[i-1].jabatan" :nama="'organisasi[][jabatan]'" :placeHolder="'Jabatan'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subOrganisasiCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subOrganisasiCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="organisasiCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="organisasi.push({nama:'', tempat:'', masa:'', jabatan:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -500,39 +485,37 @@
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
                 <div class="ml-7">
-                    <table class="table-fixed border border-collapse border-stroke-100 w-full">
-                        <thead class="bg-foreground-3-400 divide-y divide-stroke-100">
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th rowspan="2" class="font-semibold w-3/12 border border-stroke-100">BAHASA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">BERBICARA</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MENDENGAR</th>
-                                <th class="font-semibold w-2/12 border border-stroke-100">MENULIS</th>
+                                <th rowspan="2" class="font-semibold w-3/12">BAHASA</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">BERBICARA</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">MENDENGAR</th>
+                                <th class="font-semibold w-2/12 border-b-[1px] border-white">MENULIS</th>
                             </tr>
                             <tr>
-                                <th class="font-normal text-sm w-3/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12 border border-stroke-100">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-3/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-background-400 divide-y divide-stroke-100" id="user-table">
-                            <tr class="text-center" v-for="i in bahasaCount" :key="i">
-                                <InputTable :modelValue="''" :nama="'bahasa[][bahasa]'" :placeHolder="'Bahasa'" />
-                                <InputTable :modelValue="''" :nama="'bahasa[][berbicara]'" :placeHolder="'Kurang / Cukup / Baik'" />
-                                <InputTable :modelValue="''" :nama="'bahasa[][mendengar]'" :placeHolder="'Kurang / Cukup / Baik'" />
-                                <InputTable :modelValue="''" :nama="'bahasa[][menulis]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in bahasa.length" :key="i">
+                                <InputTable v-model="bahasa[i-1].bahasa" :nama="'bahasa[][bahasa]'" :placeHolder="'Bahasa'" />
+                                <InputTable v-model="bahasa[i-1].berbicara" :nama="'bahasa[][berbicara]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                                <InputTable v-model="bahasa[i-1].mendengar" :nama="'bahasa[][mendengar]'" :placeHolder="'Kurang / Cukup / Baik'" />
+                                <InputTable v-model="bahasa[i-1].menulis" :nama="'bahasa[][menulis]'" :placeHolder="'Kurang / Cukup / Baik'" />
                             </tr>
                         </tbody>
                     </table>
                     <div class="flex gap-1 w-full justify-end mt-2">
-                        <button @click.prevent="subBahasaCount" class="bg-red-600 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="subBahasaCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
                                                     <span>Kurangi</span>
                                                 </button>
-                        <button @click.prevent="bahasaCount++" class="bg-green-800 text-white ring-2 ring-inset ring-primary-300 
-                                                hover:bg-primary-200 hover:text-primary-900 duration-200 rounded-full h-auto w-auto 
-                                                text-base px-5 py-1">
+                        <button @click.prevent="bahasa.push({bahasa:'',berbicara:'',menulis:'',mendengar:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                 <i class="fa fa-plus mr-1"></i>
                                                 <span>Tambah</span>
                                                 </button>
@@ -546,16 +529,16 @@
                     <p>Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja:</p>
                 </div>
                 <div class="ml-7">
-                    <InputBio :type="'text'" :modelValue="''" :nama="'kabariPerusahaanLama'" :placeHolder="'Tulis disini'" />
+                    <InputBio :type="'text'" :modelValue="''" :nama="'lama_berhenti_kerja'" :placeHolder="'Tulis disini'" />
 
                     <p class="mt-2">Dan mulai kapan Anda dapat mulai bekerja jika Anda di terima di PT. Adiputro Wirasejati :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'mulaiBekerja'" :placeHolder="'Tulis disini'" />
+                    <InputBio :type="'text'" :modelValue="''" :nama="'bisa_mulai_kerja'" :placeHolder="'Tulis disini'" />
 
                     <div class="mt-2">
                         <p class="mr-3 mb-1">Apakah Anda memiliki saudara / kenalan di perusahaan ini: </p>
                         <div class="flex w-1/2">
-                            <div class="w-1/2"><Radio :values="'kenalanYa'" :names="'Kenalan'" :id="'kenalanYa'" :label="'YA'" @change="adaKenalan=true"/></div>
-                            <div class="w-1/2"><Radio :values="'kenalanTidak'" :names="'Kenalan'" :id="'kenalanTidak'" :label="'TIDAK'" @change="adaKenalan=false"/></div>
+                            <div class="w-1/2"><Radio :values="'Ya'" :names="'kenalan_perusahaan'" :id="'kenalanYa'" :label="'YA'" @change="adaKenalan=true"/></div>
+                            <div class="w-1/2"><Radio :values="'Tidak'" :names="'kenalan_perusahaan'" :id="'kenalanTidak'" :label="'TIDAK'" @change="adaKenalan=false"/></div>
                         </div>
                     </div>
                     
@@ -563,11 +546,11 @@
                         <p>Bila YA, Sebutkan:</p>
                         <div>
                             <p class="mt-1">Nama :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'fullnameKenalan'" :placeHolder="'Nama Lengkap'" />
+                            <InputBio :type="'text'" :modelValue="''" :nama="'kenalan_nama'" :placeHolder="'Nama Lengkap'" />
                             <p class="mt-1">Alamat :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'alamatKenalan'" :placeHolder="'Alamat'" />
+                            <InputBio :type="'text'" :modelValue="''" :nama="'kenalan_alamat'" :placeHolder="'Alamat'" />
                             <p class="mt-1">Jabatan :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'jabatanKenalan'" :placeHolder="'Jabatan'" />
+                            <InputBio :type="'text'" :modelValue="''" :nama="'kenalan_jabatan'" :placeHolder="'Jabatan'" />
                         </div>
                     </div>
                 </div>
@@ -578,8 +561,8 @@
                 <div>
                     <p>Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
                     <div class="flex w-1/2 mt-1">
-                        <div class="w-1/2"><Radio :values="'pelatihanYa'" :names="'pelatihan'" :id="'pelatihanYa'" :label="'YA'"/></div>
-                        <div class="w-1/2"><Radio :values="'pelatihanTidak'" :names="'pelatihan'" :id="'pelatihanTidak'" :label="'TIDAK'"/></div>
+                        <div class="w-1/2"><Radio :values="'Ya'" :names="'pelatihan_kerja'" :id="'pelatihanYa'" :label="'YA'"/></div>
+                        <div class="w-1/2"><Radio :values="'Tidak'" :names="'pelatihan_kerja'" :id="'pelatihanTidak'" :label="'TIDAK'"/></div>
                     </div>
                 </div>
             </div>
@@ -590,7 +573,7 @@
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'tujuanBekerja'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'tujuan_kerja'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
             
@@ -600,7 +583,7 @@
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'kendaraanPribadi'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'kendaraan_ket'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -609,10 +592,10 @@
                     <p class="mr-3">Apakah kendaraan tersebut milik: </p>
 
                     <div class="flex w-1/2 mt-1">
-                        <div class="w-1/4"><Radio :values="'Pribadi'" :names="'kendaraanMilik'" :id="'kendaraan_pribadi'" :label="'Pribadi'"/></div>
-                        <div class="w-1/4"><Radio :values="'Orangtua'" :names="'kendaraanMilik'" :id="'kendaraan_Orang_Tua'" :label="'Orang Tua'"/></div>
-                        <div class="w-1/4"><Radio :values="'Saudara'" :names="'kendaraanMilik'" :id="'kendaraan_Saudara'" :label="'Saudara'"/></div>
-                        <div class="w-1/4"><Radio :values="'dll'" :names="'kendaraanMilik'" :id="'kendaraan_dll'" :label="'dan lain-lain'"/></div>
+                        <div class="w-1/4"><Radio :values="'Pribadi'" :names="'kendaraan_milik'" :id="'kendaraan_pribadi'" :label="'Pribadi'"/></div>
+                        <div class="w-1/4"><Radio :values="'Orang Tua'" :names="'kendaraan_milik'" :id="'kendaraan_Orang_Tua'" :label="'Orang Tua'"/></div>
+                        <div class="w-1/4"><Radio :values="'Saudara'" :names="'kendaraan_milik'" :id="'kendaraan_Saudara'" :label="'Saudara'"/></div>
+                        <div class="w-1/4"><Radio :values="'dll'" :names="'kendaraan_milik'" :id="'kendaraan_dll'" :label="'dan lain-lain'"/></div>
                     </div>
                 </div>
             </div>
@@ -623,7 +606,7 @@
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'hobby'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'hobi'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -633,7 +616,7 @@
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'gajiDiharapkan'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'harapan_gaji'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -643,7 +626,7 @@
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'bermasalahHukum'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'masalah_hukum'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -673,7 +656,7 @@
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'puasDiri'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea :modelValue="''" :nama="'kepuasan_keadaan_diri'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -682,9 +665,40 @@
                     <p class="mr-2">36.</p>
                     <p>Apakah anda mempunyai prestasi / penghargaan selama ini? Bila ada silahkan disebutkan (jenis, bidang, dan tahun)</p>
                 </div>
+                
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'prestasi'" :placeHolder="'Tulis di sini'" />                    
+                    <table class="table-fixed w-full font-semibold">
+                        <thead class="bg-foreground-4-100 text-white">
+                            <tr>
+                                <th class="font-semibold w-4/12">JENIS</th>
+                                <th class="font-semibold w-4/12">BIDANG</th>
+                                <th class="font-semibold w-4/12">TAHUN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in prestasi.length" :key="i">
+                                <InputTable v-model="prestasi[i-1].jenis" :nama="`prestasi[][jenis]`" :placeHolder="'Jenis'" />
+                                <InputTable v-model="prestasi[i-1].bidang" :nama="`prestasi[][bidang]`" :placeHolder="'Bidang'" />
+                                <InputTable v-model="prestasi[i-1].tahun" :nama="`prestasi[][tahun]`" :placeHolder="'Tahun'" />
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex gap-1 w-full justify-end mt-2">
+                        <button @click.prevent="subPrestasiCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
+                                                    <i class="fa fa-minus mr-1"></i>
+                                                    <span>Kurangi</span>
+                                                </button>
+                        <button @click.prevent="prestasi.push({jenis:'',bidang:'',tahun:''})" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
+                                                duration-200 rounded-md h-auto w-auto px-5 py-1">
+                                                <i class="fa fa-plus mr-1"></i>
+                                                <span>Tambah</span>
+                                                </button>
+                    </div>
                 </div>
+                <!-- <div class="ml-7">
+                    <TextArea :modelValue="''" :nama="'prestasi'" :placeHolder="'Tulis di sini'" />                    
+                </div> -->
             </div>
 
             <div>
@@ -707,20 +721,20 @@
                         <div class="w-1/2">
                             <p class="font-bold">Orang Terdekat 1</p>
                             <p>Nama</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'fullnameOrang1'" :placeHolder="'Nama Lengkap'" />
+                            <InputBio :type="'text'" v-model="orang_terdekat[0].nama" :nama="'orang_terdekat[][nama]'" :placeHolder="'Nama Lengkap'" />
                             <p>Alamat</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'alamatOrang1'" :placeHolder="'Alamat'" />
+                            <InputBio :type="'text'" v-model="orang_terdekat[0].alamat" :nama="'orang_terdekat[][alamat]'" :placeHolder="'Alamat'" />
                             <p>No. Telepon</p>
-                            <InputBio :type="'number'" :modelValue="''" :nama="'telpOrang1'" :placeHolder="'081234567890'" />
+                            <InputBio :type="'number'" v-model="orang_terdekat[0].telepon" :nama="'orang_terdekat[][telepon]'" :placeHolder="'081234567890'" />
                         </div>
                         <div class="w-1/2">
                             <p class="font-bold">Orang Terdekat 2</p>
                             <p>Nama</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'fullnameOrang2'" :placeHolder="'Nama Lengkap'" />
+                            <InputBio :type="'text'" v-model="orang_terdekat[1].nama" :nama="'orang_terdekat[][nama]'" :placeHolder="'Nama Lengkap'" />
                             <p>Alamat</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'alamatOrang2'" :placeHolder="'Alamat'" />
+                            <InputBio :type="'text'" v-model="orang_terdekat[1].alamat" :nama="'orang_terdekat[][alamat]'" :placeHolder="'Alamat'" />
                             <p>No. Telepon</p>
-                            <InputBio :type="'number'" :modelValue="''" :nama="'telpOrang2'" :placeHolder="'081234567890'" />
+                            <InputBio :type="'number'" v-model="orang_terdekat[1].telepon" :nama="'orang_terdekat[][telepon]'" :placeHolder="'081234567890'" />
                         </div>
                     </div>
                 </div>
@@ -730,7 +744,7 @@
             <div class="flex justify-end font-bold">
                 <div>
                     <div class="flex mb-2">
-                        <input type="text" name="" id="" class="w-36 inline-block px-3 text-center outline-none bg-transparent border-b-2 border-stroke-100 placeholder-stroke-100" placeholder="Kota">
+                        <input type="text" name="kota_ttd" id="" class="w-36 inline-block px-3 text-center outline-none bg-transparent border-b-2 border-stroke-100 placeholder-stroke-100" placeholder="Kota">
                         <p class="ml-1 mr-2 font-bold">, {{getDate()}}</p>
                     </div>
                     <p class="mb-2 text-center">Pelamar,</p>
@@ -745,7 +759,7 @@
                     <div class="text-center mb-2">
                         <input type="file" name="imgSign" id="files" class="hidden" @change="signChange">
                         <label for="files" class="bg-foreground-3-300 ring-1 ring-inset ring-stroke-100 hover:bg-foreground-3-400
-                                                    duration-200 rounded-xl py-1 px-5">Upload Tanda Tangan</label>
+                                                    duration-200 rounded-xl py-1 px-5">Unggah Tanda Tangan</label>
                     </div>
                     
                     <div class="text-center">
@@ -753,11 +767,10 @@
                     </div>
                 </div>
             </div>
-
             <div class="mt-10 mb-5 flex justify-end">
-                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white hover:bg-green-800 duration-200 rounded-full text-lg font-bold px-10 py-2"
-                    @click.prevent="aaa">
-                    Submit
+                <button type="submit" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white hover:bg-green-800 duration-200 rounded-full 
+                        text-lg font-bold px-10 py-2">
+                    Kirim
                 </button>
             </div>
         </form>
@@ -769,25 +782,43 @@ import InputBio from '../components/input.vue'
 import InputTable from '../components/table_input.vue'
 import TextArea from '../components/textarea.vue'
 import Radio from '../components/radiobutton.vue'
+
+import axios from 'axios'
 export default {
     components: {
-        InputBio, InputTable, TextArea, Radio
+        InputBio, InputTable, TextArea, Radio, axios
     },
     data(){
         return{
             judulHalaman: 'Biodata',
             url: null,
             fullname: "",
+            ktp: "",
+            ttl: "",
+            jenis_kelamin: "",
+            alamat: "",
+            usia: "",
+            noHp: "",
+            status_perkawinan: "",
             sudahMenikah: false,
             sakitKeras: false,
             adaKenalan: false,
-            pendidikanCount: 1,
-            keluargaCount:[1,1,1,1],
-            riwayatCount: 1,
-            trainingCount: 1,
-            organisasiCount: 1,
-            bahasaCount: 1,
+            pendidikan: [{tingkat:'', jurusan:'', nama_sekolah:'', kota:'', tahun_lulus:''}],
+            keluarga:[[{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+                            [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+                            [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+                            [{ nama:'', ttl:'', alamat:'',pendidikan:'', pekerjaan:''}]],
+            riwayat: [{dari:'', sampai:'', nama_perusahaan:'', kota:'', bidang_usaha:'', jabatan:''}],
+            training: [{materi:'', penyelenggara:'', tahun:'', tempat:''}],
+            organisasi: [{nama:'', tempat:'', masa:'', jabatan:''}],
+            bahasa: [{bahasa:'',berbicara:'',menulis:'',mendengar:''}],
+            prestasi: [{jenis:'',bidang:'',tahun:''}],
+            orang_terdekat: [{nama:'', alamat:'',telepon:''},{nama:'', alamat:'',telepon:''}],
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+            email: null,
+            id_tes_result: null,
+            exam_session: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
@@ -802,25 +833,201 @@ export default {
                 reader.readAsDataURL(input.files[0]);
             }
         },
-        subPendidikanCount(){ if (this.pendidikanCount>1) this.pendidikanCount-- },
+        subPendidikanCount(){ if (this.pendidikan.length>1) this.pendidikan.pop() },
         subKeluargaCount(idx){ 
-            console.log(this.keluargaCount)
-            if (this.keluargaCount[idx]>1) this.keluargaCount[idx]-- 
+            if (this.keluarga[idx].length>1) this.keluarga[idx].pop()
         },
-        subRiwayatCount(){ if (this.riwayatCount>1) this.riwayatCount-- },
-        subTrainingCount(){ if (this.trainingCount>1) this.trainingCount-- },
-        subOrganisasiCount(){ if (this.organisasiCount>1) this.organisasiCount-- },
-        subBahasaCount(){ if (this.bahasaCount>1) this.bahasaCount-- },
+        subRiwayatCount(){ if (this.riwayat.length>1) this.riwayat.pop() },
+        subTrainingCount(){ if (this.training.length>1) this.training.pop() },
+        subOrganisasiCount(){ if (this.organisasi.length>1) this.organisasi.pop() },
+        subBahasaCount(){ if (this.bahasa.length>1) this.bahasa.pop() },
+        subPrestasiCount(){ if (this.prestasi.length>1) this.prestasi.pop() },
         getDate(){
             const today = new Date()
             const date = ('00'+today.getDate()).slice(-2) + " " + this.month[today.getMonth()] + " " + today.getFullYear()
             return date
         },
-        aaa(){
-            console.log(this.adaKenalan)
-        }
+        dateFormatting(date){
+            let arr = date.split('-')
+            return arr[2]+"-"+arr[1]+"-"+arr[0]
+        },
+        submitForm(e){
+            let data = Object.fromEntries(new FormData(e.target).entries());
+            
+            let res = []
+            let res2 = {}
+            let notInclude = ["imgSign","keadaan","sakit_keras","cacat","kapan","menikah","nama_suami_istri","nama_anak","gaji_diperoleh",
+                                "alasan_berhenti","lama_berhenti_kerja","bisa_mulai_kerja","kenalan_perusahaan","kenalan_nama","kenalan_alamat",
+                                "kenalan_jabatan","kendaraan_ket","kendaraan_milik","seniDikuasai","kota_ttd"]
+            Object.entries(data).map(d => {
+                if(!d[0].includes("[") && !notInclude.includes(d[0])){
+                    res.push([d[0],d[1]])
+                }else if(!d[0].includes("[") && notInclude.includes(d[0])){
+                    res2[d[0]] = d[1]
+                }
+            })
+            // console.log(res)
+            
+            let formData = {}
+            for (let i = 0; i < res.length; i++) {
+                formData[res[i][0]] = res[i][1]
+            }
+
+            let kesehatan = {
+                "keadaan": res2.keadaan,
+                "cacat": res2.cacat, //
+                "sakit_keras": res2.sakit_keras,
+                "kapan": res2.kapan,
+            }
+            formData.kesehatan = kesehatan
+
+            let nikah = {
+                "menikah": res2.menikah,
+                "nama_suami_istri": res2.nama_suami_istri,
+                "nama_anak": res2.nama_anak,
+            }
+            formData.status_nikah = nikah
+
+            formData.pendidikan = this.pendidikan
+
+            let kel = {
+                orang_tua: this.keluarga[0],
+                istri_suami: this.keluarga[1],
+                anak_kandung: this.keluarga[2],
+                saudara_kandung: this.keluarga[3],
+            }
+            formData.keluarga = kel
+
+            let riwayats = {
+                "riwayat": this.riwayat,
+                "gaji_diperoleh": res2.gaji_diperoleh,
+                "alasan_berhenti": res2.alasan_berhenti,
+            }
+            formData.riwayat_pekerjaan = riwayats
+
+            formData.training_kursus = this.training
+
+            formData.organisasi = this.organisasi
+
+            formData.bahasa_dikuasai = this.bahasa
+
+            let keterangan_ker = {
+                "lama_berhenti_kerja": res2.lama_berhenti_kerja,
+                "bisa_mulai_kerja": res2.bisa_mulai_kerja,
+                "kenalan_perusahaan": res2.kenalan_perusahaan,
+                "kenalan": {
+                    "nama": res2.kenalan_nama,
+                    "alamat": res2.kenalan_alamat,
+                    "jabatan": res2.kenalan_jabatan
+                }, 
+            }
+            formData.keterangan_kerja = keterangan_ker
+
+            let kendaraans = {
+                "keterangan": res2.kendaraan_ket,
+                "kepemilikan": res2.kendaraan_milik
+            }
+            formData.kendaraan = kendaraans
+
+            formData.prestasi = this.prestasi
+
+            formData.seni_dikuasai = {"jenis": res2.seniDikuasai}
+
+            formData.orang_terdekat = this.orang_terdekat
+
+            formData.tanggal_biodata = res2.kota_ttd+", "+this.getDate()
+
+            console.log(formData)
+
+            let formData2 = {
+                updating_email: this.email,
+                biodata: formData
+            }
+
+            // var fileLamaran = e.target[16].files[0]
+            // if (fileLamaran!=undefined)
+            //     fileLamaran.originalname = fileLamaran.name
+            // formData.append('lampiran',fileLamaran)
+
+            $('#spinner-modal').fadeIn("slow");
+            
+            let data_result = null
+            axios.post(this.port+'/registrant/update', formData2)
+            .then((response) => {
+                if (response.status==200){
+                    axios
+                    .get(this.port+`/test_result/${this.id_tes_result}`)
+                    .then(({data}) => (
+                        data_result = data,
+                        axios.post(this.port+'/test_result/update',{
+                            "updating_id": data_result.id,
+                            "test_id": 19,
+                            "exam_session": this.exam_session,
+                            "start_date": data_result.start_date,
+                            "finish_date": Date.now(),
+                            "status": 1,
+                            "result": formData
+                        })
+                        .then((response) => {
+                            console.log(response)
+                            $('#spinner-modal').fadeOut("slow");
+                            this.$cookies.remove("current_test")
+                            Swal.fire(
+                                'Sukses!',
+                                'Biodata berhasil disimpan.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/dashboard'
+                            })
+                        }).catch( error => { 
+                            console.log('error: ' + error) 
+                        })
+                    )).catch( error => { 
+                        console.log('error: ' + error) 
+                    })
+                }else{
+                    throw response
+                }
+            }).catch( error => {
+                $('#spinner-modal').fadeOut("slow");
+                Swal.fire(
+                    'Warning!',
+                    error.response.data,
+                    'warning'
+                )
+            });
+        },
     },
     mounted() {
+        this.email = this.$cookies.get('data_registrant').email
+
+        axios
+        .get(this.port+"/applicant/"+this.email)
+        .then(({data}) => {
+            if(data!==undefined){
+                this.fullname = data.nama
+                this.ktp = data.no_ktp
+                this.ttl = data.tempat_lahir+" / "+this.dateFormatting(data.tanggal_lahir)
+                this.jenis_kelamin = data.jenis_kelamin
+                this.alamat = data.alamat_domisili
+                this.usia = data.usia
+                this.sudahMenikah = data.status_perkawinan=="belum menikah"?false:true
+                this.status_perkawinan = data.status_perkawinan
+                this.noHp = data.nomor_hp
+                this.pendidikan[0].tingkat = data.pendidikan_terakhir
+                this.pendidikan[0].nama_sekolah = data.nama_sekolah
+                this.pendidikan[0].jurusan = data.jurusan
+            }
+        })
+
+        let datas = this.$cookies.get("data_registrant")
+        this.exam_session = datas.exam_session;
+        let tests = datas.test;
+        for (let i = 0; i < tests.length; i++) {
+            if (tests[i][0]==19)
+                this.id_tes_result = tests[i][1]
+        }
         
     },
     created(){

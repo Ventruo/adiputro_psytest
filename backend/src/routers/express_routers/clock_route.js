@@ -5,10 +5,6 @@ const router = express.Router();
 let controller = new ClockController();
 router.use(ValidateToken);
 
-router.get("/start", controller.start);
-router.get("/stop", controller.stop);
-router.get("/update", controller.update);
-
 function ValidateToken(req, res, next) {
   if (req.query.token == process.env.CLOCK_TOKEN) {
     next();

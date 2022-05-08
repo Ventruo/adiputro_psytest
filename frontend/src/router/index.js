@@ -2,10 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 import main from '/src/views/main_layout.vue'
 
 import dashboard from '/src/views/dashboard.vue'
+import section_dashboard from '/src/views/section_dashboard.vue'
 import normalTest from '/src/views/normalTest.vue'
 import epps from '/src/views/epps.vue'
 import ekspresi from '/src/views/ekspresi.vue'
 import kraepelin from '/src/views/kraepelin.vue'
+import gambar from '/src/views/gambarTest.vue'
+import hafalan from '/src/views/hafalan.vue'
+import hafalanIST from '/src/views/hafalanIST.vue'
 import index from '/src/views/index.vue'
 import preExam from '/src/views/preExam.vue'
 import biodata from '/src/views/biodata.vue'
@@ -19,6 +23,7 @@ import session from '/src/views/Admin/session.vue'
 import masterRecruitment from '/src/views/Admin/recruitment.vue'
 import applicant from '/src/views/Admin/applicant.vue'
 import registrantDetail from '/src/views/Admin/registrantDetail.vue'
+import biodataRegistrant from '/src/views/Admin/biodata.vue'
 import reviewEssay from '/src/views/Admin/reviewEssay.vue'
 import addQuestion from '/src/views/Admin/addQuestion.vue'
 
@@ -43,9 +48,9 @@ const routes = [
         path: '/',
         name: 'main',
         component: main,
-        meta: {
-            middleware: auth
-        },
+        // meta: {
+        //     middleware: auth
+        // },
         children: [
             {
                 path: '/biodata',
@@ -56,6 +61,11 @@ const routes = [
                 path: '/dashboard',
                 name: 'dashboard',
                 component: dashboard,
+            },
+            {
+                path: '/section',
+                name: 'section',
+                component: section_dashboard,
             },
             {
                 path: '/preExam',
@@ -83,12 +93,27 @@ const routes = [
                 component: kraepelin,
             },
             {
+                path: '/hafalan',
+                name: 'hafalan',
+                component: hafalan,
+            },
+            {
+                path: '/hafalanIST',
+                name: 'hafalanIST',
+                component: hafalanIST,
+            },
+            {
+                path: '/gambar',
+                name: 'gambarTest',
+                component: gambar,
+            },
+            {
                 path: '/admin',
                 name: 'admin',
                 component: admin,
-                meta: {
-                    middleware: adminAuth
-                },
+                // meta: {
+                //     middleware: adminAuth
+                // },
                 children: [
                     {
                         path: '',
@@ -118,6 +143,10 @@ const routes = [
                         path: '/admin/registrantDetail',
                         name: 'registrantDetail',
                         component: registrantDetail,
+                    },{
+                        path: '/admin/biodata',
+                        name: 'biodataRegistrant',
+                        component: biodataRegistrant,
                     },
                     {
                         path: '/admin/reviewEssay',

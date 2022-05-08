@@ -54,7 +54,8 @@ class JobVacancyController {
   async getAll(req, res) {
     console.log("Getting All Job Vacancy...");
 
-    JobVacancy.findAll({ where: { status: 1 } }).then((vacancy) => {
+    // JobVacancy.findAll({ where: { status: 1 } }).then((vacancy) => {
+    JobVacancy.findAll().then((vacancy) => {
       if (vacancy.length == 0) {
         data_not_found_response(res);
         return;
@@ -112,12 +113,7 @@ class JobVacancyController {
     console.log("Updating A Job Vacancy...");
 
     if (
-      !validate_required_columns(
-        req,
-        JobVacancy,
-        ["status", "qr_link"],
-        ["updating_id"]
-      )
+      !validate_required_columns(req, JobVacancy, ["qr_link"], ["updating_id"])
     ) {
       missing_param_response(res);
       return;
@@ -158,27 +154,29 @@ class JobVacancyController {
         qr_link = link;
       }
 
-      let start_date = vacancy.start_date;
-      if (req.body.start_date) {
-        let split_date = req.body.start_date.split(" ")[0];
-        let split_time = req.body.start_date.split(" ")[1];
-        start_date =
-          split_date.split("/")[2] +
-          "-" +
-          split_date.split("/")[1] +
-          "-" +
-          split_date.split("/")[0] +
-          " " +
-          split_time;
-      }
-
+      // let start_date = vacancy.start_date;
+      // if (req.body.start_date) {
+      //   let split_date = req.body.start_date.split(" ")[0];
+      //   let split_time = req.body.start_date.split(" ")[1];
+      //   start_date =
+      //     split_date.split("/")[2] +
+      //     "-" +
+      //     split_date.split("/")[1] +
+      //     "-" +
+      //     split_date.split("/")[0] +
+      //     " " +
+      //     split_time;
+      // }
+      
       vacancy.set({
         name: req.body.name ?? vacancy.name,
         qr_link: qr_link,
         list_pekerjaan: req.body.list_pekerjaan
           ? req.body.list_pekerjaan.join()
           : vacancy.list_pekerjaan,
-        start_date: start_date,
+        start_date: req.body.start_date,
+        // start_date: start_date,
+        status: req.body.status - 1,
       });
       await vacancy.save();
 
@@ -187,7 +185,7 @@ class JobVacancyController {
   }
 
   async refreshQR(req, res) {
-    console.log("Refresh QR Job Vacancy...");
+    console.log("Refreshing QR Job Vacancy...");
 
     if (!req.body.url || !req.body.updating_id) {
       missing_param_response(res);

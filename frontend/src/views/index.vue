@@ -21,11 +21,11 @@
                 <div class="w-full h-auto text-center">
                     <h1 class="font-bold text-4xl">LOGIN</h1>
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
-                        <label for="userEmail">Email</label>
+                        <label for="userEmail">E-Mail</label>
                         <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
                                     mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
 
-                        <label for="userToken">Test Token</label>
+                        <label for="userToken">Token Tes</label>
                         <input type="text" name="test_token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
                                     mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
 
@@ -48,7 +48,7 @@ export default {
         return {
             judulHalaman: 'Login',
             info: null,
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
         }
     },
     methods: {
@@ -80,8 +80,11 @@ export default {
                             "exam_session": e.data.exam_session
                         };
                         this.$cookies.set('refresh_token', token, age);
-                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age);
-                        axios.defaults.headers.common['Authorization'] = `Bearer ${e.data.token}`
+                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
+
+                        localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
+                        localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
+
                         
                         if(e.data.is_admin) this.$router.push('/admin')
                         else this.$router.push('/dashboard')

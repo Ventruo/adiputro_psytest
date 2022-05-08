@@ -56,7 +56,8 @@ class ExamSessionController {
   async getAll(req, res) {
     console.log("Getting All Active Sessions...");
 
-    ExamSession.findAll({ where: { status: 1 } }).then((sessions) => {
+    // ExamSession.findAll({ where: { status: 1 } }).then((sessions) => {
+    ExamSession.findAll().then((sessions) => {
       if (sessions.length == 0) {
         data_not_found_response(res);
         return;
@@ -139,12 +140,11 @@ class ExamSessionController {
 
   async update(req, res) {
     console.log("Updating A Exam Session...");
-
     if (
       !validate_required_columns(
         req,
         ExamSession,
-        ["is_logged", "status", "test_token", "auth_token", "is_admin"],
+        ["is_logged", "test_token", "auth_token", "is_admin"],
         ["updating_id"]
       )
     ) {
@@ -158,12 +158,13 @@ class ExamSessionController {
           data_not_found_response(res);
           return;
         }
-
+        console.log(req.body.start_date)
         session.set({
           email: req.body.email,
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
           duration: req.body.duration,
+          status: req.body.status-1,
         });
         session.save();
 

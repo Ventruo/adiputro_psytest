@@ -1,82 +1,60 @@
 <template>
-    <div class="flex justify-center mb-1">
-        <img src="../../assets/logo.png" alt="" class="w-32 bg-primary-900 py-2 px-3 rounded-xl">
+    <div class="flex items-center w-full bg-foreground-4-100 px-4 py-2">
+        <img src="../../assets/logo.png" alt="" class="w-14 h-10">
+        <div class="text-white text-center w-full relative bottom-2" v-if="print==='yes'">
+            <p class="font-bold text-sm">PT. Adiputro Wirasejati</p>
+            <div class="text-xs">
+                <p>Jl. Raya Balearjosari no. 35, Malang, Jawa Timur - Indonesia 65126</p>
+                <p>+62 (0) 341 491 139 | Adiputrogroup.com</p>
+            </div>
+        </div>
+        <div class="text-white text-center w-full" v-if="print==='no'">
+            <p class="font-bold text-sm">PT. Adiputro Wirasejati</p>
+            <div class="text-[0.6rem]">
+                <p>Jl. Raya Balearjosari no. 35, Malang, Jawa Timur - Indonesia 65126</p>
+                <p>+62 (0) 341 491 139 | Adiputrogroup.com</p>
+            </div>
+        </div>
     </div>
     
-    <hr style="border-top: 2px solid black;">
-
-    <div class="flex my-2">
-        <div class="flex">
-            <div class="font-bold text-sm">
-                <p class="mb-2">Nama</p>
-                <p class="mb-2">Jenis Kelamin (L/P)</p>
-                <p>Pendidikan</p>
-            </div>
-            <div class="ml-2 text-sm">
-                <p class="mb-2">: {{this.nama}}</p>
-                <p class="mb-2">: L</p>
-                <p>: S1</p>
+    <div class="px-2 py-1">
+        <div class="flex my-2">
+            <div class="flex">
+                <div class="font-bold text-sm">
+                    <p class="mb-2">Nama</p>
+                    <p class="mb-2">Jenis Kelamin (L/P)</p>
+                    <p>Pendidikan</p>
+                </div>
+                <div class="ml-2 text-sm">
+                    <p class="mb-2">: {{this.nama}}</p>
+                    <p class="mb-2">: L</p>
+                    <p>: S1</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <hr v-if="print=='yes'" style="border-top: 2px solid black; margin-top: 10px;">
-    <hr v-else style="border-top: 2px solid black;">
+        <hr v-if="print=='yes'" style="border-top: 2px solid black; margin-top: 10px;">
+        <hr v-else style="border-top: 2px solid black;">
 
-    <div class="grow text-sm mt-3" v-if="arrData!=null">
-        <div class="flex">
-            <div class="font-bold text-sm">
-                <p class="mb-2">Berhitung</p>
-                <p class="mb-2">Ekspresi</p>
-                <p class="mb-2">Penalaran</p>
-                <p class="mb-2">Pemahaman</p>
-                <p class="mb-2">Ruang Bidang</p>
-                <p class="mb-2">DPM</p>
-                <p class="mb-2">Komponen</p>
-                <p class="mb-2">Merakit</p>
-                <p class="mb-2">Penalaran Mekanik</p>
-            </div>
-            <div class="ml-2 text-sm">
-                <p class="mb-2" v-for="i in 4" :key="i">-</p>
-                <p class="mb-2" v-for="i in 5" :key="i">
-                    : Benar ({{arrData[i-1].num_correct}})
-                </p>
-            </div>
-            <div class="ml-2 text-sm">
-                <p class="mb-2" v-for="i in 4" :key="i">-</p>
-                <p class="mb-2" v-for="i in 5" :key="i">
-                    Norma ({{arrData[i-1].norma}})
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div class="text-xs mb-2">
-        <div class="w-full">
-            <p class="font-bold">PT. Adiputro Wirasejati</p>
-            <div class="flex justify-between relative w-full">
-                <div>
-                    <div>
-                        <p>Jl. Raya Balearjosari no. 35</p>
-                        <p>Malang, Jawa Timur - Indonesia 65126</p>
-                    </div>
+        <div class="grow text-sm mt-3" v-if="arrData!=null">
+            <div class="flex">
+                <div class="font-bold text-sm">
+                    <p class="mb-2">Berhitung</p>
+                    <p class="mb-2">Ekspresi</p>
+                    <p class="mb-2">Penalaran</p>
+                    <p class="mb-2">Pemahaman</p>
+                    <p class="mb-2">Ruang Bidang</p>
+                    <p class="mb-2">DPM</p>
+                    <p class="mb-2">Komponen</p>
+                    <p class="mb-2">Merakit</p>
+                    <p class="mb-2">Penalaran Mekanik</p>
                 </div>
-                <div>
-                    <div>
-                        <div class="flex gap-2">
-                            <p class="font-bold">T</p>
-                            <p>+62 (0) 341 491 139</p>
-                        </div>
+                <div class="ml-2 text-sm">
+                    <div class="mb-2" v-for="i in arrData" :key="i">
+                        <p v-if="i.id!=-1">: Benar <span class="font-bold">({{i.num_correct}})</span> 
+                                            Norma <span class="font-bold">({{i.norma}})</span></p>
+                        <p v-else>: -</p>
                     </div>
-                    <div>
-                        <div class="flex gap-2">
-                            <p class="font-bold">F</p>
-                            <p>+62 (0) 341 491 904</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-end">
-                    <p class="font-bold">Adiputrogroup.com</p>
                 </div>
             </div>
         </div>
@@ -96,24 +74,52 @@ export default {
         }
     },
     mounted() {
-        var temp = Object.entries(this.data)
+        var temp = this.data
         var ctr = 0
         var arrTemp = []
         temp.forEach(t => {
-            if(t[1]==null){
+            let hasil = t.hasil[0]
+            if(hasil==null){
                 arrTemp[ctr] = {
                     "num_correct": '-',
-                    "norma": '-'
+                    "norma": '-',
+                    "id": t.id
                 }
             }else{
                 arrTemp[ctr] = {
-                    "num_correct": t[1][0].num_correct,
-                    "norma": t[1][0].norma
+                    "num_correct": hasil.num_correct,
+                    "norma": hasil.norma,
+                    "id": t.id
                 }
             }
             ctr++
         });
-        this.arrData = arrTemp
+
+        let validId = [6,7,8,9,11,12,13,14,15]
+        let validArr = []
+        for (let i = 0; i < validId.length; i++) {
+            validArr.push({
+                "num_correct": 0,
+                "norma": '-',
+                "id": -1
+            })
+        }
+
+        for (let i = 0; i < validId.length; i++) {
+            for (let j = 0; j < arrTemp.length; j++) {
+                const x = arrTemp[j]
+                if(x.id==validId[i])
+                    validArr[i] = {
+                        "num_correct": x.num_correct,
+                        "norma": x.norma,
+                        "id": x.id
+                    }
+            }
+        }
+        
+        // console.log(arrTemp)
+        this.arrData = validArr
+        console.log(this.arrData)
     },
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
-  <div class="h-auto min-h-screen bg-background-100 flex flex-col">
+  <div class="h-auto min-h-screen flex flex-col">
+    <div class="bg-background-100 h-screen w-full fixed top-0 left-0"></div>
     <router-view />
   </div>
 </template>
