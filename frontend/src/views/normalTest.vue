@@ -24,7 +24,10 @@
                         <span>Daftar Soal</span>
                     </div>
                     <div v-for="i in jumSoal" :key="i" class="inline-block">
-                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                            {{i}}
+                        </button>
+                        <button v-else-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
                         <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
@@ -43,19 +46,19 @@
                 </div>
             </div>
             
-            <div id="soal" class="mb-10 h-full font-semibold" v-if="pertanyaan!=null">
+            <div id="soal" class="mb-5 h-full font-semibold" v-if="pertanyaan!=null">
             <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" />
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :img="this.getImg(pertanyaan[noSoal-1]['instruction'])" />
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
                 
-                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban />
+                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id />
                 <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" 
                                 :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id"/>
                 <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
             </div>
 
-            <div class="flex justify-between">
+            <div class="flex justify-between mb-5">
                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
                     <i class="fa fa-chevron-left mr-3"></i>
                     <span>Sebelumnya</span>
@@ -124,6 +127,11 @@ export default {
         }
     },
     methods: {
+        getImg(data){
+            let id = data.split("d/")
+            id = id[1].split("/")
+            return "https://drive.google.com/uc?export=view&id="+id[0]
+        },
         mulai(){
             this.isStarted = true
 
@@ -142,6 +150,7 @@ export default {
             });
         },
         nextSoal(){
+            console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
@@ -166,6 +175,7 @@ export default {
                         confirmButtonText: 'Tetap Submit'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            clearInterval(this.waktu)
                             this.submitJawaban()
                         }
                     });
@@ -179,6 +189,7 @@ export default {
                         confirmButtonText: 'Yes'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            clearInterval(this.waktu)
                             this.submitJawaban()
                         }
                     });
@@ -225,7 +236,7 @@ export default {
                     temp.push(rujukan[i]+". "+banyak[i])
                 }
                 this.pilihanJawaban = temp
-            }else if(this.section_id==73 || this.section_id==74 || this.section_id==79){
+            }else if(this.section_id==73 || this.section_id==74){
                 this.pilihanJawaban = [
                     '1. '+this.pertanyaan[this.noSoal-1]['option_a'],
                     '2. '+this.pertanyaan[this.noSoal-1]['option_b'],
@@ -233,7 +244,21 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else{
+            }else if(this.section_id==9){
+                this.pilihanJawaban = this.getImg(this.pertanyaan[this.noSoal-1]['option_a'])
+            }else if(this.section_id==79){
+                this.pilihanJawaban = [
+                    this.pertanyaan[this.noSoal-1]['option_a'],
+                    this.pertanyaan[this.noSoal-1]['option_b'],
+                    this.pertanyaan[this.noSoal-1]['option_c'],
+                    this.pertanyaan[this.noSoal-1]['option_d'],
+                    this.pertanyaan[this.noSoal-1]['option_e'],]
+            }else if (this.section_id==10 || this.section_id==80){
+                this.pilihanJawaban = [
+                    "x", "o"
+                ]
+            }
+            else{
                 this.pilihanJawaban = [
                     'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
                     'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
@@ -264,6 +289,7 @@ export default {
             }
         },
         submitJawaban(){
+            $('#spinner-modal').fadeIn("slow");
             for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
@@ -277,6 +303,16 @@ export default {
                     let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
                     this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?1:0
                 }
+                else if(this.section_id==9 || this.section_id==10 || this.section_id==80){
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i]:''
+                }
+                else if(this.section_id==79){
+                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i]:''
+                    if(this.jawabanFinal[i]["answer"]=="A") this.jawabanFinal[i]["answer"] = "1"
+                    else if(this.jawabanFinal[i]["answer"]=="B") this.jawabanFinal[i]["answer"] = "2"
+                    else if(this.jawabanFinal[i]["answer"]=="C") this.jawabanFinal[i]["answer"] = "3"
+                    else if(this.jawabanFinal[i]["answer"]=="D") this.jawabanFinal[i]["answer"] = "4"
+                }
                 else if(this.jumChoice==2){
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
                 }
@@ -284,7 +320,7 @@ export default {
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
-            console.log(this.jawabanFinal)
+            // console.log(this.jawabanFinal)
 
             let formData = {
                 exam_session: this.exam_session,
@@ -309,6 +345,7 @@ export default {
                     .then((response) => {
                         this.$cookies.remove('current_section')
                         this.$cookies.remove("start_time")
+                        $('#spinner-modal').fadeOut("slow")
                         Swal.fire(
                             'Submitted!',
                             'Task Successfully Submitted.',
@@ -366,7 +403,6 @@ export default {
     beforeDestroy() {
         clearInterval(this.waktu)
     },
-
     mounted(){
         this.section_id = this.$cookies.get('current_section').id;
         let tes = this.$cookies.get('current_test').id

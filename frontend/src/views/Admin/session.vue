@@ -352,15 +352,21 @@ export default {
                     })
                     .then((response) => {
                         if (response.status==200){
-                            Swal.fire(
-                                'Created!',
-                                'Sesi Baru Berhasil Dibuat!',
-                                'success'
-                            )
-                            .then(function(){
-                                $('#modalSession').fadeOut("fast")
-                                $('#bg').fadeOut("slow")
-                            })
+                            axios
+                            .get(this.port+'/exam_session/all')
+                            .then(({data}) => (
+                                this.validation(data),
+                                Swal.fire(
+                                    'Created!',
+                                    'Sesi Baru Berhasil Dibuat!',
+                                    'success'
+                                )
+                                .then(function(){
+                                    $('#modalSession').fadeOut("fast")
+                                    $('#bg').fadeOut("slow")
+                                })
+                            ))
+                            
                         }else{
                             throw response
                         }
@@ -394,15 +400,20 @@ export default {
                         })
                         .then((response) => {
                             if (response.status==200){
-                                Swal.fire(
-                                    'Updated!',
-                                    'Sesi Berhasil Diperbarui!',
-                                    'success'
-                                )
-                                .then(function(){
-                                    $('#modalSession').fadeOut("fast")
-                                    $('#bg').fadeOut("slow")
-                                })
+                                axios
+                                .get(this.port+'/exam_session/all')
+                                .then(({data}) => (
+                                    this.validation(data),
+                                    Swal.fire(
+                                        'Updated!',
+                                        'Sesi Berhasil Diperbarui!',
+                                        'success'
+                                    )
+                                    .then(function(){
+                                        $('#modalSession').fadeOut("fast")
+                                        $('#bg').fadeOut("slow")
+                                    })
+                                ))
                             }else{
                                 throw response
                             }

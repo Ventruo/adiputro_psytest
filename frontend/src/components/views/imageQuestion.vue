@@ -9,6 +9,7 @@
         <div class="text-center h-28 py-2 w-full flex justify-center items-center">
             <img v-if="jenis === 'add'" :src="url" alt="" id="imgSoal" class="inline-block h-full">
             <!-- <img v-else src="src/assets/soal1.png" alt="" id="imgSoal" class="inline-block h-full"> -->
+            <img v-else :src="img" alt="" id="imgSoal" class="inline-block h-full">
         </div>
     </div>
 </template>
@@ -19,6 +20,7 @@ export default {
         "label": { type: String, default: "" },
         "jenis": { type: String, default: "" },
         "urlSoal": { type: String, default: "" },
+        "img": {type: String, default: ""}
     },
     emits: ["updateUrl"],
     data() {

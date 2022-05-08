@@ -76,8 +76,8 @@
                                 <td>{{this.sectionResult[idx]==undefined? "-" : toDate(this.sectionResult[idx].finish_date)}}</td>
                                 <td>{{this.sectionResult[idx]==undefined? "-" : this.sectionResult[idx].num_correct}}/{{i.question_num}}</td>
                                 <td class="h-12">
-                                    <button v-if="i.section_type==1 && this.sectionResult[idx]!=undefined" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
-                                        @click="this.$router.push({path: '/admin/reviewEssay'})"> 
+                                    <button v-if="(i.id==1 || i.id==72) && this.sectionResult[idx]!=undefined && this.sectionResult[idx].num_correct==0" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click="keReview(this.sectionResult[idx])"> 
                                         <i class="fa fa-info-circle mr-2"></i>
                                         <span>Review</span>
                                     </button>
@@ -603,6 +603,15 @@ export default {
                     })
                 }
             });
+        },
+        keReview(data){
+            this.$cookies.set('current_registrant', {
+                "email": this.$route.query.registrant,
+                "section_id": data.section_id,
+                "test_result_id": data.test_result_id,
+                "test_id": data.section.test_id
+            })
+            this.$router.push({path: '/admin/reviewEssay'})
         },
     },
     created(){

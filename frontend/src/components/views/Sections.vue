@@ -34,12 +34,9 @@
 
                                 <div v-if="section.duration!=-1">{{section.duration}} Menit</div>
                                 <div v-else>Tidak ada batas waktu</div>
-                                
-                                <div v-if="section.section_type==1">Esai</div>
-                                <div v-else-if="section.option_num==5">Pilihan Ganda (A - E)</div>
-                                <div v-else-if="section.option_num==4">Pilihan Ganda (A - D)</div>
-                                <div v-else-if="section.option_num==3">Pilihan Ganda (A - C)</div>
-                                <div v-else-if="section.option_num==2">Pilihan Ganda (Benar/Salah)</div>
+
+                                <div v-if="section.section_type==2">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</div>
+                                <div v-else class="mb-6">Esai</div>
                             </div>
                         </div>
                     </div>
@@ -155,7 +152,7 @@ export default {
     },
     data() {
         return {
-            
+            alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
         }
     },
     methods: {

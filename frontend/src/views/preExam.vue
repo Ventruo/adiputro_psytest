@@ -30,11 +30,8 @@
                                     <p v-if="section.duration!=-1">{{section.duration}} Menit</p>
                                     <p v-else>Tidak ada batas waktu</p>
                                     
-                                    <p v-if="section.option_num==5">Pilihan Ganda (A - E)</p>
-                                    <p v-else-if="section.option_num==4">Pilihan Ganda (A - D)</p>
-                                    <p v-else-if="section.option_num==3">Pilihan Ganda (A - C)</p>
-                                    <p v-else-if="section.option_num==2">Pilihan Ganda (Benar/Salah)</p>
-                                    <p v-else class="mb-6">Esai</p>
+                                    <p v-if="section.section_type==2" class="text-xl">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</p>
+                                    <p v-else class="mb-6 text-xl">Esai</p>
                                 </div>
                             </div>
                             <img v-if="sectionId==6" src="../assets/gif_deret_bilangan.gif" alt="" class="w-1/2">
@@ -73,6 +70,7 @@ export default {
             section: null,
             sectionId: null,
             testId: null,
+            alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
