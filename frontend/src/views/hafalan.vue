@@ -142,6 +142,7 @@
 import axios from 'axios'
 import TextQuestion from '../components/views/textQuestion.vue'
 import AnswerButton from '../components/answerButton.vue'
+import { socket, buildSocket } from '../utilities/network.js'
 
 export default {
     components: {
@@ -154,6 +155,7 @@ export default {
             noSoal: 1,
             jumSoal: 0,
             jumChoice: 0,
+            durasi: 0,
             menit: 0,
             detik: 0,
             waktu: null,
@@ -179,48 +181,41 @@ export default {
             this.state = 2
             this.gantiPilihanJawaban()
             this.progress(true)
-            if(this.menit!=-99){
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
-                    
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 0
-                        clearInterval(this.waktu)
-                        this.state = 3
-                    } 
-                }, 1000)
-            }
+
+            // Create Section Ongoing to indicate Ongoing Section
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": this.section_id,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": this.durasi,
+            })
+            .then((response) => {
+                
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         async mulai2(){
-            this.menit = 3
-            this.detik = 0
             this.jumSoal = this.pertanyaan2.length
             this.state = 4
             this.noSoal = 1
             this.gantiPilihanJawaban()
             document.getElementById("progress").style.width = ((1/this.jumSoal)*100)/5 +'%'
             this.progress(true)
-            if(this.menit!=-99){
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
-                    
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 0
-                        clearInterval(this.waktu)
-                        this.submitJawaban()
-                    } 
-                }, 1000)
-            }
+
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": parseInt(this.section_id)+1,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": this.durasi,
+            })
+            .then((response) => {
+                
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         nextSoal(){
             // console.log(this.jawaban)
@@ -250,7 +245,6 @@ export default {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             if (this.state==2){
-                                clearInterval(this.waktu)
                                 this.state = 3
                             }else if (this.state==4){
                                 this.submitJawaban()
@@ -471,10 +465,11 @@ export default {
         })
 
         axios
-        .get(this.port+'/question/all?section_id='+this.section_id)
+               .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.splitQuestion(data,1),
             this.menit = 3,
+            this.durasi = this.menit,
             this.jawaban = []
         ))
         
@@ -483,6 +478,7 @@ export default {
         .then(({data}) => (
             this.splitQuestion(data,2),
             this.menit = 3,
+            this.durasi = this.menit,
             this.jawaban = []
         ))
 
@@ -498,7 +494,71 @@ export default {
             }
             this.email = datas.email;
             this.exam_session = datas.exam_session;
+
+            // Find Current State is First Section or Second
+            axios
+            .get(this.port+'/section_ongoing/getbytest/'+tes+'?email='+this.email)
+            .then(({data}) => {
+                if(data.length > 0){
+                    if(data[0].start_status == 2 && !data[1]){
+                        this.state = 3
+                    }
+                }
+            })
         })
+
+
+
+        // Build socket
+        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // console.log(access_token);
+        // console.log(user_key)
+        buildSocket(access_token, user_key).then((socket) => {
+            socket.on("test.tick", (data) => {
+                // console.log("socket", socket)
+                // console.log(data);
+                this.isStarted = true
+                if(data.section_id == this.section_id && this.state == 0){
+                    this.jumSoal = this.pertanyaan1.length
+                    this.state = 2
+                    this.gantiPilihanJawaban()
+                    this.progress(true)
+                }
+                else if(data.section_id == this.section_id+1 && this.state == 0){
+                    this.jumSoal = this.pertanyaan2.length
+                    this.state = 4
+                    this.gantiPilihanJawaban()
+                    document.getElementById("progress").style.width = ((1/this.jumSoal)*100)/5 +'%'
+                    this.progress(true)
+                }
+
+                this.duarsi = data.total_duration;
+                var minutes = Math.floor(data.countdown / 60);
+                var seconds = data.countdown - minutes * 60;
+
+                this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+                this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+                if(data.countdown <= 0){
+                    if(this.state == 2){
+                        this.state = 3
+                    }else{
+                        Swal.fire({
+                            title: 'Waktu Habis...',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Kembali ke Dashboard',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.submitJawaban()
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
 
         let thi = this
         $('body').keydown(function(event) {
