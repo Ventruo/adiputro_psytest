@@ -7,14 +7,19 @@ import Section from "./Section.js";
 export default class SectionOngoing extends Model {}
 SectionOngoing.init(
   {
-    section_id: {
+    id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
       allowNull: false,
     },
+    section_id: {
+      type: DataTypes.BIGINT,
+      primaryKey: false,
+      allowNull: false,
+    },
     exam_session_id: {
       type: DataTypes.BIGINT,
-      primaryKey: true,
+      primaryKey: false,
       allowNull: false,
     },
     start_status: {
