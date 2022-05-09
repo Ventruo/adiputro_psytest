@@ -189,6 +189,7 @@ export default {
         },
         getImg(job_vacancy, exports){
             let id = job_vacancy.qr_link.split("d/")
+            // console.log("https://drive.google.com/uc?export="+exports+"&id="+id[1])
             return "https://drive.google.com/uc?export="+exports+"&id="+id[1]
         },
         openModal(data){

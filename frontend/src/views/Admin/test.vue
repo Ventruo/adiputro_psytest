@@ -48,7 +48,7 @@
                             <td>{{i.option_num}}</td>
                             <td class="text-white">
                                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto px-5 py-1 mr-1" 
-                                    @click.prevent="gantiSection(i.id)"> 
+                                    @click.prevent="gantiSection(i)"> 
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Detail</span>
                                 </button>
@@ -71,12 +71,19 @@
             <div>
                 <h1 class="font-bold text-4xl mt-10">Pertanyaan</h1>
 
-                <div class="flex justify-end">
+                <div class="flex justify-end gap-2">
+                        <!-- @click="this.$router.push({path: '/admin/question/add'})" -->
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
-                        @click="this.$router.push({path: '/admin/question/add'})">
+                        @click="openModalQuestion">
                         <i class="fa fa-feather fa-lg mr-2"></i>   
                         <span>Buat Pertanyaan Baru</span>
+                    </button>
+                    <button class="bg-foreground-4-100 text-white hover:bg-red-500
+                                duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
+                        @click="resetQuestion">
+                        <i class="fa fa-exclamation-circle fa-lg mr-2"></i>   
+                        <span>Hapus Semua Pertanyaan</span>
                     </button>
                 </div>
 
@@ -85,26 +92,26 @@
                         <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-1/12 py-3">No</th>
-                                <th class="w-3/12">Pertanyaan</th>
-                                <th class="w-3/12">Pilihan Jawaban</th>
+                                <th class="w-5/12">Pertanyaan</th>
+                                <th class="w-5/12">Pilihan Jawaban</th>
                                 <th class="w-1/12">Kunci Jawaban</th>
-                                <th class="w-1/12">Aksi</th>
+                                <!-- <th class="w-1/12">Aksi</th> -->
                             </tr>
                         </thead>
                         <tbody v-if="this.questionList!=null && this.questionList.length>0">
                             <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="(i,idx) in this.questionList" :key="idx">
                                 <td>{{idx+1}}</td>
-                                <td class="text-justify h-14 overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
-                                <td>{{optionToString(i)}}</td>
+                                <td><span class="text-justify overflow-hidden overflow-ellipsis instruksi">{{i.instruction}}</span></td>
+                                <td class="py-2">{{optionToString(i)}}</td>
                                 <td>{{i.answer}}</td>
-                                <td>
+                                <!-- <td>
                                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="this.$router.push({path: '/admin/question/update'})"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Perbarui</span>
                                     </button>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                         
@@ -120,7 +127,7 @@
         </div>
         
         <!-- Transparent Overlay -->
-        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
+        <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModals"></div>
 
         <!-- Create New Section Modal -->
         <div id="modalSection" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
@@ -132,10 +139,6 @@
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
-                <label for="instruction">Instruksi</label><br>
-                <textarea name="instruction" id="instruction" placeholder="Instruksi" v-model="this.instruksi"
-                    class="rounded-lg py-2 px-3 w-full h-1/3 my-2 bg-primary-600 outline-none placeholder-gray-300 resize-none"></textarea><br>
-                
                 <div class="flex">
                     <div class="w-1/3">
                         <p class="mt-4 mb-3">Durasi</p>
@@ -183,6 +186,43 @@
 
             </div>
         </div>
+
+        <!-- Create New Question Modal -->
+        <form id="modalQuestion" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg top-1/4 hidden" style="width: 40%; height: 50%;" enctype="multipart/form-data" 
+            @submit.prevent="createQuestion">
+            <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
+                <p class="font-bold text-lg inline-block relative" style="width: 96%">Buat Pertanyaan Baru</p>
+                <button id="closeNewQuestion" class="relative inline-block" @click="closeModalQuestion">
+                    <i class="fa fa-times fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="text-white p-5 h-5/6 relative">
+                <p v-if="this.test!=null" class="text-xl font-bold mb-2">Tes {{this.test[this.test_id-1].name}}, Persoalan {{this.persoalan}}</p>
+                <div class="flex">
+                    <div class="w-1/3">
+                        <p class="mt-4 mb-9">File Excel</p>
+                        <!-- <p class="mb-3">Nama Sheet</p> -->
+                    </div>
+                    <div>
+                        <p class="mt-4 mb-9">:</p>
+                        <!-- <p>:</p> -->
+                    </div>
+                    <div class="grow ml-2">
+                        <input type="file" name="question_file" id="question_file"
+                                class="rounded-lg py-2 px-1 w-9/12 my-2">
+                        <!-- <input type="text" v-model="this.nama_sheet" name="sheet_name" id="sheet_name"
+                                class="rounded-lg py-2 px-3 w-9/12 my-2 bg-primary-600 outline-none placeholder-gray-300"> -->
+                    </div>
+                </div>
+                
+
+                <button id="submit_new_question" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
+                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">
+                                                        Buat</button>
+
+            </div>
+        </form>
     </div>
 </template>
 <script>
@@ -208,6 +248,8 @@ export default {
             test_id: null,
             section_number: null,
             section_id: null,
+            persoalan: "",
+            sheet_name: "",
             headerModal: "Create A New Section",
             port: import.meta.env.VITE_BACKEND_URL
         }
@@ -237,15 +279,31 @@ export default {
             this.tipeJawaban =  0
             this.jumJawaban = ""
             this.section_number = null
-            this.section_id = null
+            // this.section_id = null
             this.section_number = this.sectionList[this.sectionList.length-1].section_number + 1
             this.statusAdd = true
             this.headerModal = "Buat Seksi Baru";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
+        openModalQuestion(){
+            if (this.section_id!=null || this.persoalan!=""){
+                this.nama_sheet = ""
+                $('#modalQuestion').fadeIn("slow");
+                $('#bg').fadeIn("slow");
+            }
+        },
+        closeModals(){
+            $('#modalSection').fadeOut("fast");
+            $('#modalQuestion').fadeOut("fast");
+            $('#bg').fadeOut("slow");
+        },
         closeModal(){
             $('#modalSection').fadeOut("fast");
+            $('#bg').fadeOut("slow");
+        },
+        closeModalQuestion(){
+            $('#modalQuestion').fadeOut("fast");
             $('#bg').fadeOut("slow");
         },
         dataInit(){
@@ -279,9 +337,11 @@ export default {
                 ))
             ))
         },
-        gantiSection(id){
+        gantiSection(section){
+            this.section_id = section.id
+            this.persoalan = section.section_number
             axios
-            .get(this.port+'/question/all?section_id='+id)
+            .get(this.port+'/question/all?section_id='+this.section_id)
             .then(({data}) => (
                 this.questionList = data
             ))
@@ -297,13 +357,6 @@ export default {
             return hasil
         },
         createSection(){
-            // console.log(this.instruksi)
-            // console.log(this.durasi)
-            // console.log(this.tipePertanyaan)
-            // console.log(this.tipeJawaban)
-            // console.log(this.jumJawaban)
-            // console.log(this.test_id)
-            // console.log(this.section_number)
             if(this.instruksi=="" || this.durasi=="" ||this.tipePertanyaan==null||this.tipeJawaban==null|| this.jumJawaban=="")
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
@@ -389,6 +442,101 @@ export default {
                         )
                     });
                 }
+            }
+        },
+        createQuestion(e){
+            if (this.section_id!=null){
+                console.log(e.target[1].files.length)
+                if(e.target[1].files.length<=0)
+                    Swal.fire({
+                        title: 'Mohon Isi Semua Field!',
+                        icon: 'warning',
+                        confirmButtonText: 'Kembali'
+                    });
+                else{
+                    let file = e.target[1].files[0]
+                    if (file!=undefined)
+                        file.originalname = file.name
+                    let extension = file.originalname.split('.')[1]
+                    
+                    if(!['xls','xlsx'].includes(extension))
+                        Swal.fire({
+                            title: 'Hanya dapat mengupload file dengan ekstensi .xls atau .xlsx !',
+                            icon: 'warning',
+                            confirmButtonText: 'Kembali'
+                        });
+
+                    let formData = new FormData()
+                    formData.append('section_id',this.test_id)
+                    formData.append('excel',file)
+                    axios.post(this.port+'/question/createFromExcel',formData, {headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }})
+                    .then((response) => {
+                        if (response.status==200){
+                            let thi = this
+                            axios
+                            .get(this.port+'/question/all?section_id='+this.section_id)
+                            .then(({data}) => (
+                                this.questionList = data,
+                                Swal.fire(
+                                    'Created!',
+                                    'Pertanyaan Berhasil Dibuat!',
+                                    'success'
+                                )
+                                .then(function(){
+                                    $('#modalSession').fadeOut("fast")
+                                    $('#bg').fadeOut("slow")
+                                    thi.closeModalQuestion()
+                                })
+                            ))
+                        }else{
+                            throw response
+                        }
+                    }).catch( error => {
+                        $('#spinner-modal').fadeOut("slow");
+                        Swal.fire(
+                            'Warning!',
+                            error.response.data,
+                            'warning'
+                        )
+                    });
+                }
+            }
+        },
+        resetQuestion(){
+            if (this.questionList!=null){
+                Swal.fire({
+                    title: 'Yakin mereset semua pertanyaan?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#spinner-modal').fadeIn("slow");
+                        //reset
+                        // axios.post(this.port+'/question_result/resetQuestion',{
+                        //     section_id: this.section_id
+                        // })
+                        // .then((response) => {
+                        //     axios
+                        //     .get(this.port+'/question/all?section_id='+this.section_id)
+                        //     .then(({data}) => (
+                        //         this.questionList = data,
+                                // $('#spinner-modal').fadeOut("slow")
+                        //         Swal.fire({
+                        //             title: 'Sukses mereset pertanyaan!',
+                        //             icon: 'success',
+                        //             confirmButtonColor: '#3085d6',
+                        //             confirmButtonText: 'Tutup',
+                        //         })
+                        //     ))
+                        // })
+                    }
+                });
             }
         },
     },
