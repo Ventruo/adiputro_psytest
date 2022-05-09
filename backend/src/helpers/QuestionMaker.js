@@ -1,15 +1,17 @@
+const fs = require("fs");
 const { success_response } = require("../helpers/ResponseHelper");
 
 const xlsxFile = require("read-excel-file/node");
 
 module.exports = {
-  populateQuestion(excel_path, sheet, section, Question, res) {
+  populateQuestion(excel_path, section, Question, res) {
     xlsxFile(excel_path, {
-      sheet: sheet,
+      sheet: "Soal",
     }).then(async (rows) => {
       let questions = [];
 
-      let start_row = 6;
+      let start_row = 5;
+      if (rows[5][0] && rows[5][0].toUpperCase() == "ID (10)") start_row = 6;
       for (let i = start_row; i < rows.length; i++) {
         questions.push({
           instruction: rows[i][1] ?? "-",
@@ -28,7 +30,9 @@ module.exports = {
 
       await Question.bulkCreate(questions);
 
-      success_response(res, "Success", "Create Successful!");
+      fs.unlinkSync(excel_path);
+
+      success_response(res, questions, "Create Successful!");
     });
   },
 

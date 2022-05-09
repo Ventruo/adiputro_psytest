@@ -1,3 +1,5 @@
+const fs = require("fs");
+const short = require("short-uuid");
 const Question = require("../models/Question");
 const Section = require("../models/Section");
 const {
@@ -144,13 +146,25 @@ class QuestionController {
   }
 
   async createFromExcel(req, res) {
-    populateQuestion(
-      "./src/data/" + req.body.excel_name,
-      req.body.sheet_name,
-      req.body.section,
-      Question,
-      res
-    );
+    console.log("Creating Question from Excel...");
+
+    if (!req.file || !req.body.section_id) {
+      missing_param_response(res);
+      return;
+    }
+
+    // Upload Temporary Excel File
+    let default_path = "tmp/";
+    let file_name = "tmp_" + short.generate();
+
+    let format = req.file.originalname.split(".");
+    format = format[format.length - 1];
+    file_name = `${file_name}.${format}`;
+    let dest_file_path = default_path + file_name;
+
+    fs.renameSync(default_path + req.file.filename, dest_file_path);
+
+    populateQuestion(dest_file_path, req.body.section_id, Question, res);
   }
 
   async createKreapelinQuestion(req, res) {
