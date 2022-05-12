@@ -167,6 +167,50 @@ class QuestionController {
     populateQuestion(dest_file_path, req.body.section_id, Question, res);
   }
 
+  async deletebyid(req, res) {
+    console.log("Deleting Question by id...");
+
+    Question.findOne({ where: { id: req.params.question_id } }).then(
+      async (data) => {
+        if (!data) {
+          data_not_found_response(res);
+          return;
+        }
+
+        await data.destroy();
+
+        success_response(
+          res,
+          "Delete by ID Successful!",
+          "Delete by ID Successful!"
+        );
+      }
+    );
+  }
+
+  async deletebysection(req, res) {
+    console.log("Deleting Question by section...");
+
+    Question.findAll({ where: { section_id: req.params.section_id } }).then(
+      async (data) => {
+        if (!data || data.length <= 0) {
+          data_not_found_response(res);
+          return;
+        }
+
+        for (let i = 0; i < data.length; i++) {
+          await data[i].destroy();
+        }
+
+        success_response(
+          res,
+          "Delete by Section Successful!",
+          "Delete by Section Successful!"
+        );
+      }
+    );
+  }
+
   async createKreapelinQuestion(req, res) {
     pupulateKreapelinQuestion(req.body.section, Question, res);
   }
