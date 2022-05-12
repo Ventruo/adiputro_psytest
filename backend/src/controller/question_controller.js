@@ -117,7 +117,7 @@ class QuestionController {
       missing_param_response(res);
       return;
     }
-
+    
     Question.findOne({ where: { id: req.body.updating_id } }).then(
       (question) => {
         if (!question) {
@@ -126,7 +126,7 @@ class QuestionController {
         }
 
         question.set({
-          question: req.body.question,
+          instruction: req.body.question,
           section_id: req.body.section_id,
           option_num: req.body.option_num,
           option_a: req.body.option_a,
@@ -136,7 +136,7 @@ class QuestionController {
           option_e: req.body.option_e,
           answer: req.body.answer,
           option_type: req.body.option_type,
-          question_type: req.body.question_type,
+          instruction_type: req.body.question_type,
         });
         question.save();
 
