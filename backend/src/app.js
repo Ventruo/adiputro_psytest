@@ -12,4 +12,5 @@ initDB().then(() => {
   require("./routers/express_router");
   initSocket();
   require("./routers/socket_router");
+  require("./setup/mailer");
 });
