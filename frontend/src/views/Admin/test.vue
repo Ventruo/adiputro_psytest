@@ -79,7 +79,7 @@
                         <i class="fa fa-feather fa-lg mr-2"></i>   
                         <span>Buat Pertanyaan Baru</span>
                     </button>
-                    <button class="bg-foreground-4-100 text-white hover:bg-red-500
+                    <button v-if="!this.sResList.includes(this.section_id)" class="bg-foreground-4-100 text-white hover:bg-red-500
                                 duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
                         @click="resetQuestion">
                         <i class="fa fa-exclamation-circle fa-lg mr-2"></i>   
@@ -92,10 +92,10 @@
                         <thead class="bg-foreground-4-100 text-white sticky top-0">
                             <tr>
                                 <th class="w-1/12 py-3">No</th>
-                                <th class="w-5/12">Pertanyaan</th>
-                                <th class="w-5/12">Pilihan Jawaban</th>
+                                <th class="w-4/12">Pertanyaan</th>
+                                <th class="w-3/12">Pilihan Jawaban</th>
                                 <th class="w-1/12">Kunci Jawaban</th>
-                                <!-- <th class="w-1/12">Aksi</th> -->
+                                <th class="w-3/12">Aksi</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.questionList!=null && this.questionList.length>0">
@@ -104,14 +104,20 @@
                                 <td><span class="text-justify overflow-hidden overflow-ellipsis instruksi">{{i.instruction}}</span></td>
                                 <td class="py-2">{{optionToString(i)}}</td>
                                 <td>{{i.answer}}</td>
-                                <!-- <td>
+                                <td>
                                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md text-white
                                                     h-auto w-auto text-base px-5 py-1 mr-1" 
-                                        @click="this.$router.push({path: '/admin/question/update'})"> 
+                                        @click="openModalUpdateQuestion(i)"> 
                                         <i class="fa fa-refresh mr-2"></i>
                                         <span>Perbarui</span>
                                     </button>
-                                </td> -->
+                                    <button v-if="!this.qResList.includes(i.id)" class="bg-foreground-4-100 hover:bg-red-600 duration-200 rounded-md text-white
+                                                    h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click="hapusPertanyaan(i.id)"> 
+                                        <i class="fa fa-trash mr-2"></i>
+                                        <span>Hapus</span>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                         
@@ -139,6 +145,9 @@
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
+                <p>Instruksi :</p>
+                <textarea name="" id="" v-model="this.instruksi"
+                    class="rounded-lg py-2 px-3 w-full h-24 my-2 bg-primary-600 outline-none placeholder-gray-300 resize-none"></textarea>
                 <div class="flex">
                     <div class="w-1/3">
                         <p class="mt-4 mb-3">Durasi</p>
@@ -187,7 +196,7 @@
             </div>
         </div>
 
-        <!-- Create New Question Modal -->
+        <!-- Create New Question (w/ Excel) Modal -->
         <form id="modalQuestion" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg top-1/4 hidden" style="width: 40%; height: 50%;" enctype="multipart/form-data" 
             @submit.prevent="createQuestion">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
@@ -223,6 +232,90 @@
 
             </div>
         </form>
+
+        <!-- Update Question Modal -->
+        <form id="modalUpdateQuestion" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 5%; width: 50%; height: 90%;"
+            @submit.prevent="updateQuestion">
+            <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
+                <p class="font-bold text-lg inline-block relative" style="width: 96%">Perbarui Pertanyaan</p>
+                <button id="closeUpdateQuestion" class="relative inline-block" @click="closeModalUpdateQuestion">
+                    <i class="fa fa-times fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="text-white p-5 h-5/6 relative">
+                <p>Pertanyaan :</p>
+                <textarea name="" id="" v-model="this.pertanyaan"
+                    class="rounded-lg py-2 px-3 w-full h-24 my-2 bg-primary-600 outline-none placeholder-gray-300 resize-none"></textarea>
+                <div class="flex">
+                    <div class="w-1/3">
+                        <p class="mt-4 mb-5">Jumlah Opsi:</p>
+                        <p class="mb-6">Opsi A</p>
+                        <p class="mb-6">Opsi B</p>
+                        <p class="mb-6">Opsi C</p>
+                        <p class="mb-6">Opsi D</p>
+                        <p class="mb-6">Opsi E</p>
+                        <p class="mb-4">Jawaban</p>
+                        <p class="mb-2">Jenis Opsi</p>
+                        <p>Jenis Instruksi</p>
+                    </div>
+                    <div>
+                        <p class="mt-4 mb-5">:</p>
+                        <p v-for="i in 5" :key="i" class="mb-6">:</p>
+                        <p class="mb-4">:</p>
+                        <p class="mb-2">:</p>
+                        <p>:</p>
+                    </div>
+                    <div class="grow ml-2">
+                        <div>
+                            <input type="number" name="num_option" id="num_option" placeholder="0-9" v-model="this.num_option"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div>
+                            <input type="text" name="opsiA" id="opsiA" v-model="this.opsi[0]"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div>
+                            <input type="text" name="opsiB" id="opsiB" v-model="this.opsi[1]"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div>
+                            <input type="text" name="opsiC" id="opsiC" v-model="this.opsi[2]"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div>
+                            <input type="text" name="opsiD" id="opsiD" v-model="this.opsi[3]"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div>
+                            <input type="text" name="opsiE" id="opsiE" v-model="this.opsi[4]"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div>
+                            <input type="text" name="jawaban" id="jawaban" v-model="this.jawaban"
+                                class="rounded-lg py-2 px-3 w-9/12 mt-2 bg-primary-600 outline-none placeholder-gray-300">
+                        </div>
+                        <div class="flex gap-2 my-2">
+                            <input type="radio" :value="1" :name="'Option_Type'" id="option_text" v-model="this.tipeOpsi" class="w-5 h-5 mr-2" />
+                            <label for="option_text" class="mr-2">Teks</label>
+                            <input type="radio" :value="2" :name="'Option_Type'" id="option_image" v-model="this.tipeOpsi" class="w-5 h-5 mr-2" />
+                            <label for="option_image" class="mr-2">Gambar</label>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="radio" :value="1" :name="'Instruction_Type'" v-model="this.tipeInstruksi" id="instruction_text" class="w-5 h-5 mr-2" />
+                            <label for="instruction_text" class="mr-2">Teks</label>
+                            <input type="radio" :value="2" :name="'Instruction_Type'" v-model="this.tipeInstruksi" id="instruction_image" class="w-5 h-5 mr-2" />
+                            <label for="instruction_image" class="mr-2">Gambar</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="submit_update_question" class="absolute -bottom-10 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
+                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">
+                                                        Perbarui</button>
+
+            </div>
+        </form>
     </div>
 </template>
 <script>
@@ -237,8 +330,10 @@ export default {
             testList: [],
             sectionList: null,
             questionList: null,
+            sResList: [],
+            qResList: [],
             test: null,
-            questionId: 0,
+            question_id: 0,
             instruksi: "",
             durasi: "",
             tipePertanyaan: 0,
@@ -250,6 +345,12 @@ export default {
             section_id: null,
             persoalan: "",
             sheet_name: "",
+            pertanyaan: "",
+            opsi: ["","","","",""],
+            jawaban: "",
+            num_option: "",
+            tipeInstruksi: 0,
+            tipeOpsi: 0,
             headerModal: "Create A New Section",
             port: import.meta.env.VITE_BACKEND_URL
         }
@@ -293,9 +394,23 @@ export default {
                 $('#bg').fadeIn("slow");
             }
         },
+        openModalUpdateQuestion(question){
+            if (this.section_id!=null){
+                this.question_id = question.id
+                this.pertanyaan = question.instruction
+                this.opsi = [question.option_a,question.option_b,question.option_c,question.option_d,question.option_e],
+                this.jawaban = question.answer
+                this.num_option = question.option_num
+                this.tipeInstruksi = question.instruction_type
+                this.tipeOpsi = question.option_type
+                $('#modalUpdateQuestion').fadeIn("slow");
+                $('#bg').fadeIn("slow");
+            }
+        },
         closeModals(){
             $('#modalSection').fadeOut("fast");
             $('#modalQuestion').fadeOut("fast");
+            $('#modalUpdateQuestion').fadeOut("fast");
             $('#bg').fadeOut("slow");
         },
         closeModal(){
@@ -305,6 +420,45 @@ export default {
         closeModalQuestion(){
             $('#modalQuestion').fadeOut("fast");
             $('#bg').fadeOut("slow");
+        },
+        closeModalUpdateQuestion(){
+            $('#modalUpdateQuestion').fadeOut("fast");
+            $('#bg').fadeOut("slow");
+        },
+        gantiSection(section){
+            this.section_id = section.id
+            this.persoalan = section.section_number
+            this.qResList = []
+            this.sResList = []
+            axios
+            .get(this.port+'/question/all?section_id='+this.section_id)
+            .then(({data}) => (
+                this.questionList = data
+            ))
+
+            axios
+            .get(this.port+'/question_result/getbysection/'+this.section_id)
+            .then(({data}) => {
+                let temp = []
+                data.forEach(question => {
+                    let id = question.question_id
+                    if(!temp.includes(id))
+                        temp.push(id)                
+                });
+                this.qResList = temp
+            })
+
+            axios
+            .get(this.port+'/section_result/getbysection/'+this.section_id)
+            .then(({data}) => {
+                let temp = []
+                data.forEach(sec => {
+                    let id = sec.section_id
+                    if(!temp.includes(id))
+                        temp.push(id)                
+                });
+                this.sResList = temp
+            })
         },
         dataInit(){
             for (let i = 0; i < this.test.length; i++) {
@@ -316,11 +470,12 @@ export default {
             .get(this.port+'/section/all/'+this.test_id)
             .then(({data}) => (
                 this.sectionList = data,
-                axios
-                .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
-                .then(({data}) => (
-                    this.questionList = data
-                ))
+                this.gantiSection(this.sectionList[0])
+                // axios
+                // .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
+                // .then(({data}) => (
+                //     this.questionList = data
+                // ))
             ))
         },
         gantiTes(event){
@@ -335,15 +490,6 @@ export default {
                 .then(({data}) => (
                     this.questionList = data
                 ))
-            ))
-        },
-        gantiSection(section){
-            this.section_id = section.id
-            this.persoalan = section.section_number
-            axios
-            .get(this.port+'/question/all?section_id='+this.section_id)
-            .then(({data}) => (
-                this.questionList = data
             ))
         },
         optionToString(question){
@@ -504,6 +650,57 @@ export default {
                 }
             }
         },
+        updateQuestion(){
+            if(this.pertanyaan=="" || this.jawaban=="" ||this.num_option=="")
+                Swal.fire({
+                    title: 'Mohon Isi Semua Field!',
+                    icon: 'warning',
+                    confirmButtonText: 'Kembali'
+                });
+            else{
+                axios.post(this.port+'/question/update',{
+                    "updating_id": this.question_id,
+                    "question": this.pertanyaan,
+                    "option_num": parseInt(this.num_option),
+                    "section_id": this.section_id,
+                    "option_a": this.opsi[0],
+                    "option_b": this.opsi[1],
+                    "option_c": this.opsi[2],
+                    "option_d": this.opsi[3],
+                    "option_e": this.opsi[4],
+                    "answer": this.jawaban,
+                    "option_type": this.tipeOpsi,
+                    "question_type": this.tipeInstruksi
+                })
+                .then((response) => {
+                    if (response.status==200){
+                        let thi = this
+                        axios
+                        .get(this.port+'/question/all?section_id='+this.section_id)
+                        .then(({data}) => (
+                            this.questionList = data,
+                            Swal.fire(
+                                'Sukses!',
+                                'Pertanyaan Baru Berhasil Diperbarui!',
+                                'success'
+                            )
+                            .then(function(){
+                                thi.closeModalUpdateQuestion()
+                            })
+                        ))
+                    }else{
+                        throw response
+                    }
+                }).catch( error => {
+                    $('#spinner-modal').fadeOut("slow");
+                    Swal.fire(
+                        'Warning!',
+                        error.response.data,
+                        'warning'
+                    )
+                });
+            }
+        },
         resetQuestion(){
             if (this.questionList!=null){
                 Swal.fire({
@@ -517,28 +714,55 @@ export default {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $('#spinner-modal').fadeIn("slow");
-                        //reset
-                        // axios.post(this.port+'/question_result/resetQuestion',{
-                        //     section_id: this.section_id
-                        // })
-                        // .then((response) => {
-                        //     axios
-                        //     .get(this.port+'/question/all?section_id='+this.section_id)
-                        //     .then(({data}) => (
-                        //         this.questionList = data,
-                                // $('#spinner-modal').fadeOut("slow")
-                        //         Swal.fire({
-                        //             title: 'Sukses mereset pertanyaan!',
-                        //             icon: 'success',
-                        //             confirmButtonColor: '#3085d6',
-                        //             confirmButtonText: 'Tutup',
-                        //         })
-                        //     ))
-                        // })
+                        axios.delete(this.port+'/question/deletebysection/'+this.section_id)
+                        .then((response) => {
+                            axios
+                            .get(this.port+'/question/all?section_id='+this.section_id)
+                            .then(({data}) => (
+                                this.questionList = data,
+                                $('#spinner-modal').fadeOut("slow"),
+                                Swal.fire({
+                                    title: 'Sukses mereset pertanyaan!',
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Tutup',
+                                })
+                            ))
+                        })
                     }
                 });
             }
         },
+        hapusPertanyaan(question){
+            Swal.fire({
+                title: 'Yakin menghapus pertanyaan ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner-modal').fadeIn("slow");
+                    axios.delete(this.port+'/question/deletebyid/'+question)
+                    .then((response) => {
+                        axios
+                        .get(this.port+'/question/all?section_id='+this.section_id)
+                        .then(({data}) => (
+                            this.questionList = data,
+                            $('#spinner-modal').fadeOut("slow"),
+                            Swal.fire({
+                                title: 'Sukses menghapus pertanyaan!',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Tutup',
+                            })
+                        ))
+                    })
+                }
+            });
+        }
     },
     mounted(){
         axios
