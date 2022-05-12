@@ -17,7 +17,8 @@
             </div>
 
             <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
-                <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                <div class="absolute bg-foreground-4-100 h-auto w-3/4 max-h-96 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14
+                            md:w-1/2 xl:w-1/4">
                     <div class="font-bold text-lg mb-2 text-white">
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
@@ -46,7 +47,7 @@
             </div>
 
             <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-stroke-100
-                        p-3 my-5 h-16 flex justify-center items-center text-xl text-white font-bold">
+                        p-3 my-5 flex justify-center items-center text-lg text-white font-bold md:text-xl">
                 Pilih X sebelum memilih pernyataan yang paling jelek, Pilih O sebelum memilih pernyataan yang paling baik.
             </div>
 
@@ -67,14 +68,14 @@
                     </div>
                 </div>
                 <div class="w-full mt-3">
-                    <div class="w-full flex gap-3">
+                    <div class="w-full md:flex gap-3">
                         <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'A. '+this.pertanyaan[noSoal-1]['option_a']" :aksi= aksi />
                         <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'B. '+this.pertanyaan[noSoal-1]['option_b']" :aksi= aksi />
                         <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'C. '+this.pertanyaan[noSoal-1]['option_c']" :aksi= aksi />
                     </div>
                 </div>
 
-                <div class="flex justify-between mt-2">
+                <div class="flex justify-between mt-2 mb-5">
                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
                         <i class="fa fa-chevron-left mr-3"></i>
                         <span>Sebelumnya</span>
@@ -91,7 +92,7 @@
         <div id="bg" v-show="!isStarted" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
@@ -205,7 +206,7 @@ export default {
         prevSoal(){
             if (this.noSoal>1){
                 this.noSoal--
-                if(this.noSoal<this.jumSoal) $('#nextBtn').text('Next')
+                if(this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
                 
                 this.progress(false)
             }

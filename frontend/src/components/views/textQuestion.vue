@@ -8,7 +8,7 @@
                             border-none placeholder-gray-400" placeholder="Enter Question Here"
                             @change="update"></textarea>
         </div>
-        <p v-else class="text-2xl">{{question}}</p>
+        <p v-else class="text-lg md:text-2xl text-center">{{question}}</p>
     </div>
 </template>
 

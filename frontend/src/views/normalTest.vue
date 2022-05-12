@@ -18,7 +18,8 @@
             </div>
             
             <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
-                <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                <div class="absolute bg-foreground-4-100 h-auto w-3/4 max-h-96 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14
+                            md:w-1/2 xl:w-1/4">
                     <div class="font-bold text-white text-lg mb-2">
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
@@ -74,7 +75,7 @@
         <div id="bg" v-show="!isStarted" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>

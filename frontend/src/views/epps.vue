@@ -18,16 +18,17 @@
             </div>
 
             <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
-                <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                <div class="absolute bg-foreground-4-100 h-auto w-3/4 max-h-96 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14
+                            md:w-1/2 xl:w-1/4">
                     <div class="font-bold text-white text-lg mb-2">
                         <i class="fa fa-th-large mr-3"></i>
-                        <span>Daftar Soal</span>
+                        <span>Daftar Kolom Soal</span>
                     </div>
                     <div v-for="i in this.jumSoal" :key="i" class="inline-block">
-                        <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        <!-- <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
-                        </button>
-                        <button v-else-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                        </button> -->
+                        <button v-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
                             {{i}}
                         </button>
                         <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
@@ -47,23 +48,23 @@
             </div>
 
             <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
-                        p-3 my-5 h-16 flex justify-center items-center text-xl font-bold">
+                        px-3 my-5 h-20 flex justify-center items-center text-xl text-center font-bold">
                 Pilih salah satu pernyataan yang paling menggambarkan diri anda!
             </div>
 
             <div class="h-full pt-2" v-if="pertanyaan!=null">
                 <div class="flex items-center mb-2" v-for="i in 5" :key="i">
-                    <div class="text-xl font-bold mr-5 mt-1 w-10 text-right">
+                    <div class="text-xl font-bold mt-1 w-10 text-right mr-5">
                         <p>{{i+((page-1)*5)}}.</p>
                     </div>
-                    <div class="flex gap-5 overflow-hidden grow">
+                    <div class="overflow-hidden grow md:flex md:gap-5">
                         <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']"/>
                         <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']"/>
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-between mt-10">
+            <div class="flex justify-between mt-10 mb-5">
                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
                     <i class="fa fa-chevron-left mr-3"></i>
                     <span>Sebelumnya</span>
@@ -79,7 +80,7 @@
         <div id="bg" v-show="!isStarted" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
