@@ -1,7 +1,7 @@
 <template>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <div>
-            <div id="carouselFirst" class="carousel carousel-slider center mt-10">
+            <div id="carouselFirst" class="carousel carousel-slider center mt-10 rounded-lg">
                 <div class="carousel-fixed-item center clearfix px-5">
                     <a id="carousel-prev" class="prev btn waves-effect blue white-text left">
                         <i class="fas fa-angle-left mr-2"></i>
@@ -16,7 +16,7 @@
                     </a>
                 </div>
                 <div class="carousel-item even:bg-foreground-4-200 odd:bg-foreground-4-100 white-text h-96 text-center relative" v-for="(section, idx) in this.sectionList" :key="idx">
-                    <div class="text-4xl mt-5 w-auto mb-2">
+                    <div class="text-3xl mt-5 w-auto mb-2 md:text-4xl">
                         <i class="fas fa-file-alt mr-2"></i>
                         <span>Persoalan {{idx+1}}</span>
                     </div>
@@ -24,37 +24,39 @@
                     <br>
                     <div class="w-auto inline-block mt-3">
                         <div class="p-2 flex content relative">
-                            <div class="text-2xl mr-3">
+                            <div class="text-xl mr-3 md:text-2xl">
                                 <i class="fas fa-file-alt"></i> <br>
                                 <i class="fas fa-clock"></i> <br>
                                 <i class="fa fa-check"></i> <br>
                             </div>
-                            <div class="text-2xl text-left">
+                            <div class="text-xl text-left md:text-2xl">
                                 <div>{{section.question_num}} Pertanyaan</div>
 
                                 <div v-if="section.duration!=-1">{{section.duration}} Menit</div>
                                 <div v-else>Tidak ada batas waktu</div>
 
                                 <div v-if="section.section_type==2">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</div>
-                                <div v-else class="mb-6">Esai</div>
+                                <div v-else>Esai</div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="text-xl mt-5 text-center">
-                        <div v-if="section.id<=this.now" class="w-1/3 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
+                    <div class="text-xl mt-3 px-10 text-center">
+                        <div v-if="section.id<=this.now" class="w-full ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block
+                                                                md:w-1/3">
                             <span>Persoalan sudah selesai</span>
                             <i class="fa fa-check ml-5"></i>
                         </div>
 
-                        <button v-if="section.id==this.now+1" class="w-1/3 ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
-                                    duration-300 px-5 py-2.5 rounded-full cursor-pointer"
+                        <button v-if="section.id==this.now+1" class="w-full ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
+                                    duration-300 px-5 py-2.5 rounded-full cursor-pointer
+                                    md:w-1/3"
                                     @click="kePreExam(section.id)">
                             <span>Kerjakan persoalan ini</span>
                             <i class="fa fa-feather ml-5"></i>
                         </button>
                                     
-                        <div v-if="section.id>this.now+1" class="w-1/2 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
+                        <div v-if="section.id>this.now+1" class="w-full md:w-1/2 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
                             <span>Selesaikan persoalan sebelumnya dahulu</span>
                             <i class="fa fa-lock ml-5"></i>
                         </div>

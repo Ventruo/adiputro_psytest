@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full w-9/12 m-auto relative mt-3 overflow-hidden">
+    <div class="h-full w-11/12 md:w-9/12 m-auto relative mt-3 overflow-hidden">
         <div class="flex justify-between mb-7">
             <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaTes}}</h1>
             <div class="flex justify-center">
@@ -9,8 +9,8 @@
         <form v-if="this.dataKraepelin==null" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5"
             @submit.prevent="submitKraepelinData">
             <h1 class="text-3xl font-bold mb-2">Biodata</h1>
-            <div class="mb-5 mt-3 flex gap-10">
-                <div class="w-1/2">
+            <div class="mb-5 mt-3 md:flex gap-10">
+                <div class="md:w-1/2 mb-5">
                     <div class="flex gap-3">
                         <div class="text-right">
                             <p class="mb-8 mt-1">PENDIDIKAN TERAKHIR :</p>
@@ -31,10 +31,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-1/2">
+                <div class="md:w-1/2">
                     <div class="flex gap-3">
                         <div class="text-right">
-                            <p class="mb-8 mt-1">JURUSAN :</p>
+                            <p class="mb-8 mt-1 ml-24">JURUSAN :</p>
                         </div>
                         <div class="grow">
                             <select name="jurusan" id="jurusanCombobox" class="grow text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer w-full">
@@ -79,11 +79,11 @@
                         p-5 my-5 flex justify-center items-center text-xl font-bold">
                 Untuk menjawab dapat menekan angka pada keyboard ataupun menekan tombol yang tersedia.
             </div>
-            <!-- <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
+            <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
                 <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
                 
                 <p class="text-center py-1">Kolom {{kolom>jumKolom ? jumKolom : kolom}}/{{jumKolom}}</p> 
-            </div> -->
+            </div>
 
             <div class="bg-foreground-4-100 py-10 rounded-lg">
                 <div class="text-center font-bold mb-5 text-white" v-if="pertanyaan!=null">
@@ -113,7 +113,7 @@
         <div id="bg" v-show="isStarted==1" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="isStarted==1" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="isStarted==1" class="fixed inset-x-0 w-full h-full flex justify-center items-center text-center top-0 text-white text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
@@ -174,7 +174,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 1
+                        this.detik = 15
                         this.reset()
                     }
                 }
