@@ -48,7 +48,7 @@
 
             <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-stroke-100
                         p-3 my-5 flex justify-center items-center text-lg text-white font-bold md:text-xl">
-                Pilih X sebelum memilih pernyataan yang paling jelek, Pilih O sebelum memilih pernyataan yang paling baik.
+                Klik lah tanda O dan pilihlah pernyataan mana yang baik. Klik lah tanda X dan pilihlah pernyataan yang jelek. Jadi nanti di tiap nomer akan ada 2 jawaban, yaitu satu lingkaran dan satu silang.
             </div>
 
             <div id="soal" class="" v-if="pertanyaan!=null">

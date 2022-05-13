@@ -119,7 +119,7 @@ export default {
         
         // console.log(arrTemp)
         this.arrData = validArr
-        console.log(this.arrData)
+        // console.log(this.arrData)
     },
 }
 </script>
