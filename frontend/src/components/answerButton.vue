@@ -1,14 +1,15 @@
 <template>
     <!-- <button id="label" class="duration-200 w-full h-40 py-2 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold  -->
-    <button id="label" class="duration-200 w-full h-40 py-2 text-xl text-white rounded-lg bg-foreground-4-100 hover:bg-foreground-4-200 font-semibold 
-                ring-1 ring-inset ring-black relative answer-btn" 
+    <button id="label" class="duration-200 w-full h-20 px-2 mb-3 text-lg text-white rounded-lg bg-foreground-4-100 hover:bg-foreground-4-200 font-semibold 
+                ring-1 ring-inset ring-black relative answer-btn
+                md:h-40 md:text-xl" 
                 :class="{
-                    'w-full': jenis!='epps', 
                     'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
-                    'h-32': jenis=='ekspresi',
-                    'w-1/2 h-14': jenis=='epps'
+                    'h-32': jenis=='ekspresi'
                         }"
                 @click.prevent="choose(label)">
+                    <!-- 'w-full': jenis!='epps', 
+                    'w-1/2 h-14': jenis=='epps' -->
         <div v-if="jenis === 'add'" class="flex justify-center px-4">
             <p>{{label}}.</p>
             <input type="text" name="question" id="question" class="w-full ml-2 text-xl bg-transparent outline-none

@@ -10,24 +10,29 @@
       </div>
     </div> -->
     <div class="absolute top-0 z-0 w-full h-full flex justify-center items-center">
-        <div class="w-1/2 h-3/4 flex rounded-xl overflow-hidden">
-            <div class="w-5/12 h-full bg-foreground-4-100 flex justify-center items-center">
-                <div class="text-center">
-                   <img src="../assets/logo2.png" alt="" class="h-64 inline-block">
-                   <!-- <img src="../assets/psychotest.png" alt=""> -->
+        <div class="w-3/4 h-3/4 rounded-xl overflow-hidden
+                    md:flex md:w-1/2">
+            <div class="w-full md:w-5/12 flex justify-center items-center">
+                <div class="bg-foreground-4-100 h-56 w-56 md:w-full rounded-full p-5 flex justify-center items-center
+                    md:h-full md:rounded-none">
+                    <div class="text-center">
+                    <img src="../assets/logo2.png" alt="" class="h-56 md:h-44 lg:h-56 xl:64 inline-block">
+                    <!-- <img src="../assets/psychotest.png" alt=""> -->
+                    </div>
                 </div>
             </div>
-            <div class="w-7/12 h-full bg-background-50 flex justify-center items-center">
+            <div class="h-full flex justify-center pt-10 xl:px-10
+                md:w-7/12 md:items-center md:pt-0 md:bg-background-50">
                 <div class="w-full h-auto text-center">
                     <h1 class="font-bold text-4xl">LOGIN</h1>
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
                         <label for="userEmail">E-Mail</label>
                         <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
-                                    mt-1 mb-5 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Email Here">
+                                    mt-1 mb-5 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Email Here">
 
                         <label for="userToken">Token Tes</label>
                         <input type="text" name="test_token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
-                                    mt-1 px-3 py-1.5 rounded-xl text-black" placeholder="Enter Your Test Token Here">
+                                    mt-1 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Test Token Here">
 
                         <button type="submit" class="w-full mt-5 px-3 py-2 text-white font-bold bg-foreground-4-100 rounded-full ring-1 ring-inset ring-stroke
                                                     hover:bg-foreground-4-200 duration-300">Login</button>

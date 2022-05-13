@@ -9,6 +9,7 @@ const short = require("short-uuid");
 const TestResult = require("../models/TestResult");
 const ExamSessionTest = require("../models/ExamSessionTest");
 const Registrant = require("../models/Registrant");
+const { sendEmail } = require("../helpers/MailerMaker");
 
 class ExamSessionController {
   async getOne(req, res) {
@@ -104,6 +105,13 @@ class ExamSessionController {
       });
       new_sessions.push(new_session);
 
+      // Send Token to Corresponding Email
+      await sendEmail({
+        recepients: emails[i],
+        subject: "Subject",
+        html: `<b>Here is your Test Token: ${test_key}</b>`,
+      });
+
       for (let i = 0; i < req.body.tests.length; i++) {
         const test = req.body.tests[i];
         es_test_bulk_data.push({
@@ -158,13 +166,13 @@ class ExamSessionController {
           data_not_found_response(res);
           return;
         }
-        console.log(req.body.start_date)
+        console.log(req.body.start_date);
         session.set({
           email: req.body.email,
           start_date: req.body.start_date,
           finish_date: req.body.finish_date,
           duration: req.body.duration,
-          status: req.body.status-1,
+          status: req.body.status - 1,
         });
         session.save();
 

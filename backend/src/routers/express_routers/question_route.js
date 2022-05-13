@@ -22,6 +22,8 @@ router.post(
   controller.createKreapelinQuestion.bind(controller)
 );
 router.post("/update", controller.update.bind(controller));
+router.delete("/deletebyid/:question_id", controller.deletebyid);
+router.delete("/deletebysection/:section_id", controller.deletebysection);
 
 router.get("/:id", controller.getOne);
 

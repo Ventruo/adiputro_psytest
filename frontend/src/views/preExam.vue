@@ -11,30 +11,31 @@
         </div>
 
         <div class="text-center w-full h-auto">
-            <div class="h-full w-9/12 mt-5 mr-2 inline-block align-top relative">
+            <div class="h-full w-full mt-5 mr-2 inline-block align-top relative
+                        md:w-9/12">
                 <div class="w-full h-full bg-foreground-3-500 rounded-lg overflow-hidden">
                     <div class="h-32 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
                     <div class="h-3/4 w-full px-10 py-5 text-black font-bold text-left" v-if="section!=null">
-                        <p class="mb-1 text-3xl">Tes 1</p>
-                        <p class="mb-2 text-lg font-semibold" v-html="section.instruction"></p>
-                        <div class="flex justify-between items-center mb-2">
+                        <p class="mb-1 text-2xl md:text-3xl">Tes 1</p>
+                        <p class="mb-2 font-semibold md:text-lg" v-html="section.instruction"></p>
+                        <div class="md:flex justify-between items-center mb-2">
                             <div class="flex p-2">
-                                <div class="mr-2 text-xl">
+                                <div class="mr-2 text-lg md:text-xl">
                                     <i class="fas fa-file-alt"></i> <br>
                                     <i class="fas fa-clock"></i> <br>
                                     <i class="fa fa-check"></i> <br>
                                 </div>
-                                <div class="mb-2 text-xl">
+                                <div class="mb-2 text-lg md:text-xl">
                                     <p>{{section.question_num}} Pertanyaan</p>
 
                                     <p v-if="section.duration!=-1">{{section.duration}} Menit</p>
                                     <p v-else>Tidak ada batas waktu</p>
                                     
                                     <p v-if="section.section_type==2" class="text-xl">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</p>
-                                    <p v-else class="mb-6 text-xl">Esai</p>
+                                    <p v-else class="mb-5">Esai</p>
                                 </div>
                             </div>
-                            <img v-if="sectionId==6" src="../assets/gif_deret_bilangan.gif" alt="" class="w-1/2">
+                            <img v-if="sectionId==6" src="../assets/gif_deret_bilangan.gif" alt="" class="w-full md:w-2/3 xl:w-1/2">
                         </div>
                         <div class="text-center">
                             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white w-2/3 py-1 rounded-full" @click.prevent="doTest">

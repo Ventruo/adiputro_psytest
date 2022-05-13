@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full w-9/12 m-auto relative mt-3 text-black">
+    <div class="h-full w-full md:w-9/12 m-auto relative mt-3 text-black">
         <div class="flex justify-between mb-7">
             <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaSection}}</h1>
             <div class="flex justify-center">
@@ -7,123 +7,126 @@
             </div>
         </div>
         <div v-show="state>0 && state<4" class="mb-2">
-            <div class="mt-5 font-semibold text-lg flex gap-2">
+            <div class="mt-5 font-semibold md:text-lg flex gap-1 mx-1">
                 <div class="w-1/5 ring-2 ring-inset ring-black p-2 rounded-md" v-for="p in pedoman" :key="p">
                     <div class="flex justify-between" v-for="i in p" :key="i"><span>{{i[0]}}</span><span>{{i[1]}}</span></div>
                 </div>
             </div>
         </div>
-        <div v-show="state==1">
-            <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
-                        p-5 mt-5 mb-2 font-semibold text-lg">
-                Terdapat 5 kotak di bagian atas, yaitu Kotak Rokok, Penerbangan, Juru Bayar, Nomor Telepon, dan Buku Gudang.
-                disetiap kotak sudah terdapat nama anggota beserta kodenya. 
-                Di setiap nomor soal sudah terdapat namanya apa. 
-                Tugas Anda adalah mencari kodenya berapa. 
-            </div>
-            <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
-                        p-5 mb-2 font-semibold text-lg text-center">
-                        Kita ke contoh no. 1. di situ ada sabun, kodenya berapa? kodenya 2B. Cari tombol jawaban yang berisikan 2B, lalu tekan.
-            </div>
-            <div class="flex justify-center">
-                <!-- <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt=""> -->
-                <img src="../assets/gif_hafalan.gif" alt="" class="w-1/3">
-            </div>
-            <div class="flex justify-end">
-                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai()">
-                    <span id="nextBtn">Mulai</span>
-                    <i class="fa fa-chevron-right ml-3"></i>
-                </button>
-            </div>
-        </div>
-
-        <div v-show="state==3">
-            <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
-                        p-5 mt-5 mb-2 font-semibold text-lg">
-                        Cara mengerjakannya sama seperti tadi, hanya kotak yang di atas sekarang dihilangkan. Silahkan dikerjakan seingatnya saja.
-            </div>
-            <div class="flex justify-center">
-                <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt="">
-            </div>
-            <div class="flex justify-end">
-                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai2()">
-                    <span id="nextBtn">Mulai</span>
-                    <i class="fa fa-chevron-right ml-3"></i>
-                </button>
-            </div>
-        </div>
-            
-        <div v-show="state==2 || state==4">
-            <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
-                <p v-if="menit!=-99">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
-                <p v-else></p>
-                <button id="btnDaftarSoal" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold">
-                    <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
-                    <span id="btnDaftarSoal3">Daftar Soal</span>
-                </button>
-            </div>
-            
-            <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
-                <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
-                    <div class="font-bold text-white text-lg mb-2">
-                        <i class="fa fa-th-large mr-3"></i>
-                        <span>Daftar Soal</span>
-                    </div>
-                    <div v-for="i in jumSoal" :key="i" class="inline-block">
-                        <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
-                            {{i}}
-                        </button>
-                        <button v-else-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
-                            {{i}}
-                        </button>
-                        <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
-                            {{i}}
-                        </button>
-                    </div>
+        <div class="w-11/12 mx-5 md:w-full md:mx-0">
+            <div v-show="state==1">
+                <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
+                            p-5 mt-5 mb-2 font-semibold md:text-lg">
+                    Terdapat 5 kotak di bagian atas, yaitu Kotak Rokok, Penerbangan, Juru Bayar, Nomor Telepon, dan Buku Gudang.
+                    disetiap kotak sudah terdapat nama anggota beserta kodenya. 
+                    Di setiap nomor soal sudah terdapat namanya apa. 
+                    Tugas Anda adalah mencari kodenya berapa. 
+                </div>
+                <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
+                            p-5 mb-2 font-semibold md:text-lg text-center">
+                            Kita ke contoh no. 1. di situ ada sabun, kodenya berapa? kodenya 2B. Cari tombol jawaban yang berisikan 2B, lalu tekan.
+                </div>
+                <div class="flex justify-center">
+                    <!-- <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt=""> -->
+                    <img src="../assets/gif_hafalan.gif" alt="" class="w-3/4 md:w-1/2 xl:w-1/3">
+                </div>
+                <div class="flex justify-end">
+                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai()">
+                        <span id="nextBtn">Mulai</span>
+                        <i class="fa fa-chevron-right ml-3"></i>
+                    </button>
                 </div>
             </div>
 
-            <div class="relative w-full mb-2">
-                <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-lg overflow-x-hidden">
-                    <div class="h-8 bg-primary-300 ring-1 ring-inset ring-black" id="progress" style="width: 0px;"></div>
+            <div v-show="state==3">
+                <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
+                            p-5 mt-5 mb-2 font-semibold md:text-lg">
+                            Cara mengerjakannya sama seperti tadi, hanya kotak yang di atas sekarang dihilangkan. Silahkan dikerjakan seingatnya saja.
                 </div>
-                <div class="w-full text-center absolute top-0">
-                    <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
+                <div class="flex justify-center mb-3">
+                    <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt="">
+                </div>
+                <div class="flex justify-end">
+                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai2()">
+                        <span id="nextBtn">Mulai</span>
+                        <i class="fa fa-chevron-right ml-3"></i>
+                    </button>
                 </div>
             </div>
-            
-            <div id="soal" class="mb-10 h-full font-semibold" v-if="state==2 && pertanyaan1!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
-                <TextQuestion :question="pertanyaan1[noSoal-1]['instruction']" />
-                <div class="flex gap-3 w-full">
-                    <div v-for="(i,idx) in this.pilihanJawaban" :key="idx" class="w-full">
-                        <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" />
+                
+            <div v-show="state==2 || state==4">
+                <div class="flex justify-between items-center text-lg font-bold mb-5 relative">
+                    <p v-if="menit!=-99">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
+                    <p v-else></p>
+                    <button id="btnDaftarSoal" class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold">
+                        <i class="fa fa-th-large mr-3" id="btnDaftarSoal2"></i>
+                        <span id="btnDaftarSoal3">Daftar Soal</span>
+                    </button>
+                </div>
+                
+                <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
+                    <div class="absolute bg-foreground-4-100 h-auto w-3/4 max-h-96 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14
+                                md:w-1/2 xl:w-1/4">
+                        <div class="font-bold text-white text-lg mb-2">
+                            <i class="fa fa-th-large mr-3"></i>
+                            <span>Daftar Soal</span>
+                        </div>
+                        <div v-for="i in jumSoal" :key="i" class="inline-block">
+                            <button v-if="i == noSoal" id="btnNoSoal" class="bg-yellow-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                                {{i}}
+                            </button>
+                            <button v-else-if="jawaban[i-1]!=null" id="btnNoSoal" class="bg-foreground-4-200 ring-2 ring-inset ring-gray-500 text-white hover:bg-foreground-4-200 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                                {{i}}
+                            </button>
+                            <button v-else id="btnNoSoal" class="bg-background-400 hover:bg-background-300 duration-200 rounded-lg w-10 h-10 mr-3 mb-3 font-bold" @click.prevent="lompatSoal(i)">
+                                {{i}}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="soal" class="mb-10 h-full font-semibold" v-if="state==4 && pertanyaan2!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
-                <TextQuestion :question="pertanyaan2[noSoal-1]['instruction']" />
-                <div class="flex gap-3 w-full mb-2">
-                    <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
-                        <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1]" />
+                <div class="relative w-full mb-2">
+                    <div class="h-8 bg-foreground-4-100 ring-1 ring-inset ring-black rounded-lg overflow-x-hidden">
+                        <div class="h-8 bg-primary-300 ring-1 ring-inset ring-black" id="progress" style="width: 0px;"></div>
+                    </div>
+                    <div class="w-full text-center absolute top-0">
+                        <p class="text-center py-1 text-white font-bold">Pertanyaan {{noSoal}}/{{jumSoal}}</p> 
                     </div>
                 </div>
-                <div class="flex gap-3 w-full">
-                    <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
-                        <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1+(this.pilihanJawaban.length/2)]" />
+                
+                <div id="soal" class="mb-10 h-full font-semibold" v-if="state==2 && pertanyaan1!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
+                    <TextQuestion :question="pertanyaan1[noSoal-1]['instruction']" />
+                    <div class="flex gap-3 w-full">
+                        <div v-for="(i,idx) in this.pilihanJawaban" :key="idx" class="w-full">
+                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="flex justify-between">
-                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
-                    <i class="fa fa-chevron-left mr-3"></i>
-                    <span>Sebelumnya</span>
-                </button>
-                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
-                    <span id="nextBtn">Selanjutnya</span>
-                    <i class="fa fa-chevron-right ml-3"></i>
-                </button>
+                <div id="soal" class="mb-10 h-full font-semibold" v-if="state==4 && pertanyaan2!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
+                    <TextQuestion :question="pertanyaan2[noSoal-1]['instruction']" />
+                    <div class="flex gap-3 w-full mb-2">
+                        <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
+                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1]" />
+                        </div>
+                    </div>
+                    <div class="flex gap-3 w-full">
+                        <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
+                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1+(this.pilihanJawaban.length/2)]" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
+                        <i class="fa fa-chevron-left mr-3"></i>
+                        <span>Sebelumnya</span>
+                    </button>
+                    <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="nextSoal">
+                        <span id="nextBtn">Selanjutnya</span>
+                        <i class="fa fa-chevron-right ml-3"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -131,7 +134,7 @@
         <div id="bg" v-show="state==0" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="state==0" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="state==0" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50"
             @click.prevent="this.state = 1">
             Klik dimanapun untuk memulai
         </div>

@@ -41,7 +41,7 @@
                     class="rounded-lg py-2 px-3 my-2 w-full outline-none"><br>
             </div>
             
-            <div class="text-right">
+            <div class="text-center md:text-right">
                 <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
                     Submit dan mulai
                 </button>

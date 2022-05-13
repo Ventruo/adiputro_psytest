@@ -11,13 +11,13 @@
                 <p v-if="menit!=-99">Sisa Waktu : {{('00'+menit).slice(-2)}}:{{('00'+detik).slice(-2)}}</p>
             </div>
             <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
-                        p-5 my-2 font-semibold text-lg">
+                        p-5 my-2 font-semibold md:text-lg">
                 Disediakan waktu 3 menit untuk menghafalkan kata-kata.
                 Pada persoalan berikutnya, terdapat sejumlah pertanyaan mengenai kata-kata yang anda hafalkan.
                 Tugas anda adalah menjawab soal sesuai dengan yang anda hafalkan.
             </div>
-            <div class="w-full ring-2 ring-inset ring-black py-3 rounded-md text-lg flex justify-center mb-3">
-                <div class="flex gap-2">
+            <div class="w-full ring-2 ring-inset ring-black py-3 rounded-md text-sm md:text-lg flex justify-center mb-3">
+                <div class="flex gap-2 mx-2">
                     <div class="font-semibold">
                         <p>Bunga</p>
                         <p>Perkakas</p>
@@ -63,7 +63,8 @@
             </div>
             
             <div v-show="tampilDaftarSoal" class="relative z-10" id="daftarSoal">
-                <div class="absolute bg-foreground-4-100 h-auto max-h-96 w-1/4 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14">
+                <div class="absolute bg-foreground-4-100 h-auto w-3/4 max-h-96 pl-3 py-2 overflow-auto no-scrollbar rounded-lg right-0 -top-14
+                            md:w-1/2 xl:w-1/4">
                     <div class="font-bold text-white text-lg mb-2">
                         <i class="fa fa-th-large mr-3"></i>
                         <span>Daftar Soal</span>
@@ -93,14 +94,14 @@
             
             <div id="soal" class="mb-10 h-full font-semibold" v-if="state==2 && pertanyaan!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
                 <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" />
-                <div class="flex gap-3 w-full">
+                <div class="md:flex md:gap-3 w-full">
                     <div v-for="(i,idx) in this.pilihanJawaban" :key="idx" class="w-full">
                         <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" />
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-between">
+            <div class="flex justify-between mb-5">
                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-1 font-bold text-xl" @click.prevent="prevSoal">
                     <i class="fa fa-chevron-left mr-3"></i>
                     <span>Sebelumnya</span>
@@ -116,7 +117,7 @@
         <div id="bg" v-show="state==0" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-40"></div>
 
         <!-- Countdown -->
-        <div id="klikAnywhere" v-show="state==0" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-5xl font-bold z-50"
+        <div id="klikAnywhere" v-show="state==0" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
