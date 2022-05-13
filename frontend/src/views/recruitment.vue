@@ -6,7 +6,8 @@
         </div>
     </div>
     <div class="z-10">
-        <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden">
+        <div class="w-11/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden
+                    md:w-9/12">
             <div class="flex justify-between mb-7">
                 <h1 class="text-white text-3xl text-center font-bold mt-2">Rekrutmen</h1>
                 <div class="flex justify-center">
@@ -17,8 +18,8 @@
                     class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5"
                     @submit.prevent="submitForm">
                 <h1 class="text-3xl font-bold mb-2">Biodata</h1>
-                <div class="flex mb-5">
-                    <div class="w-6/12 mr-10">
+                <div class="md:flex">
+                    <div class="md:w-6/12 md:mr-10">
                         <p class="mt-2">NAMA LENGKAP :</p>
                         <InputBio :type="'text'" :modelValue="''" :nama="'nama'" :placeHolder="'Nama Lengkap'" />
 
@@ -31,11 +32,36 @@
                         <p class="mt-4">TANGGAL LAHIR :</p>
                         <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="w-full px-4 py-2 my-1 rounded-lg outline-none 
                                 bg-background-400 ring-1 ring-inset ring-stroke-100 placeholder-stroke-100">
-                        <!-- <InputBio :type="'text'" :modelValue="''" :nama="'tanggal_lahir'" :placeHolder="'22 Januari 2022'" /> -->
 
                         <p class="mt-4">ALAMAT DOMISILI :</p>
                         <InputBio :type="'text'" :modelValue="''" :nama="'alamat_domisili'" :placeHolder="'Alamat Domisili'" />
+                    </div>
+
+                    <div class="md:w-6/12">
+                        <p class="mt-2">USIA :</p>
+                        <InputBio :type="'number'" :modelValue="''" :nama="'usia'" :placeHolder="'20'" />
                         
+                        <p class="mt-4">NO.TELEPON/HP :</p>
+                        <InputBio :type="'number'" :modelValue="''" :nama="'nomor_hp'" :placeHolder="'081234567890'" />
+
+                        <p class="mt-4">E-MAIL :</p>
+                        <InputBio :type="'email'" :modelValue="''" :nama="'email'" :placeHolder="'contoh@example.com'" />
+
+                        <p class="mt-4">JENIS KELAMIN :</p>
+                        <div class="flex my-2">
+                            <div class="w-1/2"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
+                            <div class="w-1/2"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>
+                        </div>
+
+                        <p class="mt-7">STATUS PERKAWINAN :</p>
+                        <div class="flex mt-2 mb-5">
+                            <div class="w-1/2"><Radio :values="'belum menikah'" :names="'status_perkawinan'" :id="'belumMenikah'" :label="'BELUM MENIKAH'"/></div>
+                            <div class="w-1/2"><Radio :values="'sudah menikah'" :names="'status_perkawinan'" :id="'menikah'" :label="'SUDAH MENIKAH'"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:flex mb-5">
+                    <div class="md:w-6/12 md:mr-10">
                         <p class="mt-4">PENDIDIKAN TERAKHIR :</p>
                         <div>
                             <div class="flex gap-3">
@@ -57,34 +83,11 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="w-6/12">
-                        <p class="mt-4">USIA :</p>
-                        <InputBio :type="'number'" :modelValue="''" :nama="'usia'" :placeHolder="'20'" />
-                        
-                        <p class="mt-4">NO.TELEPON/HP :</p>
-                        <InputBio :type="'number'" :modelValue="''" :nama="'nomor_hp'" :placeHolder="'081234567890'" />
-
-                        <p class="mt-4">E-MAIL :</p>
-                        <InputBio :type="'email'" :modelValue="''" :nama="'email'" :placeHolder="'contoh@example.com'" />
-
-                        <p class="mt-4">JENIS KELAMIN :</p>
-                        <div class="flex my-2">
-                            <div class="w-1/2"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
-                            <div class="w-1/2"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>
-                        </div>
-
-                        <p class="mt-7">STATUS PERKAWINAN :</p>
-                        <div class="flex mt-2 mb-5">
-                            <div class="w-1/2"><Radio :values="'belum menikah'" :names="'status_perkawinan'" :id="'belumMenikah'" :label="'BELUM MENIKAH'"/></div>
-                            <div class="w-1/2"><Radio :values="'sudah menikah'" :names="'status_perkawinan'" :id="'menikah'" :label="'SUDAH MENIKAH'"/></div>
-                        </div>
-
+                    <div class="md:w-6/12">
                         <p class="mt-4">POSISI YANG DILAMAR :</p> 
                         <select name="posisi_dilamar" class="w-full text-lg rounded-lg outline-none ring-1 ring-inset ring-stroke-100 bg-background-400 px-2 py-1.5 my-1 outline-none ">
                             <option v-for="i in pekerjaan" :key="i" v-bind:value="i">{{i}}</option>
                         </select>
-
                         <p class="mt-4">LAMPIRAN:</p>
                         <div class="my-2 italic text-stroke-100">
                             <p>Silahkan mengupload lampiran file berekstensi .pdf (batas 20 mb).</p>
@@ -93,7 +96,7 @@
                         <input type="file" name="lampiran" id="" >
                     </div>
                 </div>
-                
+
                 <div class="mt-10 mb-5 flex justify-end">
                     <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
                         Kirim

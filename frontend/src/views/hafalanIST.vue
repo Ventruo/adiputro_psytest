@@ -137,7 +137,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes 1',
+            namaSection: 'Tes I',
             jenis: '',
             noSoal: 1,
             jumSoal: 0,

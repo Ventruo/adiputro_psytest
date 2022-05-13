@@ -133,7 +133,7 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes Kraepelin',
+            namaTes: 'Tes K',
             judulHalaman: 'EPPS',
             kolom: 1,
             jumKolom: 50,

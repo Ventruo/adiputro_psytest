@@ -1,5 +1,6 @@
 <template>
-    <div class="w-9/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden">
+    <div class="w-11/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden
+                md:w-9/12">
         <div class="flex justify-between mb-7">
             <h1 class="text-white text-3xl text-center font-bold mt-2">Biodata</h1>
             <div class="flex justify-center">
@@ -17,78 +18,81 @@
         <form method="" action="" autocomplete="off" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar 
                     py-5 px-5" @submit.prevent="submitForm">
             <h1 class="text-3xl font-bold mb-2">Biodata</h1>
-            <div class="flex mb-5">
-                <div class="mr-2">
-                    <p class="mt-2">1. </p>
-                    <p class="mt-16" v-for="i in 7" :key="i">{{i+1}}. </p>
+            <div class="md:flex mb-5">
+                <div class="md:w-6/12 md:mr-5 flex">
+                    <div class="mr-2">
+                        <p class="mt-2">1. </p>
+                        <p class="mt-16" v-for="i in 7" :key="i">{{i+1}}. </p>
+                    </div>
+                    <div class="w-full">
+                        <p class="mt-2">NAMA LENGKAP :</p>
+                        <InputBio :type="'text'" v-model="fullname" :nama="'nama_lengkap'" :placeHolder="'Nama Lengkap'" />
+
+                        <p class="mt-4">NAMA PANGGILAN :</p>
+                        <InputBio :type="'text'" :modelValue="''" :nama="'nama_panggilan'" :placeHolder="'Nama Panggilan'" />
+
+                        <p class="mt-4">ALAMAT DI KTP :</p>
+                        <InputBio :type="'text'" :modelValue="''" :nama="'alamat_ktp'" :placeHolder="'Alamat di KTP'" />
+
+                        <p class="mt-4">ALAMAT SEKARANG :</p>
+                        <InputBio :type="'text'" v-model="alamat" :nama="'alamat_skg'" :placeHolder="'Alamat Sekarang'" />
+
+                        <p class="mt-4">TELEPON/HP :</p>
+                        <InputBio :type="'number'" v-model="noHp" :nama="'no_hp'" :placeHolder="'081234567890'" />
+
+                        <p class="mt-4">TEMPAT & TGL LAHIR :</p>
+                        <InputBio :type="'text'" v-model="ttl" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
+
+                        <p class="mt-4">KEWARGANEGARAAN :</p>
+                        <InputBio :type="'text'" :modelValue="''" :nama="'kewarganegaraan'" :placeHolder="'Kewarganegaraan'" />
+
+                        <p class="mt-4">SUKU :</p>
+                        <InputBio :type="'text'" :modelValue="''" :nama="'suku'" :placeHolder="'Suku'" />
+                    </div>
                 </div>
-                <div class="w-6/12 mr-10">
-                    <p class="mt-2">NAMA LENGKAP :</p>
-                    <InputBio :type="'text'" v-model="fullname" :nama="'nama_lengkap'" :placeHolder="'Nama Lengkap'" />
 
-                    <p class="mt-4">NAMA PANGGILAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'nama_panggilan'" :placeHolder="'Nama Panggilan'" />
+                <div class="md:w-6/12 flex">
+                    <div class="mr-2">
+                        <p class="mt-2">9. </p>
+                        <p class="mt-16" v-for="i in 7" :key="i">{{i+9}}. </p>
+                    </div>
+                    <div class="w-full">
+                        <p class="mt-2">AGAMA :</p>
+                        <InputBio :type="'text'" :modelValue="''" :nama="'agama'" :placeHolder="'Agama'" />
 
-                    <p class="mt-4">ALAMAT DI KTP :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'alamat_ktp'" :placeHolder="'Alamat di KTP'" />
+                        <p class="mt-4">USIA :</p>
+                        <InputBio :type="'number'" v-model="usia" :nama="'usia'" :placeHolder="'20'" />
 
-                    <p class="mt-4">ALAMAT SEKARANG :</p>
-                    <InputBio :type="'text'" v-model="alamat" :nama="'alamat_skg'" :placeHolder="'Alamat Sekarang'" />
+                        <p class="mt-4">TINGGI BADAN :</p>
+                        <InputBio :type="'number'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150'" />
 
-                    <p class="mt-4">TELEPON/HP :</p>
-                    <InputBio :type="'number'" v-model="noHp" :nama="'no_hp'" :placeHolder="'081234567890'" />
+                        <p class="mt-4">BERAT BADAN :</p>
+                        <InputBio :type="'number'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50'" />
 
-                    <p class="mt-4">TEMPAT & TGL LAHIR :</p>
-                    <InputBio :type="'text'" v-model="ttl" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
+                        <p class="mt-4">NO KTP / SIM / PASPOR :</p>
+                        <InputBio :type="'number'" v-model="ktp" :nama="'no_identitas'" :placeHolder="'0123456789'" />
 
-                    <p class="mt-4">KEWARGANEGARAAN :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'kewarganegaraan'" :placeHolder="'Kewarganegaraan'" />
+                        <p class="mt-4">GOLONGAN DARAH :</p>
+                        <InputBio :type="'text'" :modelValue="''" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
 
-                    <p class="mt-4">SUKU :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'suku'" :placeHolder="'Suku'" />
-                </div>
+                        <p class="mt-4">NO NPWP :</p>
+                        <InputBio :type="'number'" :modelValue="''" :nama="'no_npwp'" :placeHolder="'01234567890'" />
 
-                
-                <div class="mr-2">
-                    <p class="mt-2">9. </p>
-                    <p class="mt-16" v-for="i in 7" :key="i">{{i+9}}. </p>
-                </div>
-                <div class="w-6/12">
-                    <p class="mt-2">AGAMA :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'agama'" :placeHolder="'Agama'" />
-
-                    <p class="mt-4">USIA :</p>
-                    <InputBio :type="'number'" v-model="usia" :nama="'usia'" :placeHolder="'20'" />
-
-                    <p class="mt-4">TINGGI BADAN :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150'" />
-
-                    <p class="mt-4">BERAT BADAN :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50'" />
-
-                    <p class="mt-4">NO KTP / SIM / PASPOR :</p>
-                    <InputBio :type="'number'" v-model="ktp" :nama="'no_identitas'" :placeHolder="'0123456789'" />
-
-                    <p class="mt-4">GOLONGAN DARAH :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
-
-                    <p class="mt-4">NO NPWP :</p>
-                    <InputBio :type="'number'" :modelValue="''" :nama="'no_npwp'" :placeHolder="'01234567890'" />
-
-                    <p class="mt-4">E-MAIL :</p>
-                    <InputBio :type="'email'" v-model="email" :nama="'email'" :placeHolder="'contoh@example.com'" :readonly="true" />
+                        <p class="mt-4">E-MAIL :</p>
+                        <InputBio :type="'email'" v-model="email" :nama="'email'" :placeHolder="'contoh@example.com'" :readonly="true" />
+                    </div>
                 </div>
             </div>
             <div class="mb-2">
                 <div class="w-full flex">
                     <p class="mr-2">17.</p>
-                    <div class="w-1/2">
+                    <div class="w-1/2 mr-3 md:mr-0">
                         <div class="mr-4">
                             <p class="mb-1">Keadaan Kesehatan pada saat ini : </p>
                         </div>
-                        <div class="flex mb-1">
-                            <div class="w-1/2"><Radio :values="'baik'" :names="'keadaan'" :id="'kesehatanBaik'" :label="'BAIK'" /></div>
-                            <div class="w-1/2"><Radio :values="'kurang sehat'" :names="'keadaan'" :id="'kesehatanKurang'" :label="'KURANG SEHAT'"/></div>
+                        <div class="md:flex mb-1">
+                            <div class="md:w-1/2"><Radio :values="'baik'" :names="'keadaan'" :id="'kesehatanBaik'" :label="'BAIK'" /></div>
+                            <div class="md:w-1/2"><Radio :values="'kurang sehat'" :names="'keadaan'" :id="'kesehatanKurang'" :label="'KURANG SEHAT'"/></div>
                         </div>
                         
                         <div class="mt-10">
@@ -128,9 +132,9 @@
                             </div>
                         </div>
                         
-                        <div class="flex">
-                            <div class="w-1/2"><Radio :values="'belum menikah'" v-model="status_perkawinan" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
-                            <div class="w-1/2"><Radio :values="'sudah menikah'" v-model="status_perkawinan" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
+                        <div class="md:flex">
+                            <div class="md:w-1/2"><Radio :values="'belum menikah'" v-model="status_perkawinan" :names="'menikah'" id="belumMenikah" :label="'BELUM MENIKAH'" @change="sudahMenikah=false"/></div>
+                            <div class="md:w-1/2"><Radio :values="'sudah menikah'" v-model="status_perkawinan" :names="'menikah'" id="menikah" :label="'SUDAH MENIKAH'" @change="sudahMenikah=true"/></div>
                         </div>
                     </div>
 
@@ -153,11 +157,11 @@
                     <p class="mr-2">19.</p>
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
-                <div class="ml-7">
+                <div class="md:ml-7">
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white">
-                            <tr>
-                                <th class="font-semibold w-2/12">TINGKAT/GELAR</th>
+                            <tr class="text-xs md:text-sm">
+                                <th class="font-semibold w-2/12">TINGKAT / GELAR</th>
                                 <th class="font-semibold w-2/12">JURUSAN</th>
                                 <th class="font-semibold w-3/12">NAMA SEKOLAH</th>
                                 <th class="font-semibold w-2/12">KOTA</th>
@@ -165,7 +169,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in pendidikan.length" :key="i">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xs md:text-sm" v-for="i in pendidikan.length" :key="i">
                                 <InputTable v-model="pendidikan[i-1].tingkat" :nama="'pendidikan[][tingkat]'" :placeHolder="'Tingkat / Gelar'" />
                                 <InputTable v-model="pendidikan[i-1].jurusan" :nama="'pendidikan[][jurusan]'" :placeHolder="'Jurusan'" />
                                 <InputTable v-model="pendidikan[i-1].nama_sekolah" :nama="'pendidikan[][nama_sekolah]'" :placeHolder="'Nama Sekolah'" />
@@ -174,7 +178,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end mt-2">
+                    <div class="flex gap-1 w-full justify-end mt-2 text-xs md:text-sm">
                         <button @click.prevent="subPendidikanCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -206,19 +210,19 @@
                 </div>
 
                 <!-- orang tua -->
-                <div class="ml-7">
+                <div class="md:ml-7">
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white">
-                            <tr>
+                            <tr class="text-xs md:text-sm">
                                 <th class="font-semibold w-3/12">NAMA ORANG TUA</th>
                                 <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
                                 <th class="font-semibold w-3/12">ALAMAT</th>
-                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PEKERJAAN</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[0].length" :key="i">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xs md:text-sm" v-for="i in keluarga[0].length" :key="i">
                                 <InputTable v-model="keluarga[0][i-1].nama" :nama="'orang_tua[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable v-model="keluarga[0][i-1].ttl" :nama="'orang_tua[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable v-model="keluarga[0][i-1].alamat" :nama="'orang_tua[][alamat]'" :placeHolder="'Alamat'" />
@@ -227,7 +231,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end my-2">
+                    <div class="flex gap-1 w-full justify-end my-2 text-xs md:text-sm">
                         <button @click.prevent="subKeluargaCount(0)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -242,19 +246,19 @@
                 </div>
 
                 <!-- istri/suami -->
-                <div class="ml-7">
+                <div class="md:ml-7">
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white">
-                            <tr>
+                            <tr class="text-xs md:text-sm">
                                 <th class="font-semibold w-3/12">NAMA ISTRI/SUAMI</th>
                                 <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
                                 <th class="font-semibold w-3/12">ALAMAT</th>
-                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PEKERJAAN</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[1].length" :key="i">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xs md:text-sm" v-for="i in keluarga[1].length" :key="i">
                                 <InputTable v-model="keluarga[1][i-1].nama" :nama="'istri_suami[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable v-model="keluarga[1][i-1].ttl" :nama="'istri_suami[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable v-model="keluarga[1][i-1].alamat" :nama="'istri_suami[][alamat]'" :placeHolder="'Alamat'" />
@@ -263,7 +267,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end my-2">
+                    <div class="flex gap-1 w-full justify-end my-2 text-xs md:text-sm">
                         <button @click.prevent="subKeluargaCount(1)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -278,19 +282,19 @@
                 </div>
 
                 <!-- anak kandung -->
-                <div class="ml-7">
+                <div class="md:ml-7">
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white">
-                            <tr>
+                            <tr class="text-xs md:text-sm">
                                 <th class="font-semibold w-3/12">NAMA ANAK KANDUNG</th>
                                 <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
                                 <th class="font-semibold w-3/12">ALAMAT</th>
-                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PEKERJAAN</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[2].length" :key="i">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xs md:text-sm" v-for="i in keluarga[2].length" :key="i">
                                 <InputTable v-model="keluarga[2][i-1].nama" :nama="'anak_kandung[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable v-model="keluarga[2][i-1].ttl" :nama="'anak_kandung[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable v-model="keluarga[2][i-1].alamat" :nama="'anak_kandung[][alamat]'" :placeHolder="'Alamat'" />
@@ -299,7 +303,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end my-2">
+                    <div class="flex gap-1 w-full justify-end my-2 text-xs md:text-sm">
                         <button @click.prevent="subKeluargaCount(2)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -314,19 +318,19 @@
                 </div>
 
                 <!-- saudara kandung -->
-                <div class="ml-7">
+                <div class="md:ml-7">
                     <table class="table-fixed w-full font-semibold">
                         <thead class="bg-foreground-4-100 text-white">
-                            <tr>
+                            <tr class="text-xs md:text-sm">
                                 <th class="font-semibold w-3/12">NAMA SAUDARA KANDUNG</th>
                                 <th class="font-semibold w-3/12">TEMPAT & TGL LAHIR</th>
                                 <th class="font-semibold w-3/12">ALAMAT</th>
-                                <th class="font-semibold w-2/12">PENDIDIKAN</th>
-                                <th class="font-semibold w-2/12">PEKERJAAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PENDIDIKAN</th>
+                                <th class="font-semibold w-2/12 text-[0.6rem] md:text-sm">PEKERJAAN</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in keluarga[3].length" :key="i">
+                            <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10 text-xs md:text-sm" v-for="i in keluarga[3].length" :key="i">
                                 <InputTable v-model="keluarga[3][i-1].nama" :nama="'saudara_kandung[][nama]'" :placeHolder="'Nama'" />
                                 <InputTable v-model="keluarga[3][i-1].ttl" :nama="'saudara_kandung[][ttl]'" :placeHolder="'Tempat & Tgl Lahir'" />
                                 <InputTable v-model="keluarga[3][i-1].alamat" :nama="'saudara_kandung[][alamat]'" :placeHolder="'Alamat'" />
@@ -335,7 +339,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end my-2">
+                    <div class="flex gap-1 w-full justify-end my-2 text-xs md:text-sm">
                         <button @click.prevent="subKeluargaCount(3)" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -355,16 +359,16 @@
                     <p class="mr-2">22.</p>
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
-                <div class="ml-7">
-                    <table class="table-fixed w-full font-semibold">
+                <div class="md:ml-7">
+                    <table class="table-fixed w-full font-semibold text-xs md:text-sm">
                         <thead class="bg-foreground-4-100 text-white">
                             <tr>
-                                <th class="font-semibold w-2/12">DARI TGL/TAHUN</th>
+                                <th class="font-semibold w-2/12">DARI TGL / TAHUN</th>
                                 <th class="font-semibold w-2/12">SAMPAI</th>
                                 <th class="font-semibold w-3/12">NAMA PERUSAHAAN</th>
                                 <th class="font-semibold w-2/12">KOTA</th>
                                 <th class="font-semibold w-2/12">BID. USAHA</th>
-                                <th class="font-semibold w-2/12">JABATAN/BAGIAN</th>
+                                <th class="font-semibold w-2/12">JABATAN / BAGIAN</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -378,7 +382,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end mt-2">
+                    <div class="flex gap-1 w-full justify-end mt-2 text-xs md:text-sm">
                         <button @click.prevent="subRiwayatCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -406,8 +410,8 @@
                     <p class="mr-2">23.</p>
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
-                <div class="ml-7">
-                    <table class="table-fixed w-full font-semibold">
+                <div class="md:ml-7">
+                    <table class="table-fixed w-full font-semibold text-xs md:text-sm">
                         <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th class="font-semibold w-3/12">MATERI</th>
@@ -425,7 +429,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end mt-2">
+                    <div class="flex gap-1 w-full justify-end mt-2 text-xs md:text-sm">
                         <button @click.prevent="subTrainingCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -445,8 +449,8 @@
                     <p class="mr-2">24.</p>
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
-                <div class="ml-7">
-                    <table class="table-fixed w-full font-semibold">
+                <div class="md:ml-7">
+                    <table class="table-fixed w-full font-semibold text-xs md:text-sm">
                         <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th class="font-semibold w-3/12">ORGANISASI</th>
@@ -464,7 +468,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end mt-2">
+                    <div class="flex gap-1 w-full justify-end mt-2 text-xs md:text-sm">
                         <button @click.prevent="subOrganisasiCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -484,8 +488,8 @@
                     <p class="mr-2">25.</p>
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
-                <div class="ml-7">
-                    <table class="table-fixed w-full font-semibold">
+                <div class="md:ml-7">
+                    <table class="table-fixed w-full font-semibold text-xs md:text-sm">
                         <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th rowspan="2" class="font-semibold w-3/12">BAHASA</th>
@@ -494,9 +498,9 @@
                                 <th class="font-semibold w-2/12 border-b-[1px] border-white">MENULIS</th>
                             </tr>
                             <tr>
-                                <th class="font-normal text-sm w-3/12">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
-                                <th class="font-normal text-sm w-2/12">KURANG/CUKUP/BAIK</th>
+                                <th class="font-normal text-xs md:text-sm w-3/12">KURANG / CUKUP / BAIK</th>
+                                <th class="font-normal text-xs md:text-sm w-2/12">KURANG / CUKUP / BAIK</th>
+                                <th class="font-normal text-xs md:text-sm w-2/12">KURANG / CUKUP / BAIK</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -508,7 +512,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end mt-2">
+                    <div class="flex gap-1 w-full justify-end mt-2 text-xs md:text-sm">
                         <button @click.prevent="subBahasaCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -591,11 +595,11 @@
                 <div class="mb-2 ml-7">
                     <p class="mr-3">Apakah kendaraan tersebut milik: </p>
 
-                    <div class="flex w-1/2 mt-1">
-                        <div class="w-1/4"><Radio :values="'Pribadi'" :names="'kendaraan_milik'" :id="'kendaraan_pribadi'" :label="'Pribadi'"/></div>
-                        <div class="w-1/4"><Radio :values="'Orang Tua'" :names="'kendaraan_milik'" :id="'kendaraan_Orang_Tua'" :label="'Orang Tua'"/></div>
-                        <div class="w-1/4"><Radio :values="'Saudara'" :names="'kendaraan_milik'" :id="'kendaraan_Saudara'" :label="'Saudara'"/></div>
-                        <div class="w-1/4"><Radio :values="'dll'" :names="'kendaraan_milik'" :id="'kendaraan_dll'" :label="'dan lain-lain'"/></div>
+                    <div class="lg:flex xl:w-1/2 mt-1">
+                        <div class="md:w-1/4"><Radio :values="'Pribadi'" :names="'kendaraan_milik'" :id="'kendaraan_pribadi'" :label="'Pribadi'"/></div>
+                        <div class="md:w-1/4"><Radio :values="'Orang Tua'" :names="'kendaraan_milik'" :id="'kendaraan_Orang_Tua'" :label="'Orang Tua'"/></div>
+                        <div class="md:w-1/4"><Radio :values="'Saudara'" :names="'kendaraan_milik'" :id="'kendaraan_Saudara'" :label="'Saudara'"/></div>
+                        <div class="md:w-1/4"><Radio :values="'dll'" :names="'kendaraan_milik'" :id="'kendaraan_dll'" :label="'dan lain-lain'"/></div>
                     </div>
                 </div>
             </div>
@@ -666,8 +670,8 @@
                     <p>Apakah anda mempunyai prestasi / penghargaan selama ini? Bila ada silahkan disebutkan (jenis, bidang, dan tahun)</p>
                 </div>
                 
-                <div class="ml-7">
-                    <table class="table-fixed w-full font-semibold">
+                <div class="md:ml-7">
+                    <table class="table-fixed w-full font-semibold text-xs md:text-sm">
                         <thead class="bg-foreground-4-100 text-white">
                             <tr>
                                 <th class="font-semibold w-4/12">JENIS</th>
@@ -683,7 +687,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex gap-1 w-full justify-end mt-2">
+                    <div class="flex gap-1 w-full justify-end my-2 text-xs md:text-sm">
                         <button @click.prevent="subPrestasiCount" class="text-white bg-foreground-4-100 hover:bg-foreground-4-200
                                                 duration-200 rounded-md h-auto w-auto px-5 py-1">
                                                     <i class="fa fa-minus mr-1"></i>
@@ -717,8 +721,8 @@
                     <p>Sebagai referensi, sebutkan 2 (dua) nama orang terdekat anda, beserta alamat dan telepon: </p>
                 </div>
                 <div class="ml-7">
-                    <div class="flex gap-10 mb-2">
-                        <div class="w-1/2">
+                    <div class="md:flex md:gap-10 mb-2">
+                        <div class="mb-2 md:w-1/2">
                             <p class="font-bold">Orang Terdekat 1</p>
                             <p>Nama</p>
                             <InputBio :type="'text'" v-model="orang_terdekat[0].nama" :nama="'orang_terdekat[][nama]'" :placeHolder="'Nama Lengkap'" />
@@ -727,7 +731,7 @@
                             <p>No. Telepon</p>
                             <InputBio :type="'number'" v-model="orang_terdekat[0].telepon" :nama="'orang_terdekat[][telepon]'" :placeHolder="'081234567890'" />
                         </div>
-                        <div class="w-1/2">
+                        <div class=",d:w-1/2">
                             <p class="font-bold">Orang Terdekat 2</p>
                             <p>Nama</p>
                             <InputBio :type="'text'" v-model="orang_terdekat[1].nama" :nama="'orang_terdekat[][nama]'" :placeHolder="'Nama Lengkap'" />
@@ -741,7 +745,7 @@
             </div>
 
             <p class="font-bold text-xl mt-10 mb-20">Bahwa segala biodata yang saya isi di atas adalah benar adanya. </p>
-            <div class="flex justify-end font-bold">
+            <div class="flex justify-center md:justify-end font-bold">
                 <div>
                     <div class="flex mb-2">
                         <input type="text" name="kota_ttd" id="" class="w-36 inline-block px-3 text-center outline-none bg-transparent border-b-2 border-stroke-100 placeholder-stroke-100" placeholder="Kota">

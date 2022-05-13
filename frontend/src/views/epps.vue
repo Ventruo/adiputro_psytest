@@ -99,8 +99,8 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes EPPS',
-            judulHalaman: 'EPPS',
+            namaTes: 'Tes E',
+            judulHalaman: 'E',
             page: 1,
             jumHalaman: null,
             menit: 1,

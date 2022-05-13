@@ -173,7 +173,7 @@
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
                 <div class="w-full h-full">
                     <div v-if="loaded==1">
-                        <div class="min-h-[48rem] inline-block"
+                        <div class="h-[48rem] inline-block"
                             :class="{
                                 'w-1/2': idTes!=20
                             }">
@@ -188,7 +188,7 @@
                                 <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(idTes))" :data="dataTesKecil" :nama="this.nama" :print="'no'"/>
                                 <Adkudak v-if="idTes==10" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <TintumAnak v-if="idTes==16" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <!-- IST  -->
+                                <IST v-if="idTes==17" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <PapiKostick v-if="idTes==18" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <Hafalan v-if="idTes==21" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <div v-if="biodata!=null" class="flex flex-col h-full">
@@ -212,17 +212,17 @@
                     </div>
                     <div v-else class="w-10 h-96"></div>
                     <div class="absolute" v-if="fullLoaded==1">
-                        <div class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-if="Object.keys(this.registrantBio).length > 0" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <Biodata :data="this.registrantBio"/>
                         </div>
                         
-                        <div class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-if="Object.keys(this.registrantBio).length > 0" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <Biodata2 :data="this.registrantBio"/>
                         </div>
 
-                        <div class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                        <div v-if="Object.keys(this.registrantBio).length > 0" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                             style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                             <Biodata3 :data="this.registrantBio"/>
                         </div>
@@ -305,6 +305,8 @@ import TintumAnak from "../../components/report/TintumAnak.vue"
 
 import PapiKostick from "../../components/report/PapiKostick.vue"
 
+import IST from "../../components/report/IST.vue"
+
 import Hafalan from "../../components/report/Hafalan.vue"
 
 import Gambar from "../../components/report/Gambar.vue"
@@ -316,7 +318,7 @@ import Biodata3 from "../../components/report/Biodata/Biodata3.vue"
 export default {
     components: { 
         axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, Adkudak, TintumAnak, PapiKostick, Hafalan, Gambar,
-        Biodata, Biodata2, Biodata3
+        Biodata, Biodata2, Biodata3, IST
     },
     data () {
         return {

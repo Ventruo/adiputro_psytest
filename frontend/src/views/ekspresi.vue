@@ -112,8 +112,8 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes Ekspresi',
-            judulHalaman: 'EPPS',
+            namaTes: 'Tes E',
+            judulHalaman: '',
             noSoal: 1,
             jumSoal: 19,
             menit: 1,

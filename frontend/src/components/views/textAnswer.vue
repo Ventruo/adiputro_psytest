@@ -94,8 +94,15 @@ export default {
             else
                 $('#answer').val(answer)
             
-            $('#answer').focus()
-        }
+            let tb = document.getElementById('answer');
+            tb.focus()
+            if(answer!=undefined){
+                let tempz = answer.toString()
+                const length = tempz.length;
+                tb.setSelectionRange(length, length);
+                tb.focus()
+            }
+        },
     },
     mounted() {
         if(this.section==5 || this.section==6 || this.section==58 || this.section==65 || this.section==66 || this.section==76 || this.section==77) this.needValidate = true

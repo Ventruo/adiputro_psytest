@@ -98,7 +98,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes 1',
+            namaSection: 'Tes N',
             jenis: '',
             noSoal: 1,
             jumSoal: 5,
@@ -161,7 +161,7 @@ export default {
             }
         },
         nextSoal(){
-            console.log(this.noSoal, this.jumSoal)
+            // console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
