@@ -106,11 +106,11 @@ class ExamSessionController {
       new_sessions.push(new_session);
 
       // Send Token to Corresponding Email
-      await sendEmail({
-        recepients: emails[i],
-        subject: "Subject",
-        html: `<b>Here is your Test Token: ${test_key}</b>`,
-      });
+      // await sendEmail({
+      //   recepients: emails[i],
+      //   subject: "Subject",
+      //   html: `<b>Here is your Test Token: ${test_key}</b>`,
+      // });
 
       for (let i = 0; i < req.body.tests.length; i++) {
         const test = req.body.tests[i];
