@@ -592,7 +592,6 @@ export default {
         },
         createQuestion(e){
             if (this.section_id!=null){
-                console.log(e.target[1].files.length)
                 if(e.target[1].files.length<=0)
                     Swal.fire({
                         title: 'Mohon Isi Semua Field!',

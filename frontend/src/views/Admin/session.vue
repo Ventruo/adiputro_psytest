@@ -228,6 +228,16 @@ export default {
                             }
                         }
                     }
+
+                    let temp = []
+                    for (let i = 0; i < this.list_tes.length; i++) {
+                        const tes = this.list_tes[i];
+                        if(!this.tests.includes(tes)){
+                            temp.push(tes)
+                        }
+                    }
+                    this.opsional = temp
+                    this.selectedOptional = this.opsional[0].id
                 }
             })
 
@@ -288,7 +298,8 @@ export default {
             }
 
             if (idx !== -1) {
-                this.tests.splice(idx, 1);
+                let temp = this.tests.splice(idx, 1);
+                this.opsional.push(temp[0]);
             }
         },
         tambahTes(){
