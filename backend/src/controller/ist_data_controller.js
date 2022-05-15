@@ -71,12 +71,12 @@ class ISTDataController {
       return;
     }
 
-    // SectionResult.findOne({ where: { id: req.body.test_result_id } }).then(
-      // async (section) => {
-      //   if (!section) {
-      //     data_not_found_response(res);
-      //     return;
-      //   }
+    SectionResult.findOne({ where: { id: req.body.test_result_id } }).then(
+      async (section) => {
+        if (!section) {
+          data_not_found_response(res);
+          return;
+        }
 
         let now = new Date();
         let usia = new Date(now - new Date(req.body.tanggal_lahir));
@@ -92,8 +92,8 @@ class ISTDataController {
         });
 
         success_response(res, new_data.toJSON(), "Create Successful!");
-      // }
-    // );
+      }
+    );
   }
 
   async update(req, res) {
