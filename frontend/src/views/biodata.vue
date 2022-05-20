@@ -9,7 +9,7 @@
         </div>
         
         <div class="mb-5">
-            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md" @click="this.$router.go(-1)">
+            <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md" @click="kembali">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
                 <span class="font-bold text-xl">Kembali</span>
             </button>
@@ -826,6 +826,10 @@ export default {
         }
     },
     methods: {
+        kembali(){
+            this.$cookies.remove('current_test')
+            this.$router.go(-1) 
+        },
         signChange(e){
             var input = e.target;
             if (input.files) {

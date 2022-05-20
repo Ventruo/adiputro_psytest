@@ -9,14 +9,14 @@
                 </select>
             </div>
 
-            <h1 class="font-bold text-4xl mt-5">Seksi</h1>
+            <h1 class="font-bold text-4xl mt-5">Persoalan</h1>
 
             <div class="flex justify-end">
                 <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                 duration-200 rounded-md px-10 py-2 mt-2 h-auto w-auto shadow-xl" 
                     id="btnCreateSection" @click="openModalCreate">
                     <i class="fa fa-feather fa-lg mr-2"></i>   
-                    <span>Buat Seksi Baru</span>
+                    <span>Buat Persoalan Baru</span>
                 </button>
             </div>
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
@@ -369,7 +369,7 @@ export default {
             this.section_number = data.section_number
             this.section_id = data.id
             this.statusAdd = false
-            this.headerModal = "Perbarui Seksi";
+            this.headerModal = "Perbarui Persoalan";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
@@ -383,7 +383,7 @@ export default {
             // this.section_id = null
             this.section_number = this.sectionList[this.sectionList.length-1].section_number + 1
             this.statusAdd = true
-            this.headerModal = "Buat Seksi Baru";
+            this.headerModal = "Buat Persoalan Baru";
             $('#modalSection').fadeIn("slow");
             $('#bg').fadeIn("slow");
         },
@@ -530,7 +530,7 @@ export default {
                                 this.sectionList = data,
                                 Swal.fire(
                                     'Created!',
-                                    'Seksi Baru Berhasil Dibuat!',
+                                    'Persoalan Baru Berhasil Dibuat!',
                                     'success'
                                 )
                                 .then(function(){
@@ -570,7 +570,7 @@ export default {
                             this.sectionList = data,
                             Swal.fire(
                                 'Updated!',
-                                'Seksi Berhasil Diperbarui!',
+                                'Persoalan Berhasil Diperbarui!',
                                 'success'
                             )
                             .then(function(){

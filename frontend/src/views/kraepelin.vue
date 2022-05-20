@@ -82,7 +82,8 @@
             <div class="flex justify-between text-lg font-bold mb-2 relative z-10">
                 <p>Sisa Waktu : {{('00'+detik).slice(-2)}} Detik</p>
                 
-                <p class="text-center py-1">Kolom {{kolom>jumKolom ? jumKolom : kolom}}/{{jumKolom}}</p> 
+                <!-- <p class="text-center py-1">Kolom {{kolom>jumKolom ? jumKolom : kolom}}/{{jumKolom}}</p>  -->
+                <p class="text-center py-1">{{kolom>jumKolom ? jumKolom : kolom}}</p> 
             </div>
 
             <div class="bg-foreground-4-100 py-10 rounded-lg">

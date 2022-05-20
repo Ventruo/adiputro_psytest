@@ -2,6 +2,10 @@
     <div>
         <div class="absolute top-20 w-full flex justify-center" style="height: 30rem;">
             <div class="w-5/6 h-full">
+                <p class="font-bold text-xl mt-2">Cari Sesi : </p>
+                <input type="text" name="token" id="userToken" class="w-1/2 ml-0.5 mb-3 bg-white ring-1 inset ring-stroke-100 
+                            placeholder-stroke mt-1 px-3 py-1.5 rounded-md outline-none" placeholder="Cari sesi disini..."
+                            @keyup="cari" v-model="pencarian">
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200
                                     duration-200 rounded-md px-10 py-2 mt-5 h-auto w-auto shadow-xl"
@@ -125,9 +129,18 @@
                 <div class="flex gap-2 mt-2 w-full">
                     <p class="w-2/12">Daftar Tes :</p>
                     <div class="w-9/12">
-                        <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="i in tests" :key="i">
-                            <span>{{i.name}}</span>
-                            <i v-if="this.statusAdd || (!this.statusAdd && !this.current_test_list.includes(i))" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusTest(`${i.id}`)"></i>
+                        <div class="bg-primary-600 py-1 px-3 rounded-full inline-block ml-2 mb-2" v-for="(i, idx) in tests" :key="idx">
+                            <div class="flex items-center">
+                                <span>{{i.name}}</span>
+                                <label :for="'toggle'+idx" class="cursor-pointer ml-2 inline-block" v-if="!this.statusAdd && idx<this.test_result.length">
+                                    <span class="relative">
+                                        <input type="checkbox" :id="'toggle'+idx" class="sr-only" v-model="this.test_result[idx].status">
+                                        <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+                                        <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                                    </span>
+                                </label>
+                                <i v-if="this.statusAdd || (!this.statusAdd && !this.current_test_list.includes(i))" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusTest(`${i.id}`)"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,10 +177,12 @@ export default {
         return {
             headerModal: "Buat Sesi Baru",
             exam_session: null,
+            exam_session_full: null,
             port: import.meta.env.VITE_BACKEND_URL,
             emails: [],
             tests: [],
             opsional: [],
+            test_result: [],
             start: null,
             finish: null,
             isiEmail: "",
@@ -177,7 +192,8 @@ export default {
             list_tes: null,
             selectedOptional: -1,
             current_test_list: null,
-            current_exam_session: null
+            current_exam_session: null,
+            pencarian: "",
         }
     },
     created() {
@@ -191,6 +207,14 @@ export default {
             const time = ('00'+waktu.getHours()).slice(-2) + ":" + ('00'+waktu.getMinutes()).slice(-2)
             const dateTime = date + ' ' + time
             return dateTime
+        },
+        cari(){
+            let temp = []
+            this.exam_session_full.forEach(s => {
+                if (s.email.includes(this.pencarian))
+                    temp.push(s)
+            });
+            this.exam_session = temp
         },
         // getToken(length) {
         //     var token = '';
@@ -212,6 +236,7 @@ export default {
             $('#bg').fadeIn("slow");
         },
         async openModal(data2){
+            this.test_result = []
             this.current_test_list = []
             this.tests = []
             await axios
@@ -241,6 +266,23 @@ export default {
                 }
             })
 
+            await axios
+            .get(`${this.port}/test_result/getbyemail/${data2.email}`)
+            .then(({data}) => {
+                if(data!=undefined){
+                    for (let i = 0; i < this.current_test_list.length; i++) {
+                        for (let j = 0; j < data.length; j++) {
+                            if (this.current_test_list[i].id == data[j].test_id){
+                                let t = data[i]
+                                t.status = t.status==1?true:false
+                                this.test_result.push(t)
+                                break;
+                            }
+                        }
+                    }
+                }
+            })
+
             this.current_exam_session = data2.id
             this.statusAdd = false
             this.emails = [data2.email]
@@ -251,6 +293,9 @@ export default {
             this.headerModal = "Perbarui Sesi";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
+
+            console.log(this.test_result)
+            console.log(this.current_test_list)
         },
         tambahEmail(){
             if(this.isiEmail!='' && !this.emails.includes(this.isiEmail) && this.emailFormatCheck(this.isiEmail)){
@@ -318,8 +363,9 @@ export default {
                         break;
                     }
                 }
-                if (idx!==-1)
+                if (idx!==-1){
                     this.tests.push(this.opsional[idx]);
+                }
             }
         },
         emailFormatCheck(email){
@@ -330,7 +376,7 @@ export default {
             else
                 return true
         },
-        createSession(){
+        async createSession(){
             if(this.emails.length==0 || this.tests.length==0 ||this.start==null||this.finish==null)
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
@@ -409,8 +455,26 @@ export default {
                             "duration": duration,
                             "status": this.aktif?2:1
                         })
-                        .then((response) => {
+                        .then(async (response) => {
                             if (response.status==200){
+                                for (let i = 0; i < this.test_result.length; i++) {
+                                    const tr = this.test_result[i];
+                                    await axios.post(this.port+'/test_result/update',{
+                                        "updating_id": tr.id,
+                                        "test_id": tr.test_id,
+                                        "exam_session": tr.exam_session,
+                                        "start_date": tr.start_date,
+                                        "finish_date": tr.finish_date,
+                                        "status": tr.status==true?2:1,
+                                        "result": tr.result
+                                    })
+                                    .then((response) => {
+
+                                    }).catch( error => { 
+                                        console.log('error: ' + error) 
+                                    })
+                                }
+
                                 axios
                                 .get(this.port+'/exam_session/all')
                                 .then(({data}) => (
@@ -451,6 +515,7 @@ export default {
                     valid_session.push(data[i])
             }
             this.exam_session = valid_session
+            this.exam_session_full = valid_session
         }
 
     },
