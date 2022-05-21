@@ -19,28 +19,15 @@
             </div>
         </div>
     </div>
-    
     <div class="px-2 py-1">
-        <div class="flex mt-2">
+        <div class="flex justify-between items-center relative" :class="{'bottom-2': print==='yes'}">
+            <h1 class="font-bold">Hasil Tes IST</h1>
             <div class="flex">
                 <div class="font-bold text-sm">
-                    <p>Nama</p>
-                    <p>Jenis Kelamin (L/P)</p>
-                </div>
-                <div class="ml-2 text-sm">
-                    <p>: {{this.nama}}</p>
-                    <p>: L</p>
-                </div>
-            </div>
-            
-            <div class="flex ml-3">
-                <div class="font-bold text-sm">
-                    <p>Pendidikan</p>
-                    <p>Kode</p>
+                    <p>E-Mail :</p>
                 </div>
                 <div class="ml-3 text-sm">
-                    <p>: S1</p>
-                    <p>: 1</p>
+                    <p>{{this.email}}</p>
                 </div>
             </div>
         </div>
@@ -55,8 +42,10 @@
 export default {
     props: {
         "data": { type: Object, default: [], required: true },
+        // "nama": { type: String, default: "", required: true },
         "id": { type: String, required: true },
-        "nama": { type: String, default: '', required: true },
+        "email": { type: String, default: "", required: true },
+        // "biodata": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
     },
     data() {
@@ -76,19 +65,24 @@ export default {
         }
     },
     mounted() {
-        var temp = Object.entries(this.data)
-        var data = []
-        for (let i = 0; i < 15; i++) {
-            data.push(temp[i][1].Percentile)
-        }
+        let temp = []
+        temp.push(this.data.SE.SW)
+        temp.push(this.data.WA.SW)
+        temp.push(this.data.AN.SW)
+        temp.push(this.data.GE.SW)
+        temp.push(this.data.ME.SW)
+        temp.push(this.data.RA.SW)
+        temp.push(this.data.ZR.SW)
+        temp.push(this.data.FA.SW)
+        temp.push(this.data.WU.SW)
 
-        this.dataGrafik = data
+        this.dataGrafik = temp
         const ctx = $('#'+this.id)
         const percentileChart = new Chart(ctx, {
             plugins: [this.plugin],
             type: 'line',
             data: {
-                labels: ['ach', 'def', 'ord', 'exh', 'aut', 'aff','int','suc','dom','aba','nur','chg','end','het','agg'],
+                labels: ["SE","WA","AN","GE","ME","RA","ZR","FA","WU"],
                 datasets: [{
                     label: 'Grafik Precentile',
                     data: this.dataGrafik,
@@ -113,8 +107,8 @@ export default {
                     },
                     yAxes: {
                         beginAtZero: true,
-                        min: 0,
-                        max: 100,
+                        min: 70,
+                        max: 160,
                         ticks:{
                         stepSize: 5,
                         color: 'black'
@@ -128,7 +122,7 @@ export default {
                     },
                     title: {
                         display: true,
-                        text: 'Grafik Percentile',
+                        text: 'Grafik IST',
                         color: "black",
                         font: {
                             size: 20

@@ -2,8 +2,10 @@
     <div class="w-full h-full flex text-white">
         <div id="sidebar" class="hidden md:block absolute md:static w-7/12 md:w-3/12 min-h-screen bg-foreground-4-200 rounded-r-3xl z-10">
             <div v-show="this.showInside" class="min-h-screen pt-4 pb-5 px-5 flex flex-col">
-                <div class="text-center my-5">
-                    <img src="../assets/logo.png" alt="" class="w-32 inline-block">
+                <div class="flex justify-center">
+                    <div class="text-center my-3 py-2 w-full bg-background-400 rounded-full">
+                        <img src="../assets/logo.png" alt="" class="w-32 inline-block">
+                    </div>
                 </div>
                 <div>
                     <p class="md:text-lg font-bold">Waktu Lokal : </p>

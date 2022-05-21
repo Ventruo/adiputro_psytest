@@ -6,11 +6,14 @@
         </div>
     </div>
     <div class="z-10">
-        <div class="w-11/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden
+        <div class="w-11/12 h-full m-auto text-white relative mt-0 flex flex-col flex-grow pb-3 overflow-hidden
                     md:w-9/12">
             <div class="flex justify-between mb-7">
-                <h1 class="text-white text-3xl text-center font-bold mt-2">Rekrutmen</h1>
-                <div class="flex justify-center">
+                <h1 class="text-white text-3xl text-center font-bold mt-5">Rekrutmen</h1>
+                <!-- <div class="flex justify-center">
+                    <img src="../assets/logo.png" alt="" class="w-20">
+                </div> -->
+                <div class="text-center bg-background-400 rounded-full flex justify-center py-2 px-3 mt-1">
                     <img src="../assets/logo.png" alt="" class="w-20">
                 </div>
             </div>

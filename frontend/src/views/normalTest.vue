@@ -1,8 +1,11 @@
 <template>
-    <div class="h-full w-9/12 m-auto relative mt-3 text-black">
-        <div class="flex justify-between mb-7">
-            <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaSection}}</h1>
-            <div class="flex justify-center">
+    <div class="h-full w-9/12 m-auto relative mt-0 text-black">
+        <div class="flex justify-between mb-5">
+            <h1 class="text-white text-3xl text-center font-bold mt-5">{{namaSection}}</h1>
+            <!-- <div class="flex justify-center">
+                <img src="../assets/logo.png" alt="" class="w-20">
+            </div> -->
+            <div class="text-center bg-background-400 rounded-full flex justify-center py-2 px-3 mt-1">
                 <img src="../assets/logo.png" alt="" class="w-20">
             </div>
         </div>

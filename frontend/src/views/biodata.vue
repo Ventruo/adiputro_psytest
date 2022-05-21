@@ -1,14 +1,14 @@
 <template>
-    <div class="w-11/12 h-full m-auto text-white relative mt-3 flex flex-col flex-grow pb-3 overflow-hidden
+    <div class="w-11/12 h-full m-auto text-white relative flex flex-col flex-grow pb-3 overflow-hidden
                 md:w-9/12">
         <div class="flex justify-between mb-7">
-            <h1 class="text-white text-3xl text-center font-bold mt-2">Biodata</h1>
-            <div class="flex justify-center">
+            <h1 class="text-white text-3xl text-center font-bold mt-5">Biodata</h1>
+            <div class="text-center bg-background-400 rounded-full flex justify-center py-2 px-3 mt-1">
                 <img src="../assets/logo.png" alt="" class="w-20">
             </div>
         </div>
         
-        <div class="mb-5">
+        <div class="mb-5 mt-3">
             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md" @click="kembali">
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
                 <span class="font-bold text-xl">Kembali</span>

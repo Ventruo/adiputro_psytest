@@ -1,6 +1,9 @@
 <template>
     <div class="flex items-center w-full bg-foreground-4-100 px-4 py-2">
-        <img src="../../assets/logo.png" alt="" class="w-14 h-10">
+        <!-- <img src="../../assets/logo.png" alt="" class="w-14 h-10"> -->
+        <div class="text-center bg-background-400 rounded-xl flex items-center px-1 h-12">
+            <img src="../../assets/logo.png" alt="" class="w-14 h-10">
+        </div>
         <div class="text-white text-center w-full relative bottom-2" v-if="print==='yes'">
             <p class="font-bold text-sm">PT. Adiputro Wirasejati</p>
             <div class="text-xs">
@@ -70,22 +73,45 @@
                 </div>
             </div>
 
-            <!-- <div class="flex justify-center" v-if="print==='yes'">
-                <table class="table-fixed border-collapse border-y-[1px] border-l-[1px] border-black w-1/2">
-                    <thead class="bg-primary-900 text-white">
-                        <tr>
-                            <th class="font-bold w-1/3"><span class="relative bottom-2">Benar</span></th>
-                            <th class="font-bold w-1/3"><span class="relative bottom-2">Norma</span></th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y-[1px] divide-black">
-                        <tr class="text-center" v-for="(i, idx) in arrTabel" :key="idx">
-                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel[idx].num_correct}}</span></td>
-                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel[idx].norma}}</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
+            <div v-if="print==='yes'">
+                <div class="flex justify-center">
+                    <table class="table-fixed border-y-[1px] border-l-[1px] border-black w-full">
+                        <thead class="bg-primary-900 text-white">
+                            <tr>
+                                <th class="font-bold w-1/4"><span class="relative bottom-2">Aspek</span></th>
+                                <th class="font-bold w-1/4"><span class="relative bottom-2">RW</span></th>
+                                <th class="font-bold w-1/4"><span class="relative bottom-2">SW</span></th>
+                                <th class="font-bold w-1/4"><span class="relative bottom-2">Kategori</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y-[1px] divide-black">
+                            <tr class="text-center" v-for="(i, idx) in arrTabel" :key="idx">
+                                <td class="border-black border-r-[0.5px] text-xs p-0"><span class="relative bottom-2">{{this.aspek[idx]}}</span></td>
+                                <td class="border-black border-r-[0.5px] text-xs p-0"><span class="relative bottom-2">{{i.RW}}</span></td>
+                                <td class="border-black border-r-[0.5px] text-xs p-0"><span class="relative bottom-2">{{i.SW}}</span></td>
+                                <td class="border-black border-r-[0.5px] text-xs p-0"><span class="relative bottom-2">{{i.kategori}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex gap-2 justify-end mt-3">
+                    <div class="font-bold">
+                        <p>Jumlah RW</p>
+                        <p>Jumlah SW</p>
+                        <p>IQ</p>
+                        <p>Dominasi</p>
+                    </div>
+                    <div class="font-bold">
+                        <p v-for="i in 4" :key="i">:</p>
+                    </div>
+                    <div>
+                        <p>{{this.data.jumlah_RW}}</p>
+                        <p>{{this.data.jumlah_SW}}</p>
+                        <p>{{this.data.IQ.IQ}} <span class="font-bold italic">({{this.data.IQ.kategori}})</span></p>
+                        <p>{{this.data.dominasi}}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

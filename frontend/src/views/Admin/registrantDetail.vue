@@ -201,14 +201,15 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div v-if="idTes==2 || idTes==5" class="w-1/2 h-[48rem] inline-block">
+                        <div v-if="idTes==2 || idTes==5 || idTes==17" class="w-1/2 h-[48rem] inline-block">
                             <div class="w-full h-full flex flex-col bg-white text-black">
                                 <EppsGraphics v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :id="'pChart'" :print="'no'"/>
                                 <div v-if="biodata!=null && idTes==5" class="flex flex-col h-full">
                                     <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChartKraepelin'" :print="'no'"/>
                                 </div>
+                                <ISTGraphic v-if="idTes==17" :data="this.dataRegistrant" :email="this.email" :id="'pChartIst'" :print="'no'"/>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div v-else class="w-10 h-96"></div>
                     <div class="absolute" v-if="fullLoaded==1">
@@ -239,18 +240,21 @@
                                 <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(report.test_id))" :data="dataTesKecil" :nama="this.nama" :print="'yes'"/>
                                 <Adkudak v-if="report.test_id==10" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <!-- IST  -->
+                                <IST v-if="report.test_id==17" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <PapiKostick v-if="report.test_id==18" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <Gambar v-if="report.test_id==20" :data="getImg(JSON.parse(report.result)[0].gambar[0])" :nama="this.nama" :email="this.email" :judul="'Orang'"/>
                                 <Hafalan v-if="report.test_id==21" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             </div>
-                            <div v-if="(report.test_id==2 || report.test_id==5 || report.test_id==20) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <div v-if="(report.test_id==2 || report.test_id==5 || report.test_id==17 || report.test_id==20) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <div class="a flex flex-col h-full" v-if="report.test_id==2">
                                     <EppsGraphics :data="JSON.parse(report.result)" :nama="this.nama" :id="'printChart'" :print="'yes'"/>
                                 </div>
                                 <div v-if="biodata!=null && report.test_id==5">
                                     <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartKraepelin'" :print="'yes'"/>
+                                </div>
+                                <div v-if="report.test_id==17">
+                                    <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :email="this.email" :id="'printChartIST'" :print="'yes'"/>
                                 </div>
                                 <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[1]!==undefined" class="w-full">
                                     <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[1])" :nama="this.nama" :email="this.email" :judul="'Pohon'"/>
@@ -306,6 +310,7 @@ import TintumAnak from "../../components/report/TintumAnak.vue"
 import PapiKostick from "../../components/report/PapiKostick.vue"
 
 import IST from "../../components/report/IST.vue"
+import ISTGraphic from "../../components/report/ISTGraphic.vue"
 
 import Hafalan from "../../components/report/Hafalan.vue"
 
@@ -318,7 +323,7 @@ import Biodata3 from "../../components/report/Biodata/Biodata3.vue"
 export default {
     components: { 
         axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, Adkudak, TintumAnak, PapiKostick, Hafalan, Gambar,
-        Biodata, Biodata2, Biodata3, IST
+        Biodata, Biodata2, Biodata3, IST, ISTGraphic
     },
     data () {
         return {

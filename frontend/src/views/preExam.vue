@@ -1,7 +1,12 @@
 <template>
     <div class="h-screen w-9/12 m-auto relative z-10">
-        <div class="flex justify-center mt-3">
+        <!-- <div class="flex justify-center mt-3">
             <img src="../assets/logo.png" alt="" class="w-20 mb-5">
+        </div> -->
+        <div class="mb-3 flex justify-center">
+            <div class="text-center bg-background-400 rounded-full flex justify-center py-2 px-3 mt-1 w-32">
+                <img src="../assets/logo.png" alt="" class="w-20">
+            </div>
         </div>
         <div>
             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md" @click="this.$router.go(-1)">
