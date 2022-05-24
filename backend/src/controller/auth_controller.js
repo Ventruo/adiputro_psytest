@@ -46,14 +46,21 @@ class AuthController {
       return;
     }
 
-    ExamSession.findOne({ where: { email: req.body.email } }).then(
+    ExamSession.findAll({ where: { email: req.body.email } }).then(
       (session) => {
         if (!session) {
           return res.status(401).send("Email atau Token Tidak Sesuai");
         }
 
-        if (session.test_token != req.body.test_token)
+        let selected_session = "";
+        for(let i = 0; i < session.length; i++){
+          if(session[i].test_token == req.body.test_token)
+            selected_session = session[i];
+        }
+        if (selected_session == "")
           return res.status(401).send("Email atau Token Tidak Sesuai");
+
+        session = selected_session
 
         // Check Is Still in Session
         let date_now = new Date();
