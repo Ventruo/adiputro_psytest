@@ -1,4 +1,4 @@
-const { mailer } = require("../setup/mailer");
+const { createMailer } = require("../setup/mailer");
 
 async function sendEmail({ recepients, subject, text = "", html = "" } = {}) {
   console.log(recepients);
@@ -28,6 +28,7 @@ async function sendEmail({ recepients, subject, text = "", html = "" } = {}) {
   if (html != "") config.html = html;
 
   // Send Email
+  let mailer = await createMailer();
   let info = await mailer.sendMail(config);
 
   console.log("Message sent: %s", info.messageId);
