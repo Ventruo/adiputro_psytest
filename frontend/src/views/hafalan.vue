@@ -1,11 +1,19 @@
 <template>
-    <div class="h-full w-full md:w-9/12 m-auto relative mt-3 text-black">
+    <!-- <div class="h-full w-full md:w-9/12 m-auto relative mt-3 text-black">
         <div class="flex justify-between mb-7">
             <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaSection}}</h1>
             <div class="flex justify-center">
                 <img src="../assets/logo.png" alt="" class="w-20">
             </div>
+        </div> -->
+    <div class="h-full w-full md:w-9/12 m-auto relative mt-0 text-black">
+        <div class="flex justify-between mb-5">
+            <h1 class="text-white text-3xl text-center font-bold mt-5">{{namaSection}}</h1>
+            <div class="text-center bg-background-400 rounded-full flex justify-center py-2 px-3 mt-1">
+                <img src="../assets/logo.png" alt="" class="w-20">
+            </div>
         </div>
+
         <div v-show="state>0 && state<4" class="mb-2">
             <div class="mt-5 font-semibold md:text-lg flex gap-1 mx-1">
                 <div class="w-1/5 ring-2 ring-inset ring-black p-2 rounded-md" v-for="p in pedoman" :key="p">
@@ -156,7 +164,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes 1',
+            namaSection: 'Tes H',
             jenis: '',
             noSoal: 1,
             jumSoal: 0,

@@ -16,8 +16,7 @@
                 <div class="bg-foreground-4-100 h-56 w-56 md:w-full rounded-full p-5 flex justify-center items-center
                     md:h-full md:rounded-none">
                     <div class="text-center">
-                    <img src="../assets/logo2.png" alt="" class="h-56 md:h-44 lg:h-56 xl:64 inline-block">
-                    <!-- <img src="../assets/psychotest.png" alt=""> -->
+                        <img src="../assets/logo2.png" alt="" class="h-56 md:h-44 lg:h-56 xl:64 inline-block">
                     </div>
                 </div>
             </div>

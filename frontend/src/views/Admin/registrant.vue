@@ -3,7 +3,8 @@
         <div class="w-5/6 h-full">
             <p class="font-bold text-xl">Cari Nama Registrant : </p>
             <input type="text" name="token" id="userToken" class="w-1/2 ml-0.5 mb-3 bg-white ring-1 inset ring-stroke-100 
-                        placeholder-stroke mt-1 px-3 py-1.5 rounded-md outline-none" placeholder="Cari registrant disini...">
+                        placeholder-stroke mt-1 px-3 py-1.5 rounded-md outline-none" placeholder="Cari registrant disini..."
+                        @keyup="cari" v-model="pencarian">
             <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                 <table class="table-fixed w-full font-semibold">
                     <thead class="bg-foreground-4-100 text-white sticky top-0">
@@ -31,11 +32,11 @@
                                     <i class="fa fa-info-circle mr-2"></i>
                                     <span>Info</span>
                                 </button>
-                                <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-1/3 py-1" 
+                                <!-- <button class="bg-foreground-4-100 hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-1/3 py-1" 
                                     @click="this.$router.push({path: '/'})"> 
                                     <i class="fa fa-trash-alt mr-2"></i>
                                     <span>Hapus</span>
-                                </button>
+                                </button> -->
                             </td>
                         </tr>
                     </tbody>
@@ -59,12 +60,21 @@ export default {
     },
     data() {
         return {
+            pencarian: "",
             registrantList: null,
+            registrantAll: null,
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
     methods: {
-
+        cari(){
+            let temp = []
+            this.registrantAll.forEach(r => {
+                if (r.email.includes(this.pencarian))
+                    temp.push(r)
+            });
+            this.registrantList = temp
+        }
     },
     created() {
         this.$emit('updateHeader', 'Registrant')
@@ -74,6 +84,7 @@ export default {
         axios
         .get(this.port+'/registrant/all')
         .then(({data}) => (
+            this.registrantAll = data,
             this.registrantList = data
         ))
         

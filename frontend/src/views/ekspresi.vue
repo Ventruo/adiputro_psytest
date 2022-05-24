@@ -1,8 +1,15 @@
 <template>
-    <div class="h-full w-9/12 m-auto relative mt-3 overflow-hidden">
+    <!-- <div class="h-full w-9/12 m-auto relative mt-3 overflow-hidden">
         <div class="flex justify-between mb-7">
             <h1 class="text-white text-3xl text-center font-bold mt-2">{{namaTes}}</h1>
             <div class="flex justify-center">
+                <img src="../assets/logo.png" alt="" class="w-20">
+            </div>
+        </div> -->
+    <div class="h-full w-9/12 m-auto relative mt-0 text-black overflow-hidden">
+        <div class="flex justify-between mb-5">
+            <h1 class="text-white text-3xl text-center font-bold mt-5">{{namaTes}}</h1>
+            <div class="text-center bg-background-400 rounded-full flex justify-center py-2 px-3 mt-1">
                 <img src="../assets/logo.png" alt="" class="w-20">
             </div>
         </div>
@@ -48,13 +55,13 @@
 
             <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-stroke-100
                         p-3 my-5 flex justify-center items-center text-lg text-white font-bold md:text-xl">
-                Pilih X sebelum memilih pernyataan yang paling jelek, Pilih O sebelum memilih pernyataan yang paling baik.
+                Klik lah tanda O dan pilihlah pernyataan mana yang baik. Klik lah tanda X dan pilihlah pernyataan yang jelek. Jadi nanti di tiap nomer akan ada 2 jawaban, yaitu satu lingkaran dan satu silang.
             </div>
 
             <div id="soal" class="" v-if="pertanyaan!=null">
             <!-- <div id="soal" class=""> -->
                 <!-- <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" /> -->
-                <TextQuestion :question="'Halo'" :jenis="'ekspresi'"/>
+                <TextQuestion :question="'Ini Soal'" :jenis="'ekspresi'"/>
                 <div class="w-full text-center mt-5 py-2">
                     <div class="inline-block w-full">
                         <div class="w-full mb-2" v-if="this.aksi=='x'">
@@ -113,8 +120,8 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes Ekspresi',
-            judulHalaman: 'EPPS',
+            namaTes: 'Tes E',
+            judulHalaman: '',
             noSoal: 1,
             jumSoal: 19,
             durasi: 0,

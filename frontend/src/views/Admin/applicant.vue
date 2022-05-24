@@ -45,7 +45,7 @@
                 <div class="flex mb-5">
                     <div class="w-6/12">
                         <p class="font-bold">PENDIDIKAN TERAKHIR</p>
-                        <div class="w-6/12 flex gap-9 mb-5">
+                        <div class="w-full flex gap-9 mb-5">
                             <div class="font-bold">
                                 <p class="mt-2">GELAR</p>
                                 <p class="mt-2">JURUSAN</p>
@@ -108,7 +108,7 @@ export default {
         ))
     },
     created(){
-        this.$emit('updateHeader', 'Applicant Details')
+        this.$emit('updateHeader', 'Detail Pelamar')
     }
 }
 </script>

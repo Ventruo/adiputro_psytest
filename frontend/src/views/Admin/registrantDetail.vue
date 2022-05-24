@@ -161,10 +161,10 @@
                                     <i class="fa fa-download mr-2"></i>
                                     <span>Unduh PDF</span>
                                     </button>
-                    <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 shadow-xl">
+                    <!-- <button class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md text-md px-10 py-2 shadow-xl">
                                     <i class="fa fa-download mr-2"></i>
                                     <span>Unduh Excel</span>
-                                    </button>
+                                    </button> -->
                 </div>
             </div>
 
@@ -173,8 +173,14 @@
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
                 <div class="w-full h-full">
                     <div v-if="loaded==1">
-                        <div class="w-1/2 h-[48rem] inline-block">
-                            <div class="w-full h-full flex flex-col bg-white text-black relative">
+                        <div class="h-[48rem] inline-block"
+                            :class="{
+                                'w-1/2': idTes!=20
+                            }">
+                            <div class="w-full h-full flex flex-col text-black relative"
+                                :class="{
+                                    'bg-white': idTes!=20
+                                }">
                                 <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                                 <Epps v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                                 <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
@@ -182,27 +188,46 @@
                                 <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(idTes))" :data="dataTesKecil" :nama="this.nama" :print="'no'"/>
                                 <Adkudak v-if="idTes==10" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <TintumAnak v-if="idTes==16" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <!-- IST  -->
+                                <IST v-if="idTes==17" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <PapiKostick v-if="idTes==18" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <Hafalan v-if="idTes==21" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
                                 <div v-if="biodata!=null" class="flex flex-col h-full">
                                     <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
                                 </div>
+                                <div v-if="idTes==20" class="w-full">
+                                    <div v-for="i in this.dataRegistrant[0].gambar.length" :key="i" class="mb-2 mr-2 inline-block" style="width: 49%">
+                                        <img :src="getImg(this.dataRegistrant[0].gambar[i-1])" alt="" class="w-full">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div v-if="idTes==2 || idTes==5" class="w-1/2 h-[48rem] inline-block">
+                        <div v-if="idTes==2 || idTes==5 || idTes==17" class="w-1/2 h-[48rem] inline-block">
                             <div class="w-full h-full flex flex-col bg-white text-black">
                                 <EppsGraphics v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :id="'pChart'" :print="'no'"/>
                                 <div v-if="biodata!=null && idTes==5" class="flex flex-col h-full">
                                     <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChartKraepelin'" :print="'no'"/>
                                 </div>
+                                <ISTGraphic v-if="idTes==17" :data="this.dataRegistrant" :email="this.email" :id="'pChartIst'" :print="'no'"/>
                             </div>
                         </div>
                     </div>
                     <div v-else class="w-10 h-96"></div>
                     <div class="absolute" v-if="fullLoaded==1">
+                        <div v-if="Object.keys(this.registrantBio).length > 0" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                            <Biodata :data="this.registrantBio"/>
+                        </div>
+                        
+                        <div v-if="Object.keys(this.registrantBio).length > 0" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                            <Biodata2 :data="this.registrantBio"/>
+                        </div>
+
+                        <div v-if="Object.keys(this.registrantBio).length > 0" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                            <Biodata3 :data="this.registrantBio"/>
+                        </div>
                         <div v-for="report in dataFull" :key="report" class="">
-                            <!-- <p>{{dataFull}}</p> -->
                             <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <Tintum v-if="report.test_id==1" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
@@ -215,11 +240,12 @@
                                 <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(report.test_id))" :data="dataTesKecil" :nama="this.nama" :print="'yes'"/>
                                 <Adkudak v-if="report.test_id==10" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <!-- IST  -->
+                                <IST v-if="report.test_id==17" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                                 <PapiKostick v-if="report.test_id==18" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <Gambar v-if="report.test_id==20" :data="getImg(JSON.parse(report.result)[0].gambar[0])" :nama="this.nama" :email="this.email" :judul="'Orang'"/>
                                 <Hafalan v-if="report.test_id==21" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
                             </div>
-                            <div v-if="(report.test_id==2 || report.test_id==5) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <div v-if="(report.test_id==2 || report.test_id==5 || report.test_id==17 || report.test_id==20) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <div class="a flex flex-col h-full" v-if="report.test_id==2">
                                     <EppsGraphics :data="JSON.parse(report.result)" :nama="this.nama" :id="'printChart'" :print="'yes'"/>
@@ -227,6 +253,20 @@
                                 <div v-if="biodata!=null && report.test_id==5">
                                     <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartKraepelin'" :print="'yes'"/>
                                 </div>
+                                <div v-if="report.test_id==17">
+                                    <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :email="this.email" :id="'printChartIST'" :print="'yes'"/>
+                                </div>
+                                <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[1]!==undefined" class="w-full">
+                                    <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[1])" :nama="this.nama" :email="this.email" :judul="'Pohon'"/>
+                                </div>
+                            </div>
+                            <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[2]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                                style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[2])" :nama="this.nama" :email="this.email" :judul="'Rumah, Orang, dan Pohon'"/>
+                            </div>
+                            <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[3]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                                style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
+                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[3])" :nama="this.nama" :email="this.email" :judul="'Wartegg'"/>
                             </div>
                         </div>
                     </div>
@@ -269,11 +309,21 @@ import TintumAnak from "../../components/report/TintumAnak.vue"
 
 import PapiKostick from "../../components/report/PapiKostick.vue"
 
+import IST from "../../components/report/IST.vue"
+import ISTGraphic from "../../components/report/ISTGraphic.vue"
+
 import Hafalan from "../../components/report/Hafalan.vue"
+
+import Gambar from "../../components/report/Gambar.vue"
+
+import Biodata from "../../components/report/Biodata/Biodata.vue"
+import Biodata2 from "../../components/report/Biodata/Biodata2.vue"
+import Biodata3 from "../../components/report/Biodata/Biodata3.vue"
 
 export default {
     components: { 
-        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, Adkudak, TintumAnak, PapiKostick, Hafalan
+        axios, Radio, Tintum, Epps, EppsGraphics, Kecil, Kraepelin, KraepelinGraphics, SDI, MMPI, Adkudak, TintumAnak, PapiKostick, Hafalan, Gambar,
+        Biodata, Biodata2, Biodata3, IST, ISTGraphic
     },
     data () {
         return {
@@ -299,6 +349,7 @@ export default {
             selectedTes: 1,
             nama: "Widean",
             routerBiodata: "",
+            registrantBio: {},
         }
     },
     methods:{
@@ -308,6 +359,11 @@ export default {
             const time = ('00'+waktu.getHours()).slice(-2) + ":" + ('00'+waktu.getMinutes()).slice(-2)
             const dateTime = date + ' ' + time
             return dateTime
+        },
+        getImg(data){
+            let id = data.split("d/")
+            id = id[1].split("/")
+            return "https://drive.google.com/uc?export=view&id="+id[0]
         },
         isKraepelin(){
             this.sectionList[0].question_num = 1350
@@ -441,9 +497,10 @@ export default {
                 })
             ))
         },
-        makePDF(jenis){
+        async makePDF(jenis){
             this.prints = true
-            this.$nextTick(() => {
+            $('#spinner-modal').fadeIn("slow");
+            this.$nextTick(async () => {
                 window.html2canvas = html2canvas;
                 let email = this.email
                 let this2 = this
@@ -455,13 +512,15 @@ export default {
                 let ctr = 0
                 let temp = document.querySelectorAll('.printPdf')
                 let fullReport = []
-                for (let i = 0; i < this.dataFull.length; i++) {
-                    if(this.dataFull[i].result!=""){
+                for (let i = 0; i < temp.length; i++) {
+                    // if(this.dataFull[i].result!=""){
                         fullReport.push(temp[i])
-                    }   
+                    // }   
                 }
-                fullReport.forEach(report => {
-                    html2canvas(report,{"scale": 2}).then(canvas => {
+                
+                for (let i = 0; i < fullReport.length; i++) {
+                    const report = fullReport[i];
+                    await html2canvas(report,{"scale": 2}).then(canvas => {
                         var imgHeight = canvas.height * imgWidth / canvas.width;
                         var heightLeft = imgHeight;
                         var imgData = canvas.toDataURL('image/jpeg');
@@ -485,8 +544,11 @@ export default {
                         }
                         
                         ctr++
+                        console.log("ctr : "+ctr+" full: "+fullReport.length)
                         if(ctr == fullReport.length){
                             doc.deletePage(doc.internal.getNumberOfPages())
+                            
+                            $('#spinner-modal').fadeOut("slow");
                             if(jenis=='print')
                                 window.open(doc.output('bloburl'), '_blank');
                             else if(jenis=='download'){
@@ -494,7 +556,10 @@ export default {
                             }
                         }
                     })
-                });
+                }
+                // fullReport.forEach(report => {
+                    
+                // });
 
                 this2.prints = false;
 
@@ -625,50 +690,11 @@ export default {
             this.testResult = data,
             this.dataInit()
         ))
-
-        // axios
-        // .get(this.port+'/exam_session/getbyemail/'+this.email)
-        // .then(({data}) => (
-        //     this.exam_session = data.id,
-            // axios
-            // .get('http://127.0.0.1:8888/api/test_result/'+this.exam_session)
-            // .then(({data}) => (
-            //     this.dataRegistrant = JSON.parse(data.result),
-            //     this.loaded = 1,
-            //     console.log(data)
-            // ))
-            
-            // axios
-            // .get(this.port+'/test_result/61')
-            // .then(({data}) => (
-            //     this.dataRegistrant["ruang_bidang"] = JSON.parse(data.result),
-            //     this.loaded = this.loaded+1
-            // )),
-            // axios
-            // .get(this.port+'/test_result/62')
-            // .then(({data}) => (
-            //     this.dataRegistrant["dpm"] = JSON.parse(data.result),
-            //     this.loaded = this.loaded+1
-            // )),
-            // axios
-            // .get(this.port+'/test_result/63')
-            // .then(({data}) => (
-            //     this.dataRegistrant["komponen"] = JSON.parse(data.result),
-            //     this.loaded = this.loaded+1
-            // )),
-            // axios
-            // .get(this.port+'/test_result/64')
-            // .then(({data}) => (
-            //     this.dataRegistrant["mekanik"] = JSON.parse(data.result),
-            //     this.loaded = this.loaded+1
-            // )),
-            // axios
-            // .get(this.port+'/test_result/65')
-            // .then(({data}) => (
-            //     this.dataRegistrant["penalaran_mekanik"] = JSON.parse(data.result),
-            //     this.loaded = this.loaded+1
-            // ))
-        // ))
+        axios
+        .get(this.port+'/registrant/'+this.$route.query.registrant)
+        .then(({data}) => (
+            this.registrantBio = data.biodata
+        ))
     }
     
 }

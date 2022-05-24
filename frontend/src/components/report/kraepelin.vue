@@ -1,6 +1,9 @@
 <template>
     <div class="flex items-center w-full bg-foreground-4-100 px-4 py-2">
-        <img src="../../assets/logo.png" alt="" class="w-14 h-10">
+        <!-- <img src="../../assets/logo.png" alt="" class="w-14 h-10"> -->
+        <div class="text-center bg-background-400 rounded-xl flex items-center px-1 h-12">
+            <img src="../../assets/logo.png" alt="" class="w-14 h-10">
+        </div>
         <div class="text-white text-center w-full relative bottom-2" v-if="print==='yes'">
             <p class="font-bold text-sm">PT. Adiputro Wirasejati</p>
             <div class="text-xs">
