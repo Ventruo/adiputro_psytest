@@ -1,9 +1,14 @@
 <template>
     <div class="h-auto min-h-screen w-full text-white flex overflow-hidden">
         <div class="bg-foreground-4-200 rounded-r-3xl h-screen w-16 px-1 py-5 hover:w-1/6 hover:px-6 duration-300 flex flex-col group">
-            <div class="my-2">
-                <img src="../../assets/logo_only.png" alt="" class="w-8 m-auto mb-2">
-                <img src="../../assets/text_only.png" alt="" class="w-24 m-auto opacity-0 transition group-hover:opacity-100">
+            <div class="my-2 py-2 flex flex-col items-center bg-background-400 rounded-full mb-7 group-hover:mb-2">
+                <img src="../../assets/logo_only.png" alt="" class="w-8 m-auto group-hover:mb-2">
+                <!-- <div class="flex justify-center">
+                    <div class="text-center my-3 py-2 w-full ">
+                        <img src="../../assets/logo.png" alt="" class="w-32 inline-block">
+                    </div>
+                </div> -->
+                <img src="../../assets/text_only.png" alt="" class="w-24 m-auto hidden transition group-hover:block">
             </div>
             <router-link to="/admin">
                 <div class="relative">

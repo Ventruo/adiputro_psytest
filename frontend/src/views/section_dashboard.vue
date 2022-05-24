@@ -1,32 +1,37 @@
 <template>
     <div class="w-full h-full flex text-white">
-        <div class="w-3/12 min-h-screen flex flex-col bg-foreground-4-200 pt-4 pb-5 px-5 rounded-r-3xl">
-            <div class="text-center my-5">
-                <img src="../assets/logo.png" alt="" class="w-32 inline-block">
-            </div>
-            <div>
-                <p class="text-lg font-bold">Waktu Lokal : </p>
-                <p class="mb-2">{{timestamp || 'Getting Current Time...'}}</p>
+        <div id="sidebar" class="hidden md:block absolute md:static w-7/12 md:w-3/12 min-h-screen bg-foreground-4-200 rounded-r-3xl z-10">
+            <div v-show="this.showInside" class="min-h-screen pt-4 pb-5 px-5 flex flex-col">
+                <!-- <div class="text-center my-5">
+                    <img src="../assets/logo.png" alt="" class="w-32 inline-block">
+                </div> -->
+                <div class="text-center my-3 py-2 w-full bg-background-400 rounded-full">
+                    <img src="../assets/logo.png" alt="" class="w-32 inline-block">
+                </div>
+                <div>
+                    <p class="md:text-lg font-bold">Waktu Lokal : </p>
+                    <p class="mb-2 md:text-lg">{{timestamp || 'Getting Current Time...'}}</p>
 
-                <p class="text-lg font-bold">Tenggat Waktu : </p>
-                <p>{{tenggat}}</p>
-            </div>
-            <h1 class="text-xl font-bold mt-3">Persoalan Selesai: </h1>
-            <div class="grow w-auto h-1 my-2 overflow-x-hidden overflow-y-auto no-scrollbar text-foreground-4-800">
-                <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in hasil" :key="i">
-                    <div class="flex items-center">
-                        <i class="fas fa-file-alt mr-3 text-2xl"></i>
-                        <div>
-                            <p class="text-lg font-bold">Persoalan {{i.section_number}}</p>
-                            <p class="text-foreground-4-300 font-bold text-sm">Diselesaikan Pada {{toDate(i.createdAt)}}</p>
+                    <p class="md:text-lg font-bold">Tenggat Waktu : </p>
+                    <p class="md:text-lg">{{tenggat}}</p>
+                </div>
+                <h1 class="text-base md:text-xl font-bold mt-3">Persoalan Selesai: </h1>
+                <div class="grow w-auto h-1 my-2 overflow-x-hidden overflow-y-auto no-scrollbar text-foreground-4-800">
+                    <div class="w-full mr-2 h-auto bg-background-400 inline-block mb-2 px-2 py-1 rounded-lg" v-for="i in hasil" :key="i">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-alt mr-3 text-2xl"></i>
+                            <div>
+                                <p class="md:text-lg font-bold">Persoalan {{i.section_number}}</p>
+                                <p class="text-foreground-4-300 font-bold text-xs md:text-sm">Diselesaikan Pada {{toDate(i.createdAt)}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <button @click="logout" type="button" class="w-full text-left text-xl font-bold mb-3">
+                    <i class="mr-5 fa fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
-            <button @click="logout" type="button" class="w-full text-left text-xl font-bold mb-3">
-                <i class="mr-5 fa fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </button>
         </div>
         
         <form v-if="this.id_tes!=null && this.id_tes==17 && this.data_ist==false" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5 mt-24 mx-10"
@@ -49,13 +54,19 @@
         </form>
 
         <div class="w-full h-screen overflow-hidden" v-if="this.id_tes!=null && (this.id_tes!=17 || (this.id_tes==17 && this.data_ist))">
-            <p class="text-2xl font-bold text-white ml-5 my-6">{{judulHalaman}}</p>
+            <div class="text-2xl font-bold text-white ml-5 my-6 flex items-center gap-5">
+                <i class="fa fa-bars md:hidden" @click="toggleSidebar"></i>
+                <p>{{judulHalaman}}</p>
+            </div>
             <div class="overflow-auto no-scrollbar h-screen w-full relative px-10">
                 <Section v-if="this.sectionList!=null && this.now!=-99" :sectionList="this.sectionList" :now="this.now"/>
                 <div class="w-1 h-28"></div>
             </div>
         </div>
         
+        <!-- Transparent Overlay -->
+        <div id="bg" class="hidden fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-foreground-4-100 bg-opacity-60 z-0"
+            @click="toggleSidebar"></div>
     </div>
 </template>
 
@@ -83,10 +94,14 @@ export default {
             id_tes_result: null,
             data_ist: false,
             tgl_lahir: null,
-            alasan: ""
+            alasan: "",
+            showSidebar: false,
+            showInside: false,
         }
     },
     created() {
+        window.addEventListener("resize", this.resize);
+
         let adaTest = -1
         adaTest = this.$cookies.get('current_test')
         if(!adaTest)
@@ -96,6 +111,9 @@ export default {
             this.getNow()
             // console.log(this.$store.state.access_token);
         }, 1000)
+    },
+    destroyed() {
+        window.removeEventListener("resize", this.resize);
     },
     methods: {
         toDate(timeString){
@@ -109,7 +127,27 @@ export default {
             const today = new Date()
             this.timestamp = this.toDate(today)
         },
-
+        resize(){
+            const { offsetWidth, offsetHeight } = document.getElementById('app');
+            let thi = this
+            if(offsetWidth >= 768){
+                $("#sidebar").removeClass("hidden")
+                this.showInside = true
+            }
+            else{
+                $("#sidebar").addClass("hidden")
+            }
+        },
+        toggleSidebar(){
+            if(this.showInside) this.showInside = false
+            let thi = this
+            $('#bg').fadeToggle("slow");
+            $("#sidebar").animate(
+                                    { width: "toggle" }, 
+                                    "fast", 
+                                    function(){ if(!thi.showInside){ thi.showInside = true; } }
+                                );
+        },
         logout() {
             Swal.fire({
                 title: 'Yakin Ingin Logout?',
@@ -235,6 +273,7 @@ export default {
         },
     },
     mounted(){
+        this.resize()
         // console.log(this.$cookies.get('refresh_token'));
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
 
