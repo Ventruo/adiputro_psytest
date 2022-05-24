@@ -517,7 +517,7 @@ export default {
             axios
             .get(this.port+'/section_ongoing/getbytest/'+tes+'?email='+this.email)
             .then(({data}) => {
-                if(data.length > 0){
+                if(data && data.length > 0){
                     if(data[0].start_status == 2 && !data[1]){
                         this.state = 3
                     }
