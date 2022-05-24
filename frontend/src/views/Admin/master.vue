@@ -16,7 +16,7 @@
                         :class="{'bg-background-200': menu=='dashboard', 'text-black':menu=='dashboard'}"
                         @click="menu='dashboard'">
                         <i class="w-1/12 mr-5 fa fa-house text-2xl"></i>
-                        <span class="ml-0.5 opacity-0 transition group-hover:opacity-100">Home</span>
+                        <span class="ml-0.5 opacity-0 transition group-hover:opacity-100">Dasbor</span>
                     </div>
                 </div>
             </router-link>
@@ -27,7 +27,7 @@
                         :class="{'bg-background-200': menu=='registrant', 'text-black': menu=='registrant'}"
                         @click="menu='registrant'">
                         <i class="w-1/12 mr-5 fa fa-user text-2xl"></i>
-                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Registrant</span>
+                        <span class="opacity-0 transition duration-300 group-hover:opacity-100">Pendaftar</span>
                     </div>
                 </div>
             </router-link>
