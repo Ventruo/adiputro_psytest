@@ -4,23 +4,23 @@
             <div class="flex justify-center gap-10 text-white text-center">
                 <router-link to="/admin/registrant" class="w-3/12 h-96 bg-foreground-4-200 rounded-xl shadow-xl  py-10 px-5">
                     <i class="fa fa-user text-8xl"></i>
-                    <p class="font-bold text-3xl my-3">Master Registrant</p>
+                    <p class="font-bold text-3xl my-3">Master Pendaftar</p>
                     <p class="font-bold">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo sunt rerum perspiciatis possimus?
+                        Master Pendaftar adalah halaman untuk melihat data hasil tes, biodata, dan laporan dari setiap pelamar kerja
                     </p>
                 </router-link>
                 <router-link to="/admin/test" class="w-3/12 h-96 bg-foreground-4-200 rounded-xl shadow-xl py-10 px-5">
                     <i class="fa fa-tasks text-8xl"></i>
                     <p class="font-bold text-3xl my-3">Master Tes</p>
                     <p class="font-bold">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam sint soluta eaque possimus error quis
+                        Master Tes adalah halaman untuk mengelola (melihat, memperbarui, maupun menghapus) data tes, persoalan, dan pertanyaan
                     </p>
                 </router-link>
                 <router-link to="/admin/session" class="w-3/12 h-96 bg-foreground-4-200 rounded-xl shadow-xl py-10 px-5">
                     <i class="fas fa-calendar-alt text-8xl"></i>
                     <p class="font-bold text-3xl my-3">Master Sesi</p>
                     <p class="font-bold">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis odio repudiandae, fugit aliquam odit
+                        Master Sesi adalah halaman untuk mengelola (melihat dan memperbarui) data sesi pengerjaan tes, termasuk tes yang diberikan
                     </p>
                 </router-link>
                 
@@ -28,7 +28,7 @@
                     <i class="fa fa-users text-8xl"></i>
                     <p class="font-bold text-3xl my-3">Master Rekrutmen</p>
                     <p class="font-bold">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit expedita sapiente accusamus temporibus
+                        Master Rekrutmen adalah halaman untuk mengelola (melihat, memperbarui, maupun menghapus) data lowongan kerja dan pelamar kerja
                     </p>
                 </router-link>
             </div>
