@@ -112,6 +112,7 @@ export default {
             countdownTimer: null,
             countdown: 2,
             jawaban: [],
+            jawabanTemp: "",
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
@@ -209,6 +210,9 @@ export default {
                     });
                 }
             }
+
+            // TODO: UPLOAD KE DB
+
             this.gantiPilihanJawaban()
         },
         prevSoal(){
@@ -222,6 +226,9 @@ export default {
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
+
+            // TODO: UPLOAD KE DB
+
             this.gantiPilihanJawaban()
         },
         lompatSoal(idx){
@@ -236,6 +243,8 @@ export default {
             
             if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                 this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+
+            // TODO: UPLOAD KE DB
 
             this.gantiPilihanJawaban()
         },
@@ -407,6 +416,43 @@ export default {
                 });
                 this.maxLength = x
             }
+        },
+        uploadTempAnswers(){
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "" + ";";
+            }
+            console.log(this.jawabanTemp)
+
+            axios.post(this.port+'/section_ongoing/updateTempAnswers',{
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "temp_answers": this.jawabanTemp,
+            })
+            .then((response) => {
+                
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        getTempAnswers(){
+            axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
+            .then((data) => {
+                if(data && data.length > 0){
+                    data = data[0];
+                    
+                    let temp = data.temp_answers.split(";");
+                    let temp_answers = [];
+                    for(let i = 0; i < temp.length; i++){
+                        if(temp[i] == "") continue;
+
+                        temp_answers[i] = temp[i] ;
+                    }
+
+                    this.jawaban = temp_answers
+                }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         }
     },
 
