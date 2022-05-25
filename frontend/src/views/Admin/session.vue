@@ -133,11 +133,11 @@
                             <div class="flex items-center">
                                 <span>{{i.name}}</span>
                                 <label :for="'toggle'+idx" class="cursor-pointer ml-2 inline-block" v-if="!this.statusAdd && idx<this.test_result.length">
-                                    <span class="relative">
+                                    <div class="relative">
                                         <input type="checkbox" :id="'toggle'+idx" class="sr-only" v-model="this.test_result[idx].status">
                                         <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
                                         <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
-                                    </span>
+                                    </div>
                                 </label>
                                 <i v-if="this.statusAdd || (!this.statusAdd && !this.current_test_list.includes(i))" class="fa fa-x text-sm ml-3 cursor-pointer" @click="hapusTest(`${i.id}`)"></i>
                             </div>
