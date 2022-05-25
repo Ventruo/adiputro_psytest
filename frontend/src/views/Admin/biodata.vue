@@ -72,9 +72,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mb-2">
+                <div class="flex mb-1">
+                    <p class="mr-2 font-bold">17.</p>
+                    <p><span class="font-bold">Jenis Kelamin :</span> {{biodata.jenis_kelamin=="L"?"Laki-Laki":"Perempuan"}}</p>
+                </div>
+            </div>
+
             <div class="mb-2">
                 <div class="w-full flex">
-                    <p class="mr-2 font-bold">17.</p>
+                    <p class="mr-2 font-bold">18.</p>
                     <div class="w-1/2">
                         <div class="mr-4 flex gap-2">
                             <p class="mb-1 font-bold">Keadaan Kesehatan pada saat ini : </p>
@@ -98,7 +106,7 @@
             </div>
             <div class="mb-2">
                 <div class="flex w-full">
-                    <p class="mr-2 font-bold">18.</p>
+                    <p class="mr-2 font-bold">19.</p>
                     <div>
                         <div class="flex w-full gap-2">
                             <p class="mb-1 font-bold">Apakah anda belum menikah/menikah? </p>
@@ -123,7 +131,7 @@
             
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">19.</p>
+                    <p class="mr-2">20.</p>
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
                 <div class="ml-7">
@@ -152,7 +160,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-1 font-bold">
-                    <p class="mr-2">20.</p>
+                    <p class="mr-2">21.</p>
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-7">
@@ -162,7 +170,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">21.</p>
+                    <p class="mr-2">22.</p>
                     <p>KELUARGA</p>
                 </div>
 
@@ -265,7 +273,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">22.</p>
+                    <p class="mr-2">23.</p>
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
                 <div class="ml-7">
@@ -307,7 +315,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">23.</p>
+                    <p class="mr-2">24.</p>
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
@@ -334,7 +342,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">24.</p>
+                    <p class="mr-2">25.</p>
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-7">
@@ -361,7 +369,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">25.</p>
+                    <p class="mr-2">26.</p>
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
                 <div class="ml-7">
@@ -393,7 +401,7 @@
 
             <div class="mb-2">
                 <div class="flex">
-                    <p class="mr-2 font-bold">26.</p>
+                    <p class="mr-2 font-bold">27.</p>
                     <p class="font-bold mr-2">Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja :</p>
                     <p>{{biodata.keterangan_kerja.lama_berhenti_kerja}}</p>
                 </div>
@@ -430,7 +438,7 @@
             </div>
 
             <div class="flex mb-2 mr-3">
-                <p class="mr-2 font-bold">27.</p>
+                <p class="mr-2 font-bold">28.</p>
                 <div class="flex gap-2">
                     <p class="font-bold">Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
                     <p>{{biodata.pelatihan_kerja}}</p>
@@ -439,7 +447,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-1 font-bold">
-                    <p class="mr-2">28.</p>
+                    <p class="mr-2">29.</p>
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-7">
@@ -449,7 +457,7 @@
             
             <div>
                 <div class="flex font-bold">
-                    <p class="mr-2">29.</p>
+                    <p class="mr-2">30.</p>
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-7 mb-2">
@@ -466,7 +474,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">30.</p>
+                    <p class="mr-2">31.</p>
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-7">
@@ -476,7 +484,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">31.</p>
+                    <p class="mr-2">32.</p>
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-7">
@@ -486,7 +494,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">32.</p>
+                    <p class="mr-2">33.</p>
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-7">
@@ -496,7 +504,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">33.</p>
+                    <p class="mr-2">34.</p>
                     <p>Apakah yang menjadi kelebihan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
@@ -506,7 +514,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">34.</p>
+                    <p class="mr-2">35.</p>
                     <p>Apakah yang menjadi kekurangan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
@@ -516,7 +524,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">35.</p>
+                    <p class="mr-2">36.</p>
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-7">
@@ -526,7 +534,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">36.</p>
+                    <p class="mr-2">37.</p>
                     <p>Apakah anda mempunyai prestasi / penghargaan selama ini? Bila ada silahkan disebutkan (jenis, bidang, dan tahun)</p>
                 </div>
                 <div class="ml-7">
@@ -539,11 +547,11 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">37.</p>
+                    <p class="mr-2">38.</p>
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.seni_dikuasai.jenis}}
+                    {{biodata.seni_dikuasai.jenis.join(', ')}}
                     <!-- <span>{{biodata.seni_dikuasai.jenis[0]}}</span>
                     <span v-for="i in biodata.seni_dikuasai.jenis.length-1" :key="i">, {{biodata.seni_dikuasai.jenis[i]}}</span> -->
                 </div>
@@ -551,7 +559,7 @@
 
             <div>
                 <div class="flex font-bold">
-                    <p class="mr-2">38.</p>
+                    <p class="mr-2">39.</p>
                     <p>Sebagai referensi, sebutkan 2 (dua) nama orang terdekat anda, beserta alamat dan telepon: </p>
                 </div>
                 <div class="ml-7">
@@ -604,12 +612,12 @@
                     </div>
                     <p class="mb-2 text-center">Pelamar,</p>
                     <div class="text-center">
-                        <!-- <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
-                        <div v-else class="h-32 w-32 mb-2 inline-block bg-[#C4C4C4]"> -->
-                            <!-- <div class="flex justify-center items-center h-full">
+                        <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
+                        <div v-else class="h-32 w-32 mb-2 inline-block bg-[#C4C4C4]">
+                            <div class="flex justify-center items-center h-full">
                                 <p>Tanda Tangan</p>
-                            </div> -->
-                        <!-- </div> -->
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="text-center">
@@ -637,16 +645,22 @@ export default {
         return{
             biodata: null,
             port: import.meta.env.VITE_BACKEND_URL,
+            url: null
         }
     },
     methods: {
-
+        getImg(data){
+            let id = data.split("d/")
+            id = id[1].split("/")
+            return "https://drive.google.com/uc?export=view&id="+id[0]
+        },
     },
     mounted() {
         axios
         .get(this.port+'/registrant/'+this.$route.query.registrant)
         .then(({data}) => (
-            this.biodata = data.biodata
+            this.biodata = data.biodata,
+            this.url = this.getImg(this.biodata.tanda_tangan)
         ))
     },
     created() {

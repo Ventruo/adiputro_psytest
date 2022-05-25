@@ -42,7 +42,7 @@
             </div>
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">22.</p>
+                    <p class="mr-2">23.</p>
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
                 <div class="ml-5">
@@ -84,7 +84,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">23.</p>
+                    <p class="mr-2">24.</p>
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-5">
@@ -111,7 +111,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">24.</p>
+                    <p class="mr-2">25.</p>
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="ml-5">
@@ -138,7 +138,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2 font-bold">
-                    <p class="mr-2">25.</p>
+                    <p class="mr-2">26.</p>
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
                 <div class="ml-5">
@@ -170,7 +170,7 @@
 
             <div class="mb-2">
                 <div class="flex">
-                    <p class="mr-2 font-bold">26.</p>
+                    <p class="mr-2 font-bold">27.</p>
                     <p class="font-bold mr-2">Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja :</p>
                     <p>{{biodata.keterangan_kerja.lama_berhenti_kerja}}</p>
                 </div>
@@ -206,7 +206,7 @@
                 </div>
             </div>
             <div class="flex mb-2 mr-3">
-                <p class="mr-2 font-bold">27.</p>
+                <p class="mr-2 font-bold">28.</p>
                 <div class="flex gap-2">
                     <p class="font-bold">Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
                     <p>{{biodata.pelatihan_kerja}}</p>
@@ -215,7 +215,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">28.</p>
+                    <p class="mr-2">29.</p>
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-5">

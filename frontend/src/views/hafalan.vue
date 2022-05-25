@@ -52,7 +52,8 @@
                             Cara mengerjakannya sama seperti tadi, hanya kotak yang di atas sekarang dihilangkan. Silahkan dikerjakan seingatnya saja.
                 </div>
                 <div class="flex justify-center mb-3">
-                    <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt="">
+                    <!-- <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt=""> -->
+                    <img src="../assets/gif_hafalan_2.gif" alt="" class="w-3/4 md:w-1/2 xl:w-1/3">
                 </div>
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai2()">

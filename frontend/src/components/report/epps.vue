@@ -29,7 +29,7 @@
                 </div>
                 <div class="ml-2 text-sm">
                     <p>: {{this.nama}}</p>
-                    <p>: L</p>
+                    <p>: {{this.jk}}</p>
                 </div>
             </div>
             
@@ -39,8 +39,8 @@
                     <p>Kode</p>
                 </div>
                 <div class="ml-3 text-sm">
-                    <p>: S1</p>
-                    <p>: 1</p>
+                    <p>: {{this.pendidikan}}</p>
+                    <p>: {{this.kode}}</p>
                 </div>
             </div>
         </div>
@@ -145,6 +145,9 @@ export default {
         "data": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
         "nama": { type: String, default: '', required: true },
+        "jk": { type: String, default: '', required: true },
+        "pendidikan": { type: String, default: '', required: true },
+        "kode": { type: String, default: '', required: true },
     },
     data() {
         return {

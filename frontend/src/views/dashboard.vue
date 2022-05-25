@@ -141,6 +141,7 @@ export default {
                     this.$cookies.remove('refresh_token')
                     this.$cookies.remove('data_registrant')
                     this.$cookies.remove('current_section')
+                    this.$cookies.remove('current_test')
                     this.$cookies.remove("start_time")
 
                     window.location="/"

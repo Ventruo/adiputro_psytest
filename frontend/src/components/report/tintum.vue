@@ -29,8 +29,8 @@
             </div>
             <div class="ml-3">
                 <p>: {{this.nama}}</p>
-                <p>: L</p>
-                <p>: S1</p>
+                <p>: {{this.jk}}</p>
+                <p>: {{this.pendidikan}}</p>
             </div>
         </div>
 
@@ -90,6 +90,8 @@ export default {
         "data": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
         "nama": { type: String, default: '', required: true },
+        "jk": { type: String, default: '', required: true },
+        "pendidikan": { type: String, default: '', required: true },
     },
     data() {
         return {
