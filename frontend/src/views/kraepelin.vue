@@ -162,6 +162,7 @@ export default {
             section_id: 53,
             test_result_id: null,
             exam_session: null,
+            num_correct: 0,
             email: null,
             section_result_id: null,
             dataKraepelin: null,
@@ -246,6 +247,8 @@ export default {
             for (let i = this.jawaban[this.kolom-1].length; i < 27; i++) {
                 this.jawaban[this.kolom-1][i]=-1
             }
+
+            // console.log(this.jawaban[this.kolom-1])
             
             this.kolom++
             if(this.kolom>this.jumKolom){
@@ -348,6 +351,17 @@ export default {
                 data: this.jawabanFinal
             }
 
+            let x = {
+                "updating_id": this.section_result_id,
+                "test_result_id": this.test_result_id,
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "num_correct": this.num_correct,
+                "start_date": parseInt(this.$cookies.get("start_time")),
+                "finish_date": Date.now()
+            }
+
+            console.log(x)
             // console.log(formData)
 
             axios.post(this.port+'/section_result/update',{
@@ -355,6 +369,7 @@ export default {
                 "test_result_id": this.test_result_id,
                 "section_id": this.section_id,
                 "exam_session": this.exam_session,
+                "num_correct": this.num_correct,
                 "start_date": parseInt(this.$cookies.get("start_time")),
                 "finish_date": Date.now()
             })
@@ -461,16 +476,16 @@ export default {
 
         let thi = this
         $('body').keydown(function(event) {
-            if (event.keyCode==48) thi.nextSoal(0)
-            else if (event.keyCode==49) thi.nextSoal(1)
-            else if (event.keyCode==50) thi.nextSoal(2)
-            else if (event.keyCode==51) thi.nextSoal(3)
-            else if (event.keyCode==52) thi.nextSoal(4)
-            else if (event.keyCode==53) thi.nextSoal(5)
-            else if (event.keyCode==54) thi.nextSoal(6)
-            else if (event.keyCode==55) thi.nextSoal(7)
-            else if (event.keyCode==56) thi.nextSoal(8)
-            else if (event.keyCode==57) thi.nextSoal(9)
+            if ([48,96].includes(event.keyCode)) thi.nextSoal(0)
+            else if ([49,97].includes(event.keyCode)) thi.nextSoal(1)
+            else if ([50,98].includes(event.keyCode)) thi.nextSoal(2)
+            else if ([51,99].includes(event.keyCode)) thi.nextSoal(3)
+            else if ([52,100].includes(event.keyCode)) thi.nextSoal(4)
+            else if ([53,101].includes(event.keyCode)) thi.nextSoal(5)
+            else if ([54,102].includes(event.keyCode)) thi.nextSoal(6)
+            else if ([55,103].includes(event.keyCode)) thi.nextSoal(7)
+            else if ([56,104].includes(event.keyCode)) thi.nextSoal(8)
+            else if ([57,105].includes(event.keyCode)) thi.nextSoal(9)
             // else if (event.keyCode==39||event.keyCode==68)
             //     thi.submitJawaban()
                 // if(thi.kolom>=thi.jumKolom){

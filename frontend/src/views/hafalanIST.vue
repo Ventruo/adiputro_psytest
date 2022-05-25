@@ -104,7 +104,7 @@
                 <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" />
                 <div class="md:flex md:gap-3 w-full">
                     <div v-for="(i,idx) in this.pilihanJawaban" :key="idx" class="w-full">
-                        <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" />
+                        <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" @setChangeds="setChanged" />
                     </div>
                 </div>
             </div>
@@ -170,6 +170,9 @@ export default {
         }
     },
     methods: {
+        setChanged(state){
+            this.changed = state
+        },
         mulai(){
             // this.jumSoal = this.pertanyaan.length
             this.state = 1
