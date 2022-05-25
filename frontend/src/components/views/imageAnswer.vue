@@ -23,11 +23,11 @@
             <AnswerButton v-if="numberOfChoices>3" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" />
             <AnswerButton v-if="numberOfChoices>4" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[4]" /> -->
                 
-            <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[0]" />
-            <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[1]" />
-            <AnswerButton v-if="numberOfChoices>2" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[2]" />
-            <AnswerButton v-if="numberOfChoices>3" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[3]" />
-            <AnswerButton v-if="numberOfChoices>4" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[4]" />
+            <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[0]" @setChangeds="setChangeds" />
+            <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[1]" @setChangeds="setChangeds" />
+            <AnswerButton v-if="numberOfChoices>2" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[2]" @setChangeds="setChangeds" />
+            <AnswerButton v-if="numberOfChoices>3" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[3]" @setChangeds="setChangeds" />
+            <AnswerButton v-if="numberOfChoices>4" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="this.pilihan[4]" @setChangeds="setChangeds" />
         </div>
     </div>
 </template>
@@ -56,6 +56,9 @@ export default {
         }
     },
     methods: {
+        setChangeds(){
+            this.$emit('setChanged', true)
+        },
         choose(id){
             this.jawaban[this.noSoal-1] = id
         },

@@ -146,7 +146,7 @@ export default {
             judulHalaman: 'EPPS',
             kolom: 1,
             jumKolom: 50,
-            detik: 1,
+            detik: 15,
             waktu: null,
             row1: [],
             row2: [],
@@ -184,7 +184,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 1
+                        this.detik = 15
                         this.reset()
                     }
                 }

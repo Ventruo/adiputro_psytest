@@ -56,10 +56,12 @@
                 <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :img="this.getImg(pertanyaan[noSoal-1]['instruction'])" />
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
                 
-                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id />
+                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban 
+                                :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
                 <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" 
-                                :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id"/>
-                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
+                                :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id" @setChanged="setChanged" />
+                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban 
+                                :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban @setChanged="setChanged" />        
             </div>
 
             <div class="flex justify-between mb-5">
@@ -127,6 +129,7 @@ export default {
             maxLength: 0,
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             angka: ["1","2","3","4","5","6","7","8","9","10"],
+            changed: false,
         }
     },
     methods: {
@@ -134,6 +137,9 @@ export default {
             let id = data.split("d/")
             id = id[1].split("/")
             return "https://drive.google.com/uc?export=view&id="+id[0]
+        },
+        setChanged(state){
+            this.changed = state
         },
         mulai(){
             this.isStarted = true
@@ -167,6 +173,7 @@ export default {
         nextSoal(){
             // console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
+            console.log(this.changed)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
