@@ -10,6 +10,7 @@ const SectionResult = require("../models/SectionResult");
 const ExamSession = require("../models/ExamSession");
 const Section = require("../models/Section");
 const TestResult = require("../models/TestResult");
+const KreapelinData = require("../models/KreapelinData");
 const { q_result_ist } = require("./test_result_calc/ist_calc");
 
 class QuestionResultController {
@@ -477,6 +478,22 @@ class QuestionResultController {
       return;
     }
 
+    if(req.body.section_id==53){
+      // Delete kraepelin data
+      ExamSession.findOne({
+        where: {
+          id: req.body.exam_session,
+        },
+      }).then(async (session) => {
+        // destroy kraepelin data
+        KreapelinData.destroy({
+          where: {
+            email: session.email,
+          },
+        });
+      })
+    }
+
     // Delete Question REsult  Section Result
     await SectionResult.findOne({
       where: {
@@ -507,6 +524,7 @@ class QuestionResultController {
         }).then(async (testres) => {
           testres.set({
             result: "",
+            status: 1
           });
           testres.save();
           return res
