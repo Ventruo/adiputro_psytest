@@ -65,6 +65,8 @@ export default {
             //     else if (id=="Tidak") this.jawaban[this.noSoal-1] = 0
             // }
             else this.jawaban[this.noSoal-1] = id
+            
+            this.$emit('setChangeds', true)
         },
     },
     created(){

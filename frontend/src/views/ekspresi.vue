@@ -76,9 +76,9 @@
                 </div>
                 <div class="w-full mt-3">
                     <div class="w-full md:flex gap-3">
-                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'A. '+this.pertanyaan[noSoal-1]['option_a']" :aksi= aksi />
-                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'B. '+this.pertanyaan[noSoal-1]['option_b']" :aksi= aksi />
-                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'C. '+this.pertanyaan[noSoal-1]['option_c']" :aksi= aksi />
+                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'A. '+this.pertanyaan[noSoal-1]['option_a']" :aksi= aksi @setChangeds="setChanged"/>
+                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'B. '+this.pertanyaan[noSoal-1]['option_b']" :aksi= aksi @setChangeds="setChanged"/>
+                        <AnswerButton :jenis="'ekspresi'" :jawaban = jawaban :noSoal = noSoal :label="'C. '+this.pertanyaan[noSoal-1]['option_c']" :aksi= aksi @setChangeds="setChanged"/>
                     </div>
                 </div>
 
@@ -139,9 +139,13 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
+            changed: false
         }
     },
     methods: {
+        setChanged(state){
+            this.changed = state
+        },
          mulai(){
             this.isStarted = true
             this.waktu = setInterval(() => {
