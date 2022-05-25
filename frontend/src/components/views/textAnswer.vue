@@ -32,7 +32,7 @@ export default {
         "noSoal": { type: Number, default: 1, required: true },
         "jumlahJawaban": { type: Number, default: 1, required: true },
         "maxLength": { type: Number, default: 1, required: true },
-        "section": { type: Number, default:-1, required: true },
+        "section": { type: Number, default:-1, required: true }
     },
     methods: {
         validasi(evt){
@@ -73,12 +73,15 @@ export default {
                 this.jawaban[this.noSoal-1] = text1 + '&' + text2
             else
                 this.jawaban[this.noSoal-1] = text1
+
+            this.$emit('setChanged', true)
         },
         noValidation(){
             if(this.jumlahJawaban>1)
                 this.jawaban[this.noSoal-1] = $('#answer').val() + '&' + $('#answer2').val()
             else
                 this.jawaban[this.noSoal-1] = $('#answer').val()
+            this.$emit('setChanged', true)
         },
         resetText(answer){
             if(this.jumlahJawaban>1){

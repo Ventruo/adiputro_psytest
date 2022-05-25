@@ -65,8 +65,8 @@
                         <p>{{i+((page-1)*5)}}.</p>
                     </div>
                     <div class="overflow-hidden grow md:flex md:gap-5">
-                        <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']"/>
-                        <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']"/>
+                        <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'A. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_a']" @setChangeds="setChanged"/>
+                        <AnswerButton :jenis="'epps'" :jawaban = jawaban :noSoal = (i+((page-1)*5)) :label="'B. '+this.pertanyaan[(i-1)+((page-1)*5)]['option_b']" @setChangeds="setChanged"/>
                     </div>
                 </div>
             </div>
@@ -129,9 +129,13 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
+            changed: false
         }
     },
     methods: {
+        setChanged(state){
+            this.changed = state
+        },
         mulai(){
             this.isStarted = true
             

@@ -106,7 +106,7 @@
                     <TextQuestion :question="pertanyaan1[noSoal-1]['instruction']" />
                     <div class="flex gap-3 w-full">
                         <div v-for="(i,idx) in this.pilihanJawaban" :key="idx" class="w-full">
-                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" />
+                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" @setChangeds="setChanged" />
                         </div>
                     </div>
                 </div>
@@ -115,12 +115,12 @@
                     <TextQuestion :question="pertanyaan2[noSoal-1]['instruction']" />
                     <div class="flex gap-3 w-full mb-2">
                         <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
-                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1]" />
+                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1]" @setChangeds="setChanged" />
                         </div>
                     </div>
                     <div class="flex gap-3 w-full">
                         <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
-                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1+(this.pilihanJawaban.length/2)]" />
+                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1+(this.pilihanJawaban.length/2)]" @setChangeds="setChanged" />
                         </div>
                     </div>
                 </div>
@@ -186,10 +186,14 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             state: 0,
             tampilDaftarSoal: false,
-            pedoman: []
+            pedoman: [],
+            changed: false,
         }
     },
     methods: {
+        setChanged(state){
+            this.changed = state
+        },
         mulai(){
             this.jumSoal = this.pertanyaan1.length
             this.state = 2
@@ -232,6 +236,7 @@ export default {
             });
         },
         nextSoal(){
+            console.log(this.changed)
             // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++

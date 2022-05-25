@@ -56,10 +56,12 @@
                 <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :img="this.getImg(pertanyaan[noSoal-1]['instruction'])" />
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
                 
-                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id />
+                <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban 
+                                :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
                 <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" 
-                                :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id"/>
-                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban />        
+                                :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id" @setChanged="setChanged" />
+                <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban 
+                                :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban @setChanged="setChanged" />        
             </div>
 
             <div class="flex justify-between mb-5">
@@ -114,6 +116,7 @@ export default {
             countdownTimer: null,
             countdown: 2,
             jawaban: [],
+            jawabanTemp: "",
             jawabanFinal: [],
             pertanyaan: null,
             pilihanJawaban: null,
@@ -128,6 +131,7 @@ export default {
             maxLength: 0,
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             angka: ["1","2","3","4","5","6","7","8","9","10"],
+            changed: false,
         }
     },
     methods: {
@@ -135,6 +139,9 @@ export default {
             let id = data.split("d/")
             id = id[1].split("/")
             return "https://drive.google.com/uc?export=view&id="+id[0]
+        },
+        setChanged(state){
+            this.changed = state
         },
         mulai(){
             this.isStarted = true
@@ -156,6 +163,7 @@ export default {
         nextSoal(){
             // console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
+            console.log(this.changed)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
@@ -199,6 +207,9 @@ export default {
                     });
                 }
             }
+
+            // TODO: UPLOAD KE DB
+
             this.gantiPilihanJawaban()
         },
         prevSoal(){
@@ -212,6 +223,9 @@ export default {
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
+
+            // TODO: UPLOAD KE DB
+
             this.gantiPilihanJawaban()
         },
         lompatSoal(idx){
@@ -226,6 +240,8 @@ export default {
             
             if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                 this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
+
+            // TODO: UPLOAD KE DB
 
             this.gantiPilihanJawaban()
         },
@@ -397,6 +413,43 @@ export default {
                 });
                 this.maxLength = x
             }
+        },
+        uploadTempAnswers(){
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "" + ";";
+            }
+            console.log(this.jawabanTemp)
+
+            axios.post(this.port+'/section_ongoing/updateTempAnswers',{
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "temp_answers": this.jawabanTemp,
+            })
+            .then((response) => {
+                
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        getTempAnswers(){
+            axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
+            .then((data) => {
+                if(data && data.length > 0){
+                    data = data[0];
+                    
+                    let temp = data.temp_answers.split(";");
+                    let temp_answers = [];
+                    for(let i = 0; i < temp.length; i++){
+                        if(temp[i] == "") continue;
+
+                        temp_answers[i] = temp[i] ;
+                    }
+
+                    this.jawaban = temp_answers
+                }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         }
     },
 
