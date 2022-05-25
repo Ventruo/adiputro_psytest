@@ -71,29 +71,20 @@ class ISTDataController {
       return;
     }
 
-    SectionResult.findOne({ where: { id: req.body.test_result_id } }).then(
-      async (section) => {
-        if (!section) {
-          data_not_found_response(res);
-          return;
-        }
+    let now = new Date();
+    let usia = new Date(now - new Date(req.body.tanggal_lahir));
+    usia = Math.abs(usia.getUTCFullYear() - 1970);
 
-        let now = new Date();
-        let usia = new Date(now - new Date(req.body.tanggal_lahir));
-        usia = Math.abs(usia.getUTCFullYear() - 1970);
+    const new_data = await ISTData.create({
+      test_result_id: req.body.test_result_id,
+      email: req.body.email,
+      tanggal_lahir: req.body.tanggal_lahir,
+      tanggal_tes: now,
+      usia: usia,
+      tujuan_tes: req.body.tujuan_tes,
+    });
 
-        const new_data = await ISTData.create({
-          test_result_id: req.body.test_result_id,
-          email: req.body.email,
-          tanggal_lahir: req.body.tanggal_lahir,
-          tanggal_tes: now,
-          usia: usia,
-          tujuan_tes: req.body.tujuan_tes,
-        });
-
-        success_response(res, new_data.toJSON(), "Create Successful!");
-      }
-    );
+    success_response(res, new_data.toJSON(), "Create Successful!");
   }
 
   async update(req, res) {

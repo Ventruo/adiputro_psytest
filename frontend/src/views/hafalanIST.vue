@@ -198,6 +198,8 @@ export default {
                 this.noSoal++
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
 
+                if(this.changed) this.uploadTempAnswers();
+
                 this.progress(true)
             }
             else{
@@ -213,6 +215,9 @@ export default {
 
                 this.progress(false)
             }
+
+            if(this.changed) this.uploadTempAnswers();
+
             this.gantiPilihanJawaban()
         },
         lompatSoal(idx){
@@ -223,6 +228,8 @@ export default {
             
             // if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
             // else $('#nextBtn').text('Submit')
+
+            if(this.changed) this.uploadTempAnswers();
 
             this.gantiPilihanJawaban()
         },
@@ -289,17 +296,26 @@ export default {
                         email: this.email
                     })
                     .then((response) => {
-                        this.$cookies.remove('current_section')
-                        this.$cookies.remove("start_time")
-                        $('#spinner-modal').fadeOut("slow")
-                        Swal.fire(
-                            'Submitted!',
-                            'Task Successfully Submitted.',
-                            'success'
-                        )
-                        .then(function(){
-                            window.location = '/section'
+                        axios.post(this.port+'/section_ongoing/stopSection',{
+                            section_id: this.section_id,
+                            exam_session: this.exam_session
                         })
+                        .then((response) => {
+                            this.$cookies.remove('current_section')
+                            this.$cookies.remove("start_time")
+                            $('#spinner-modal').fadeOut("slow")
+                            Swal.fire(
+                                'Submitted!',
+                                'Task Successfully Submitted.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/section'
+                            })
+                        })
+                        // .catch( error => 
+                        //     console.log('error: ' + error) 
+                        // })
                     })
                 })
             }).catch( error => { 
@@ -321,6 +337,44 @@ export default {
                 else if(pilihan=='d'&&this.jumChoice>=4) komponen.keyChoose(pilihan)
                 else if(pilihan=='e'&&this.jumChoice==5) komponen.keyChoose(pilihan)
             }
+        },
+        uploadTempAnswers(){
+            this.jawabanTemp = "";
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "";
+                this.jawabanTemp += ";";
+            }
+
+            axios.post(this.port+'/section_ongoing/updateTempAnswers',{
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "temp_answers": this.jawabanTemp,
+            })
+            .then((response) => {
+                this.changed = false;
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        getTempAnswers(){
+            axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
+            .then((data) => {
+                if(data && data.data){
+                    data = data.data.filter((obj) => {
+                        return obj.start_status == 1;
+                    })[0];
+                    
+                    let temp = data.temp_answers.split(";");
+                    let temp_answers = [];
+                    for(let i = 0; i < temp.length; i++){
+                        temp_answers[i] = temp[i] ;
+                    }
+
+                    this.jawaban = temp_answers
+                }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         }
     },
 
@@ -336,6 +390,9 @@ export default {
         this.section_id = this.$cookies.get('current_section').id;
         let tes = this.$cookies.get('current_test').id
         let nama_tes = ""
+        let datas = this.$cookies.get("data_registrant");
+        this.email = datas.email;
+        this.exam_session = datas.exam_session;
         axios
         .get(this.port+'/test/'+tes)
         .then(({data}) => {
@@ -385,6 +442,7 @@ export default {
                 }
                 else if(data.section_id == this.section_id && this.state == 0){
                     this.state = 2
+                    this.getTempAnswers();
                     this.noSoal = 1
                     this.gantiPilihanJawaban()
                     this.progress(true)
