@@ -47,7 +47,7 @@ class SectionOngoingController {
       return;
     }
 
-    if (!req.query.email) {
+    if (!req.query.exam_session_id) {
       SectionOngoing.findAll({
         where: {
           section_id: req.params.section_id,
@@ -64,15 +64,8 @@ class SectionOngoingController {
       SectionOngoing.findAll({
         where: {
           section_id: req.params.section_id,
+          exam_session_id: req.query.exam_session_id,
         },
-        include: [
-          {
-            model: ExamSession,
-            where: {
-              email: req.query.email,
-            },
-          },
-        ],
       }).then((results) => {
         if (results.length == 0) {
           data_not_found_response(res);
@@ -92,7 +85,7 @@ class SectionOngoingController {
       return;
     }
 
-    if (!req.query.email) {
+    if (!req.query.exam_session_id) {
       SectionOngoing.findAll({
         include: [
           {
@@ -112,17 +105,14 @@ class SectionOngoingController {
       });
     } else {
       SectionOngoing.findAll({
+        where: {
+          exam_session_id: req.query.exam_session_id,
+        },
         include: [
           {
             model: Section,
             where: {
               test_id: req.params.test_id,
-            },
-          },
-          {
-            model: ExamSession,
-            where: {
-              email: req.query.email,
             },
           },
         ],
@@ -202,6 +192,37 @@ class SectionOngoingController {
         success_response(res, section_ongoing?.toJSON(), "Update successful!");
       }
     );
+  }
+
+  async updateTempAnswers(req, res) {
+    console.log("Inserting Temp Answers");
+    if (!req.body.section_id || !req.body.exam_session) {
+      missing_param_response(res);
+      return;
+    }
+
+    SectionOngoing.findOne({
+      where: {
+        section_id: req.body.section_id,
+        exam_session_id: req.body.exam_session,
+      },
+    }).then(async (section_ongoing) => {
+      if (!section_ongoing) {
+        data_not_found_response(res);
+        return;
+      }
+
+      section_ongoing.set({
+        temp_answers: req.body.temp_answers,
+      });
+      section_ongoing.save();
+
+      success_response(
+        res,
+        "Update Data Successful!",
+        "Update Data Successful!"
+      );
+    });
   }
 }
 
