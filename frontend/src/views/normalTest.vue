@@ -133,6 +133,10 @@ export default {
         }
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         getImg(data){
             let id = data.split("d/")
             id = id[1].split("/")
@@ -470,9 +474,9 @@ export default {
     beforeDestroy() {
         clearInterval(this.waktu)
     },
-    mounted(){
+    async mounted(){
         this.section_id = this.$cookies.get('current_section').id;
-        let tes = this.$cookies.get('current_test').id
+        let tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         let nama_tes = ""
         axios
         .get(this.port+'/test/'+tes)

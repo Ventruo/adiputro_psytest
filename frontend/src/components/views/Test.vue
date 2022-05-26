@@ -115,7 +115,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    components: {
+        axios
+    },
     data() {
         return {
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
@@ -128,12 +132,18 @@ export default {
     },
     methods: {
         keSection(tes){
-            this.$cookies.set('current_test', {"id":tes.id})
-            if(tes.id==19){
-                this.$router.push({path: '/biodata'})
-            }else{
-                this.$router.push({path: '/section'})
-            }
+            axios.post('/exam_session/updateCurrentTest',{
+                "id": this.$cookies.get('data_registrant').exam_session,
+                "test_id": tes.id
+            }).then((response) => {
+                if(tes.id==19){
+                    this.$router.push({path: '/biodata'})
+                }else{
+                    this.$router.push({path: '/section'})
+                }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         openModal(){
             $('#modalBuram').fadeIn("slow");

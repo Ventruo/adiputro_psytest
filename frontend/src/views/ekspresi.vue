@@ -321,7 +321,6 @@ export default {
 
     mounted(){
         this.section_id = this.$cookies.get('current_section').id;
-        // let tes = this.$cookies.get('current_test').id;
 
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)

@@ -99,11 +99,11 @@ export default {
             showInside: false,
         }
     },
-    created() {
+    async created() {
         window.addEventListener("resize", this.resize);
 
         let adaTest = -1
-        adaTest = this.$cookies.get('current_test')
+        adaTest = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         if(!adaTest)
             this.$router.push({path: '/dashboard'})
 
@@ -116,6 +116,10 @@ export default {
         window.removeEventListener("resize", this.resize);
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         toDate(timeString){
             const waktu = new Date(timeString)
             const date = this.day[waktu.getDay()] + ", " + ('00'+waktu.getDate()).slice(-2) + " " + this.month[waktu.getMonth()] + " " + waktu.getFullYear()
@@ -163,7 +167,6 @@ export default {
                     axios.defaults.headers.common['Authorization'] = '';
                     this.$cookies.remove('refresh_token')
                     this.$cookies.remove('data_registrant')
-                    this.$cookies.remove('current_test')
                     this.$cookies.remove('current_section')
                     this.$cookies.remove('start_time')
 
@@ -204,9 +207,9 @@ export default {
                     return db - da;
                 });
             }else{
-                this.now = this.sectionList[0].id-1
+                if(this.sectionList)this.now = this.sectionList[0].id-1
             }
-            if(this.now==this.sectionList[this.sectionList.length-1].id){
+            if(this.sectionList && this.now==this.sectionList[this.sectionList.length-1].id){
                 //update test result
                 let dataReg = this.$cookies.get('data_registrant')
                 let res = -1
@@ -231,8 +234,15 @@ export default {
                         "result": data_result.result
                     })
                     .then((response) => {
-                        this.$cookies.remove('current_test')
-                        window.location = '/dashboard'
+                        axios.post(this.port+'/exam_session/updateCurrentTest',{
+                            "id": dataReg.exam_session,
+                            "test_id": 0
+                        })
+                        .then((response) => {
+                            window.location = '/dashboard'
+                        }).catch( error => { 
+                            console.log('error: ' + error) 
+                        });
                     }).catch( error => { 
                         console.log('error: ' + error) 
                     })
@@ -274,7 +284,7 @@ export default {
             }
         },
     },
-    mounted(){
+    async mounted(){
         this.resize()
         // console.log(this.$cookies.get('refresh_token'));
         // this.$store.commit('refresh_access_token', this.$cookies.get('refresh_token'));
@@ -286,8 +296,7 @@ export default {
             this.tenggat = this.toDate(data.finish_date)
         })
 
-        this.id_tes = this.$cookies.get('current_test')
-        if(this.id_tes) this.id_tes = this.id_tes.id
+        this.id_tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         axios
         .get(this.port+`/section/all/${this.id_tes}`)
         .then(({data}) => (

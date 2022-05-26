@@ -88,6 +88,10 @@ export default {
         }
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         doTest(){
             let age =  7 * 24 * 60 * 60 * 1000;
             this.$cookies.set('start_time', Date.now())
@@ -110,10 +114,9 @@ export default {
     created(){
         this.$emit('updateJudul', this.judulHalaman)
     },
-    mounted(){
-        this.testId = this.$cookies.get('current_test').id
+    async mounted(){
+        this.testId = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         this.sectionId = this.$cookies.get('current_section').id
-        console.log(this.sectionId)
         axios
         .get(this.port+'/section/'+this.sectionId)
         .then(({data}) => (

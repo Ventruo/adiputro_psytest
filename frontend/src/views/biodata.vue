@@ -839,7 +839,6 @@ export default {
     },
     methods: {
         kembali(){
-            this.$cookies.remove('current_test')
             this.$router.go(-1) 
         },
         signChange(e){
