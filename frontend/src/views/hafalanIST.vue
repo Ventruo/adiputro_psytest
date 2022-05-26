@@ -50,7 +50,8 @@
                 </div>
             </div>
             <div class="flex justify-center mb-5">
-                <img src="http://24.media.tumblr.com/tumblr_lq6exy9MTt1qk78leo1_400.gif" alt="">
+                <!-- <img src="http://24.media.tumblr.com/tumblr_lq6exy9MTt1qk78leo1_400.gif" alt=""> -->
+                <img src="../assets/gif_hafalan_ist.gif" alt="" class="w-full md:w-1/2 xl:w-1/2">
             </div>
             <!-- <div class="flex justify-end">
                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai()">
@@ -170,6 +171,10 @@ export default {
         }
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },        
         setChanged(state){
             this.changed = state
         },
@@ -203,8 +208,37 @@ export default {
                 this.progress(true)
             }
             else{
-                clearInterval(this.waktu)                        
-                this.submitJawaban()
+                var isi = 0
+                this.jawaban.forEach(e => { if (e != null) isi++; });
+                if(isi!=this.jumSoal){
+                    Swal.fire({
+                        title: 'Ada Pertanyaan yang Belum Dijawab!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Tetap Submit'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            clearInterval(this.waktu)
+                            this.submitJawaban()
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        title: 'Submit This Task?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            clearInterval(this.waktu)
+                            this.submitJawaban()
+                        }
+                    });
+                }
             }
             this.gantiPilihanJawaban()
         },
@@ -226,8 +260,8 @@ export default {
             var width = ((this.noSoal/this.jumSoal)*100)
             elements.style.width = width +'%'
             
-            // if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
-            // else $('#nextBtn').text('Submit')
+            if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
+            else $('#nextBtn').text('Submit')
 
             if(this.changed) this.uploadTempAnswers();
 
@@ -386,9 +420,9 @@ export default {
         clearInterval(this.waktu)
     },
 
-    mounted(){
+    async mounted(){
         this.section_id = this.$cookies.get('current_section').id;
-        let tes = this.$cookies.get('current_test').id
+        let tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         let nama_tes = ""
         let datas = this.$cookies.get("data_registrant");
         this.email = datas.email;

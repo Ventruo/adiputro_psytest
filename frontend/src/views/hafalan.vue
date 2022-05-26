@@ -52,7 +52,8 @@
                             Cara mengerjakannya sama seperti tadi, hanya kotak yang di atas sekarang dihilangkan. Silahkan dikerjakan seingatnya saja.
                 </div>
                 <div class="flex justify-center mb-3">
-                    <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt="">
+                    <!-- <img src="https://media1.giphy.com/media/LXHJRRjnviw7e/giphy.gif" alt=""> -->
+                    <img src="../assets/gif_hafalan_2.gif" alt="" class="w-3/4 md:w-1/2 xl:w-1/3">
                 </div>
                 <div class="flex justify-end">
                     <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full px-5 py-2 font-bold text-xl" @click.prevent="mulai2()">
@@ -191,6 +192,10 @@ export default {
         }
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         setChanged(state){
             this.changed = state
         },
@@ -490,7 +495,7 @@ export default {
         clearInterval(this.waktu)
     },
 
-    mounted(){
+    async mounted(){
         this.pedoman = [
             [
                 ["Escort","703"],
@@ -530,7 +535,7 @@ export default {
         ]
 
         this.section_id = this.$cookies.get('current_section').id;
-        let tes = this.$cookies.get('current_test').id
+        let tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         let nama_tes = ""
         let datas = this.$cookies.get("data_registrant");
         this.email = datas.email;

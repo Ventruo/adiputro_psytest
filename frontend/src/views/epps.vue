@@ -133,6 +133,10 @@ export default {
         }
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         setChanged(state){
             this.changed = state
         },
@@ -346,12 +350,12 @@ export default {
         // clearInterval(this.countdownTimer)
     },
 
-    mounted(){
+    async mounted(){
         this.section_id = this.$cookies.get('current_section').id;
-        this.test_id = this.$cookies.get('current_test').id;
         let datas = this.$cookies.get("data_registrant");
         this.email = datas.email;
         this.exam_session = datas.exam_session;
+        this.test_id = await this.getCurrentTest(this.exam_session);
 
         let tests = datas.test;
         for (let i = 0; i < tests.length; i++) {

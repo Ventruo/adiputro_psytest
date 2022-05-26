@@ -64,23 +64,49 @@
             </div>
 
             <div class="text-white p-5 h-5/6 relative">
-                <div class="flex justify-center h-full">
-                    <label for="gambar" class="rounded-md w-1/2 h-1/2 min-h-[20rem] my-3 flex justify-center items-center text-center 
-                                font-semibold text-xl"
-                                :class="{
-                                    'border-dashed border-4 border-gray-400 border-inset': url==null
-                                }">
-                        <img v-if="url!=null" :src="url" alt="" class="h-auto w-auto max-h-full max-w-full">
-                        <div v-else>
-                            <p>Upload kertas buram anda</p>
-                            <p>(Klik disini)</p>
-                        </div>
-                    </label>
-                    <input type="file" name="gambar" id="gambar" class="hidden" @change="imageChange">
+                <div class="flex justify-center gap-2 h-full">
+                    <div class="w-1/2">
+                        <label for="gambar" class="rounded-md h-1/2 min-h-[20rem] my-3 flex justify-center items-center text-center 
+                                    font-semibold text-xl"
+                                    :class="{
+                                        'border-dashed border-4 border-gray-400 border-inset': url1==null
+                                    }">
+                            <img v-if="url1!=null" :src="url1" alt="" class="h-auto w-auto max-h-full max-w-full">
+                            <div v-else>
+                                <p class="mb-2">Upload kertas buram anda</p>
+                                <p>(Klik disini)</p>
+                            </div>
+                        </label>
+                        <button class="bg-sky-300 text-primary-1000 hover:text-white hover:bg-primary-600 duration-300 text-white px-2 py-1 w-full rounded-md" @click="this.url1=null">
+                            <i class="fa fa-trash-alt mr-2 text-xl"></i>
+                            <span class="font-bold text-xl">Hapus</span>
+                        </button>
+                        <input type="file" name="gambar" id="gambar" class="hidden" @change="imageChange">
+                    </div>
+
+                    <div class="w-1/2">
+                        <label for="gambar2" class="rounded-md h-1/2 min-h-[20rem] my-3 flex justify-center items-center text-center 
+                                    font-semibold text-xl"
+                                    :class="{
+                                        'border-dashed border-4 border-gray-400 border-inset': url2==null
+                                    }">
+                            <img v-if="url2!=null" :src="url2" alt="" class="h-auto w-auto max-h-full max-w-full">
+                            <div v-else>
+                                <p>Upload kertas buram anda</p>
+                                <p class="mb-2">(Opsional)</p>
+                                <p>(Klik disini)</p>
+                            </div>
+                        </label>
+                        <button class="bg-sky-300 text-primary-1000 hover:text-white hover:bg-primary-600 duration-300
+                                        text-white px-2 py-1 w-full rounded-md" @click="this.url2=null">
+                            <i class="fa fa-trash-alt mr-2 text-xl"></i>
+                            <span class="font-bold text-xl">Hapus</span>
+                        </button>
+                        <input type="file" name="gambar2" id="gambar2" class="hidden" @change="imageChange2">
+                    </div>
                 </div>
 
-                <button id="submit_new_question" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white 
-                                                        hover:bg-primary-700 duration-300 ring-2 ring-inset ring-sky-300 hover:ring-primary-200">
+                <button id="submit_new_question" class="absolute bottom-0 right-0 mr-5 rounded-lg px-10 py-2 bg-sky-300 text-primary-1000 hover:text-white hover:bg-primary-600 duration-300">
                                                         Upload</button>
 
             </div>
@@ -89,11 +115,16 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    components: {
+        axios
+    },
     data() {
         return {
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
-            url: null
+            url1: null,
+            url2: null
         }
     },
     props: {
@@ -101,12 +132,18 @@ export default {
     },
     methods: {
         keSection(tes){
-            this.$cookies.set('current_test', {"id":tes.id})
-            if(tes.id==19){
-                this.$router.push({path: '/biodata'})
-            }else{
-                this.$router.push({path: '/section'})
-            }
+            axios.post('/exam_session/updateCurrentTest',{
+                "id": this.$cookies.get('data_registrant').exam_session,
+                "test_id": tes.id
+            }).then((response) => {
+                if(tes.id==19){
+                    this.$router.push({path: '/biodata'})
+                }else{
+                    this.$router.push({path: '/section'})
+                }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         openModal(){
             $('#modalBuram').fadeIn("slow");
@@ -121,7 +158,18 @@ export default {
             if (input.files) {
                 var reader = new FileReader();
                 reader.onload = (e) => {
-                    this.url = e.target.result;
+                    this.url1 = e.target.result;
+                }
+                this.image=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+            }
+        },
+        imageChange2(e){
+            var input = e.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                    this.url2 = e.target.result;
                 }
                 this.image=input.files[0];
                 reader.readAsDataURL(input.files[0]);
