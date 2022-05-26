@@ -6,6 +6,13 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
+const GoogleDriveService = require("../helpers/GoogleDriveService");
+
+const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
+const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
+const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
+const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
+const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
 class RegistrantController {
   async getOne(req, res) {
@@ -23,10 +30,9 @@ class RegistrantController {
           return;
         }
 
-        if(registrant.biodata!="")
+        if (registrant.biodata != "")
           registrant.biodata = JSON.parse(registrant.biodata);
-        else
-          registrant.biodata = {}
+        else registrant.biodata = {};
         success_response(res, registrant, "Get One Data Successful!");
       }
     );
@@ -35,28 +41,29 @@ class RegistrantController {
   async getAll(req, res) {
     console.log("Getting All Registrant Data...");
 
-    Registrant.findAll(
+    Registrant
+      .findAll
       // { where: { status: 1 } }
-      ).then((registrants) => {
-      if (registrants.length == 0) {
-        data_not_found_response(res);
-        return;
-      }
+      ()
+      .then((registrants) => {
+        if (registrants.length == 0) {
+          data_not_found_response(res);
+          return;
+        }
 
-      for (const key in registrants) {
-        if(registrants[key].biodata!="")
-          registrants[key].biodata = JSON.parse(registrants[key].biodata);
-        else
-          registrants[key].biodata = {}
-      }
-      success_response(res, registrants, "Get All Data Successful!");
-    });
+        for (const key in registrants) {
+          if (registrants[key].biodata != "")
+            registrants[key].biodata = JSON.parse(registrants[key].biodata);
+          else registrants[key].biodata = {};
+        }
+        success_response(res, registrants, "Get All Data Successful!");
+      });
   }
 
   async create(req, res) {
     console.log("Creating A New Registrant Data...");
 
-    if (!validate_required_columns(req, Registrant, ["status"])) {
+    if (!validate_required_columns(req, Registrant, ["status"]) || !req.file) {
       missing_param_response(res);
       return;
     }
@@ -66,6 +73,22 @@ class RegistrantController {
         unique_id_response(res);
         return;
       }
+
+      // Upload Tanda_Tangan
+      const googleDriveService = new GoogleDriveService(
+        driveClientId,
+        driveClientSecret,
+        driveRedirectUri,
+        driveRefreshToken
+      );
+
+      let file = await this.uploadTandaTangan(
+        googleDriveService,
+        req.file,
+        req.body.email
+      );
+
+      req.body.biodata["tanda_tangan"] = file.data.id;
 
       const new_registrant = await Registrant.create({
         email: req.body.email,
@@ -115,6 +138,41 @@ class RegistrantController {
       }
       return true;
     });
+  }
+
+  async uploadTandaTangan(googleDriveService, uploadFile, email) {
+    // Get applicant folder
+    let subfolders = await googleDriveService
+      .searchInParent(driveStorageID)
+      .catch((error) => {
+        console.error(error);
+        return null;
+      });
+    let subfolder = subfolders.filter(
+      (subfolder) => subfolder.name == "TANDA_TANGAN"
+    )[0];
+
+    let ext = uploadFile.originalname.split(".");
+    ext = ext[ext.length - 1];
+
+    let file = await googleDriveService
+      .saveFile(
+        "Registrant_" + email,
+        uploadFile.buffer,
+        uploadFile.mimetype,
+        subfolder.id
+      )
+      .catch((error) => {
+        console.error(error);
+      });
+
+    await googleDriveService
+      .updatePermission(file.data.id, "reader", "anyone")
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return file;
   }
 }
 
