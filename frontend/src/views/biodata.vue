@@ -873,7 +873,7 @@ export default {
         },
         submitForm(e){
             let data = Object.fromEntries(new FormData(e.target).entries());
-            console.log(data)
+            console.log(e)
             let res = []
             let res2 = {}
             let notInclude = ["imgSign","keadaan","sakit_keras","cacat","kapan","menikah","nama_suami_istri","nama_anak","gaji_diperoleh",
@@ -888,9 +888,9 @@ export default {
             })
             // console.log(res)
             
-            let formData = {}
+            let formData = new FormData()
             for (let i = 0; i < res.length; i++) {
-                formData[res[i][0]] = res[i][1]
+                formData.append(res[i][0], res[i][1])
             }
 
             let kesehatan = {
@@ -899,16 +899,16 @@ export default {
                 "sakit_keras": res2.sakit_keras,
                 "kapan": res2.kapan,
             }
-            formData.kesehatan = kesehatan
+            formData.append("kesehatan", kesehatan)
 
             let nikah = {
                 "menikah": res2.menikah,
                 "nama_suami_istri": res2.nama_suami_istri,
                 "nama_anak": res2.nama_anak,
             }
-            formData.status_nikah = nikah
-
-            formData.pendidikan = this.pendidikan
+            formData.append("status_nikah", nikah)
+            
+            formData.append("pendidikan", this.pendidikan)
 
             let kel = {
                 orang_tua: this.keluarga[0],
@@ -916,20 +916,20 @@ export default {
                 anak_kandung: this.keluarga[2],
                 saudara_kandung: this.keluarga[3],
             }
-            formData.keluarga = kel
+            formData.append("keluarga", kel)
 
             let riwayats = {
                 "riwayat": this.riwayat,
                 "gaji_diperoleh": res2.gaji_diperoleh,
                 "alasan_berhenti": res2.alasan_berhenti,
             }
-            formData.riwayat_pekerjaan = riwayats
+            formData.append("riwayat_pekerjaan", riwayats)
 
-            formData.training_kursus = this.training
+            formData.append("training_kursus", this.training)
 
-            formData.organisasi = this.organisasi
+            formData.append("organisasi", this.organisasi)
 
-            formData.bahasa_dikuasai = this.bahasa
+            formData.append("bahasa_dikuasai", this.bahasa)
 
             let keterangan_ker = {
                 "lama_berhenti_kerja": res2.lama_berhenti_kerja,
@@ -941,82 +941,86 @@ export default {
                     "jabatan": res2.kenalan_jabatan
                 }, 
             }
-            formData.keterangan_kerja = keterangan_ker
+            formData.append("keterangan_kerja",keterangan_ker)
 
             let kendaraans = {
                 "keterangan": res2.kendaraan_ket,
                 "kepemilikan": res2.kendaraan_milik
             }
-            formData.kendaraan = kendaraans
+            formData.append("kendaraan", kendaraans)
 
-            formData.prestasi = this.prestasi
+            formData.append("prestasi", this.prestasi)
 
-            formData.seni_dikuasai = {"jenis": res2.seniDikuasai}
+            formData.append("seni_dikuasai", {"jenis": res2.seniDikuasai})
 
-            formData.orang_terdekat = this.orang_terdekat
+            formData.append("orang_terdekat", this.orang_terdekat)
 
-            formData.tanggal_biodata = res2.kota_ttd+", "+this.getDate()
+            formData.append("tanggal_biodata", res2.kota_ttd+", "+this.getDate())
 
-            console.log(formData)
+            var fileLamaran = e.target[127].files[0]
+            if (fileLamaran!=undefined)
+                fileLamaran.originalname = fileLamaran.name
 
-            let formData2 = {
-                updating_email: this.email,
-                biodata: formData
-            }
-
-            // var fileLamaran = e.target[16].files[0]
-            // if (fileLamaran!=undefined)
-            //     fileLamaran.originalname = fileLamaran.name
-            // formData.append('lampiran',fileLamaran)
-
-            // $('#spinner-modal').fadeIn("slow");
+            formData.append("updating_email", this.email)
+            formData.append("tanda_tangan", fileLamaran)
+            // let formData2 = {
+            //     'updating_email': this.email,
+            //     'biodata': formData,
+            //     'tanda_tangan': fileLamaran,
+            // }
+            // let formData2 = new FormData()
+            // formData2.append('updating_email', this.email)
+            // formData2.append('biodata', formData)
+            // formData2.append('tanda_tangan', fileLamaran)
             
-            // let data_result = null
-            // axios.post(this.port+'/registrant/update', formData2)
-            // .then((response) => {
-            //     if (response.status==200){
-            //         axios
-            //         .get(this.port+`/test_result/${this.id_tes_result}`)
-            //         .then(({data}) => (
-            //             data_result = data,
-            //             axios.post(this.port+'/test_result/update',{
-            //                 "updating_id": data_result.id,
-            //                 "test_id": 19,
-            //                 "exam_session": this.exam_session,
-            //                 "start_date": data_result.start_date,
-            //                 "finish_date": Date.now(),
-            //                 "status": 1,
-            //                 "result": formData
-            //             })
-            //             .then((response) => {
-            //                 console.log(response)
-            //                 $('#spinner-modal').fadeOut("slow");
-            //                 this.$cookies.remove("current_test")
-            //                 Swal.fire(
-            //                     'Sukses!',
-            //                     'Biodata berhasil disimpan.',
-            //                     'success'
-            //                 )
-            //                 .then(function(){
-            //                     window.location = '/dashboard'
-            //                 })
-            //             }).catch( error => { 
-            //                 console.log('error: ' + error) 
-            //             })
-            //         )).catch( error => { 
-            //             console.log('error: ' + error) 
-            //         })
-            //     }else{
-            //         throw response
-            //     }
-            // }).catch( error => {
-            //     $('#spinner-modal').fadeOut("slow");
-            //     Swal.fire(
-            //         'Warning!',
-            //         error.response.data,
-            //         'warning'
-            //     )
-            // });
+            $('#spinner-modal').fadeIn("slow");
+            
+            let data_result = null
+            axios.post(this.port+'/registrant/update', formData)
+            .then((response) => {
+                if (response.status==200){
+                    axios
+                    .get(this.port+`/test_result/${this.id_tes_result}`)
+                    .then(({data}) => (
+                        data_result = data,
+                        axios.post(this.port+'/test_result/update',{
+                            "updating_id": data_result.id,
+                            "test_id": 19,
+                            "exam_session": this.exam_session,
+                            "start_date": data_result.start_date,
+                            "finish_date": Date.now(),
+                            "status": 1,
+                            "result": formData
+                        })
+                        .then((response) => {
+                            console.log(response)
+                            $('#spinner-modal').fadeOut("slow");
+                            this.$cookies.remove("current_test")
+                            Swal.fire(
+                                'Sukses!',
+                                'Biodata berhasil disimpan.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/dashboard'
+                            })
+                        }).catch( error => { 
+                            console.log('error: ' + error) 
+                        })
+                    )).catch( error => { 
+                        console.log('error: ' + error) 
+                    })
+                }else{
+                    throw response
+                }
+            }).catch( error => {
+                $('#spinner-modal').fadeOut("slow");
+                Swal.fire(
+                    'Warning!',
+                    error.response.data,
+                    'warning'
+                )
+            });
         },
     },
     mounted() {
