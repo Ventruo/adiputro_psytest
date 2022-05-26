@@ -7,6 +7,7 @@ const xlsxFile = require("read-excel-file/node");
 const SectionResult = require("../../models/SectionResult");
 const QuestionResult = require("../../models/QuestionResult");
 const Question = require("../../models/Question");
+const EPPSData = require("../../models/EPPSData");
 
 async function calculate_EPPS_test(test_type, testres, res) {
   SectionResult.findOne({
@@ -73,8 +74,10 @@ async function process_EPPS(excel_path, sheet, answers, res, testres) {
     }
     // console.log(norms_lookup[1]);
 
-    // TODO: Tanya Kode dapet darimana
-    let kode_registrant = 1;
+    let epps_data = await EPPSData.findOne({
+      where: { test_result_id: testres.id },
+    });
+    let kode_registrant = epps_data.kode_epps;
 
     // ach -> 6,11,16,21,,26,31,36,41,46,51,56,61,66,71 -> 2,3,4,5,76,77,78,79,80,151,152,153,154,155
     // def -> 2,12,17,22,27,32,37,42,47,52,57,62,67,72  -> 6,8,9,10,81,82,83,84,85,156,157,158,159,160
