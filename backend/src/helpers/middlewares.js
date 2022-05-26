@@ -1,26 +1,37 @@
 const jwt = require("jsonwebtoken");
+const ExamSession = require("../models/ExamSession");
 const access_key = process.env.ACCESS_KEY || "ini access key";
 const clock_key = process.env.CLOCK_TOKEN || "ini clock key";
 
 function authenticateSocketToken(socket, next) {
-  if (socket.handshake.query && socket.handshake.query.token) {
-    jwt.verify(
-      socket.handshake.query.token,
-      access_key,
-      function (err, decoded) {
-        if (err) {
-          socket.auth = false;
-          return next(new Error("Authentication error"));
+  if (
+    socket.handshake.query &&
+    socket.handshake.query.token &&
+    socket.handshake.query.user_key
+  ) {
+    const { session_id } = jwt.decode(socket.handshake.query.user_key);
+    // console.log(session_id);
+    ExamSession.findOne({ where: { id: session_id } }).then((session) => {
+      // console.log(session);
+      jwt.verify(
+        socket.handshake.query.token, //access
+        access_key + session.auth_token, //token + user id
+        function (err, decoded) {
+          if (err) {
+            socket.auth = false;
+            console.log(err.message);
+            return next(new Error("Authentication error"));
+          }
+          socket.decoded = decoded;
+          socket.auth = true;
+          socket.emit("authenticated", {});
+          next();
         }
-        socket.decoded = decoded;
-        socket.auth = true;
-        socket.emit("authenticated", {});
-        next();
-      }
-    );
+      );
+    });
   } else {
     socket.auth = false;
-    // socket.emit("unauthorized", {});
+    socket.emit("unauthorized", {});
   }
 }
 

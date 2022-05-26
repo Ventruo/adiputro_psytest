@@ -23,10 +23,10 @@ const io = require("socket.io")(httpServer, {
   allowEIO3: true,
 });
 
-io.use(authenticateSocketToken);
-
 function initSocket() {
   console.log("RUNNING WEB SOCKET");
+
+  io.use(authenticateSocketToken);
   io.listen(process.env.SOCKET_PORT || 5501);
 }
 

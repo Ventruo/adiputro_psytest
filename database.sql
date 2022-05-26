@@ -132,6 +132,7 @@ insert  into `exam_session`(`id`,`email`,`start_date`,`finish_date`,`duration`,`
 (29,'b@b.com','2022-05-23 23:00:00','2022-06-29 23:00:00',53280,'7JwTKjcT8knfGPNLzHP8u5','513CjHcnyf8czxmzCVVCAc',0,0,0,1,'2022-05-24 09:31:18','2022-05-24 09:51:03'),
 (33,'c@c.com','2022-05-24 23:00:00','2022-05-31 23:00:00',10080,'9bHwhKxJdNNAKmAVhFRfCv','wY9eh8zhio5zKhYis7rmbc',0,0,17,1,'2022-05-25 15:35:54','2022-05-26 08:05:52');
 
+
 /*Table structure for table `exam_session_test` */
 
 DROP TABLE IF EXISTS `exam_session_test`;
@@ -4826,7 +4827,7 @@ CREATE TABLE `section_result` (
 /*Data for the table `section_result` */
 
 insert  into `section_result`(`id`,`section_id`,`test_result_id`,`exam_session`,`start_date`,`finish_date`,`num_correct`,`status`,`createdAt`,`updatedAt`) values 
-(1,3,0,1,'2022-01-28 08:00:00','2022-01-28 11:00:00',2,1,'2022-01-30 19:23:37','2022-02-02 07:48:12'),
+(1,3,0,1,'2022-05-05 08:00:00','2022-05-05 10:00:00',2,1,'2022-01-30 19:23:37','2022-02-02 07:48:12'),
 (2,1,0,2,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
 (3,2,0,3,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
 (4,2,0,1,'2022-01-23 19:23:29','2022-01-30 19:23:32',0,1,'2022-01-30 19:23:37','2022-01-30 19:23:37'),
