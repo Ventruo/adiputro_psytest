@@ -112,6 +112,7 @@
 import axios from 'axios'
 import TextQuestion from '../components/views/textQuestion.vue'
 import AnswerButton from '../components/answerButton.vue'
+import { socket, buildSocket } from '../utilities/network.js'
 
 export default {
     components: {
@@ -123,6 +124,7 @@ export default {
             judulHalaman: '',
             noSoal: 1,
             jumSoal: 19,
+            durasi: 0,
             menit: 1,
             detik: 0,
             waktu: null,
@@ -148,35 +150,27 @@ export default {
         },
          mulai(){
             this.isStarted = true
-            this.waktu = setInterval(() => {
-                this.detik--
-                if (this.detik<0){
-                    this.detik = 59
-                    this.menit--
-                }
+            
+            // Create Section Ongoing to indicate Ongoing Section
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": this.section_id,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": this.durasi,
+            })
+            .then((response) => {
                 
-                if (this.menit<0){
-                    this.detik = 0
-                    this.menit = 0
-                    clearInterval(this.waktu)
-                    
-                    Swal.fire({
-                        title: 'Waktu Habis...',
-                        icon: 'warning',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Kembali ke Dashboard'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.submitJawaban()
-                        }
-                    });
-                } 
-            }, 1000)
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         nextSoal(){
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
+                
+                if(this.changed) this.uploadTempAnswers();
 
                 this.progress(true)
             }else{
@@ -221,6 +215,8 @@ export default {
                 
                 this.progress(false)
             }
+
+            if(this.changed) this.uploadTempAnswers();
         },
         lompatSoal(idx){
             this.noSoal = idx
@@ -230,6 +226,8 @@ export default {
             
             if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
             else $('#nextBtn').text('Submit')
+
+            if(this.changed) this.uploadTempAnswers();
         },
         progress(maju){
             const elements = document.getElementById("progress")
@@ -288,22 +286,69 @@ export default {
                         email: this.email
                     })
                     .then((response) => {
-                        this.$cookies.remove('current_section')
-                        this.$cookies.remove("start_time")
-                        $('#spinner-modal').fadeOut("slow")
-                        Swal.fire(
-                            'Submitted!',
-                            'Task Successfully Submitted.',
-                            'success'
-                        )
-                        .then(function(){
-                            window.location = '/section'
+                        axios.post(this.port+'/section_ongoing/stopSection',{
+                            section_id: this.section_id,
+                            exam_session: this.exam_session
                         })
+                        .then((response) => {
+                            this.$cookies.remove('current_section')
+                            this.$cookies.remove("start_time")
+                            $('#spinner-modal').fadeOut("slow")
+                            Swal.fire(
+                                'Submitted!',
+                                'Task Successfully Submitted.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/section'
+                            })
+                        })
+                        // .catch( error => 
+                        //     console.log('error: ' + error) 
+                        // })
                     })
                     // .catch( error => 
                     //     console.log('error: ' + error) 
                     // })
                 })
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        uploadTempAnswers(){
+            this.jawabanTemp = "";
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "";
+                this.jawabanTemp += ";";
+            }
+
+            axios.post(this.port+'/section_ongoing/updateTempAnswers',{
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "temp_answers": this.jawabanTemp,
+            })
+            .then((response) => {
+                this.changed = false;
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        getTempAnswers(){
+            axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
+            .then((data) => {
+                if(data && data.data){
+                    data = data.data.filter((obj) => {
+                        return obj.start_status == 1;
+                    })[0];
+                    
+                    let temp = data.temp_answers.split(";");
+                    let temp_answers = [];
+                    for(let i = 0; i < temp.length; i++){
+                        temp_answers[i] = temp[i] ;
+                    }
+
+                    this.jawaban = temp_answers
+                }
             }).catch( error => { 
                 console.log('error: ' + error) 
             });
@@ -321,12 +366,17 @@ export default {
 
     mounted(){
         this.section_id = this.$cookies.get('current_section').id;
+        // let tes = this.$cookies.get('current_test').id;
+        let datas = this.$cookies.get("data_registrant");
+        this.email = datas.email;
+        this.exam_session = datas.exam_session;
 
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
             this.pertanyaan = data,
             this.menit = this.pertanyaan[0]["section"]["duration"],
+            this.durasi = this.menit,
             this.jawaban = Array(19),
             this.progress(true)
         ))
@@ -344,6 +394,41 @@ export default {
             this.email = datas.email;
             this.exam_session = datas.exam_session;
         })
+
+        this.getTempAnswers();
+
+        // Build socket
+        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // console.log(access_token);
+        // console.log(user_key)
+        buildSocket(access_token, user_key).then((socket) => {
+            socket.on("test.tick", (data) => {
+                if(data.section_id == this.section_id){
+                    this.isStarted = true
+                    this.duarsi = data.total_duration;
+                    var minutes = Math.floor(data.countdown / 60);
+                    var seconds = data.countdown - minutes * 60;
+
+                    this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+                    this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+                    if(data.countdown <= 0){
+                        Swal.fire({
+                            title: 'Waktu Habis...',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Kembali ke Dashboard',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.submitJawaban()
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
         
         let thi = this
         $('body').keydown(function(event) {

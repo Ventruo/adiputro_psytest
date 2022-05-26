@@ -139,6 +139,7 @@
 import axios from 'axios'
 import TextQuestion from '../components/views/textQuestion.vue'
 import AnswerButton from '../components/answerButton.vue'
+import { socket, buildSocket } from '../utilities/network.js'
 
 export default {
     components: {
@@ -151,6 +152,7 @@ export default {
             noSoal: 1,
             jumSoal: 0,
             jumChoice: 0,
+            durasi: 0,
             menit: 0,
             detik: 0,
             waktu: null,
@@ -179,51 +181,29 @@ export default {
         mulai(){
             // this.jumSoal = this.pertanyaan.length
             this.state = 1
-            this.menit = 0
-            this.detik = 3
             this.gantiPilihanJawaban()
-            this.waktu = setInterval(() => {
-                this.detik--
-                if (this.detik<0){
-                    this.detik = 59
-                    this.menit--
-                }
+
+            // Create Section Ongoing to indicate Ongoing Section
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": parseInt(this.section_id)+1000,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": 3,
+            })
+            .then((response) => {
                 
-                if (this.menit<0){
-                    this.menit = 3
-                    this.detik = 0
-                    this.state = 2
-                    clearInterval(this.waktu)
-                    this.mulai2()
-                } 
-            }, 1000)
-        },
-        mulai2(){
-            this.noSoal = 1
-            this.gantiPilihanJawaban()
-            this.progress(true)
-            if(this.menit!=-99){
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
-                    
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 3
-                        clearInterval(this.waktu)
-                        this.submitJawaban()
-                    } 
-                }, 1000)
-            }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         nextSoal(){
             // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
+
+                if(this.changed) this.uploadTempAnswers();
 
                 this.progress(true)
             }
@@ -269,6 +249,9 @@ export default {
 
                 this.progress(false)
             }
+
+            if(this.changed) this.uploadTempAnswers();
+
             this.gantiPilihanJawaban()
         },
         lompatSoal(idx){
@@ -279,6 +262,8 @@ export default {
             
             if (this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
             else $('#nextBtn').text('Submit')
+
+            if(this.changed) this.uploadTempAnswers();
 
             this.gantiPilihanJawaban()
         },
@@ -345,17 +330,26 @@ export default {
                         email: this.email
                     })
                     .then((response) => {
-                        this.$cookies.remove('current_section')
-                        this.$cookies.remove("start_time")
-                        $('#spinner-modal').fadeOut("slow")
-                        Swal.fire(
-                            'Submitted!',
-                            'Task Successfully Submitted.',
-                            'success'
-                        )
-                        .then(function(){
-                            window.location = '/section'
+                        axios.post(this.port+'/section_ongoing/stopSection',{
+                            section_id: this.section_id,
+                            exam_session: this.exam_session
                         })
+                        .then((response) => {
+                            this.$cookies.remove('current_section')
+                            this.$cookies.remove("start_time")
+                            $('#spinner-modal').fadeOut("slow")
+                            Swal.fire(
+                                'Submitted!',
+                                'Task Successfully Submitted.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/section'
+                            })
+                        })
+                        // .catch( error => 
+                        //     console.log('error: ' + error) 
+                        // })
                     })
                 })
             }).catch( error => { 
@@ -377,6 +371,44 @@ export default {
                 else if(pilihan=='d'&&this.jumChoice>=4) komponen.keyChoose(pilihan)
                 else if(pilihan=='e'&&this.jumChoice==5) komponen.keyChoose(pilihan)
             }
+        },
+        uploadTempAnswers(){
+            this.jawabanTemp = "";
+            for (let i = 0; i < this.jumSoal; i++) {
+                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "";
+                this.jawabanTemp += ";";
+            }
+
+            axios.post(this.port+'/section_ongoing/updateTempAnswers',{
+                "section_id": this.section_id,
+                "exam_session": this.exam_session,
+                "temp_answers": this.jawabanTemp,
+            })
+            .then((response) => {
+                this.changed = false;
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        getTempAnswers(){
+            axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
+            .then((data) => {
+                if(data && data.data){
+                    data = data.data.filter((obj) => {
+                        return obj.start_status == 1;
+                    })[0];
+                    
+                    let temp = data.temp_answers.split(";");
+                    let temp_answers = [];
+                    for(let i = 0; i < temp.length; i++){
+                        temp_answers[i] = temp[i] ;
+                    }
+
+                    this.jawaban = temp_answers
+                }
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         }
     },
 
@@ -392,6 +424,9 @@ export default {
         this.section_id = this.$cookies.get('current_section').id;
         let tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         let nama_tes = ""
+        let datas = this.$cookies.get("data_registrant");
+        this.email = datas.email;
+        this.exam_session = datas.exam_session;
         axios
         .get(this.port+'/test/'+tes)
         .then(({data}) => {
@@ -405,6 +440,7 @@ export default {
         .then(({data}) => {
             this.pertanyaan = data
             this.menit = 3
+            this.durasi = this.menit;
             this.jawaban = []
             this.gantiPilihanJawaban()
             this.jumSoal = this.pertanyaan.length
@@ -423,6 +459,71 @@ export default {
             this.email = datas.email;
             this.exam_session = datas.exam_session;
         })
+
+
+        // Build socket
+        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // console.log(access_token);
+        // console.log(user_key)
+        buildSocket(access_token, user_key).then((socket) => {
+            socket.on("test.tick", (data) => {
+                // console.log("socket", socket)
+                // console.log(data);
+                if(data.section_id == parseInt(this.section_id)+1000 && this.state == 0){
+                    this.state = 1
+                    this.gantiPilihanJawaban()
+                }
+                else if(data.section_id == this.section_id && this.state == 0){
+                    this.state = 2
+                    this.getTempAnswers();
+                    this.noSoal = 1
+                    this.gantiPilihanJawaban()
+                    this.progress(true)
+                }
+
+                this.duarsi = data.total_duration;
+                var minutes = Math.floor(data.countdown / 60);
+                var seconds = data.countdown - minutes * 60;
+
+                this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+                this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+
+                // If State is Finished
+                if(data.countdown <= 0){
+                    if(this.state == 1){
+                        axios.post(this.port+'/section_ongoing/create',{
+                            "section_id": this.section_id,
+                            "exam_session_id": this.exam_session,
+                            "start_status": 1,
+                            "start_time": Date.now(),
+                            "duration": 3,
+                        })
+                        .then((response) => {
+                            this.state = 2
+                            this.noSoal = 1
+                            this.gantiPilihanJawaban()
+                            this.progress(true)
+                        }).catch( error => { 
+                            console.log('error: ' + error) 
+                        });
+                    }else{
+                        Swal.fire({
+                            title: 'Waktu Habis...',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Kembali ke Dashboard',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.submitJawaban()
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
 
         let thi = this
         $('body').keydown(function(event) {

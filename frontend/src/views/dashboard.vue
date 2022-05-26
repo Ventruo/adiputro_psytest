@@ -146,6 +146,7 @@ export default {
                     this.$cookies.remove('data_registrant')
                     this.$cookies.remove('current_section')
                     this.$cookies.remove("start_time")
+                    localStorage.clear();
 
                     window.location="/"
                 }
