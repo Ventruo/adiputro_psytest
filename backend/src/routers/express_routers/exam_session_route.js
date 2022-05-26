@@ -12,6 +12,10 @@ router.post(
   "/refresh_test_token",
   controller.refresh_test_token.bind(controller)
 );
+router.post(
+  "/updateCurrentTest",
+  controller.updateCurrentTest.bind(controller)
+);
 
 router.get("/:id", controller.getOne);
 router.get("/getbyemail/:email", controller.getByEmail);
