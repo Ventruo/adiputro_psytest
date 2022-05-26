@@ -74,22 +74,6 @@ class RegistrantController {
         return;
       }
 
-      // Upload Tanda_Tangan
-      const googleDriveService = new GoogleDriveService(
-        driveClientId,
-        driveClientSecret,
-        driveRedirectUri,
-        driveRefreshToken
-      );
-
-      let file = await this.uploadTandaTangan(
-        googleDriveService,
-        req.file,
-        req.body.email
-      );
-
-      req.body.biodata["tanda_tangan"] = file.data.id;
-
       const new_registrant = await Registrant.create({
         email: req.body.email,
         biodata: JSON.stringify(req.body.biodata),
@@ -115,11 +99,27 @@ class RegistrantController {
     }
 
     Registrant.findOne({ where: { email: req.body.updating_email } }).then(
-      (registrant) => {
+      async (registrant) => {
         if (!registrant) {
           data_not_found_response(res);
           return;
         }
+
+        // Upload Tanda_Tangan
+        const googleDriveService = new GoogleDriveService(
+          driveClientId,
+          driveClientSecret,
+          driveRedirectUri,
+          driveRefreshToken
+        );
+
+        let file = await this.uploadTandaTangan(
+          googleDriveService,
+          req.file,
+          req.body.updating_email
+        );
+
+        req.body.biodata["tanda_tangan"] = file.data.id;
 
         registrant.set({
           biodata: JSON.stringify(req.body.biodata),
