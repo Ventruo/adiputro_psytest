@@ -195,34 +195,51 @@ class SectionOngoingController {
   }
 
   async updateTempAnswers(req, res) {
-    console.log("Inserting Temp Answers");
+    console.log("Updating Temp Answers");
     if (!req.body.section_id || !req.body.exam_session) {
       missing_param_response(res);
       return;
     }
 
-    SectionOngoing.findOne({
-      where: {
-        section_id: req.body.section_id,
-        exam_session_id: req.body.exam_session,
-      },
-    }).then(async (section_ongoing) => {
-      if (!section_ongoing) {
-        data_not_found_response(res);
-        return;
-      }
-
-      section_ongoing.set({
+    SectionOngoing.update(
+      {
         temp_answers: req.body.temp_answers,
-      });
-      section_ongoing.save();
+      },
+      {
+        where: {
+          section_id: req.body.section_id,
+          exam_session_id: req.body.exam_session,
+          start_status: 1,
+        },
+      }
+    );
+    success_response(res, "Update Data Successful!", "Update Data Successful!");
+  }
 
-      success_response(
-        res,
-        "Update Data Successful!",
-        "Update Data Successful!"
-      );
-    });
+  async stopSection(req, res) {
+    console.log("Stopping Section Ongoing");
+    if (!req.body.section_id || !req.body.exam_session) {
+      missing_param_response(res);
+      return;
+    }
+
+    SectionOngoing.update(
+      {
+        start_status: 2,
+      },
+      {
+        where: {
+          section_id: req.body.section_id,
+          exam_session_id: req.body.exam_session,
+          start_status: 1,
+        },
+      }
+    );
+    success_response(
+      res,
+      "Stopping Section Successful!",
+      "Stopping Section Successful!"
+    );
   }
 }
 

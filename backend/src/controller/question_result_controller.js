@@ -13,6 +13,15 @@ const TestResult = require("../models/TestResult");
 const KreapelinData = require("../models/KreapelinData");
 const { q_result_ist } = require("./test_result_calc/ist_calc");
 
+const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
+const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
+const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
+const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
+const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
+const GoogleDriveService = require("../helpers/GoogleDriveService");
+const fs = require("fs");
+const path = require("path");
+
 class QuestionResultController {
   async getOne(req, res) {
     console.log("Getting Question Result...");
@@ -449,11 +458,12 @@ class QuestionResultController {
 
             let status_correct = false;
             // if (question.answer == req.body.answer) status_correct = true;
-            if (req.body.status_correct==1 || req.body.status_correct==2) status_correct = true;
-            console.log(req.body.section_result_id)
-            console.log(req.body.question_id)
-            console.log(req.body.answer)
-            console.log(status_correct)
+            if (req.body.status_correct == 1 || req.body.status_correct == 2)
+              status_correct = true;
+            console.log(req.body.section_result_id);
+            console.log(req.body.question_id);
+            console.log(req.body.answer);
+            console.log(status_correct);
 
             result.set({
               section_result_id: req.body.section_result_id,
@@ -478,7 +488,7 @@ class QuestionResultController {
       return;
     }
 
-    if(req.body.section_id==53){
+    if (req.body.section_id == 53) {
       // Delete kraepelin data
       ExamSession.findOne({
         where: {
@@ -491,7 +501,7 @@ class QuestionResultController {
             email: session.email,
           },
         });
-      })
+      });
     }
 
     // Delete Question REsult  Section Result
@@ -524,7 +534,7 @@ class QuestionResultController {
         }).then(async (testres) => {
           testres.set({
             result: "",
-            status: 1
+            status: 1,
           });
           testres.save();
           return res
@@ -540,6 +550,108 @@ class QuestionResultController {
         exam_session: req.body.exam_session,
       },
     });
+  }
+
+  async uploadImage(req, res) {
+    console.log("Uploading to Drive on Question Results...");
+
+    if (
+      !req.file ||
+      !req.body.test_result_id ||
+      !req.body.section_id ||
+      !req.body.exam_session ||
+      !req.body.question_id
+    ) {
+      missing_param_response(res);
+    }
+
+    SectionResult.findOne({
+      where: {
+        exam_session: req.body.exam_session,
+        section_id: req.body.section_id,
+        test_result_id: req.body.test_result_id,
+      },
+    }).then(async (secres) => {
+      // Upload Lampiran
+      const googleDriveService = new GoogleDriveService(
+        driveClientId,
+        driveClientSecret,
+        driveRedirectUri,
+        driveRefreshToken
+      );
+
+      let file = await this.uploadToDrive(
+        googleDriveService,
+        req.file,
+        secres.id,
+        req.body.question_id
+      );
+
+      await QuestionResult.update(
+        {
+          answer: file.data.id,
+        },
+        {
+          where: {
+            section_result_id: secres.id,
+            question_id: req.body.question_id,
+          },
+        }
+      );
+
+      success_response(res, "Upload Successful!", "Upload Successful!");
+    });
+  }
+
+  async uploadToDrive(
+    googleDriveService,
+    uploadFile,
+    section_result_id,
+    question_id
+  ) {
+    // Get gambar folder
+    let subfolders = await googleDriveService
+      .searchInParent(driveStorageID)
+      .catch((error) => {
+        console.error(error);
+        return null;
+      });
+    let subfolder = subfolders.filter(
+      (subfolder) => subfolder.name == "TES_GAMBAR"
+    )[0];
+
+    console.log(uploadFile);
+    let ext = uploadFile.originalname.split(".");
+    ext = ext[ext.length - 1];
+    let finalFileName = "GAMBAR_" + section_result_id + "_" + question_id;
+    let finalFileNameExt = finalFileName + "." + ext;
+
+    // fs.renameSync(uploadFile.path, __dirname + "/" + finalFileNameExt);
+    // const finalPath = path.join(__dirname, finalFileNameExt);
+    // console.log(fs.createReadStream(finalPath));
+    // if (!fs.existsSync(finalPath)) {
+    //   throw new Error("File not found!");
+    // }
+
+    let file = await googleDriveService
+      .saveFile(
+        finalFileName,
+        uploadFile.buffer,
+        uploadFile.mimetype,
+        subfolder.id
+      )
+      .catch((error) => {
+        console.error(error);
+      });
+    // fs.unlinkSync(finalPath);
+
+    await googleDriveService
+      .updatePermission(file.data.id, "reader", "anyone")
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return file;
   }
 }
 

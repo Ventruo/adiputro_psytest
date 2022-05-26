@@ -13,6 +13,8 @@ router.post(
   controller.updateTempAnswers.bind(controller)
 );
 
+router.post("/stopSection", controller.stopSection.bind(controller));
+
 router.get("/:id", controller.getOne);
 router.get("/getbysection/:section_id", controller.getBySection);
 router.get("/getbytest/:test_id", controller.getByTest);
