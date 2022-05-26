@@ -53,7 +53,43 @@
             </div>
         </form>
 
-        <div class="w-full h-screen overflow-hidden" v-if="this.id_tes!=null && (this.id_tes!=17 || (this.id_tes==17 && this.data_ist))">
+        <form v-if="this.id_tes!=null && this.id_tes==2 && this.data_epps==false" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar py-5 px-5 mt-24 mx-10"
+            @submit.prevent="submitEPPSData">
+            <h1 class="text-3xl font-bold mb-2">Biodata</h1>
+            <div class="mb-5 mt-3">
+                <label for="pend" class="font-bold text-lg">Pendidikan :</label><br>
+                <div class="mb-2 flex gap-10">
+                    <div>
+                        <input type="radio" v-model="pendidikan" value="sma" name="pendidikan" id="smasmk" class="w-5 h-5 mr-2" />
+                        <label for="smasmk">SMA / SMK</label>
+                    </div>
+                    <div>
+                        <input type="radio" v-model="pendidikan" value="s1" name="pendidikan" id="s1d3" class="w-5 h-5 mr-2" />
+                        <label for="s1d3">S1 / D3</label>
+                    </div>
+                </div>
+                
+                <label for="jk" class="font-bold text-lg">Jenis Kelamin :</label>
+                <div class="mb-2 flex gap-10">
+                    <div>
+                        <input type="radio" v-model="jk" value="l" name="jenisKelamin" id="laki" class="w-5 h-5 mr-2" />
+                        <label for="laki">Laki - Laki</label>
+                    </div>
+                    <div>
+                        <input type="radio" v-model="jk" value="p" name="jenisKelamin" id="perempuan" class="w-5 h-5 mr-2" />
+                        <label for="perempuan">Perempuan</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center md:text-right">
+                <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
+                    Submit dan mulai
+                </button>
+            </div>
+        </form>
+
+        <div class="w-full h-screen overflow-hidden" v-if="this.id_tes!=null && this.tampil">
             <div class="text-2xl font-bold text-white ml-5 my-6 flex items-center gap-5">
                 <i class="fa fa-bars md:hidden" @click="toggleSidebar"></i>
                 <p>{{judulHalaman}}</p>
@@ -95,8 +131,12 @@ export default {
             data_ist: false,
             tgl_lahir: null,
             alasan: "",
+            data_epps: false,
+            pendidikan: "",
+            jk: "",
             showSidebar: false,
             showInside: false,
+            tampil: false,
         }
     },
     async created() {
@@ -276,6 +316,39 @@ export default {
                     )
                     .then(function(){
                         thi.data_ist = true,
+                        thi.tampil = true
+                        $('#spinner-modal').fadeOut("slow")
+                    })
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }
+        },
+        submitEPPSData(e){
+            if (this.pendidikan == "" || this.jk == ""){
+                Swal.fire({
+                    title: 'Mohon Isi Semua Field!',
+                    icon: 'warning',
+                    confirmButtonText: 'Kembali'
+                });
+            } else{
+                $('#spinner-modal').fadeIn("slow");
+
+                axios.post(this.port+'/epps_data/create',{
+                    "test_result_id": this.test_result_id,
+                    "jenis_kelamin": this.jk,
+                    "pendidikan": this.pendidikan
+                })
+                .then((dataResponse) => {
+                    const thi = this
+                    Swal.fire(
+                        'Sukses!',
+                        'Data diri berhasil dikirimkan.',
+                        'success'
+                    )
+                    .then(function(){
+                        thi.data_epps = true,
+                        thi.tampil = true
                         $('#spinner-modal').fadeOut("slow")
                     })
                 }).catch( error => { 
@@ -320,10 +393,29 @@ export default {
             if(this.test_result_id!=-1){
                 axios
                 .get(this.port+`/ist_data/?test_result_id=${this.test_result_id}`)
-                .then(({data}) => (
+                .then(({data}) => {
                     this.data_ist = data!=undefined
-                ))
+                    if(this.data_ist) this.tampil = true
+                })
             }
+        }else if(this.id_tes === 2){
+            // EPPS
+            let tes = this.$cookies.get('data_registrant').test
+            this.test_result_id = -1
+            tes.forEach(t => {
+                if (t[0]==this.id_tes) this.test_result_id = t[1]
+            });
+            if(this.test_result_id!=-1){
+                axios
+                .get(this.port+`/epps_data/?test_result_id=${this.test_result_id}`)
+                .then(({data}) => {
+                    this.data_epps = data!=undefined
+                    if(this.data_epps) this.tampil = true
+                    
+                })
+            }
+        }else{
+            this.tampil = true
         }
     },
 }
