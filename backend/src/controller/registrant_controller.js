@@ -97,6 +97,7 @@ class RegistrantController {
       missing_param_response(res);
       return;
     }
+    console.log(req.body)
 
     Registrant.findOne({ where: { email: req.body.updating_email } }).then(
       async (registrant) => {
@@ -104,7 +105,7 @@ class RegistrantController {
           data_not_found_response(res);
           return;
         }
-
+        
         // Upload Tanda_Tangan
         const googleDriveService = new GoogleDriveService(
           driveClientId,
@@ -119,10 +120,12 @@ class RegistrantController {
           req.body.updating_email
         );
 
-        req.body.biodata["tanda_tangan"] = file.data.id;
-
+        req.body["tanda_tangan"] = file.data.id;
+        
+        let biodata = req.body
+        delete biodata["updating_email"]
         registrant.set({
-          biodata: JSON.stringify(req.body.biodata),
+          biodata: JSON.stringify(biodata),
         });
         registrant.save();
 
