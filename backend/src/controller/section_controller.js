@@ -29,7 +29,7 @@ class SectionController {
       }).then((question) => {
         section.setDataValue("question_num", question.count);
       });
-      console.log(section);
+      // console.log(section);
 
       success_response(res, section, "Get One Data Successful!");
     });
@@ -65,7 +65,7 @@ class SectionController {
           });
         }
 
-        console.log(sections);
+        // console.log(sections);
         success_response(res, sections, "Get All Data Successful!");
       });
     }

@@ -129,7 +129,7 @@ class AuthController {
 
   authenticatedUser(req, res) {
     console.log("Getting Authenticated User");
-    
+
     try {
       const { session_id } = jwt.decode(req.cookies["refresh_token"]);
 

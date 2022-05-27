@@ -1,15 +1,17 @@
 const { io } = require("../setup/socketio");
 const ClockSocket = require("./socket_routers/clock_socket");
 
-let serverSocket,
-  usersSocket = [];
+let serverSocket = [];
+let usersSocket = {};
 
 // Listen from frontend
 io.on("connection", (socket) => {
   if (socket.auth) {
     console.log("new client connected with id " + socket.id);
     serverSocket = socket;
-    usersSocket.push(socket);
+
+    usersSocket[socket.decoded.session_id] = socket.id;
+
     ClockSocket(socket);
   }
 });
@@ -20,10 +22,8 @@ function useSocket(callback) {
   }
 }
 
-function useUsersSocket(callback) {
-  if (usersSocket.length > 0) {
-    callback(usersSocket);
-  }
+function useUsersSocket() {
+  return usersSocket;
 }
 
 module.exports = { useSocket, useUsersSocket };
