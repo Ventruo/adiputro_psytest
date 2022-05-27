@@ -123,7 +123,24 @@ class RegistrantController {
         req.body["tanda_tangan"] = file.data.id;
         
         let biodata = req.body
+        biodata.kesehatan = JSON.parse(biodata.kesehatan)
+        biodata.status_nikah = JSON.parse(biodata.status_nikah)
+        biodata.pendidikan = JSON.parse(biodata.pendidikan)
+        biodata.keluarga = JSON.parse(biodata.keluarga)
+        biodata.riwayat_pekerjaan = JSON.parse(biodata.riwayat_pekerjaan)
+        biodata.training_kursus = JSON.parse(biodata.training_kursus)
+        biodata.organisasi = JSON.parse(biodata.organisasi)
+        biodata.bahasa_dikuasai = JSON.parse(biodata.bahasa_dikuasai)
+        biodata.keterangan_kerja = JSON.parse(biodata.keterangan_kerja)
+        biodata.keterangan_kerja.kenalan = JSON.parse(biodata.keterangan_kerja.kenalan)
+        biodata.kendaraan = JSON.parse(biodata.kendaraan)
+        biodata.prestasi = JSON.parse(biodata.prestasi)
+        biodata.seni_dikuasai = JSON.parse(biodata.seni_dikuasai)
+        biodata.orang_terdekat = JSON.parse(biodata.orang_terdekat)
+        
         delete biodata["updating_email"]
+        console.log(biodata)
+
         registrant.set({
           biodata: JSON.stringify(biodata),
         });
