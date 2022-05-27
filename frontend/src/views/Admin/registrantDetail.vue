@@ -173,7 +173,7 @@
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
                 <div class="w-full h-full">
                     <div v-if="loaded==1">
-                        <div class="h-[48rem] inline-block"
+                        <div class="min-h-[48rem] inline-block"
                             :class="{
                                 'w-1/2': idTes!=20
                             }">
@@ -195,7 +195,7 @@
                                     <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
                                 </div>
                                 <div v-if="idTes==20" class="w-full">
-                                    <div v-for="i in this.dataRegistrant[0].gambar.length" :key="i" class="mb-2 mr-2 inline-block" style="width: 49%">
+                                    <div v-for="i in this.dataRegistrant.length" :key="i" class="mb-2 mr-2 inline-block" style="width: 49%">
                                         <img :src="getImg(this.dataRegistrant[i-1])" alt="" class="w-full">
                                     </div>
                                 </div>
@@ -228,7 +228,7 @@
                             <Biodata3 :data="this.registrantBio"/>
                         </div>
                         <div v-for="report in dataFull" :key="report" class="">
-                            <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-100': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <Tintum v-if="report.test_id==1" :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'yes'"/>
                                 <Epps v-if="report.test_id==2" :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :print="'yes'"/>
@@ -256,18 +256,18 @@
                                 <div v-if="report.test_id==17">
                                     <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartIST'" :print="'yes'"/>
                                 </div>
-                                <div v-if="report.test_id==20 && JSON.parse(report.result)[1]!==undefined" class="w-full">
+                                <!-- <div v-if="report.test_id==20 && JSON.parse(report.result)[1]!==undefined" class="w-full">
                                     <Gambar :data="getImg(JSON.parse(report.result)[1])" :nama="this.nama" :judul="'Pohon'"/>
-                                </div>
+                                </div> -->
                             </div>
-                            <div v-if="report.test_id==20 && JSON.parse(report.result)[2]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <!-- <div v-if="report.test_id==20 && JSON.parse(report.result)[2]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <Gambar :data="getImg(JSON.parse(report.result)[2])" :nama="this.nama" :judul="'Rumah, Orang, dan Pohon'"/>
                             </div>
                             <div v-if="report.test_id==20 && JSON.parse(report.result)[3]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <Gambar :data="getImg(JSON.parse(report.result)[3])" :nama="this.nama" :judul="'Wartegg'"/>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -389,9 +389,6 @@ export default {
                 }
             }
             this.dataTesKecil = temp
-            // console.log(this.testResult)
-            // console.log("==============")
-            // console.log(this.dataTesKecil)
 
             this.test = []
             for (let i = 0; i < this.testResult.length; i++) {

@@ -54,7 +54,7 @@
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create Upload Buram Modal -->
-        <form id="modalBuram" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="width: 50%; height: 80%; top: 10%" enctype="multipart/form-data" 
+        <form id="modalBuram" name="formBuram" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="width: 50%; height: 80%; top: 10%" enctype="multipart/form-data" 
             @submit.prevent="uploadBuram">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">Upload Kertas Buram</p>
@@ -111,6 +111,10 @@
 
             </div>
         </form>
+        
+        <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
+            <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
+        </div>
     </div>
 </template>
 
@@ -124,7 +128,8 @@ export default {
         return {
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             url1: null,
-            url2: null
+            url2: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     props: {
@@ -173,6 +178,53 @@ export default {
                 }
                 this.image=input.files[0];
                 reader.readAsDataURL(input.files[0]);
+            }
+        },
+        uploadBuram(e){
+            let gambar1 = document.forms['formBuram']['gambar'].files[0]
+            let gambar2 = document.forms['formBuram']['gambar2'].files[0]
+
+            if (gambar1 == undefined && gambar2 == undefined)
+                Swal.fire({
+                    title: 'Mohon Upload Minimal 1 Gambar!',
+                    icon: 'warning',
+                    confirmButtonText: 'Kembali'
+                });
+            else{
+                let formData = new FormData()
+                formData.append("email", this.$cookies.get('data_registrant').email)
+                
+                if(gambar1!=undefined)                        
+                    formData.append("buram", gambar1)
+
+                if(gambar2!=undefined)
+                    formData.append("buram", gambar2)
+
+                $('#spinner-modal').fadeIn("slow");
+            
+                let data_result = null
+                axios.post(this.port+'/test/uploadBuram', formData)
+                .then((response) => {
+                    if (response.status==200){
+                        Swal.fire(
+                            'Sukses!',
+                            'Kertas Buram berhasil diupload.',
+                            'success'
+                        )
+                        .then(function(){
+                            $('#spinner-modal').fadeOut("slow");
+                        })
+                    }else{
+                        throw response
+                    }
+                }).catch( error => {
+                    $('#spinner-modal').fadeOut("slow");
+                    Swal.fire(
+                        'Warning!',
+                        error.response.data,
+                        'warning'
+                    )
+                });
             }
         },
         createQuestion(e){

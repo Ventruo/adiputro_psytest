@@ -25,8 +25,9 @@
             </div>
         </div>
         
-        <div class="h-full w-full flex justify-center" v-if="link!=null">
-            <img :src="link" alt="" class="w-11/12">
+        <!-- <div class="h-full w-full flex justify-center" v-if="link!=null"> -->
+        <div class="h-full w-full flex justify-center">
+            <img :src="this.data" alt="" class="w-11/12" @load="loaded">
         </div>
     </div>
 </template>
@@ -41,6 +42,11 @@ export default {
     data() {
         return {
             link: null
+        }
+    },
+    methods: {
+        loaded(){
+            console.log("asd")
         }
     },
     mounted() {

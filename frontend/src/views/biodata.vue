@@ -794,6 +794,10 @@
                 </button>
             </div>
         </form>
+        
+        <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
+            <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
+        </div>
     </div>
 </template>
 
