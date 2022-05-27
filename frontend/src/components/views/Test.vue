@@ -132,18 +132,18 @@ export default {
     },
     methods: {
         keSection(tes){
-            axios.post('/exam_session/updateCurrentTest',{
-                "id": this.$cookies.get('data_registrant').exam_session,
-                "test_id": tes.id
-            }).then((response) => {
-                if(tes.id==19){
-                    this.$router.push({path: '/biodata'})
-                }else{
+            if(tes.id!=19){
+                axios.post('/exam_session/updateCurrentTest',{
+                    "id": this.$cookies.get('data_registrant').exam_session,
+                    "test_id": tes.id
+                }).then((response) => {
                     this.$router.push({path: '/section'})
-                }
-            }).catch( error => { 
-                console.log('error: ' + error) 
-            });
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }else{
+                this.$router.push({path: '/biodata'})
+            }
         },
         openModal(){
             $('#modalBuram').fadeIn("slow");

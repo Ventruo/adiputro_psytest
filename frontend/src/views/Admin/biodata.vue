@@ -428,9 +428,9 @@
                                 <p class="mt-1" v-for="i in 3" :key="i">:</p>
                             </div>
                             <div>
-                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan.nama}}</p>
-                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan.alamat}}</p>
-                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan.jabatan}}</p>
+                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan!=null ? biodata.keterangan_kerja.kenalan.nama : " "}}</p>
+                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan!=null ? biodata.keterangan_kerja.kenalan.alamat : " "}}</p>
+                                <p class="mt-1">{{biodata.keterangan_kerja.kenalan!=null ? biodata.keterangan_kerja.kenalan.jabatan : " "}}</p>
                             </div>
                         </div>
                     </div>
@@ -551,7 +551,7 @@
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.seni_dikuasai.jenis.join(', ')}}
+                    {{biodata.seni_dikuasai.jenis!=undefined ? biodata.seni_dikuasai.jenis : " "}}
                     <!-- <span>{{biodata.seni_dikuasai.jenis[0]}}</span>
                     <span v-for="i in biodata.seni_dikuasai.jenis.length-1" :key="i">, {{biodata.seni_dikuasai.jenis[i]}}</span> -->
                 </div>
@@ -650,9 +650,7 @@ export default {
     },
     methods: {
         getImg(data){
-            let id = data.split("d/")
-            id = id[1].split("/")
-            return "https://drive.google.com/uc?export=view&id="+id[0]
+            return "https://drive.google.com/uc?export=view&id="+data
         },
     },
     mounted() {

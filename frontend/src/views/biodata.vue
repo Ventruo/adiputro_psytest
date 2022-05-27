@@ -15,8 +15,8 @@
             </button>
         </div>
 
-        <form method="" action="" autocomplete="off" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar 
-                    py-5 px-5" @submit.prevent="submitForm">
+        <form method="" action="" autocomplete="off" name="biodataForm" class="bg-foreground-3-500 w-full h-full rounded-xl text-black overflow-y-auto no-scrollbar 
+                    py-5 px-5" @submit.prevent="submitForm"  v-if="ready">
             <h1 class="text-3xl font-bold mb-2">Biodata</h1>
             <div class="md:flex mb-5">
                 <div class="md:w-6/12 md:mr-5 flex">
@@ -29,10 +29,10 @@
                         <InputBio :type="'text'" v-model="fullname" :nama="'nama_lengkap'" :placeHolder="'Nama Lengkap'" />
 
                         <p class="mt-4">NAMA PANGGILAN :</p>
-                        <InputBio :type="'text'" :modelValue="''" :nama="'nama_panggilan'" :placeHolder="'Nama Panggilan'" />
+                        <InputBio :type="'text'" v-model="data_old.nama_panggilan" :nama="'nama_panggilan'" :placeHolder="'Nama Panggilan'" />
 
                         <p class="mt-4">ALAMAT DI KTP :</p>
-                        <InputBio :type="'text'" :modelValue="''" :nama="'alamat_ktp'" :placeHolder="'Alamat di KTP'" />
+                        <InputBio :type="'text'" v-model="data_old.alamat_ktp" :nama="'alamat_ktp'" :placeHolder="'Alamat di KTP'" />
 
                         <p class="mt-4">ALAMAT SEKARANG :</p>
                         <InputBio :type="'text'" v-model="alamat" :nama="'alamat_skg'" :placeHolder="'Alamat Sekarang'" />
@@ -44,10 +44,10 @@
                         <InputBio :type="'text'" v-model="ttl" :nama="'ttl'" :placeHolder="'Malang / 22 Januari 2022'" />
 
                         <p class="mt-4">KEWARGANEGARAAN :</p>
-                        <InputBio :type="'text'" :modelValue="''" :nama="'kewarganegaraan'" :placeHolder="'Kewarganegaraan'" />
+                        <InputBio :type="'text'" v-model="data_old.kewarganegaraan" :nama="''" :placeHolder="'Kewarganegaraan'" />
 
                         <p class="mt-4">SUKU :</p>
-                        <InputBio :type="'text'" :modelValue="''" :nama="'suku'" :placeHolder="'Suku'" />
+                        <InputBio :type="'text'" v-model="data_old.suku" :nama="'suku'" :placeHolder="'Suku'" />
                     </div>
                 </div>
 
@@ -58,25 +58,25 @@
                     </div>
                     <div class="w-full">
                         <p class="mt-2">AGAMA :</p>
-                        <InputBio :type="'text'" :modelValue="''" :nama="'agama'" :placeHolder="'Agama'" />
+                        <InputBio :type="'text'" v-model="data_old.agama" :nama="'agama'" :placeHolder="'Agama'" />
 
                         <p class="mt-4">USIA :</p>
                         <InputBio :type="'number'" v-model="usia" :nama="'usia'" :placeHolder="'20'" />
 
                         <p class="mt-4">TINGGI BADAN :</p>
-                        <InputBio :type="'number'" :modelValue="''" :nama="'tinggi_badan'" :placeHolder="'150'" />
+                        <InputBio :type="'number'" v-model="data_old.tinggi_badan" :nama="'tinggi_badan'" :placeHolder="'150'" />
 
                         <p class="mt-4">BERAT BADAN :</p>
-                        <InputBio :type="'number'" :modelValue="''" :nama="'berat_badan'" :placeHolder="'50'" />
+                        <InputBio :type="'number'" v-model="data_old.berat_badan" :nama="'berat_badan'" :placeHolder="'50'" />
 
                         <p class="mt-4">NO KTP / SIM / PASPOR :</p>
                         <InputBio :type="'number'" v-model="ktp" :nama="'no_identitas'" :placeHolder="'0123456789'" />
 
                         <p class="mt-4">GOLONGAN DARAH :</p>
-                        <InputBio :type="'text'" :modelValue="''" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
+                        <InputBio :type="'text'" v-model="data_old.golongan_darah" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
 
                         <p class="mt-4">NO NPWP :</p>
-                        <InputBio :type="'number'" :modelValue="''" :nama="'no_npwp'" :placeHolder="'01234567890'" />
+                        <InputBio :type="'number'" v-model="data_old.no_npwp" :nama="'no_npwp'" :placeHolder="'01234567890'" />
 
                         <p class="mt-4">E-MAIL :</p>
                         <InputBio :type="'email'" v-model="email" :nama="'email'" :placeHolder="'contoh@example.com'" :readonly="true" />
@@ -90,8 +90,12 @@
                     <p>Jenis Kelamin :</p>
                 </div>
                 <div class="flex mb-1 gap-3 ml-7">
-                    <div class="w-1/2"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
-                    <div class="w-1/2"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>            
+                    <div class="w-1/2">
+                        <Radio v-model="data_old.jenis_kelamin" :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/>
+                    </div>
+                    <div class="w-1/2">
+                        <Radio v-model="data_old.jenis_kelamin" :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/>
+                    </div>            
                 </div>
             </div>
 
@@ -103,16 +107,16 @@
                             <p class="mb-1">Keadaan Kesehatan pada saat ini : </p>
                         </div>
                         <div class="md:flex mb-1">
-                            <div class="md:w-1/2"><Radio :values="'baik'" :names="'keadaan'" :id="'kesehatanBaik'" :label="'BAIK'" /></div>
-                            <div class="md:w-1/2"><Radio :values="'kurang sehat'" :names="'keadaan'" :id="'kesehatanKurang'" :label="'KURANG SEHAT'"/></div>
+                            <div class="md:w-1/2"><Radio v-model="data_old.kesehatan.keadaan" :values="'baik'" :names="'keadaan'" :id="'kesehatanBaik'" :label="'BAIK'" /></div>
+                            <div class="md:w-1/2"><Radio v-model="data_old.kesehatan.keadaan" :values="'kurang sehat'" :names="'keadaan'" :id="'kesehatanKurang'" :label="'KURANG SEHAT'"/></div>
                         </div>
                         
                         <div class="mt-10">
                             <p id="sakitKeras" class="mb-1">Apakah anda pernah sakit keras/kecelakaan?</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'Ya'" :names="'sakit_keras'" id="kecelakaanYa" :label="'YA'" @change="sakitKeras=true"/></div>
-                            <div class="w-1/2"><Radio :values="'Tidak'" :names="'sakit_keras'" id="kecelakaanTidak" :label="'TIDAK'" @change="sakitKeras=false"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.sakit_keras" :values="'Ya'" :names="'sakit_keras'" id="kecelakaanYa" :label="'YA'" @change="sakitKeras=true"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.sakit_keras" :values="'Tidak'" :names="'sakit_keras'" id="kecelakaanTidak" :label="'TIDAK'" @change="sakitKeras=false"/></div>
                         </div>
                     </div>
                     <div class="w-1/2">
@@ -121,15 +125,15 @@
                             <p class="mb-1 text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio :values="'Ya'" :names="'cacat'" :id="'cacatYa'" :label="'YA'" /></div>
-                            <div class="w-1/2"><Radio :values="'Tidak'" :names="'cacat'" :id="'cacatTidak'" :label="'TIDAK'"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.cacat" :values="'Ya'" :names="'cacat'" :id="'cacatYa'" :label="'YA'" /></div>
+                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.cacat" :values="'Tidak'" :names="'cacat'" :id="'cacatTidak'" :label="'TIDAK'"/></div>
                         </div>
 
                         <div v-show="sakitKeras">
                             <div class="mt-2 w-1/3">
                                 <p>Kapan Terjadinya:</p>
                             </div>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'kapan'" :placeHolder="''"/>
+                            <InputBio :type="'text'" v-model="data_old.kesehatan.kapan" :nama="'kapan'" :placeHolder="''"/>
                         </div>
                     </div>
                 </div>
@@ -153,10 +157,10 @@
                     <div class="w-1/2">
                         <div v-show="sudahMenikah">
                             <p>Nama Suami/Istri :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'nama_suami_istri'" :placeHolder="'Nama Suami/Istri'" />
+                            <InputBio :type="'text'" v-model="data_old.status_nikah.nama_suami_istri" :nama="'nama_suami_istri'" :placeHolder="'Nama Suami/Istri'" />
 
                             <p class="mt-2">Nama Anak :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'nama_anak'" :placeHolder="'Nama Anak'" />
+                            <InputBio :type="'text'" v-model="data_old.status_nikah.nama_anak" :nama="'nama_anak'" :placeHolder="'Nama Anak'" />
                         </div>
                     </div>
                 </div>
@@ -211,7 +215,7 @@
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'alasan_bekerja'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.alasan_bekerja" :nama="'alasan_bekerja'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -409,10 +413,10 @@
                 </div>
                 <div class="ml-7">
                     <p>Apabila Anda pernah bekerja di tempat lain coba sebutkan gaji yang anda peroleh? </p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'gaji_diperoleh'" :placeHolder="'Tulis disini'" />
+                    <InputBio :type="'text'" v-model="data_old.riwayat_pekerjaan.gaji_diperoleh" :nama="'gaji_diperoleh'" :placeHolder="'Tulis disini'" />
 
                     <p class="mb-1">Mengapa Anda berhenti dari pekerjaan yang lama, jelaskan secara singkat:</p>
-                    <TextArea :modelValue="''" :nama="'alasan_berhenti'" :placeHolder="'Tulis di sini'" />
+                    <TextArea v-model="data_old.riwayat_pekerjaan.alasan_berhenti" :nama="'alasan_berhenti'" :placeHolder="'Tulis di sini'" />
 
                 </div>
             </div>
@@ -545,28 +549,28 @@
                     <p>Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja:</p>
                 </div>
                 <div class="ml-7">
-                    <InputBio :type="'text'" :modelValue="''" :nama="'lama_berhenti_kerja'" :placeHolder="'Tulis disini'" />
+                    <InputBio :type="'text'" v-model="data_old.keterangan_kerja.lama_berhenti_kerja" :nama="'lama_berhenti_kerja'" :placeHolder="'Tulis disini'" />
 
                     <p class="mt-2">Dan mulai kapan Anda dapat mulai bekerja jika Anda di terima di PT. Adiputro Wirasejati :</p>
-                    <InputBio :type="'text'" :modelValue="''" :nama="'bisa_mulai_kerja'" :placeHolder="'Tulis disini'" />
+                    <InputBio :type="'text'" v-model="data_old.keterangan_kerja.bisa_mulai_kerja" :nama="'bisa_mulai_kerja'" :placeHolder="'Tulis disini'" />
 
                     <div class="mt-2">
                         <p class="mr-3 mb-1">Apakah Anda memiliki saudara / kenalan di perusahaan ini: </p>
                         <div class="flex w-1/2">
-                            <div class="w-1/2"><Radio :values="'Ya'" :names="'kenalan_perusahaan'" :id="'kenalanYa'" :label="'YA'" @change="adaKenalan=true"/></div>
-                            <div class="w-1/2"><Radio :values="'Tidak'" :names="'kenalan_perusahaan'" :id="'kenalanTidak'" :label="'TIDAK'" @change="adaKenalan=false"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.keterangan_kerja.kenalan_perusahaan" :values="'Ya'" :names="'kenalan_perusahaan'" :id="'kenalanYa'" :label="'YA'" @change="adaKenalan=true"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.keterangan_kerja.kenalan_perusahaan" :values="'Tidak'" :names="'kenalan_perusahaan'" :id="'kenalanTidak'" :label="'TIDAK'" @change="adaKenalan=false"/></div>
                         </div>
                     </div>
                     
-                    <div v-show="adaKenalan">
+                    <div v-if="adaKenalan">
                         <p>Bila YA, Sebutkan:</p>
                         <div>
                             <p class="mt-1">Nama :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'kenalan_nama'" :placeHolder="'Nama Lengkap'" />
+                            <InputBio :type="'text'" v-model="data_old.keterangan_kerja.kenalan.nama" :nama="'kenalan_nama'" :placeHolder="'Nama Lengkap'" />
                             <p class="mt-1">Alamat :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'kenalan_alamat'" :placeHolder="'Alamat'" />
+                            <InputBio :type="'text'" v-model="data_old.keterangan_kerja.kenalan.alamat" :nama="'kenalan_alamat'" :placeHolder="'Alamat'" />
                             <p class="mt-1">Jabatan :</p>
-                            <InputBio :type="'text'" :modelValue="''" :nama="'kenalan_jabatan'" :placeHolder="'Jabatan'" />
+                            <InputBio :type="'text'" v-model="data_old.keterangan_kerja.kenalan.jabatan" :nama="'kenalan_jabatan'" :placeHolder="'Jabatan'" />
                         </div>
                     </div>
                 </div>
@@ -575,10 +579,10 @@
             <div class="flex mb-2 mr-3">
                 <p class="mr-2">28.</p>
                 <div>
-                    <p>Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
+                    <p>Bersediakah Anda menjalani Pelatihan kerja selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
                     <div class="flex w-1/2 mt-1">
-                        <div class="w-1/2"><Radio :values="'Ya'" :names="'pelatihan_kerja'" :id="'pelatihanYa'" :label="'YA'"/></div>
-                        <div class="w-1/2"><Radio :values="'Tidak'" :names="'pelatihan_kerja'" :id="'pelatihanTidak'" :label="'TIDAK'"/></div>
+                        <div class="w-1/2"><Radio v-model="data_old.pelatihan_kerja" :values="'Ya'" :names="'pelatihan_kerja'" :id="'pelatihanYa'" :label="'YA'"/></div>
+                        <div class="w-1/2"><Radio v-model="data_old.pelatihan_kerja" :values="'Tidak'" :names="'pelatihan_kerja'" :id="'pelatihanTidak'" :label="'TIDAK'"/></div>
                     </div>
                 </div>
             </div>
@@ -589,7 +593,7 @@
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'tujuan_kerja'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.tujuan_kerja" :nama="'tujuan_kerja'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
             
@@ -599,7 +603,7 @@
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'kendaraan_ket'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.kendaraan.keterangan" :nama="'kendaraan_ket'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -608,10 +612,10 @@
                     <p class="mr-3">Apakah kendaraan tersebut milik: </p>
 
                     <div class="lg:flex xl:w-1/2 mt-1">
-                        <div class="md:w-1/4"><Radio :values="'Pribadi'" :names="'kendaraan_milik'" :id="'kendaraan_pribadi'" :label="'Pribadi'"/></div>
-                        <div class="md:w-1/4"><Radio :values="'Orang Tua'" :names="'kendaraan_milik'" :id="'kendaraan_Orang_Tua'" :label="'Orang Tua'"/></div>
-                        <div class="md:w-1/4"><Radio :values="'Saudara'" :names="'kendaraan_milik'" :id="'kendaraan_Saudara'" :label="'Saudara'"/></div>
-                        <div class="md:w-1/4"><Radio :values="'dll'" :names="'kendaraan_milik'" :id="'kendaraan_dll'" :label="'dan lain-lain'"/></div>
+                        <div class="md:w-1/4"><Radio v-model="data_old.kendaraan.kepemilikan" :values="'Pribadi'" :names="'kendaraan_milik'" :id="'kendaraan_pribadi'" :label="'Pribadi'"/></div>
+                        <div class="md:w-1/4"><Radio v-model="data_old.kendaraan.kepemilikan" :values="'Orang Tua'" :names="'kendaraan_milik'" :id="'kendaraan_Orang_Tua'" :label="'Orang Tua'"/></div>
+                        <div class="md:w-1/4"><Radio v-model="data_old.kendaraan.kepemilikan" :values="'Saudara'" :names="'kendaraan_milik'" :id="'kendaraan_Saudara'" :label="'Saudara'"/></div>
+                        <div class="md:w-1/4"><Radio v-model="data_old.kendaraan.kepemilikan" :values="'dll'" :names="'kendaraan_milik'" :id="'kendaraan_dll'" :label="'dan lain-lain'"/></div>
                     </div>
                 </div>
             </div>
@@ -622,7 +626,7 @@
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'hobi'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.hobi" :nama="'hobi'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -632,7 +636,7 @@
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'harapan_gaji'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.harapan_gaji" :nama="'harapan_gaji'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -642,7 +646,7 @@
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'masalah_hukum'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.masalah_hukum" :nama="'masalah_hukum'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -652,7 +656,7 @@
                     <p>Apakah yang menjadi kelebihan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'kelebihan'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.kelebihan" :nama="'kelebihan'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -662,7 +666,7 @@
                     <p>Apakah yang menjadi kekurangan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'kekurangan'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.kekurangan" :nama="'kekurangan'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -672,7 +676,7 @@
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'kepuasan_keadaan_diri'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.kepuasan_keadaan_diri" :nama="'kepuasan_keadaan_diri'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -723,7 +727,7 @@
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-7">
-                    <TextArea :modelValue="''" :nama="'seniDikuasai'" :placeHolder="'Tulis di sini'" />                    
+                    <TextArea v-model="data_old.seni_dikuasai.jenis" :nama="'seniDikuasai'" :placeHolder="'Tulis di sini'" />                    
                 </div>
             </div>
 
@@ -767,9 +771,9 @@
                     <div class="text-center">
                         <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
                         <div v-else class="h-32 w-32 mb-2 inline-block bg-[#C4C4C4]">
-                            <!-- <div class="flex justify-center items-center h-full">
+                            <div class="flex justify-center items-center h-full">
                                 <p>Tanda Tangan</p>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="text-center mb-2">
@@ -830,10 +834,12 @@ export default {
             bahasa: [{bahasa:'',berbicara:'',menulis:'',mendengar:''}],
             prestasi: [{jenis:'',bidang:'',tahun:''}],
             orang_terdekat: [{nama:'', alamat:'',telepon:''},{nama:'', alamat:'',telepon:''}],
+            data_old: {},
             month: ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             email: null,
             id_tes_result: null,
             exam_session: null,
+            ready: false,
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -872,7 +878,7 @@ export default {
         },
         submitForm(e){
             let data = Object.fromEntries(new FormData(e.target).entries());
-            console.log(e)
+
             let res = []
             let res2 = {}
             let notInclude = ["imgSign","keadaan","sakit_keras","cacat","kapan","menikah","nama_suami_istri","nama_anak","gaji_diperoleh",
@@ -892,76 +898,76 @@ export default {
                 formData.append(res[i][0], res[i][1])
             }
 
-            let kesehatan = {
+            let kesehatan = JSON.stringify({
                 "keadaan": res2.keadaan,
                 "cacat": res2.cacat,
                 "sakit_keras": res2.sakit_keras,
                 "kapan": res2.kapan,
-            }
+            })
             formData.append("kesehatan", kesehatan)
 
-            let nikah = {
+            let nikah = JSON.stringify({
                 "menikah": res2.menikah,
                 "nama_suami_istri": res2.nama_suami_istri,
                 "nama_anak": res2.nama_anak,
-            }
+            })
             formData.append("status_nikah", nikah)
             
-            formData.append("pendidikan", this.pendidikan)
+            formData.append("pendidikan", JSON.stringify(this.pendidikan))
 
-            let kel = {
+            let kel = JSON.stringify({
                 orang_tua: this.keluarga[0],
                 istri_suami: this.keluarga[1],
                 anak_kandung: this.keluarga[2],
                 saudara_kandung: this.keluarga[3],
-            }
+            })
             formData.append("keluarga", kel)
 
-            let riwayats = {
+            let riwayats = JSON.stringify({
                 "riwayat": this.riwayat,
                 "gaji_diperoleh": res2.gaji_diperoleh,
                 "alasan_berhenti": res2.alasan_berhenti,
-            }
+            })
             formData.append("riwayat_pekerjaan", riwayats)
 
-            formData.append("training_kursus", this.training)
+            formData.append("training_kursus", JSON.stringify(this.training))
 
-            formData.append("organisasi", this.organisasi)
+            formData.append("organisasi", JSON.stringify(this.organisasi))
 
-            formData.append("bahasa_dikuasai", this.bahasa)
+            formData.append("bahasa_dikuasai", JSON.stringify(this.bahasa))
 
-            let keterangan_ker = {
+            let keterangan_ker = JSON.stringify({
                 "lama_berhenti_kerja": res2.lama_berhenti_kerja,
                 "bisa_mulai_kerja": res2.bisa_mulai_kerja,
                 "kenalan_perusahaan": res2.kenalan_perusahaan,
-                "kenalan": {
+                "kenalan": JSON.stringify({
                     "nama": res2.kenalan_nama,
                     "alamat": res2.kenalan_alamat,
                     "jabatan": res2.kenalan_jabatan
-                }, 
-            }
+                }), 
+            })
             formData.append("keterangan_kerja",keterangan_ker)
 
-            let kendaraans = {
+            let kendaraans = JSON.stringify({
                 "keterangan": res2.kendaraan_ket,
                 "kepemilikan": res2.kendaraan_milik
-            }
+            })
             formData.append("kendaraan", kendaraans)
 
-            formData.append("prestasi", this.prestasi)
+            formData.append("prestasi", JSON.stringify(this.prestasi))
 
-            formData.append("seni_dikuasai", {"jenis": res2.seniDikuasai})
+            formData.append("seni_dikuasai", JSON.stringify({"jenis": res2.seniDikuasai}))
 
-            formData.append("orang_terdekat", this.orang_terdekat)
+            formData.append("orang_terdekat", JSON.stringify(this.orang_terdekat))
 
             formData.append("tanggal_biodata", res2.kota_ttd+", "+this.getDate())
 
-            var fileLamaran = e.target[127].files[0]
-            if (fileLamaran!=undefined)
-                fileLamaran.originalname = fileLamaran.name
+            var fileTT = document.forms['biodataForm']['files'].files[0]
+            if (fileTT!=undefined)
+                fileTT.originalname = fileTT.name
 
             formData.append("updating_email", this.email)
-            formData.append("tanda_tangan", fileLamaran)
+            formData.append("tanda_tangan", fileTT)
             // let formData2 = {
             //     'updating_email': this.email,
             //     'biodata': formData,
@@ -988,13 +994,13 @@ export default {
                             "exam_session": this.exam_session,
                             "start_date": data_result.start_date,
                             "finish_date": Date.now(),
-                            "status": 1,
+                            "status": 2,
                             "result": formData
                         })
                         .then((response) => {
                             console.log(response)
                             $('#spinner-modal').fadeOut("slow");
-                            this.$cookies.remove("current_test")
+                            
                             Swal.fire(
                                 'Sukses!',
                                 'Biodata berhasil disimpan.',
@@ -1021,6 +1027,55 @@ export default {
                 )
             });
         },
+        initDataLama(data){
+            
+            this.data_old.seni_dikuasai = data.seni_dikuasai != undefined ? data.seni_dikuasai : {}
+            this.data_old.kendaraan = data.kendaraan != undefined ? data.kendaraan : {}
+            this.data_old.keterangan_kerja = data.keterangan_kerja != undefined ? data.keterangan_kerja : {}
+            this.data_old.keterangan_kerja.kenalan = data.keterangan_kerja.kenalan != undefined ? data.keterangan_kerja.kenalan : {}
+            this.data_old.riwayat_pekerjaan = data.riwayat_pekerjaan != undefined ? data.riwayat_pekerjaan : {}
+            this.data_old.status_nikah = data.status_nikah != undefined ? data.status_nikah : {}
+            this.data_old.kesehatan = data.kesehatan != undefined ? data.kesehatan : {}
+
+            this.fullname = this.data_old.nama_lengkap
+            this.ktp = this.data_old.no_identitas
+            this.ttl = this.data_old.ttl
+            this.jenis_kelamin = this.data_old.jenis_kelamin
+            this.alamat = this.data_old.alamat
+            this.usia = this.data_old.usia
+            this.noHp = this.data_old.no_hp
+
+            this.status_perkawinan = this.data_old.status_nikah.menikah
+            this.sudahMenikah = false
+            if (this.status_perkawinan=="sudah menikah")
+                this.sudahMenikah = true
+    
+            this.sakitKeras = false            
+            if (this.data_old.kesehatan.cacat == "Ya") this.sakitKeras = true
+            
+            this.adaKenalan = false
+            if (this.data_old.keterangan_kerja.kenalan_perusahaan == "Ya") this.adaKenalan = true
+
+            if (data.pendidikan == undefined)
+                this.pendidikan = [{tingkat:'', jurusan:'', nama_sekolah:'', kota:'', tahun_lulus:''}]
+            else 
+                this.pendidikan = data.pendidikan
+            
+            // this.keluarga:[[{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+            //                 [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+            //                 [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+            //                 [{ nama:'', ttl:'', alamat:'',pendidikan:'', pekerjaan:''}]],
+            // this.riwayat: [{dari:'', sampai:'', nama_perusahaan:'', kota:'', bidang_usaha:'', jabatan:''}],
+            // this.training: [{materi:'', penyelenggara:'', tahun:'', tempat:''}],
+            // this.organisasi: [{nama:'', tempat:'', masa:'', jabatan:''}],
+            // this.bahasa: [{bahasa:'',berbicara:'',menulis:'',mendengar:''}],
+            // this.prestasi: [{jenis:'',bidang:'',tahun:''}],
+            // this.orang_terdekat: [{nama:'', alamat:'',telepon:''},{nama:'', alamat:'',telepon:''}],
+
+            // console.log(this.data_old)
+
+            this.ready = true
+        }
     },
     mounted() {
         this.email = this.$cookies.get('data_registrant').email
@@ -1041,6 +1096,15 @@ export default {
                 this.pendidikan[0].tingkat = data.pendidikan_terakhir
                 this.pendidikan[0].nama_sekolah = data.nama_sekolah
                 this.pendidikan[0].jurusan = data.jurusan
+                this.ready = true
+
+            }else{
+                axios
+                .get(this.port+"/registrant/"+this.email)
+                .then(({data}) => {
+                    this.data_old = data.biodata,
+                    this.initDataLama(data.biodata)
+                })
             }
         })
 

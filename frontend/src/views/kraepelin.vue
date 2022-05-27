@@ -33,8 +33,8 @@
                                 <option value="sarjana">SARJANA (S1)</option>
                             </select>
                             <select name="jk" id="jkCombobox" class="text-black text-lg rounded-xl py-1 px-2 outline-none shadow-xl cursor-pointer block w-full">
-                                <option value="L">LAKI-LAKI</option>
-                                <option value="P">PEREMPUAN</option>
+                                <option value="l">LAKI-LAKI</option>
+                                <option value="p">PEREMPUAN</option>
                             </select>
                         </div>
                     </div>
@@ -145,8 +145,8 @@ export default {
             namaTes: 'Tes K',
             judulHalaman: 'EPPS',
             kolom: 1,
-            jumKolom: 50,
-            detik: 15,
+            jumKolom: 5,
+            detik: 1,
             waktu: null,
             row1: [],
             row2: [],
@@ -184,7 +184,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 15
+                        this.detik = 1
                         this.reset()
                     }
                 }
