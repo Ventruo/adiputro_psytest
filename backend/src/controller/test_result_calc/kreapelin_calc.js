@@ -218,7 +218,7 @@ async function process_kreapelin(
 
   // kode panker
   if (k_pendidikan == "smea") codes[0] = 1;
-  else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[0] = 2;
+  else if (k_pendidikan == "stm-smk") codes[0] = 2;
   else if (k_pendidikan == "sma") codes[0] = 3;
   else if (k_pendidikan == "sarjana muda") {
     if (k_jurusan == "ips") {
@@ -237,14 +237,14 @@ async function process_kreapelin(
 
   // kode janker
   if (k_pendidikan == "smea") codes[1] = 1;
-  else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[1] = 2;
+  else if (k_pendidikan == "stm-smk") codes[1] = 2;
   else if (k_pendidikan == "sma") codes[1] = 3;
   else if (k_pendidikan == "sarjana muda") codes[1] = 4;
   else if (k_pendidikan == "sarjana") codes[1] = 5;
 
   // kode hanker
   if (k_pendidikan == "smea") codes[2] = 1;
-  else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[2] = 2;
+  else if (k_pendidikan == "stm-smk") codes[2] = 2;
   else if (k_pendidikan == "sma") codes[2] = 3;
   else if (k_pendidikan == "sarjana muda") {
     if (k_jurusan == "ips") {
@@ -257,7 +257,7 @@ async function process_kreapelin(
 
   // kode tianker
   if (k_pendidikan == "smea") codes[3] = 1;
-  else if (k_pendidikan == "stm" || k_pendidikan == "smk") codes[3] = 2;
+  else if (k_pendidikan == "stm-smk") codes[3] = 2;
   else if (k_pendidikan == "sma") {
     if (k_jurusan == "ipa") codes[3] = 3;
     else if (k_jurusan == "ips") codes[3] = 4;
