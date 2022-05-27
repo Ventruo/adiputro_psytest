@@ -1027,8 +1027,16 @@ export default {
                 )
             });
         },
+        initKosong(){
+            this.data_old.seni_dikuasai = {}
+            this.data_old.kendaraan = {}
+            this.data_old.keterangan_kerja = {}
+            this.data_old.keterangan_kerja.kenalan = {}
+            this.data_old.riwayat_pekerjaan = {}
+            this.data_old.status_nikah = {}
+            this.data_old.kesehatan = {}
+        },
         initDataLama(data){
-            
             this.data_old.seni_dikuasai = data.seni_dikuasai != undefined ? data.seni_dikuasai : {}
             this.data_old.kendaraan = data.kendaraan != undefined ? data.kendaraan : {}
             this.data_old.keterangan_kerja = data.keterangan_kerja != undefined ? data.keterangan_kerja : {}
@@ -1041,7 +1049,7 @@ export default {
             this.ktp = this.data_old.no_identitas
             this.ttl = this.data_old.ttl
             this.jenis_kelamin = this.data_old.jenis_kelamin
-            this.alamat = this.data_old.alamat
+            this.alamat = this.data_old.alamat_skg
             this.usia = this.data_old.usia
             this.noHp = this.data_old.no_hp
 
@@ -1061,16 +1069,43 @@ export default {
             else 
                 this.pendidikan = data.pendidikan
             
-            // this.keluarga:[[{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
-            //                 [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
-            //                 [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
-            //                 [{ nama:'', ttl:'', alamat:'',pendidikan:'', pekerjaan:''}]],
-            // this.riwayat: [{dari:'', sampai:'', nama_perusahaan:'', kota:'', bidang_usaha:'', jabatan:''}],
-            // this.training: [{materi:'', penyelenggara:'', tahun:'', tempat:''}],
-            // this.organisasi: [{nama:'', tempat:'', masa:'', jabatan:''}],
-            // this.bahasa: [{bahasa:'',berbicara:'',menulis:'',mendengar:''}],
-            // this.prestasi: [{jenis:'',bidang:'',tahun:''}],
-            // this.orang_terdekat: [{nama:'', alamat:'',telepon:''},{nama:'', alamat:'',telepon:''}],
+            if (data.keluarga == undefined)
+                this.keluarga = [[{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+                                [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+                                [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
+                                [{ nama:'', ttl:'', alamat:'',pendidikan:'', pekerjaan:''}]]
+            else
+                this.keluarga = [data.keluarga.orang_tua, data.keluarga.istri_suami, data.keluarga.anak_kandung, data.keluarga.saudara_kandung]
+
+            if (data.riwayat_pekerjaan.riwayat == undefined)
+                this.riwayat = [{dari:'', sampai:'', nama_perusahaan:'', kota:'', bidang_usaha:'', jabatan:''}]
+            else 
+                this.riwayat = data.riwayat_pekerjaan.riwayat
+
+            if (data.training_kursus == undefined)
+                this.training = [{materi:'', penyelenggara:'', tahun:'', tempat:''}]
+            else 
+                this.training = data.training_kursus
+
+            if (data.organisasi == undefined)
+                this.organisasi = [{nama:'', tempat:'', masa:'', jabatan:''}]
+            else 
+                this.organisasi = data.organisasi
+            
+            if (data.bahasa_dikuasai == undefined)
+                this.bahasa = [{bahasa:'',berbicara:'',menulis:'',mendengar:''}]
+            else 
+                this.bahasa = data.bahasa_dikuasai
+                
+            if (data.prestasi == undefined)
+                this.prestasi = [{jenis:'',bidang:'',tahun:''}]
+            else 
+                this.prestasi = data.prestasi
+
+             if (data.orang_terdekat == undefined)
+                this.orang_terdekat = [{nama:'', alamat:'',telepon:''},{nama:'', alamat:'',telepon:''}]
+            else 
+                this.orang_terdekat = data.orang_terdekat
 
             // console.log(this.data_old)
 
@@ -1096,6 +1131,7 @@ export default {
                 this.pendidikan[0].tingkat = data.pendidikan_terakhir
                 this.pendidikan[0].nama_sekolah = data.nama_sekolah
                 this.pendidikan[0].jurusan = data.jurusan
+                this.initKosong()
                 this.ready = true
 
             }else{

@@ -196,7 +196,7 @@
                                 </div>
                                 <div v-if="idTes==20" class="w-full">
                                     <div v-for="i in this.dataRegistrant[0].gambar.length" :key="i" class="mb-2 mr-2 inline-block" style="width: 49%">
-                                        <img :src="getImg(this.dataRegistrant[0].gambar[i-1])" alt="" class="w-full">
+                                        <img :src="getImg(this.dataRegistrant[i-1])" alt="" class="w-full">
                                     </div>
                                 </div>
                             </div>
@@ -242,7 +242,7 @@
                                 <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
                                 <IST v-if="report.test_id==17" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
                                 <PapiKostick v-if="report.test_id==18" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
-                                <Gambar v-if="report.test_id==20" :data="getImg(JSON.parse(report.result)[0].gambar[0])" :nama="this.nama" :judul="'Orang'"/>
+                                <Gambar v-if="report.test_id==20" :data="getImg(JSON.parse(report.result)[0])" :nama="this.nama" :judul="'Orang'"/>
                                 <Hafalan v-if="report.test_id==21" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
                             </div>
                             <div v-if="(report.test_id==2 || report.test_id==5 || report.test_id==17 || report.test_id==20) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
@@ -256,17 +256,17 @@
                                 <div v-if="report.test_id==17">
                                     <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartIST'" :print="'yes'"/>
                                 </div>
-                                <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[1]!==undefined" class="w-full">
-                                    <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[1])" :nama="this.nama" :judul="'Pohon'"/>
+                                <div v-if="report.test_id==20 && JSON.parse(report.result)[1]!==undefined" class="w-full">
+                                    <Gambar :data="getImg(JSON.parse(report.result)[1])" :nama="this.nama" :judul="'Pohon'"/>
                                 </div>
                             </div>
-                            <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[2]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <div v-if="report.test_id==20 && JSON.parse(report.result)[2]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[2])" :nama="this.nama" :judul="'Rumah, Orang, dan Pohon'"/>
+                                <Gambar :data="getImg(JSON.parse(report.result)[2])" :nama="this.nama" :judul="'Rumah, Orang, dan Pohon'"/>
                             </div>
-                            <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[3]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
+                            <div v-if="report.test_id==20 && JSON.parse(report.result)[3]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[3])" :nama="this.nama" :judul="'Wartegg'"/>
+                                <Gambar :data="getImg(JSON.parse(report.result)[3])" :nama="this.nama" :judul="'Wartegg'"/>
                             </div>
                         </div>
                     </div>
@@ -364,9 +364,8 @@ export default {
             return dateTime
         },
         getImg(data){
-            let id = data.split("d/")
-            id = id[1].split("/")
-            return "https://drive.google.com/uc?export=view&id="+id[0]
+            console.log("https://drive.google.com/uc?export=view&id="+data)
+            return "https://drive.google.com/uc?export=view&id="+data
         },
         isKraepelin(){
             this.sectionList[0].question_num = 1350
