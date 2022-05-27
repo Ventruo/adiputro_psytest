@@ -241,6 +241,7 @@ export default {
             });
         },
         nextSoal(){
+            console.log(this.changed)
             // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++

@@ -167,6 +167,7 @@ export default {
         nextSoal(){
             // console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
+            console.log(this.changed)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
@@ -212,6 +213,7 @@ export default {
                     });
                 }
             }
+
 
             this.gantiPilihanJawaban()
         },
