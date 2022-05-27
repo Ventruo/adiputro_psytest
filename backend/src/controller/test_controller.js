@@ -9,6 +9,13 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
+const GoogleDriveService = require("../helpers/GoogleDriveService");
+
+const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
+const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
+const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
+const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
+const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
 class TestController {
   async getOne(req, res) {
@@ -152,6 +159,61 @@ class TestController {
       }
     }
     return res.status(200).send("OK");
+  }
+
+  async uploadBuram(req, res) {
+    if (!req.files || !req.body.email) {
+      missing_param_response(res);
+      return;
+    }
+
+    // Get Buram folder
+    const googleDriveService = new GoogleDriveService(
+      driveClientId,
+      driveClientSecret,
+      driveRedirectUri,
+      driveRefreshToken
+    );
+
+    let subfolders = await googleDriveService
+      .searchInParent(driveStorageID)
+      .catch((error) => {
+        console.error(error);
+        return null;
+      });
+    let subfolder = subfolders.filter(
+      (subfolder) => subfolder.name == "BURAM"
+    )[0];
+
+    let files = [];
+    for (let i = 0; i < req.files.length; i++) {
+      let uploadFile = req.files[i];
+      let ext = uploadFile.originalname.split(".");
+      ext = ext[ext.length - 1];
+
+      let file = await googleDriveService
+        .saveFile(
+          "Buram_" + req.body.email + "_" + (i + 1),
+          uploadFile.buffer,
+          uploadFile.mimetype,
+          subfolder.id
+        )
+        .catch((error) => {
+          console.error(error);
+        });
+
+      await googleDriveService
+        .updatePermission(file.data.id, "reader", "anyone")
+        .catch((error) => {
+          console.error(error);
+        });
+
+      files.push(
+        "https://drive.google.com/file/d/" + file.data.id + "/view?usp=sharing"
+      );
+    }
+
+    return res.status(200).send(files);
   }
 }
 
