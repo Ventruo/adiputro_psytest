@@ -47,6 +47,11 @@ ExamSession.init(
       allowNull: false,
       defaultValue: 0,
     },
+    current_test: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      defaultValue: 0,
+    },
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,

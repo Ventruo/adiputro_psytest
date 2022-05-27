@@ -18,7 +18,7 @@
             
             <div>
                 <div class="flex font-bold">
-                    <p class="mr-2">29.</p>
+                    <p class="mr-2">30.</p>
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-5">
@@ -35,7 +35,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">30.</p>
+                    <p class="mr-2">31.</p>
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-5">
@@ -45,7 +45,7 @@
             
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">31.</p>
+                    <p class="mr-2">32.</p>
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-5">
@@ -55,7 +55,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">32.</p>
+                    <p class="mr-2">33.</p>
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-5">
@@ -65,7 +65,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">33.</p>
+                    <p class="mr-2">34.</p>
                     <p>Apakah yang menjadi kelebihan dalam diri anda?</p>
                 </div>
                 <div class="ml-5">
@@ -75,7 +75,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">34.</p>
+                    <p class="mr-2">35.</p>
                     <p>Apakah yang menjadi kekurangan dalam diri anda?</p>
                 </div>
                 <div class="ml-5">
@@ -85,7 +85,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">35.</p>
+                    <p class="mr-2">36.</p>
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-5">
@@ -95,7 +95,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">36.</p>
+                    <p class="mr-2">37.</p>
                     <p>Apakah anda mempunyai prestasi / penghargaan selama ini? Bila ada silahkan disebutkan (jenis, bidang, dan tahun)</p>
                 </div>
                 <div class="ml-5">
@@ -108,7 +108,7 @@
 
             <div class="mb-2">
                 <div class="flex font-bold">
-                    <p class="mr-2">37.</p>
+                    <p class="mr-2">38.</p>
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-5">
@@ -119,7 +119,7 @@
 
             <div>
                 <div class="flex font-bold">
-                    <p class="mr-2">38.</p>
+                    <p class="mr-2">39.</p>
                     <p>Sebagai referensi, sebutkan 2 (dua) nama orang terdekat anda, beserta alamat dan telepon: </p>
                 </div>
                 <div class="ml-5">
@@ -164,7 +164,7 @@
                 </div>
             </div>
 
-            <p class="font-bold mt-10 mb-20">Bahwa segala biodata yang saya isi di atas adalah benar adanya. </p>
+            <p class="font-bold mt-10 mb-10">Bahwa segala biodata yang saya isi di atas adalah benar adanya. </p>
             <div class="flex justify-end font-bold">
                 <div>
                     <div>
@@ -172,12 +172,12 @@
                     </div>
                     <p class="mb-2 text-center">Pelamar,</p>
                     <div class="text-center">
-                        <!-- <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-32 w-32 mb-2 inline-block">
-                        <div v-else class="h-32 w-32 mb-2 inline-block bg-[#C4C4C4]"> -->
-                            <!-- <div class="flex justify-center items-center h-full">
+                        <img v-if="url!=null" :src="url" alt="" id="imgSoal" class="h-20 w-20 mb-2 inline-block">
+                        <div v-else class="h-20 w-20 mb-2 inline-block bg-[#C4C4C4]">
+                            <div class="flex justify-center items-center h-full">
                                 <p>Tanda Tangan</p>
-                            </div> -->
-                        <!-- </div> -->
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="text-center">
@@ -196,12 +196,20 @@ export default {
     },
     data() {
         return {
-            biodata: null
+            biodata: null,
+            url: null
         }
+    },
+    methods: {
+        getImg(data){
+            let id = data.split("d/")
+            id = id[1].split("/")
+            return "https://drive.google.com/uc?export=view&id="+id[0]
+        },
     },
     mounted() {
         this.biodata = this.data
-        // console.log(this.data)
+        this.url = this.getImg(this.biodata.tanda_tangan)
     },
 }
 </script>

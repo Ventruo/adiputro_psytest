@@ -282,6 +282,37 @@ class ExamSessionController {
       success_response(res, session?.toJSON(), "Refresh Token successful!");
     });
   }
+
+  async updateCurrentTest(req, res) {
+    console.log("Updating Exam Session Current Test...");
+
+    if (!req.body.id) {
+      missing_param_response(res);
+      return;
+    }
+
+    ExamSession.findOne({ where: { id: req.body.id } }).then((session) => {
+      if (!session) {
+        data_not_found_response(res);
+        return;
+      }
+
+      let test_id = req.body.test_id ?? 0;
+
+      session.set({
+        current_test: test_id,
+      });
+      session.save();
+
+      delete session.dataValues.is_admin;
+
+      success_response(
+        res,
+        session?.toJSON(),
+        "Update Current Test successful!"
+      );
+    });
+  }
 }
 
 module.exports = ExamSessionController;

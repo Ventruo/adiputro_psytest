@@ -14,6 +14,7 @@ const ApplicantRouter = require("./express_routers/applicant_route");
 const JobVacancyRouter = require("./express_routers/job_vacancy_route");
 const KreapelinDataRouter = require("./express_routers/kreapelin_data_route");
 const ISTDataRouter = require("./express_routers/ist_data_route");
+const EPPSDataRouter = require("./express_routers/epps_data_route");
 const SectionOngoingRouter = require("./express_routers/section_ongoing_route");
 
 const ClockRouter = require("./express_routers/clock_route");
@@ -59,6 +60,7 @@ router.use("/applicant", ApplicantRouter);
 router.use("/job_vacancy", JobVacancyRouter);
 router.use("/kreapelin_data", KreapelinDataRouter);
 router.use("/ist_data", ISTDataRouter);
+router.use("/epps_data", EPPSDataRouter);
 router.use("/section_ongoing", SectionOngoingRouter);
 router.use("/clock", ClockRouter);
 router.use("/auth", AuthRouter);

@@ -83,9 +83,21 @@
                     </div>
                 </div>
             </div>
+
+            <div class="w-full md:w-1/2">
+                <div class="flex mb-2">
+                    <p class="mr-2">17.</p>
+                    <p>Jenis Kelamin :</p>
+                </div>
+                <div class="flex mb-1 gap-3 ml-7">
+                    <div class="w-1/2"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
+                    <div class="w-1/2"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>            
+                </div>
+            </div>
+
             <div class="mb-2">
                 <div class="w-full flex">
-                    <p class="mr-2">17.</p>
+                    <p class="mr-2">18.</p>
                     <div class="w-1/2 mr-3 md:mr-0">
                         <div class="mr-4">
                             <p class="mb-1">Keadaan Kesehatan pada saat ini : </p>
@@ -124,7 +136,7 @@
             </div>
             <div class="mb-2">
                 <div class="flex w-full">
-                    <p class="mr-2">18.</p>
+                    <p class="mr-2">19.</p>
                     <div class="w-1/2">
                         <div class="mr-2">
                             <div class="flex w-full">
@@ -154,7 +166,7 @@
             
             <div class="mb-2">
                 <div class="flex mb-2">
-                    <p class="mr-2">19.</p>
+                    <p class="mr-2">20.</p>
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
                 <div class="md:ml-7">
@@ -195,7 +207,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">20.</p>
+                    <p class="mr-2">21.</p>
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-7">
@@ -205,7 +217,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2">
-                    <p class="mr-2">21.</p>
+                    <p class="mr-2">22.</p>
                     <p>KELUARGA</p>
                 </div>
 
@@ -356,7 +368,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2">
-                    <p class="mr-2">22.</p>
+                    <p class="mr-2">23.</p>
                     <p>RIWAYAT PEKERJAAN DI TEMPAT LAIN:</p>
                 </div>
                 <div class="md:ml-7">
@@ -407,7 +419,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2">
-                    <p class="mr-2">23.</p>
+                    <p class="mr-2">24.</p>
                     <p>TRAINING / KURSUS  YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="md:ml-7">
@@ -446,7 +458,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2">
-                    <p class="mr-2">24.</p>
+                    <p class="mr-2">25.</p>
                     <p>ORGANISASI YANG PERNAH DI IKUTI:</p>
                 </div>
                 <div class="md:ml-7">
@@ -485,7 +497,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-2">
-                    <p class="mr-2">25.</p>
+                    <p class="mr-2">26.</p>
                     <p>BAHASA YANG DIKUASAI:</p>
                 </div>
                 <div class="md:ml-7">
@@ -529,7 +541,7 @@
 
             <div class="mb-2">
                 <div class="flex">
-                    <p class="mr-2">26.</p>
+                    <p class="mr-2">27.</p>
                     <p>Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja:</p>
                 </div>
                 <div class="ml-7">
@@ -561,7 +573,7 @@
             </div>
 
             <div class="flex mb-2 mr-3">
-                <p class="mr-2">27.</p>
+                <p class="mr-2">28.</p>
                 <div>
                     <p>Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
                     <div class="flex w-1/2 mt-1">
@@ -573,7 +585,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">28.</p>
+                    <p class="mr-2">29.</p>
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-7">
@@ -583,7 +595,7 @@
             
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">29.</p>
+                    <p class="mr-2">30.</p>
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-7">
@@ -606,7 +618,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">30.</p>
+                    <p class="mr-2">31.</p>
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-7">
@@ -616,7 +628,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">31.</p>
+                    <p class="mr-2">32.</p>
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-7">
@@ -626,7 +638,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">32.</p>
+                    <p class="mr-2">33.</p>
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-7">
@@ -636,7 +648,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">33.</p>
+                    <p class="mr-2">34.</p>
                     <p>Apakah yang menjadi kelebihan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
@@ -646,7 +658,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">34.</p>
+                    <p class="mr-2">35.</p>
                     <p>Apakah yang menjadi kekurangan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
@@ -656,7 +668,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">35.</p>
+                    <p class="mr-2">36.</p>
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-7">
@@ -666,7 +678,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">36.</p>
+                    <p class="mr-2">37.</p>
                     <p>Apakah anda mempunyai prestasi / penghargaan selama ini? Bila ada silahkan disebutkan (jenis, bidang, dan tahun)</p>
                 </div>
                 
@@ -707,7 +719,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">37.</p>
+                    <p class="mr-2">38.</p>
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-7">
@@ -717,7 +729,7 @@
 
             <div>
                 <div class="flex mb-2">
-                    <p class="mr-2">38.</p>
+                    <p class="mr-2">39.</p>
                     <p>Sebagai referensi, sebutkan 2 (dua) nama orang terdekat anda, beserta alamat dan telepon: </p>
                 </div>
                 <div class="ml-7">
@@ -731,7 +743,7 @@
                             <p>No. Telepon</p>
                             <InputBio :type="'number'" v-model="orang_terdekat[0].telepon" :nama="'orang_terdekat[][telepon]'" :placeHolder="'081234567890'" />
                         </div>
-                        <div class=",d:w-1/2">
+                        <div class="md:w-1/2">
                             <p class="font-bold">Orang Terdekat 2</p>
                             <p>Nama</p>
                             <InputBio :type="'text'" v-model="orang_terdekat[1].nama" :nama="'orang_terdekat[][nama]'" :placeHolder="'Nama Lengkap'" />
@@ -827,7 +839,6 @@ export default {
     },
     methods: {
         kembali(){
-            this.$cookies.remove('current_test')
             this.$router.go(-1) 
         },
         signChange(e){
@@ -861,7 +872,7 @@ export default {
         },
         submitForm(e){
             let data = Object.fromEntries(new FormData(e.target).entries());
-            
+            console.log(e)
             let res = []
             let res2 = {}
             let notInclude = ["imgSign","keadaan","sakit_keras","cacat","kapan","menikah","nama_suami_istri","nama_anak","gaji_diperoleh",
@@ -876,27 +887,27 @@ export default {
             })
             // console.log(res)
             
-            let formData = {}
+            let formData = new FormData()
             for (let i = 0; i < res.length; i++) {
-                formData[res[i][0]] = res[i][1]
+                formData.append(res[i][0], res[i][1])
             }
 
             let kesehatan = {
                 "keadaan": res2.keadaan,
-                "cacat": res2.cacat, //
+                "cacat": res2.cacat,
                 "sakit_keras": res2.sakit_keras,
                 "kapan": res2.kapan,
             }
-            formData.kesehatan = kesehatan
+            formData.append("kesehatan", kesehatan)
 
             let nikah = {
                 "menikah": res2.menikah,
                 "nama_suami_istri": res2.nama_suami_istri,
                 "nama_anak": res2.nama_anak,
             }
-            formData.status_nikah = nikah
-
-            formData.pendidikan = this.pendidikan
+            formData.append("status_nikah", nikah)
+            
+            formData.append("pendidikan", this.pendidikan)
 
             let kel = {
                 orang_tua: this.keluarga[0],
@@ -904,20 +915,20 @@ export default {
                 anak_kandung: this.keluarga[2],
                 saudara_kandung: this.keluarga[3],
             }
-            formData.keluarga = kel
+            formData.append("keluarga", kel)
 
             let riwayats = {
                 "riwayat": this.riwayat,
                 "gaji_diperoleh": res2.gaji_diperoleh,
                 "alasan_berhenti": res2.alasan_berhenti,
             }
-            formData.riwayat_pekerjaan = riwayats
+            formData.append("riwayat_pekerjaan", riwayats)
 
-            formData.training_kursus = this.training
+            formData.append("training_kursus", this.training)
 
-            formData.organisasi = this.organisasi
+            formData.append("organisasi", this.organisasi)
 
-            formData.bahasa_dikuasai = this.bahasa
+            formData.append("bahasa_dikuasai", this.bahasa)
 
             let keterangan_ker = {
                 "lama_berhenti_kerja": res2.lama_berhenti_kerja,
@@ -929,38 +940,42 @@ export default {
                     "jabatan": res2.kenalan_jabatan
                 }, 
             }
-            formData.keterangan_kerja = keterangan_ker
+            formData.append("keterangan_kerja",keterangan_ker)
 
             let kendaraans = {
                 "keterangan": res2.kendaraan_ket,
                 "kepemilikan": res2.kendaraan_milik
             }
-            formData.kendaraan = kendaraans
+            formData.append("kendaraan", kendaraans)
 
-            formData.prestasi = this.prestasi
+            formData.append("prestasi", this.prestasi)
 
-            formData.seni_dikuasai = {"jenis": res2.seniDikuasai}
+            formData.append("seni_dikuasai", {"jenis": res2.seniDikuasai})
 
-            formData.orang_terdekat = this.orang_terdekat
+            formData.append("orang_terdekat", this.orang_terdekat)
 
-            formData.tanggal_biodata = res2.kota_ttd+", "+this.getDate()
+            formData.append("tanggal_biodata", res2.kota_ttd+", "+this.getDate())
 
-            console.log(formData)
+            var fileLamaran = e.target[127].files[0]
+            if (fileLamaran!=undefined)
+                fileLamaran.originalname = fileLamaran.name
 
-            let formData2 = {
-                updating_email: this.email,
-                biodata: formData
-            }
-
-            // var fileLamaran = e.target[16].files[0]
-            // if (fileLamaran!=undefined)
-            //     fileLamaran.originalname = fileLamaran.name
-            // formData.append('lampiran',fileLamaran)
-
+            formData.append("updating_email", this.email)
+            formData.append("tanda_tangan", fileLamaran)
+            // let formData2 = {
+            //     'updating_email': this.email,
+            //     'biodata': formData,
+            //     'tanda_tangan': fileLamaran,
+            // }
+            // let formData2 = new FormData()
+            // formData2.append('updating_email', this.email)
+            // formData2.append('biodata', formData)
+            // formData2.append('tanda_tangan', fileLamaran)
+            
             $('#spinner-modal').fadeIn("slow");
             
             let data_result = null
-            axios.post(this.port+'/registrant/update', formData2)
+            axios.post(this.port+'/registrant/update', formData)
             .then((response) => {
                 if (response.status==200){
                     axios

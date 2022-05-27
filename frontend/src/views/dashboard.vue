@@ -76,11 +76,11 @@ export default {
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
         }
     },
-    created() {
+    async created() {
         window.addEventListener("resize", this.resize);
 
         let adaTest = -1
-        adaTest = this.$cookies.get('current_test')
+        adaTest = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         if(adaTest)
             this.$router.push({path: '/section'})
 
@@ -93,6 +93,10 @@ export default {
         window.removeEventListener("resize", this.resize);
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         toDate(timeString){
             const waktu = new Date(timeString)
             const date = this.day[waktu.getDay()] + ", " + ('00'+waktu.getDate()).slice(-2) + " " + this.month[waktu.getMonth()] + " " + waktu.getFullYear()

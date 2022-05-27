@@ -24,10 +24,10 @@
             <h1 class="font-bold">Hasil Tes Papi Kostick</h1>
             <div class="flex">
                 <div class="font-bold text-sm">
-                    <p>E-Mail :</p>
+                    <p>Nama :</p>
                 </div>
                 <div class="ml-3 text-sm">
-                    <p>{{this.email}}</p>
+                    <p>{{this.nama}}</p>
                 </div>
             </div>
         </div>
@@ -109,8 +109,6 @@ export default {
     props: {
         "data": { type: Object, default: [], required: true },
         "nama": { type: String, default: "", required: true },
-        "email": { type: String, default: "", required: true },
-        // "biodata": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
     },
     data() {

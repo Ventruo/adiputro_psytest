@@ -30,8 +30,8 @@
                 </div>
                 <div class="ml-2 text-sm">
                     <p class="mb-2">: {{this.nama}}</p>
-                    <p class="mb-2">: L</p>
-                    <p>: S1</p>
+                    <p class="mb-2">: {{this.jk}}</p>
+                    <p>: {{this.pendidikan}}</p>
                 </div>
             </div>
         </div>
@@ -70,6 +70,8 @@ export default {
         "data": { type: Object, default: [], required: true },
         "print": { type: String, default: 'no', required: true },
         "nama": { type: String, default: '', required: true },
+        "jk": { type: String, default: '', required: true },
+        "pendidikan": { type: String, default: '', required: true },
     },
     data() {
         return {

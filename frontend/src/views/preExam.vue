@@ -23,6 +23,13 @@
                     <div class="h-3/4 w-full px-10 py-5 text-black font-bold text-left" v-if="section!=null">
                         <p class="mb-1 text-2xl md:text-3xl">Tes 1</p>
                         <p class="mb-2 font-semibold md:text-lg" v-html="section.instruction"></p>
+                        <div class="text-right">
+                            <a href="https://drive.google.com/uc?export=download&id=1IxMggwjWTXpAQtYsN4ITw8XIEDiJ395z" 
+                                v-show="this.sectionId==85"
+                                class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md cursor-pointer">
+                                <span class="font-bold text-xl">Unduh Template</span>
+                            </a>
+                        </div>
                         <div class="md:flex justify-between items-center mb-2">
                             <div class="flex p-2">
                                 <div class="mr-2 text-lg md:text-xl">
@@ -81,6 +88,10 @@ export default {
         }
     },
     methods: {
+        async getCurrentTest(exam_session){
+            exam_session = await axios.get(this.port+'/exam_session/' + exam_session);
+            return exam_session.data.current_test;
+        },
         doTest(){
             let age =  7 * 24 * 60 * 60 * 1000;
             this.$cookies.set('start_time', Date.now())
@@ -103,8 +114,8 @@ export default {
     created(){
         this.$emit('updateJudul', this.judulHalaman)
     },
-    mounted(){
-        this.testId = this.$cookies.get('current_test').id
+    async mounted(){
+        this.testId = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         this.sectionId = this.$cookies.get('current_section').id
         axios
         .get(this.port+'/section/'+this.sectionId)

@@ -181,16 +181,16 @@
                                 :class="{
                                     'bg-white': idTes!=20
                                 }">
-                                <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
-                                <Epps v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
-                                <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(idTes))" :data="dataTesKecil" :nama="this.nama" :print="'no'"/>
-                                <Adkudak v-if="idTes==10" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <TintumAnak v-if="idTes==16" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <IST v-if="idTes==17" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <PapiKostick v-if="idTes==18" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
-                                <Hafalan v-if="idTes==21" :data="dataRegistrant" :nama="this.nama" :email="this.email" :print="'no'"/>
+                                <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'no'"/>
+                                <Epps v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :print="'no'"/>
+                                <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(idTes))" :data="dataTesKecil" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'no'"/>
+                                <Adkudak v-if="idTes==10" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <TintumAnak v-if="idTes==16" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <IST v-if="idTes==17" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <PapiKostick v-if="idTes==18" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
+                                <Hafalan v-if="idTes==21" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                                 <div v-if="biodata!=null" class="flex flex-col h-full">
                                     <Kraepelin v-if="idTes==5" :data="this.dataRegistrant" :biodata="this.biodata" :print="'no'"/>
                                 </div>
@@ -203,11 +203,11 @@
                         </div>
                         <div v-if="idTes==2 || idTes==5 || idTes==17" class="w-1/2 h-[48rem] inline-block">
                             <div class="w-full h-full flex flex-col bg-white text-black">
-                                <EppsGraphics v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :id="'pChart'" :print="'no'"/>
+                                <EppsGraphics v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :id="'pChart'" :print="'no'"/>
                                 <div v-if="biodata!=null && idTes==5" class="flex flex-col h-full">
                                     <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChartKraepelin'" :print="'no'"/>
                                 </div>
-                                <ISTGraphic v-if="idTes==17" :data="this.dataRegistrant" :email="this.email" :id="'pChartIst'" :print="'no'"/>
+                                <ISTGraphic v-if="idTes==17" :data="this.dataRegistrant" :id="'pChartIst'" :print="'no'"/>
                             </div>
                         </div>
                     </div>
@@ -230,43 +230,43 @@
                         <div v-for="report in dataFull" :key="report" class="">
                             <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <Tintum v-if="report.test_id==1" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
-                                <Epps v-if="report.test_id==2" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
-                                <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <Tintum v-if="report.test_id==1" :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'yes'"/>
+                                <Epps v-if="report.test_id==2" :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :print="'yes'"/>
+                                <SDI v-if="report.test_id==3" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <MMPI v-if="report.test_id==4" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
                                 <div v-if="biodata!=null && report.test_id==5"  class="flex flex-col h-full">
                                     <Kraepelin :data="JSON.parse(report.result)" :biodata="this.biodata" :print="'yes'"/>
                                 </div>
-                                <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(report.test_id))" :data="dataTesKecil" :nama="this.nama" :print="'yes'"/>
-                                <Adkudak v-if="report.test_id==10" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <IST v-if="report.test_id==17" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <PapiKostick v-if="report.test_id==18" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
-                                <Gambar v-if="report.test_id==20" :data="getImg(JSON.parse(report.result)[0].gambar[0])" :nama="this.nama" :email="this.email" :judul="'Orang'"/>
-                                <Hafalan v-if="report.test_id==21" :data="JSON.parse(report.result)" :nama="this.nama" :email="this.email" :print="'yes'"/>
+                                <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(report.test_id))" :data="dataTesKecil" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'yes'"/>
+                                <Adkudak v-if="report.test_id==10" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <TintumAnak v-if="report.test_id==16" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <IST v-if="report.test_id==17" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <PapiKostick v-if="report.test_id==18" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
+                                <Gambar v-if="report.test_id==20" :data="getImg(JSON.parse(report.result)[0].gambar[0])" :nama="this.nama" :judul="'Orang'"/>
+                                <Hafalan v-if="report.test_id==21" :data="JSON.parse(report.result)" :nama="this.nama" :print="'yes'"/>
                             </div>
                             <div v-if="(report.test_id==2 || report.test_id==5 || report.test_id==17 || report.test_id==20) && report.result!==''" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <div class="a flex flex-col h-full" v-if="report.test_id==2">
-                                    <EppsGraphics :data="JSON.parse(report.result)" :nama="this.nama" :id="'printChart'" :print="'yes'"/>
+                                    <EppsGraphics :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :id="'printChart'" :print="'yes'"/>
                                 </div>
                                 <div v-if="biodata!=null && report.test_id==5">
                                     <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartKraepelin'" :print="'yes'"/>
                                 </div>
                                 <div v-if="report.test_id==17">
-                                    <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :email="this.email" :id="'printChartIST'" :print="'yes'"/>
+                                    <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartIST'" :print="'yes'"/>
                                 </div>
                                 <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[1]!==undefined" class="w-full">
-                                    <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[1])" :nama="this.nama" :email="this.email" :judul="'Pohon'"/>
+                                    <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[1])" :nama="this.nama" :judul="'Pohon'"/>
                                 </div>
                             </div>
                             <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[2]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[2])" :nama="this.nama" :email="this.email" :judul="'Rumah, Orang, dan Pohon'"/>
+                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[2])" :nama="this.nama" :judul="'Rumah, Orang, dan Pohon'"/>
                             </div>
                             <div v-if="report.test_id==20 && JSON.parse(report.result)[0].gambar[3]!==undefined" class="printPdf flex flex-col bg-white text-black relative" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
-                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[3])" :nama="this.nama" :email="this.email" :judul="'Wartegg'"/>
+                                <Gambar :data="getImg(JSON.parse(report.result)[0].gambar[3])" :nama="this.nama" :judul="'Wartegg'"/>
                             </div>
                         </div>
                     </div>
@@ -347,7 +347,10 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             prints: false,
             selectedTes: 1,
-            nama: "Widean",
+            nama: "",
+            jk: "",
+            pendidikan: "",
+            kode: "",
             routerBiodata: "",
             registrantBio: {},
         }
@@ -678,6 +681,15 @@ export default {
             })
             this.$router.push({path: '/admin/reviewEssay'})
         },
+        getReportBio(){
+            let data = this.registrantBio
+            this.nama = data.nama_lengkap!==undefined ? data.nama_lengkap : this.email
+            if(data.pendidikan!==undefined){
+                this.pendidikan = data.pendidikan[data.pendidikan.length-1].tingkat
+                this.kode = 2
+            }
+            if(data.jenis_kelamin!==undefined) this.jk = data.jenis_kelamin
+        }
     },
     created(){
         this.$emit('updateHeader', this.judulHalaman)
@@ -693,7 +705,8 @@ export default {
         axios
         .get(this.port+'/registrant/'+this.$route.query.registrant)
         .then(({data}) => (
-            this.registrantBio = data.biodata
+            this.registrantBio = data.biodata,
+            this.getReportBio()
         ))
     }
     

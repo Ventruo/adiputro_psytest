@@ -195,11 +195,18 @@
                         <p class="mt-1">{{biodata.email}}</p>
                     </div>
                 </div>
-
             </div>
+
+            <div class="mb-2">
+                <div class="flex mb-1">
+                    <p class="mr-2 font-bold">17.</p>
+                    <p><span class="font-bold">Jenis Kelamin :</span> {{biodata.jenis_kelamin=="L"?"Laki-Laki":"Perempuan"}}</p>
+                </div>
+            </div>
+
             <div class="mb-2">
                 <div class="w-full flex">
-                    <p class="mr-2 font-bold">17.</p>
+                    <p class="mr-2 font-bold">18.</p>
                     <div class="w-1/2">
                         <div class="mr-4">
                             <p class="font-bold">Keadaan Kesehatan pada saat ini : </p>
@@ -223,7 +230,7 @@
             </div>
             <div class="mb-2">
                 <div class="flex w-full">
-                    <p class="mr-2 font-bold">18.</p>
+                    <p class="mr-2 font-bold">19.</p>
                     <div>
                         <div class="flex w-full gap-2">
                             <p class="font-bold">Apakah anda belum menikah/menikah? </p>
@@ -247,7 +254,7 @@
             </div>
             <div class="mb-2">
                 <div class="flex mb-1 font-bold">
-                    <p class="mr-2">19.</p>
+                    <p class="mr-2">20.</p>
                     <p>PENDIDIKAN TERAKHIR</p>
                 </div>
                 <div class="ml-5">
@@ -276,7 +283,7 @@
 
             <div class="mb-2">
                 <div class="flex mb-1 font-bold">
-                    <p class="mr-2">20.</p>
+                    <p class="mr-2">21.</p>
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-5">
@@ -286,7 +293,7 @@
 
             <div>
                 <div class="flex mb-1 font-bold">
-                    <p class="mr-2">21.</p>
+                    <p class="mr-2">22.</p>
                     <p>KELUARGA</p>
                 </div>
 
