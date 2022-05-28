@@ -61,7 +61,7 @@
             <div id="soal" class="" v-if="pertanyaan!=null">
             <!-- <div id="soal" class=""> -->
                 <!-- <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" /> -->
-                <TextQuestion :question="'Ini Soal'" :jenis="'ekspresi'"/>
+                <TextQuestion :question="this.pertanyaanTeks" :cerita="this.cerita" :jenis="'ekspresi'"/>
                 <div class="w-full text-center mt-5 py-2">
                     <div class="inline-block w-full">
                         <div class="w-full mb-2" v-if="this.aksi=='x'">
@@ -102,7 +102,7 @@
         <div id="klikAnywhere" v-show="!isStarted" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50"
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
-        </div>
+        </div> 
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
             <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
@@ -141,14 +141,16 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
-            changed: false
+            changed: false,
+            pertanyaanTeks: "",
+            cerita: ""
         }
     },
     methods: {
         setChanged(state){
             this.changed = state
         },
-         mulai(){
+        mulai(){
             this.isStarted = true
             
             // Create Section Ongoing to indicate Ongoing Section
@@ -172,7 +174,8 @@ export default {
                 
                 if(this.changed) this.uploadTempAnswers();
 
-                this.progress(true)
+                this.gantiPertanyaan();
+                this.progress(true);
             }else{
                 var isi = 0
                 this.jawaban.forEach(e => { if (e != null) isi++; });
@@ -217,6 +220,8 @@ export default {
             }
 
             if(this.changed) this.uploadTempAnswers();
+
+            this.gantiPertanyaan();
         },
         lompatSoal(idx){
             this.noSoal = idx
@@ -228,6 +233,8 @@ export default {
             else $('#nextBtn').text('Submit')
 
             if(this.changed) this.uploadTempAnswers();
+
+            this.gantiPertanyaan();
         },
         progress(maju){
             const elements = document.getElementById("progress")
@@ -332,6 +339,18 @@ export default {
             }).catch( error => { 
                 console.log('error: ' + error) 
             });
+        },
+        gantiPertanyaan(){
+            let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+            let temp = tempSoal.split(";")
+
+            if(temp.length>1){
+                this.cerita = temp[0]
+                this.pertanyaanTeks = temp[1]
+            }else{ 
+                this.cerita = ""
+                this.pertanyaanTeks = temp[0]
+            }
         },
         getTempAnswers(){
             axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
