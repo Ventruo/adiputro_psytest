@@ -9,7 +9,17 @@
         <div class="text-center h-28 py-2 w-full flex justify-center items-center">
             <img v-if="jenis === 'add'" :src="url" alt="" id="imgSoal" class="inline-block h-full">
             <!-- <img v-else src="src/assets/soal1.png" alt="" id="imgSoal" class="inline-block h-full"> -->
-            <img v-else :src="img" alt="" id="imgSoal" class="inline-block h-full">
+            <div v-else class="w-full">
+                <div v-if="this.pertanyaan!==''" class="flex text-white w-full">
+                    <div class="w-1/2 flex justify-center">
+                        <img :src="img" alt="" id="imgSoal" class="inline-block h-full">
+                    </div>
+                    <div class="w-1/2">
+                        <p>{{this.pertanyaan}}</p>
+                    </div>
+                </div>
+                <img v-else :src="img" alt="" id="imgSoal" class="inline-block h-full">
+            </div>
         </div>
     </div>
 </template>
@@ -19,10 +29,10 @@ export default {
     props: {
         "label": { type: String, default: "" },
         "jenis": { type: String, default: "" },
-        "urlSoal": { type: String, default: "" },
+        "pertanyaan": {type: String, default: ""},
         "img": {type: String, default: ""}
     },
-    emits: ["updateUrl"],
+    // emits: ["updateUrl"],
     data() {
         return{
             url: this.urlSoal,
@@ -44,6 +54,9 @@ export default {
                 this.$emit('updateUrl', updatedUrl)
             }
         },
+    },
+    mounted() {
+
     },
 }
 </script>

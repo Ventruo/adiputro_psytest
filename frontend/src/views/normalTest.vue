@@ -53,8 +53,9 @@
             <div id="soal" class="mb-5 h-full font-semibold" v-if="pertanyaan!=null">
             <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :img="this.getImg(pertanyaan[noSoal-1]['instruction'])" />
-                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :pertanyaan="this.pertanyaanGambar" 
+                            :img="this.urlGambar" />
+                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :cerita="this.cerita" />
                 
                 <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban 
                                 :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
@@ -132,6 +133,10 @@ export default {
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             angka: ["1","2","3","4","5","6","7","8","9","10"],
             changed: false,
+            pertanyaanGambar: "",
+            urlGambar: "",
+            pertanyaanTeks: "",
+            cerita: "",
         }
     },
     methods: {
@@ -269,7 +274,16 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else if(this.section_id==9){
+            }else if(this.section_id==9 && this.pertanyaan[this.noSoal-1]['option_type']==2){
+                let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                let temp = tempSoal.split(";")
+                
+                this.urlGambar = this.getImg(temp[0])
+                if(temp.length>1){
+                    this.pertanyaanGambar = temp[1]
+                }else{ 
+                    this.pertanyaanGambar = ""
+                }
                 this.pilihanJawaban = this.getImg(this.pertanyaan[this.noSoal-1]['option_a'])
             }else if(this.section_id==79){
                 this.pilihanJawaban = [
@@ -291,6 +305,31 @@ export default {
                     'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
+
+                if (this.section_id==9){
+                    let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                    let temp = tempSoal.split(";")
+                    
+                    this.urlGambar = this.getImg(temp[0])
+                    if(temp.length>1){
+                        this.pertanyaanGambar = temp[1]
+                    }else{ 
+                        this.pertanyaanGambar = ""
+                    }
+                }
+            }
+
+            if(this.pertanyaan[this.noSoal-1]['instruction_type']==1){
+                let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                let temp = tempSoal.split(";")
+
+                if(temp.length>1){
+                    this.cerita = temp[0]
+                    this.pertanyaanTeks = temp[1]
+                }else{ 
+                    this.cerita = ""
+                    this.pertanyaanTeks = temp[0]
+                }
             }
         },
         progress(maju){
@@ -523,41 +562,41 @@ export default {
             // console.log(this.test_result_id)
         })
 
-        this.getTempAnswers();
+        // this.getTempAnswers();
 
-        // Build socket
-        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
-        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
-        // console.log(access_token);
-        // console.log(user_key)
-        buildSocket(access_token, user_key).then((socket) => {
-            socket.on("test.tick", (data) => {
-                if(data.section_id == this.section_id){
-                    // console.log("socket", socket)
-                    // console.log(data);
-                    this.isStarted = true
-                    this.duarsi = data.total_duration;
-                    var minutes = Math.floor(data.countdown / 60);
-                    var seconds = data.countdown - minutes * 60;
+        // // Build socket
+        // const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        // const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // // console.log(access_token);
+        // // console.log(user_key)
+        // buildSocket(access_token, user_key).then((socket) => {
+        //     socket.on("test.tick", (data) => {
+        //         if(data.section_id == this.section_id){
+        //             // console.log("socket", socket)
+        //             // console.log(data);
+        //             this.isStarted = true
+        //             this.duarsi = data.total_duration;
+        //             var minutes = Math.floor(data.countdown / 60);
+        //             var seconds = data.countdown - minutes * 60;
 
-                    this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
-                    this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
-                    if(data.countdown <= 0){
-                        Swal.fire({
-                            title: 'Waktu Habis...',
-                            icon: 'warning',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Kembali ke Dashboard',
-                            allowOutsideClick: false,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.submitJawaban()
-                            }
-                        });
-                    }
-                }
-            });
-        });
+        //             this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+        //             this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+        //             if(data.countdown <= 0){
+        //                 Swal.fire({
+        //                     title: 'Waktu Habis...',
+        //                     icon: 'warning',
+        //                     confirmButtonColor: '#3085d6',
+        //                     confirmButtonText: 'Kembali ke Dashboard',
+        //                     allowOutsideClick: false,
+        //                 }).then((result) => {
+        //                     if (result.isConfirmed) {
+        //                         this.submitJawaban()
+        //                     }
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
 
         let thi = this
         $('body').keydown(function(event) {

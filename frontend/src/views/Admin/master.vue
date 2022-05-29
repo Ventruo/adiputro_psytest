@@ -143,7 +143,7 @@ export default {
                 confirmButtonText: 'Yes'
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    await axios.post("/auth/logout", {}, { withCredentials: true });
+                    await axios.post("/auth/logout", {session_id: this.$cookies.get('data_registrant').exam_session}, { withCredentials: true });
 
                     axios.defaults.headers.common['Authorization'] = '';
                     this.$cookies.remove('refresh_token')
