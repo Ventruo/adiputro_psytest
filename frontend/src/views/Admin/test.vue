@@ -35,7 +35,7 @@
                     <tbody v-if="this.sectionList!=null && this.sectionList.length>0">
                         <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
                             <td>{{i.section_number}}</td>
-                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1">{{i.instruction}}</td>
+                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1" v-html="i.instruction"></td>
                             <td>{{i.duration}} Menit</td>
                             <td>
                                 <span v-if="i.question_type==1">Teks</span>
@@ -136,7 +136,7 @@
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModals"></div>
 
         <!-- Create New Section Modal -->
-        <div id="modalSection" class="fixed left-1/3 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 15%; width: 40%; height: 70%;">
+        <div id="modalSection" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 5%; width: 50%; height: 90%;">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">{{headerModal}}</p>
                 <button id="closeNewSection" class="relative inline-block" @click="closeModal">
@@ -146,8 +146,25 @@
 
             <div class="text-white p-5 h-5/6 relative">
                 <p>Instruksi :</p>
-                <textarea name="" id="" v-model="this.instruksi"
-                    class="rounded-lg py-2 px-3 w-full h-24 my-2 bg-primary-600 outline-none placeholder-gray-300 resize-none"></textarea>
+                <Editor
+                    v-model="this.instruksi"
+                    api-key="no-api-key"
+                    :init="{
+                        height: 300,
+                        menubar: false,
+                        plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount'
+                        ],
+                        toolbar:
+                        'undo redo | formatselect | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | removeformat | help'
+                    }"
+                />
+                <!-- <textarea name="" id="" v-model="this.instruksi"
+                    class="rounded-lg py-2 px-3 w-full h-24 my-2 bg-primary-600 outline-none placeholder-gray-300 resize-none"></textarea> -->
                 <div class="flex">
                     <div class="w-1/3">
                         <p class="mt-4 mb-3">Durasi</p>
@@ -321,9 +338,11 @@
 <script>
 import Radio from '../../components/radiobutton.vue'
 import axios from 'axios'
+import Editor from '@tinymce/tinymce-vue'
+
 export default {
     components: {
-        Radio, axios
+        Radio, axios, Editor
     },
     data() {
         return {

@@ -55,6 +55,7 @@ export default {
             pilihan: []
         }
     },
+    emits: ["setChanged"],
     methods: {
         setChangeds(){
             this.$emit('setChanged', true)

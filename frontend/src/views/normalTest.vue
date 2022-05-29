@@ -53,8 +53,9 @@
             <div id="soal" class="mb-5 h-full font-semibold" v-if="pertanyaan!=null">
             <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :img="this.getImg(pertanyaan[noSoal-1]['instruction'])" />
-                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="pertanyaan[noSoal-1]['instruction']" />
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :pertanyaan="this.pertanyaanGambar" 
+                            :img="this.urlGambar" />
+                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :cerita="this.cerita" />
                 
                 <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban 
                                 :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
@@ -96,6 +97,7 @@ import ImageAnswer from '../components/views/imageAnswer.vue'
 import TextQuestion from '../components/views/textQuestion.vue'
 import TextAnswer from '../components/views/textAnswer.vue'
 import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
+import { socket, buildSocket } from '../utilities/network.js'
 
 export default {
     components: {
@@ -108,6 +110,7 @@ export default {
             noSoal: 1,
             jumSoal: 5,
             jumChoice: 5,
+            durasi: 0,
             menit: 0,
             detik: 0,
             waktu: null,
@@ -130,6 +133,10 @@ export default {
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             angka: ["1","2","3","4","5","6","7","8","9","10"],
             changed: false,
+            pertanyaanGambar: "",
+            urlGambar: "",
+            pertanyaanTeks: "",
+            cerita: "",
         }
     },
     methods: {
@@ -147,42 +154,31 @@ export default {
         },
         mulai(){
             this.isStarted = true
-            if(this.menit!=-99){
-                this.waktu = setInterval(() => {
-                    this.detik--
-                    if (this.detik<0){
-                        this.detik = 59
-                        this.menit--
-                    }
-                    
-                    if (this.menit<0){
-                        this.detik = 0
-                        this.menit = 0
-                        clearInterval(this.waktu)
-                        
-                        Swal.fire({
-                            title: 'Waktu Habis...',
-                            icon: 'warning',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Kembali ke Dashboard'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.submitJawaban()
-                            }
-                        });
-                    } 
-                }, 1000)
-            }
+
+            // Create Section Ongoing to indicate Ongoing Section
+            axios.post(this.port+'/section_ongoing/create',{
+                "section_id": this.section_id,
+                "exam_session_id": this.exam_session,
+                "start_status": 1,
+                "start_time": Date.now(),
+                "duration": this.durasi,
+            })
+            .then((response) => {
+                
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
         },
         nextSoal(){
             // console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
-            console.log(this.changed)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
-
+                
+                if(this.changed) this.uploadTempAnswers();
+                
                 this.progress(true)
 
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
@@ -222,8 +218,6 @@ export default {
                 }
             }
 
-            // TODO: UPLOAD KE DB
-
             this.gantiPilihanJawaban()
         },
         prevSoal(){
@@ -237,8 +231,8 @@ export default {
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
             }
-
-            // TODO: UPLOAD KE DB
+            
+            if(this.changed) this.uploadTempAnswers();
 
             this.gantiPilihanJawaban()
         },
@@ -255,7 +249,7 @@ export default {
             if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                 this.$refs.textAnswer.resetText(this.jawaban[this.noSoal-1])
 
-            // TODO: UPLOAD KE DB
+            if(this.changed) this.uploadTempAnswers();
 
             this.gantiPilihanJawaban()
         },
@@ -278,7 +272,16 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else if(this.section_id==9){
+            }else if(this.section_id==9 && this.pertanyaan[this.noSoal-1]['option_type']==2){
+                let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                let temp = tempSoal.split(";")
+                
+                this.urlGambar = this.getImg(temp[0])
+                if(temp.length>1){
+                    this.pertanyaanGambar = temp[1]
+                }else{ 
+                    this.pertanyaanGambar = ""
+                }
                 this.pilihanJawaban = this.getImg(this.pertanyaan[this.noSoal-1]['option_a'])
             }else if(this.section_id==79){
                 this.pilihanJawaban = [
@@ -300,6 +303,31 @@ export default {
                     'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
+
+                if (this.section_id==9){
+                    let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                    let temp = tempSoal.split(";")
+                    
+                    this.urlGambar = this.getImg(temp[0])
+                    if(temp.length>1){
+                        this.pertanyaanGambar = temp[1]
+                    }else{ 
+                        this.pertanyaanGambar = ""
+                    }
+                }
+            }
+
+            if(this.pertanyaan[this.noSoal-1]['instruction_type']==1){
+                let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                let temp = tempSoal.split(";")
+
+                if(temp.length>1){
+                    this.cerita = temp[0]
+                    this.pertanyaanTeks = temp[1]
+                }else{ 
+                    this.cerita = ""
+                    this.pertanyaanTeks = temp[0]
+                }
             }
         },
         progress(maju){
@@ -377,17 +405,27 @@ export default {
                         email: this.email
                     })
                     .then((response) => {
-                        this.$cookies.remove('current_section')
-                        this.$cookies.remove("start_time")
-                        $('#spinner-modal').fadeOut("slow")
-                        Swal.fire(
-                            'Submitted!',
-                            'Task Successfully Submitted.',
-                            'success'
-                        )
-                        .then(function(){
-                            window.location = '/section'
+                        axios.post(this.port+'/section_ongoing/stopSection',{
+                            section_id: this.section_id,
+                            exam_session: this.exam_session
                         })
+                        .then((response) => {
+                        
+                            this.$cookies.remove('current_section')
+                            this.$cookies.remove("start_time")
+                            $('#spinner-modal').fadeOut("slow")
+                            Swal.fire(
+                                'Submitted!',
+                                'Task Successfully Submitted.',
+                                'success'
+                            )
+                            .then(function(){
+                                window.location = '/section'
+                            })
+                        })
+                        // .catch( error => 
+                        //     console.log('error: ' + error) 
+                        // })
                     })
                     // .catch( error => 
                     //     console.log('error: ' + error) 
@@ -429,10 +467,11 @@ export default {
             }
         },
         uploadTempAnswers(){
+            this.jawabanTemp = "";
             for (let i = 0; i < this.jumSoal; i++) {
-                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "" + ";";
+                this.jawabanTemp += this.jawaban[i]!=null ? this.jawaban[i] : "";
+                this.jawabanTemp += ";";
             }
-            console.log(this.jawabanTemp)
 
             axios.post(this.port+'/section_ongoing/updateTempAnswers',{
                 "section_id": this.section_id,
@@ -440,7 +479,7 @@ export default {
                 "temp_answers": this.jawabanTemp,
             })
             .then((response) => {
-                
+                this.changed = false;
             }).catch( error => { 
                 console.log('error: ' + error) 
             });
@@ -448,14 +487,14 @@ export default {
         getTempAnswers(){
             axios.get(this.port+'/section_ongoing/getbysection/'+this.section_id+'?exam_session_id='+this.exam_session)
             .then((data) => {
-                if(data && data.length > 0){
-                    data = data[0];
+                if(data && data.data){
+                    data = data.data.filter((obj) => {
+                        return obj.start_status == 1;
+                    })[0];
                     
                     let temp = data.temp_answers.split(";");
                     let temp_answers = [];
                     for(let i = 0; i < temp.length; i++){
-                        if(temp[i] == "") continue;
-
                         temp_answers[i] = temp[i] ;
                     }
 
@@ -492,6 +531,7 @@ export default {
             this.pertanyaan = data,
             this.getMaxLength(),
             this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
+            this.durasi = this.menit,
             this.jumChoice = this.pertanyaan[0]["option_num"],
             this.jumSoal = this.pertanyaan.length,
             // this.jumSoal = 5,
@@ -519,6 +559,42 @@ export default {
             // console.log(this.section_id)
             // console.log(this.test_result_id)
         })
+
+        // this.getTempAnswers();
+
+        // // Build socket
+        // const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        // const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // // console.log(access_token);
+        // // console.log(user_key)
+        // buildSocket(access_token, user_key).then((socket) => {
+        //     socket.on("test.tick", (data) => {
+        //         if(data.section_id == this.section_id){
+        //             // console.log("socket", socket)
+        //             // console.log(data);
+        //             this.isStarted = true
+        //             this.duarsi = data.total_duration;
+        //             var minutes = Math.floor(data.countdown / 60);
+        //             var seconds = data.countdown - minutes * 60;
+
+        //             this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+        //             this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+        //             if(data.countdown <= 0){
+        //                 Swal.fire({
+        //                     title: 'Waktu Habis...',
+        //                     icon: 'warning',
+        //                     confirmButtonColor: '#3085d6',
+        //                     confirmButtonText: 'Kembali ke Dashboard',
+        //                     allowOutsideClick: false,
+        //                 }).then((result) => {
+        //                     if (result.isConfirmed) {
+        //                         this.submitJawaban()
+        //                     }
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
 
         let thi = this
         $('body').keydown(function(event) {
