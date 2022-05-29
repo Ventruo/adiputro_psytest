@@ -103,8 +103,7 @@ export default {
         axios
         .get(this.port+"/applicant/"+this.$route.query.email)
         .then(({data}) => (
-            this.dataApplicant = data,
-            console.log(this.dataApplicant)
+            this.dataApplicant = data
         ))
     },
     created(){

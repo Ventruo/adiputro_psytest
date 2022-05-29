@@ -227,60 +227,60 @@ export default {
                 });
             }
         },
-        createQuestion(e){
-            if (this.section_id!=null){
-                if(e.target[1].files.length<=0)
-                    Swal.fire({
-                        title: 'Mohon Isi Semua Field!',
-                        icon: 'warning',
-                        confirmButtonText: 'Kembali'
-                    });
-                else{
-                    let file = e.target[1].files[0]
-                    if (file!=undefined)
-                        file.originalname = file.name
-                    let extension = file.originalname.split('.')[1]
+        // createQuestion(e){
+        //     if (this.section_id!=null){
+        //         if(e.target[1].files.length<=0)
+        //             Swal.fire({
+        //                 title: 'Mohon Isi Semua Field!',
+        //                 icon: 'warning',
+        //                 confirmButtonText: 'Kembali'
+        //             });
+        //         else{
+        //             let file = e.target[1].files[0]
+        //             if (file!=undefined)
+        //                 file.originalname = file.name
+        //             let extension = file.originalname.split('.')[1]
                     
-                    if(!['png','jpg','jpeg'].includes(extension))
-                        Swal.fire({
-                            title: 'Hanya dapat mengupload file dengan ekstensi .png, .jpg, atau .jpeg !',
-                            icon: 'warning',
-                            confirmButtonText: 'Kembali'
-                        });
+        //             if(!['png','jpg','jpeg'].includes(extension))
+        //                 Swal.fire({
+        //                     title: 'Hanya dapat mengupload file dengan ekstensi .png, .jpg, atau .jpeg !',
+        //                     icon: 'warning',
+        //                     confirmButtonText: 'Kembali'
+        //                 });
 
-                    let formData = new FormData()
-                    formData.append('section_id',this.test_id)
-                    formData.append('excel',file)
-                    axios.post(this.port+'/question/createFromExcel',formData, {headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }})
-                    .then((response) => {
-                        if (response.status==200){
-                            let thi = this
-                            Swal.fire(
-                                'Created!',
-                                'Pertanyaan Berhasil Dibuat!',
-                                'success'
-                            )
-                            .then(function(){
-                                $('#modalSession').fadeOut("fast")
-                                $('#bg').fadeOut("slow")
-                                thi.closeModal()
-                            })
-                        }else{
-                            throw response
-                        }
-                    }).catch( error => {
-                        $('#spinner-modal').fadeOut("slow");
-                        Swal.fire(
-                            'Warning!',
-                            error.response.data,
-                            'warning'
-                        )
-                    });
-                }
-            }
-        },
+        //             let formData = new FormData()
+        //             formData.append('section_id',this.test_id)
+        //             formData.append('excel',file)
+        //             axios.post(this.port+'/question/createFromExcel',formData, {headers: {
+        //                 'Content-Type': 'multipart/form-data',
+        //             }})
+        //             .then((response) => {
+        //                 if (response.status==200){
+        //                     let thi = this
+        //                     Swal.fire(
+        //                         'Created!',
+        //                         'Pertanyaan Berhasil Dibuat!',
+        //                         'success'
+        //                     )
+        //                     .then(function(){
+        //                         $('#modalSession').fadeOut("fast")
+        //                         $('#bg').fadeOut("slow")
+        //                         thi.closeModal()
+        //                     })
+        //                 }else{
+        //                     throw response
+        //                 }
+        //             }).catch( error => {
+        //                 $('#spinner-modal').fadeOut("slow");
+        //                 Swal.fire(
+        //                     'Warning!',
+        //                     error.response.data,
+        //                     'warning'
+        //                 )
+        //             });
+        //         }
+        //     }
+        // },
     },
 }
 </script>

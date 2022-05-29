@@ -255,7 +255,9 @@ export default {
         },
         gantiPilihanJawaban(){
             let banyak = this.pertanyaan[this.noSoal-1]['option_a'].split(';')
+            //jika ada banyak pilihan jawaban, maka akan ditaruh pada kolom option_a dengan format pilihan1;pilihan2;pilihan3;dst
             if (banyak.length>1){
+                //maka apabila ternyata pilihannya banyak maka fungsi dibawah akan dijalankan
                 let temp = []
                 let rujukan = []
                 if(this.section_id==78) rujukan = this.angka
