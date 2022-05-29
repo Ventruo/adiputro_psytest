@@ -565,7 +565,7 @@ class QuestionResultController {
       missing_param_response(res);
     }
 
-    SectionResult.findOne({
+    await SectionResult.findOne({
       where: {
         exam_session: req.body.exam_session,
         section_id: req.body.section_id,
@@ -587,20 +587,45 @@ class QuestionResultController {
         req.body.question_id
       );
 
-      await QuestionResult.update(
+      await QuestionResult.create({
+        section_result_id: secres.id,
+        question_id: req.body.question_id,
+        answer: file.data.id,
+        status_correct: 1,
+      });
+      
+    });
+
+    // update test result
+    SectionResult.findAll({
+      where: {
+        exam_session: req.body.exam_session,
+        test_result_id: req.body.test_result_id,
+      },
+    }).then(async (secres) => {
+      let result = []
+      for (let i = 0; i < secres.length; i++) {
+        const secress = secres[i];
+        let q = await QuestionResult.findOne({ where: { section_result_id: secress.id } })
+        result.push(q != null ? q.answer : "")
+      }
+
+      for (let i = secres.length; i < 4; i++) {
+        result.push("")
+      }
+
+      await TestResult.update(
         {
-          answer: file.data.id,
+          result: JSON.stringify(result),
         },
         {
           where: {
-            section_result_id: secres.id,
-            question_id: req.body.question_id,
+            id: req.body.test_result_id,
           },
         }
       );
-
       success_response(res, "Upload Successful!", "Upload Successful!");
-    });
+    })
   }
 
   async uploadToDrive(

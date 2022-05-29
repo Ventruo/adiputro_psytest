@@ -15,10 +15,13 @@ app.use(cookieParser());
 // } else {
 //   url = process.env.EXPRESS_URL || "http://127.0.0.1:3000";
 // }
+let regexopt = new RegExp(
+  `((ap\.ngrok\.io)|(127\.0\.0\.1)|(${process.env.CLIENT_URL}))`
+);
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL],
+    origin: regexopt,
     credentials: true,
   })
 );
