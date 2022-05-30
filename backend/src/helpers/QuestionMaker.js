@@ -6,12 +6,12 @@ const xlsxFile = require("read-excel-file/node");
 module.exports = {
   populateQuestion(excel_path, section, Question, res) {
     xlsxFile(excel_path, {
-      sheet: "Soal",
+      sheet: "soal",
     }).then(async (rows) => {
       let questions = [];
 
-      let start_row = 5;
-      if (rows[5][0] && rows[5][0].toUpperCase() == "ID (10)") start_row = 6;
+      let start_row = 1;
+      // if (rows[5][0] && rows[5][0].toUpperCase() == "ID (10)") start_row = 6;
       for (let i = start_row; i < rows.length; i++) {
         questions.push({
           instruction: rows[i][1] ?? "-",
@@ -23,8 +23,8 @@ module.exports = {
           option_d: rows[i][6] ?? "-",
           option_e: rows[i][7] ?? "-",
           answer: rows[i][8] ?? "-",
-          option_type: rows[i][9].toLowerCase() == "text" ? 1 : 2,
-          instruction_type: rows[i][10].toLowerCase() == "text" ? 1 : 2,
+          option_type: rows[i][9] ? (rows[i][9].toLowerCase() == "text" ? 1 : 2) : 1,
+          instruction_type: rows[i][10] ? (rows[i][10].toLowerCase() == "text" ? 1 : 2) : 1,
         });
       }
 
