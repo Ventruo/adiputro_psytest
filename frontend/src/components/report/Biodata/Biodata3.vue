@@ -112,7 +112,7 @@
                     <p>Adakah bidang seni yang Anda kuasai ? jika ada, sebutkan jenisnya (Musik, suara, dll)</p>
                 </div>
                 <div class="ml-5">
-                    <span>{{biodata.seni_dikuasai.jenis.join(', ')}}</span>
+                    <span>{{biodata.seni_dikuasai.jenis}}</span>
                     <!-- <span v-for="i in biodata.seni_dikuasai.jenis.length" :key="i">, {{biodata.seni_dikuasai.jenis[i-1]}}</span> -->
                 </div>
             </div>

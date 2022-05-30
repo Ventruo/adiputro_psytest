@@ -23,7 +23,7 @@
                 <i class="fa fa-chevron-left mr-2 text-xl"></i>
                 <span class="font-bold text-xl">Kembali</span>
             </button>
-            <div class="flex justify-center">
+            <form name="gambarForm" class="flex justify-center">
                 <label for="gambar" class="border-dashed border-4 border-gray-400 border-inset rounded-md w-auto min-w-[20rem] 
                             h-auto min-h-[20rem] my-3 flex justify-center items-center text-center 
                             font-semibold text-xl">
@@ -31,7 +31,7 @@
                     <p v-else>Upload gambar anda (klik disini)</p>
                 </label>
                 <input type="file" name="gambar" id="gambar" class="hidden" @change="imageChange">
-            </div>
+            </form>
             <div class="flex justify-center">
                 <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white duration-200 rounded-full w-1/2 py-2 font-bold text-xl" @click.prevent="submitJawaban">
                     <span id="nextBtn">Submit</span>
@@ -97,32 +97,17 @@ export default {
             }
         },
         submitJawaban(){
-            for (let i = 0; i < this.jumSoal; i++) {
-                this.jawabanFinal[i] = []
-                this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
-                if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
-                else if (this.jenis=="MMPI"){
-                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-                    this.jawabanFinal[i]["answer"] = ans=="+"?1:0
-                }
-                else if (this.jenis=="SDI"){
-                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
-                    this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?1:0
-                }
-                else if(this.jumChoice==2){
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-                }
-                else
-                    this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
-                this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
-            }
+            let formData = new FormData()
+            formData.append('test_result_id', this.test_result_id)
+            formData.append('section_id', this.section_id)
+            formData.append('exam_session', this.exam_session)
+            formData.append('question_id', this.pertanyaan[0].id)
 
-            let formData = {
-                exam_session: this.exam_session,
-                section_id: this.section_id,
-                data: this.jawabanFinal
-            }
+            var fileGambar = document.forms['gambarForm']['gambar'].files[0]
+            if (fileGambar!=undefined)
+                fileGambar.originalname = fileGambar.name
+            
+            formData.append('gambar', fileGambar)
 
             axios.post(this.port+'/section_result/create',{
                 "test_result_id": this.test_result_id,
@@ -132,27 +117,18 @@ export default {
                 "finish_date": Date.now()
             })
             .then((response) => {
-                axios.post(this.port+'/question_result/createmultiple',formData)
+                axios.post(this.port+'/question_result/uploadimage', formData)
                 .then((response) => {
-                    axios.post(this.port+'/test_result/calculateresult',{
-                        test_id: this.test_id,
-                        email: this.email
+                    this.$cookies.remove('current_section')
+                    this.$cookies.remove("start_time")
+                    Swal.fire(
+                        'Submitted!',
+                        'Task Successfully Submitted.',
+                        'success'
+                    )
+                    .then(function(){
+                        window.location = '/section'
                     })
-                    .then((response) => {
-                        this.$cookies.remove('current_section')
-                        this.$cookies.remove("start_time")
-                        Swal.fire(
-                            'Submitted!',
-                            'Task Successfully Submitted.',
-                            'success'
-                        )
-                        .then(function(){
-                            window.location = '/section'
-                        })
-                    })
-                    // .catch( error => 
-                    //     console.log('error: ' + error) 
-                    // })
                 })
             }).catch( error => { 
                 console.log('error: ' + error) 

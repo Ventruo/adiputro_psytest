@@ -54,7 +54,7 @@
         <div id="bg" class="fixed top-0 left-0 w-screen h-screen bg-primary-1000 bg-opacity-60 hidden" @click="closeModal"></div>
 
         <!-- Create Upload Buram Modal -->
-        <form id="modalBuram" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="width: 50%; height: 80%; top: 10%" enctype="multipart/form-data" 
+        <form id="modalBuram" name="formBuram" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="width: 50%; height: 80%; top: 10%" enctype="multipart/form-data" 
             @submit.prevent="uploadBuram">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">Upload Kertas Buram</p>
@@ -111,6 +111,10 @@
 
             </div>
         </form>
+        
+        <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
+            <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
+        </div>
     </div>
 </template>
 
@@ -124,7 +128,8 @@ export default {
         return {
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             url1: null,
-            url2: null
+            url2: null,
+            port: import.meta.env.VITE_BACKEND_URL
         }
     },
     props: {
@@ -132,18 +137,18 @@ export default {
     },
     methods: {
         keSection(tes){
-            axios.post('/exam_session/updateCurrentTest',{
-                "id": this.$cookies.get('data_registrant').exam_session,
-                "test_id": tes.id
-            }).then((response) => {
-                if(tes.id==19){
-                    this.$router.push({path: '/biodata'})
-                }else{
+            if(tes.id!=19){
+                axios.post('/exam_session/updateCurrentTest',{
+                    "id": this.$cookies.get('data_registrant').exam_session,
+                    "test_id": tes.id
+                }).then((response) => {
                     this.$router.push({path: '/section'})
-                }
-            }).catch( error => { 
-                console.log('error: ' + error) 
-            });
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }else{
+                this.$router.push({path: '/biodata'})
+            }
         },
         openModal(){
             $('#modalBuram').fadeIn("slow");
@@ -175,60 +180,107 @@ export default {
                 reader.readAsDataURL(input.files[0]);
             }
         },
-        createQuestion(e){
-            if (this.section_id!=null){
-                if(e.target[1].files.length<=0)
-                    Swal.fire({
-                        title: 'Mohon Isi Semua Field!',
-                        icon: 'warning',
-                        confirmButtonText: 'Kembali'
-                    });
-                else{
-                    let file = e.target[1].files[0]
-                    if (file!=undefined)
-                        file.originalname = file.name
-                    let extension = file.originalname.split('.')[1]
-                    
-                    if(!['png','jpg','jpeg'].includes(extension))
-                        Swal.fire({
-                            title: 'Hanya dapat mengupload file dengan ekstensi .png, .jpg, atau .jpeg !',
-                            icon: 'warning',
-                            confirmButtonText: 'Kembali'
-                        });
+        uploadBuram(e){
+            let gambar1 = document.forms['formBuram']['gambar'].files[0]
+            let gambar2 = document.forms['formBuram']['gambar2'].files[0]
 
-                    let formData = new FormData()
-                    formData.append('section_id',this.test_id)
-                    formData.append('excel',file)
-                    axios.post(this.port+'/question/createFromExcel',formData, {headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }})
-                    .then((response) => {
-                        if (response.status==200){
-                            let thi = this
-                            Swal.fire(
-                                'Created!',
-                                'Pertanyaan Berhasil Dibuat!',
-                                'success'
-                            )
-                            .then(function(){
-                                $('#modalSession').fadeOut("fast")
-                                $('#bg').fadeOut("slow")
-                                thi.closeModal()
-                            })
-                        }else{
-                            throw response
-                        }
-                    }).catch( error => {
-                        $('#spinner-modal').fadeOut("slow");
+            if (gambar1 == undefined && gambar2 == undefined)
+                Swal.fire({
+                    title: 'Mohon Upload Minimal 1 Gambar!',
+                    icon: 'warning',
+                    confirmButtonText: 'Kembali'
+                });
+            else{
+                let formData = new FormData()
+                formData.append("email", this.$cookies.get('data_registrant').email)
+                
+                if(gambar1!=undefined)                        
+                    formData.append("buram", gambar1)
+
+                if(gambar2!=undefined)
+                    formData.append("buram", gambar2)
+
+                $('#spinner-modal').fadeIn("slow");
+            
+                let data_result = null
+                axios.post(this.port+'/test/uploadBuram', formData)
+                .then((response) => {
+                    if (response.status==200){
                         Swal.fire(
-                            'Warning!',
-                            error.response.data,
-                            'warning'
+                            'Sukses!',
+                            'Kertas Buram berhasil diupload.',
+                            'success'
                         )
-                    });
-                }
+                        .then(function(){
+                            $('#spinner-modal').fadeOut("slow");
+                        })
+                    }else{
+                        throw response
+                    }
+                }).catch( error => {
+                    $('#spinner-modal').fadeOut("slow");
+                    Swal.fire(
+                        'Warning!',
+                        error.response.data,
+                        'warning'
+                    )
+                });
             }
         },
+        // createQuestion(e){
+        //     if (this.section_id!=null){
+        //         if(e.target[1].files.length<=0)
+        //             Swal.fire({
+        //                 title: 'Mohon Isi Semua Field!',
+        //                 icon: 'warning',
+        //                 confirmButtonText: 'Kembali'
+        //             });
+        //         else{
+        //             let file = e.target[1].files[0]
+        //             if (file!=undefined)
+        //                 file.originalname = file.name
+        //             let extension = file.originalname.split('.')[1]
+                    
+        //             if(!['png','jpg','jpeg'].includes(extension))
+        //                 Swal.fire({
+        //                     title: 'Hanya dapat mengupload file dengan ekstensi .png, .jpg, atau .jpeg !',
+        //                     icon: 'warning',
+        //                     confirmButtonText: 'Kembali'
+        //                 });
+
+        //             let formData = new FormData()
+        //             formData.append('section_id',this.test_id)
+        //             formData.append('excel',file)
+        //             axios.post(this.port+'/question/createFromExcel',formData, {headers: {
+        //                 'Content-Type': 'multipart/form-data',
+        //             }})
+        //             .then((response) => {
+        //                 if (response.status==200){
+        //                     let thi = this
+        //                     Swal.fire(
+        //                         'Created!',
+        //                         'Pertanyaan Berhasil Dibuat!',
+        //                         'success'
+        //                     )
+        //                     .then(function(){
+        //                         $('#modalSession').fadeOut("fast")
+        //                         $('#bg').fadeOut("slow")
+        //                         thi.closeModal()
+        //                     })
+        //                 }else{
+        //                     throw response
+        //                 }
+        //             }).catch( error => {
+        //                 $('#spinner-modal').fadeOut("slow");
+        //                 Swal.fire(
+        //                     'Warning!',
+        //                     error.response.data,
+        //                     'warning'
+        //                 )
+        //             });
+        //         }
+        //     }
+        // },
     },
 }
 </script>

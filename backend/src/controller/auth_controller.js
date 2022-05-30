@@ -62,6 +62,11 @@ class AuthController {
 
         session = selected_session
 
+        // Check Only 1 Device Can Logged In At Same Time
+        if (session.is_logged==1) {
+          return res.status(403).send("Sesi Login Hanya Berlaku Untuk 1 Device!");
+        }
+
         // Check Is Still in Session
         let date_now = new Date();
         let start_date = this.convertToGMT(new Date(session.start_date));
@@ -77,6 +82,7 @@ class AuthController {
 
         session.set({
           auth_token: user_key,
+          is_logged: 1
         });
         session.save();
 
@@ -135,6 +141,7 @@ class AuthController {
 
       ExamSession.findOne({ where: { id: session_id } }).then((session) => {
         if (!session) return res.status(401).send("Not Authenticated");
+        if (session.is_logged==1) return res.status(403).send("Already Logged In!");
 
         try {
           const access_token = req.header("Authorization")?.split(" ")[1] || "";
@@ -152,6 +159,7 @@ class AuthController {
           let finish_date = this.convertToGMT(new Date(session.finish_date));
 
           if (date_now >= start_date && date_now < finish_date) {
+
             return res.status(200).send({
               email: session.email,
               start_date: session.start_date,
@@ -260,9 +268,19 @@ class AuthController {
   }
 
   async logout(req, res) {
-    res.cookie("refresh_token", "", { maxAge: 0, secure: true });
+    if (!req.body.session_id){
+      missing_param_response(res)
+      return;
+    }
+    
+    ExamSession.findOne({ where: { id: req.body.session_id } }).then((session) => {
+      session.set({ is_logged: 0 });
+      session.save();
 
-    return res.status(200).send({ message: "success" });
+      res.cookie("refresh_token", "", { maxAge: 0, secure: true });
+
+      return res.status(200).send({ message: "success" });
+    })
   }
 }
 
