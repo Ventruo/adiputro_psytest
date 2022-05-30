@@ -293,9 +293,6 @@ export default {
             this.headerModal = "Perbarui Sesi";
             $('#modalSession').fadeIn("slow");
             $('#bg').fadeIn("slow");
-
-            console.log(this.test_result)
-            console.log(this.current_test_list)
         },
         tambahEmail(){
             if(this.isiEmail!='' && !this.emails.includes(this.isiEmail) && this.emailFormatCheck(this.isiEmail)){
@@ -517,7 +514,6 @@ export default {
             this.exam_session = valid_session
             this.exam_session_full = valid_session
         }
-
     },
     mounted(){
         axios

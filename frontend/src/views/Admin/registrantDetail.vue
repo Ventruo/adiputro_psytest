@@ -364,7 +364,6 @@ export default {
             return dateTime
         },
         getImg(data){
-            console.log("https://drive.google.com/uc?export=view&id="+data)
             return "https://drive.google.com/uc?export=view&id="+data
         },
         isKraepelin(){
