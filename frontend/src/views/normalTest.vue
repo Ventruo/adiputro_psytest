@@ -55,7 +55,7 @@
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
                 <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :pertanyaan="this.pertanyaanGambar" 
                             :img="this.urlGambar" />
-                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :cerita="this.cerita" />
+                <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :question2="this.pertanyaanTeks2" :cerita="this.cerita" />
                 
                 <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban 
                                 :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
@@ -136,6 +136,7 @@ export default {
             pertanyaanGambar: "",
             urlGambar: "",
             pertanyaanTeks: "",
+            pertanyaanTeks2: "",
             cerita: "",
         }
     },
@@ -286,7 +287,10 @@ export default {
                 }else{ 
                     this.pertanyaanGambar = ""
                 }
-                this.pilihanJawaban = this.getImg(this.pertanyaan[this.noSoal-1]['option_a'])
+                
+                let url_opsi = this.pertanyaan[this.noSoal-1]['option_a']
+                if(url_opsi==="") this.pilihanJawaban = ""
+                else this.pilihanJawaban = this.getImg(url_opsi)
             }else if(this.section_id==79){
                 this.pilihanJawaban = [
                     this.pertanyaan[this.noSoal-1]['option_a'],
@@ -328,10 +332,19 @@ export default {
                 if(temp.length>1){
                     this.cerita = temp[0]
                     this.pertanyaanTeks = temp[1]
-                }else{ 
+                }else{
                     this.cerita = ""
-                    this.pertanyaanTeks = temp[0]
+                    let temp2 = tempSoal.split("|")
+                    if(temp2.length>1){
+                        this.pertanyaanTeks = temp2[0]
+                        this.pertanyaanTeks2 = temp2[1]
+                    }else{
+                        this.pertanyaanTeks = temp[0]
+                        this.pertanyaanTeks2 = ""
+                    }
                 }
+
+
             }
         },
         progress(maju){

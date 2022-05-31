@@ -11,7 +11,11 @@
                             border-none placeholder-gray-400" placeholder="Enter Question Here"
                             @change="update"></textarea>
         </div> -->
-        <p class="text-lg md:text-xl text-center">{{question}}</p>
+        <p class="text-lg md:text-xl text-center" v-if="this.question2===''">{{question}}</p>
+        <div v-else class="flex gap-5 w-full h-full">
+            <div class="text-lg md:text-xl flex justify-center items-center w-full h-full"><p>{{question}}</p></div>
+            <div class="text-lg md:text-xl flex justify-center items-center w-full h-full">{{question2}}</div>
+        </div>
     </div>
 </template>
 
@@ -19,6 +23,7 @@
 export default {
     props: {
         "question": { type: String, default: "" },
+        "question2": { type: String, default: "" },
         "cerita": { type: String, default: "" },
         "judul": { type: String, default: '' },
         "jenis": { type: String, default: '' },

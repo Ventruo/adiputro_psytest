@@ -629,42 +629,43 @@ export default {
                             icon: 'warning',
                             confirmButtonText: 'Kembali'
                         });
-
-                    let formData = new FormData()
-                    formData.append('section_id',this.test_id)
-                    formData.append('excel',file)
-                    axios.post(this.port+'/question/createFromExcel',formData, {headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }})
-                    .then((response) => {
-                        if (response.status==200){
-                            let thi = this
-                            axios
-                            .get(this.port+'/question/all?section_id='+this.section_id)
-                            .then(({data}) => (
-                                this.questionList = data,
-                                Swal.fire(
-                                    'Created!',
-                                    'Pertanyaan Berhasil Dibuat!',
-                                    'success'
-                                )
-                                .then(function(){
-                                    $('#modalSession').fadeOut("fast")
-                                    $('#bg').fadeOut("slow")
-                                    thi.closeModalQuestion()
-                                })
-                            ))
-                        }else{
-                            throw response
-                        }
-                    }).catch( error => {
-                        $('#spinner-modal').fadeOut("slow");
-                        Swal.fire(
-                            'Warning!',
-                            error.response.data,
-                            'warning'
-                        )
-                    });
+                    else {
+                        let formData = new FormData()
+                        formData.append('section_id',this.section_id)
+                        formData.append('excel',file)
+                        axios.post(this.port+'/question/createFromExcel',formData, {headers: {
+                            'Content-Type': 'multipart/form-data',
+                        }})
+                        .then((response) => {
+                            if (response.status==200){
+                                let thi = this
+                                axios
+                                .get(this.port+'/question/all?section_id='+this.section_id)
+                                .then(({data}) => (
+                                    this.questionList = data,
+                                    Swal.fire(
+                                        'Created!',
+                                        'Pertanyaan Berhasil Dibuat!',
+                                        'success'
+                                    )
+                                    .then(function(){
+                                        $('#modalSession').fadeOut("fast")
+                                        $('#bg').fadeOut("slow")
+                                        thi.closeModalQuestion()
+                                    })
+                                ))
+                            }else{
+                                throw response
+                            }
+                        }).catch( error => {
+                            $('#spinner-modal').fadeOut("slow");
+                            Swal.fire(
+                                'Warning!',
+                                error.response.data,
+                                'warning'
+                            )
+                        });
+                    }
                 }
             }
         },
