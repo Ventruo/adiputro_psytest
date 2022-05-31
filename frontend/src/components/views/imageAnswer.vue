@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-lg text-white bg-foreground-4-100 ring-1 ring-inset ring-black">
+    <div class="rounded-lg text-white bg-foreground-4-100 ring-1 ring-inset ring-black" v-if="this.choices!==''">
         <div class="mb-5">
             <div class="flex">
                 <p class="text-lg font-bold my-2 mx-3">{{judul}}</p>
@@ -7,10 +7,10 @@
                     <input type="file" name="imgJawaban" id="" class="mb-2" @change="jawabanChange"> <br>
                 </div>
             </div>
-            <div class="text-center h-28 py-2 px-2">
+            <div class="text-center h-auto py-2 px-2">
                 <img v-if="jenis === 'add'" :src="urlJawaban" class="inline-block h-full" alt="" id="imgJawaban">
                 <!-- <img v-else src="../../assets/jawaban1.png" alt="" id="imgJawaban" class="inline-block h-full"> -->
-                <img v-else :src="this.choices" alt="" id="imgJawaban" class="inline-block h-full">
+                <img v-else :src="this.choices" alt="" id="imgJawaban" class="inline-block h-auto">
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@ export default {
         "jawaban": { type: Array, default: [], required: true },
         "noSoal": { type: Number, default: 1, required: true },
         "numberOfChoices": { type: Number, default: 4, required: true },
-        "choices": { type: String, required: true },
+        "choices": { type: String, default: '' },
         "jenis": { type: String, default: "" },
         "urlJawaban": { type: String, default: "" },
         "section": { type: Number, default:-1, required: true }
