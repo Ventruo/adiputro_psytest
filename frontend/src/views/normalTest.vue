@@ -267,7 +267,7 @@ export default {
                     temp.push(rujukan[i]+". "+banyak[i])
                 }
                 this.pilihanJawaban = temp
-            }else if(this.section_id==73 || this.section_id==74){
+            }else if([51,73,74].includes(this.section_id)){
                 this.pilihanJawaban = [
                     '1. '+this.pertanyaan[this.noSoal-1]['option_a'],
                     '2. '+this.pertanyaan[this.noSoal-1]['option_b'],

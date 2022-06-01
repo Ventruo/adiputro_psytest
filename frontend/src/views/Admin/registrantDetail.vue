@@ -173,7 +173,7 @@
                 <h1 class="font-bold text-2xl mb-2">Laporan</h1>
                 <div class="w-full h-full">
                     <div v-if="loaded==1">
-                        <div class="min-h-[48rem] inline-block"
+                        <div class="h-[48rem] inline-block"
                             :class="{
                                 'w-1/2': idTes!=20
                             }">
@@ -228,7 +228,7 @@
                             <Biodata3 :data="this.registrantBio"/>
                         </div>
                         <div v-for="report in dataFull" :key="report" class="">
-                            <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-100': prints==false}"
+                            <div v-if="report.result!==''" class="b flex flex-col bg-white text-black mb-3 mr-2 relative printPdf" :class="{'opacity-100': prints, 'opacity-0': prints==false}"
                                 style="width: 595px; height: 835px; font-family: Arial, Helvetica, sans-serif" >
                                 <Tintum v-if="report.test_id==1" :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'yes'"/>
                                 <Epps v-if="report.test_id==2" :data="JSON.parse(report.result)" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :print="'yes'"/>
