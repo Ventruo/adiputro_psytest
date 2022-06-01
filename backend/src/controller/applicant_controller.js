@@ -139,6 +139,7 @@ class ApplicantController {
         jurusan: req.body.jurusan,
         posisi_dilamar: req.body.posisi_dilamar,
         lampiran_drive_id: file.data.id,
+        portofolio: req.body.portofolio,
       });
 
       success_response(res, new_applicant.toJSON(), "Create Successful!");

@@ -75,6 +75,10 @@ Applicant.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    portofolio: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,
