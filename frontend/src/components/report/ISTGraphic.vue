@@ -63,6 +63,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.nama)
         let temp = []
         temp.push(this.data.SE.SW)
         temp.push(this.data.WA.SW)

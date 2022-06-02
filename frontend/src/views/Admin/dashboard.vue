@@ -60,7 +60,7 @@
                     </tbody>
                     <tbody v-else>
                         <tr class="text-center bg-foreground-4-50 text-xl">
-                            <td colspan="4" class="py-5">Belum ada data tersedia</td>
+                            <td colspan="5" class="py-5">Belum ada data tersedia</td>
                         </tr>
                     </tbody>
                 </table>

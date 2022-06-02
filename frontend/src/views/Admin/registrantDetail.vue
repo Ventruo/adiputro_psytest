@@ -207,7 +207,7 @@
                                 <div v-if="biodata!=null && idTes==5" class="flex flex-col h-full">
                                     <KraepelinGraphics :data="this.dataRegistrant" :biodata="this.biodata" :id="'pChartKraepelin'" :print="'no'"/>
                                 </div>
-                                <ISTGraphic v-if="idTes==17" :data="this.dataRegistrant" :id="'pChartIst'" :print="'no'"/>
+                                <ISTGraphic v-if="idTes==17" :data="this.dataRegistrant" :nama="this.nama" :id="'pChartIst'" :print="'no'"/>
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                                     <KraepelinGraphics :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartKraepelin'" :print="'yes'"/>
                                 </div>
                                 <div v-if="report.test_id==17">
-                                    <ISTGraphic :data="JSON.parse(report.result)" :biodata="this.biodata" :id="'printChartIST'" :print="'yes'"/>
+                                    <ISTGraphic :data="JSON.parse(report.result)" :nama="this.nama" :id="'printChartIST'" :print="'yes'"/>
                                 </div>
                                 <!-- <div v-if="report.test_id==20 && JSON.parse(report.result)[1]!==undefined" class="w-full">
                                     <Gambar :data="getImg(JSON.parse(report.result)[1])" :nama="this.nama" :judul="'Pohon'"/>

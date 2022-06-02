@@ -142,7 +142,6 @@ export default {
         this.arrTabel.push(this.data.ZR)
         this.arrTabel.push(this.data.FA)
         this.arrTabel.push(this.data.WU)
-        console.log(this.data)
     },
 }
 </script>
