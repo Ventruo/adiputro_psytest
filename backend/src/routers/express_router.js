@@ -24,6 +24,8 @@ const AuthRouter = require("./express_routers/auth_route");
 app.use(function (req, res, next) {
   res.on("finish", function () {
     // Logs Route Path and Method
+    if(req.route.path == "/tick") return;
+
     let date_now = new Date();
     let date_string =
       date_now.getFullYear() +
@@ -37,9 +39,11 @@ app.use(function (req, res, next) {
       date_now.getMinutes() +
       ":" +
       date_now.getSeconds();
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
     console.log(
       "[" + date_string + "]",
+      ip,
       req.route.stack[0].method.toUpperCase(),
       req.route.path
     );
