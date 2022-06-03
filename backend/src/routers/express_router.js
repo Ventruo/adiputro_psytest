@@ -16,6 +16,7 @@ const KreapelinDataRouter = require("./express_routers/kreapelin_data_route");
 const ISTDataRouter = require("./express_routers/ist_data_route");
 const EPPSDataRouter = require("./express_routers/epps_data_route");
 const SectionOngoingRouter = require("./express_routers/section_ongoing_route");
+const ExamSession = require("../models/ExamSession");
 
 const ClockRouter = require("./express_routers/clock_route");
 const AuthRouter = require("./express_routers/auth_route");
@@ -43,13 +44,27 @@ app.use(function (req, res, next) {
 
     console.log(
       "[" + date_string + "]",
-      ip,
+      "IP:",ip,
       req.route.stack[0].method.toUpperCase(),
       req.route.path
     );
   });
   next();
 });
+
+app.use(async (req, res, next) => {
+  if (!req.headers['x-auth-token']) 
+    return res.status(401).send("Unauthorized")
+
+  let token = req.headers['x-auth-token']
+  ExamSession.findOne({where: {auth_token: token}}).then((result) => {
+    if (!result) {
+        return res.status(401).send("Unauthorized");
+    }else{
+        next();
+    }
+  })
+})
 
 // Routers
 router.use("/exam_session", ExamSessionRouter);
