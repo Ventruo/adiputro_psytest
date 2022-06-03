@@ -42,7 +42,7 @@ class AuthController {
     console.log("Login Attempt");
 
     if (!req.body.email || !req.body.test_token) {
-      missing_param_response(res);
+      res.status(401).send("Silahkan isi kolom terlebih dahulu")
       return;
     }
 
@@ -62,10 +62,10 @@ class AuthController {
 
         session = selected_session
 
-        // Check Only 1 Device Can Logged In At Same Time
-        if (session.is_logged==1) {
-          return res.status(403).send("Sesi Login Hanya Berlaku Untuk 1 Device!");
-        }
+        // // Check Only 1 Device Can Logged In At Same Time
+        // if (session.is_logged==1) {
+        //   return res.status(403).send("Sesi Login Hanya Berlaku Untuk 1 Device!");
+        // }
 
         // Check Is Still in Session
         let date_now = new Date();
@@ -82,7 +82,7 @@ class AuthController {
 
         session.set({
           auth_token: user_key,
-          is_logged: 1
+          // is_logged: 1
         });
         session.save();
 
@@ -141,7 +141,7 @@ class AuthController {
 
       ExamSession.findOne({ where: { id: session_id } }).then((session) => {
         if (!session) return res.status(401).send("Not Authenticated");
-        if (session.is_logged==1) return res.status(403).send("Already Logged In!");
+        // if (session.is_logged==1) return res.status(403).send("Already Logged In!");
 
         try {
           const access_token = req.header("Authorization")?.split(" ")[1] || "";
