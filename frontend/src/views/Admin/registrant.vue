@@ -77,7 +77,7 @@ export default {
         }
     },
     created() {
-        this.$emit('updateHeader', 'Registrant')
+        this.$emit('updateHeader', 'Pendaftar')
         this.$emit('updateMenu', 'registrant')
     },
     mounted(){

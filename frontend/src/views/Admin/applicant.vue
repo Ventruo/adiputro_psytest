@@ -62,6 +62,12 @@
 
                     <div class="w-6/12">
                         <div class="mb-2 flex gap-2">
+                            <p class="font-bold mb-2">PORTOFOLIO :</p>
+                            <a :href="this.dataApplicant.portofolio" class="hover:underline hover:text-blue-700">
+                                Lihat Portofolio (klik disini)
+                            </a>
+                        </div>
+                        <div class="mb-2 flex gap-2">
                             <p class="font-bold mb-2">LAMPIRAN :</p>
                             <a :href="getFile(this.dataApplicant.lampiran_drive_id)" class="hover:underline hover:text-blue-700">
                                 Lihat Lampiran (klik disini)

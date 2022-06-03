@@ -7,6 +7,7 @@ const {
 const { validate_required_columns } = require("../helpers/ValidationHelper");
 const ExamSession = require("../models/ExamSession");
 const Section = require("../models/Section");
+const Test = require("../models/Test");
 const QuestionResult = require("../models/QuestionResult");
 
 class SectionResultController {
@@ -38,6 +39,54 @@ class SectionResultController {
       }
 
       success_response(res, results, "Get All Data Successful!");
+    });
+  }
+
+  async getLatest(req, res) {
+    console.log("Getting Latest Section Results...");
+
+    SectionResult.findAll({ 
+      where: { status: 1 },
+      include: [
+        {
+          model: Section,
+          attributes: ['section_number'],
+          include: [
+            {
+              model: Test,
+              attributes: ['name']
+            },
+          ], 
+        },{
+          model: ExamSession,
+          attributes: ['email'],
+        }
+      ], 
+      limit: 25,
+      order: [['finish_date', 'desc']]
+    }).then((results) => {
+      if (results.length == 0) {
+        data_not_found_response(res);
+        return;
+      }
+
+      let hasil = []
+      results.forEach(ress => {
+        let section = ress.section.section_number
+        let test = ""
+        if(ress.section.test!=null) test = ress.section.test.name
+        let section2 = "Tes "+test+" Persoalan "+section
+        hasil.push({
+          "email": ress.examsession.email,
+          "start_date": ress.start_date,
+          "finish_date": ress.finish_date,
+          "section": section2
+        })
+      });
+
+      success_response(res, hasil, "Get All Data Successful!");
+    }).catch(function (err) {
+      console.log(err)
     });
   }
 

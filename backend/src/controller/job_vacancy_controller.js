@@ -11,10 +11,6 @@ const QRImage = require("qr-image");
 const fs = require("fs");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
-const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
-const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
-const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
-const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
 class JobVacancyController {
   async getOne(req, res) {
@@ -91,12 +87,7 @@ class JobVacancyController {
     await this.createQR(req.body.url);
 
     // Upload QR
-    const googleDriveService = new GoogleDriveService(
-      driveClientId,
-      driveClientSecret,
-      driveRedirectUri,
-      driveRefreshToken
-    );
+    const googleDriveService = new GoogleDriveService();
 
     let qr_link = await this.uploadQR(googleDriveService, new_vacancy.id);
     qr_link = "https://drive.google.com/file/d/" + qr_link.data.id;
@@ -128,12 +119,7 @@ class JobVacancyController {
       }
 
       // Upload QR
-      const googleDriveService = new GoogleDriveService(
-        driveClientId,
-        driveClientSecret,
-        driveRedirectUri,
-        driveRefreshToken
-      );
+      const googleDriveService = new GoogleDriveService();
 
       let qr_link = vacancy.qr_link;
       if (req.body.url) {
@@ -167,7 +153,7 @@ class JobVacancyController {
       //     " " +
       //     split_time;
       // }
-      
+
       vacancy.set({
         name: req.body.name ?? vacancy.name,
         qr_link: qr_link,
@@ -201,12 +187,7 @@ class JobVacancyController {
       }
 
       // Upload QR
-      const googleDriveService = new GoogleDriveService(
-        driveClientId,
-        driveClientSecret,
-        driveRedirectUri,
-        driveRefreshToken
-      );
+      const googleDriveService = new GoogleDriveService();
 
       // Delete & Reupload QR Code
       let fileId = vacancy.qr_link.split("https://drive.google.com/file/d/")[1];

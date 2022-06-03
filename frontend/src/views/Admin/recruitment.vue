@@ -11,7 +11,7 @@
                 </button>
             </div>
 
-            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl" v-if="this.recruitment!=null">
+            <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl">
                 <table class="table-fixed w-full font-semibold">
                     <thead class="bg-foreground-4-100 text-white sticky top-0">
                         <tr>
@@ -23,7 +23,7 @@
                             <th class="w-2/12">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="this.recruitment!=null">
                         <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.recruitment" :key="i">
                             <td>
                                 <a :href="getImg(i,'download')">
@@ -50,12 +50,12 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tbody v-else>
+                        <tr class="text-center bg-foreground-4-50 text-xl">
+                            <td colspan="6" class="py-5">Belum ada data tersedia</td>
+                        </tr>
+                    </tbody>
                 </table>
-            </div>
-            <div v-else class="flex items-center justify-center w-full h-full">
-                <div class="bg-foreground-3-500 w-full rounded-xl text-center text-black text-2xl font-bold overflow-y-auto no-scrollbar py-5 px-5">
-                    Belum ada data tersedia.
-                </div>
             </div>
 
             <div>
