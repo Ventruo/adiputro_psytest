@@ -12,10 +12,6 @@ const { validate_required_columns } = require("../helpers/ValidationHelper");
 const GoogleDriveService = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
-const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
-const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
-const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
-const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
 class TestController {
   async getOne(req, res) {
@@ -168,12 +164,7 @@ class TestController {
     }
 
     // Get Buram folder
-    const googleDriveService = new GoogleDriveService(
-      driveClientId,
-      driveClientSecret,
-      driveRedirectUri,
-      driveRefreshToken
-    );
+    const googleDriveService = new GoogleDriveService();
 
     let subfolders = await googleDriveService
       .searchInParent(driveStorageID)
@@ -184,6 +175,12 @@ class TestController {
     let subfolder = subfolders.filter(
       (subfolder) => subfolder.name == "BURAM"
     )[0];
+
+    // Delete Buram
+    await googleDriveService.deleteFileFromFolder(
+      subfolder.id,
+      "Buram_" + req.body.email
+    );
 
     let files = [];
     for (let i = 0; i < req.files.length; i++) {

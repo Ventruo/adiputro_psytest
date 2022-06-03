@@ -14,10 +14,6 @@ const KreapelinData = require("../models/KreapelinData");
 const { q_result_ist } = require("./test_result_calc/ist_calc");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
-const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
-const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
-const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
-const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 const GoogleDriveService = require("../helpers/GoogleDriveService");
 const fs = require("fs");
 const path = require("path");
@@ -573,12 +569,7 @@ class QuestionResultController {
       },
     }).then(async (secres) => {
       // Upload Lampiran
-      const googleDriveService = new GoogleDriveService(
-        driveClientId,
-        driveClientSecret,
-        driveRedirectUri,
-        driveRefreshToken
-      );
+      const googleDriveService = new GoogleDriveService();
 
       let file = await this.uploadToDrive(
         googleDriveService,
@@ -593,7 +584,6 @@ class QuestionResultController {
         answer: file.data.id,
         status_correct: 1,
       });
-      
     });
 
     // update test result
@@ -603,15 +593,17 @@ class QuestionResultController {
         test_result_id: req.body.test_result_id,
       },
     }).then(async (secres) => {
-      let result = []
+      let result = [];
       for (let i = 0; i < secres.length; i++) {
         const secress = secres[i];
-        let q = await QuestionResult.findOne({ where: { section_result_id: secress.id } })
-        result.push(q != null ? q.answer : "")
+        let q = await QuestionResult.findOne({
+          where: { section_result_id: secress.id },
+        });
+        result.push(q != null ? q.answer : "");
       }
 
       for (let i = secres.length; i < 4; i++) {
-        result.push("")
+        result.push("");
       }
 
       await TestResult.update(
@@ -625,7 +617,7 @@ class QuestionResultController {
         }
       );
       success_response(res, "Upload Successful!", "Upload Successful!");
-    })
+    });
   }
 
   async uploadToDrive(

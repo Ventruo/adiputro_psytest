@@ -9,10 +9,6 @@ const { validate_required_columns } = require("../helpers/ValidationHelper");
 const GoogleDriveService = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
-const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
-const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
-const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
-const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
 class RegistrantController {
   async getOne(req, res) {
@@ -97,7 +93,6 @@ class RegistrantController {
       missing_param_response(res);
       return;
     }
-    console.log(req.body)
 
     Registrant.findOne({ where: { email: req.body.updating_email } }).then(
       async (registrant) => {
@@ -105,14 +100,9 @@ class RegistrantController {
           data_not_found_response(res);
           return;
         }
-        
+
         // Upload Tanda_Tangan
-        const googleDriveService = new GoogleDriveService(
-          driveClientId,
-          driveClientSecret,
-          driveRedirectUri,
-          driveRefreshToken
-        );
+        const googleDriveService = new GoogleDriveService();
 
         let file = await this.uploadTandaTangan(
           googleDriveService,
@@ -121,25 +111,29 @@ class RegistrantController {
         );
 
         req.body["tanda_tangan"] = file.data.id;
-        
-        let biodata = req.body
-        biodata.kesehatan = JSON.parse(biodata.kesehatan)
-        biodata.status_nikah = JSON.parse(biodata.status_nikah)
-        biodata.pendidikan = JSON.parse(biodata.pendidikan)
-        biodata.keluarga = JSON.parse(biodata.keluarga)
-        biodata.riwayat_pekerjaan = JSON.parse(biodata.riwayat_pekerjaan)
-        biodata.training_kursus = JSON.parse(biodata.training_kursus)
-        biodata.organisasi = JSON.parse(biodata.organisasi)
-        biodata.bahasa_dikuasai = JSON.parse(biodata.bahasa_dikuasai)
-        biodata.keterangan_kerja = JSON.parse(biodata.keterangan_kerja)
-        biodata.keterangan_kerja.kenalan = JSON.parse(biodata.keterangan_kerja.kenalan)
-        biodata.kendaraan = JSON.parse(biodata.kendaraan)
-        biodata.prestasi = JSON.parse(biodata.prestasi)
-        biodata.seni_dikuasai = JSON.parse(biodata.seni_dikuasai)
-        biodata.orang_terdekat = JSON.parse(biodata.orang_terdekat)
-        
-        delete biodata["updating_email"]
-        console.log(biodata)
+
+        let biodata = req.body;
+        biodata.kesehatan = JSON.parse(biodata.kesehatan ?? '""');
+        biodata.status_nikah = JSON.parse(biodata.status_nikah ?? '""');
+        biodata.pendidikan = JSON.parse(biodata.pendidikan ?? '""');
+        biodata.keluarga = JSON.parse(biodata.keluarga ?? '""');
+        biodata.riwayat_pekerjaan = JSON.parse(
+          biodata.riwayat_pekerjaan ?? '""'
+        );
+        biodata.training_kursus = JSON.parse(biodata.training_kursus ?? '""');
+        biodata.organisasi = JSON.parse(biodata.organisasi ?? '""');
+        biodata.bahasa_dikuasai = JSON.parse(biodata.bahasa_dikuasai ?? '""');
+        biodata.keterangan_kerja = JSON.parse(biodata.keterangan_kerja ?? "{}");
+        biodata.keterangan_kerja.kenalan = JSON.parse(
+          biodata.keterangan_kerja.kenalan ?? '""'
+        );
+        biodata.kendaraan = JSON.parse(biodata.kendaraan ?? '""');
+        biodata.prestasi = JSON.parse(biodata.prestasi ?? '""');
+        biodata.seni_dikuasai = JSON.parse(biodata.seni_dikuasai ?? '""');
+        biodata.orang_terdekat = JSON.parse(biodata.orang_terdekat ?? '""');
+
+        delete biodata["updating_email"];
+        console.log(biodata);
 
         registrant.set({
           biodata: JSON.stringify(biodata),
@@ -175,6 +169,13 @@ class RegistrantController {
     let ext = uploadFile.originalname.split(".");
     ext = ext[ext.length - 1];
 
+    // Delete Applicant if any
+    await googleDriveService.deleteFileFromFolder(
+      subfolder.id,
+      "Registrant_" + email
+    );
+
+    // Send File
     let file = await googleDriveService
       .saveFile(
         "Registrant_" + email,

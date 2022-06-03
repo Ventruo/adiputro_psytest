@@ -3,12 +3,12 @@ const { google } = require("googleapis");
 const fs = require("fs");
 
 class GoogleDriveService {
-  constructor(clientId, clientSecret, redirectUri, refreshToken) {
+  constructor() {
     this.driveClient = this.createDriveClient(
-      clientId,
-      clientSecret,
-      redirectUri,
-      refreshToken
+      process.env.OAUTH_CLIENT_ID,
+      process.env.OAUTH_CLIENT_SECRET,
+      process.env.OAUTH_SCOPE_CALLBACK,
+      process.env.OAUTH_REFRESH_TOKEN
     );
   }
 
@@ -103,6 +103,21 @@ class GoogleDriveService {
         body: fs.createReadStream(filePath),
       },
     });
+  }
+
+  async deleteFileFromFolder(folder_id, filename) {
+    let files = await this.driveClient.files.list({
+      q: "'" + folder_id + "' in parents",
+      fields: "files(id, name, mimeType)",
+    });
+    files = files.data.files.filter((file) => file.name.includes(filename));
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        await this.driveClient.files.delete({
+          fileId: files[i].id,
+        });
+      }
+    }
   }
 
   deleteFile(fileId) {

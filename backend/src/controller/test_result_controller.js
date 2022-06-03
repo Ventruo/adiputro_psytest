@@ -125,7 +125,7 @@ class TestResultController {
       }
 
       success_response(res, results, "Get All Data Successful!");
-    });
+    })
   }
 
   async create(req, res) {

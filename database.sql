@@ -1,6 +1,6 @@
 /*
-SQLyog Professional v13.1.1 (64 bit)
-MySQL - 10.6.5-MariaDB-1:10.6.5+maria~focal : Database - adiputro_psytest
+SQLyog Community
+MySQL - 10.4.22-MariaDB : Database - adiputro_psytest
 *********************************************************************
 */
 
@@ -9,7 +9,6 @@ MySQL - 10.6.5-MariaDB-1:10.6.5+maria~focal : Database - adiputro_psytest
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`adiputro_psytest` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
@@ -39,6 +38,7 @@ CREATE TABLE `applicant` (
   `posisi_dilamar` varchar(1000) NOT NULL,
   `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: available, 0: deleted',
   `lampiran_drive_id` varchar(100) NOT NULL,
+  `portofolio` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -46,14 +46,14 @@ CREATE TABLE `applicant` (
 
 /*Data for the table `applicant` */
 
-insert  into `applicant`(`id`,`job_vacancy_id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`createdAt`,`updatedAt`) values 
-(12,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','2022-03-17 07:21:54','2022-03-17 13:23:22'),
-(13,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','abc@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1MMPW3hUCusOQYf8HLSdGR399juV06c4U','2022-03-17 13:11:11','2022-03-20 04:37:47'),
-(14,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1Hdy5R70jU25MILnVpMH-ctWDOtEjVokd','2022-03-17 15:23:48','2022-03-17 15:23:48'),
-(15,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1VqZZdsffNkct9upM9ailqSmXc93CGV8a','2022-03-20 03:55:30','2022-03-20 03:55:30'),
-(16,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1qyiDdQgcdPHRXdwJY0X7Vlo4jRPB3BQ4','2022-03-20 04:37:29','2022-03-20 04:37:29'),
-(17,13,'lawrence patrick','12345667','Surabaya','2005-03-21','L','Jalan jalan',21,'sudah menikah','0821313211','contoh@gmail.com','sarjana','istts','informatika','Manager',1,'1jxvrXcm40ds3aPUBc9UsQ8h23uujnlEJ','2022-03-21 06:15:14','2022-03-21 06:15:14'),
-(18,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaaaaaaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1zCvLmRGtq7vZkEGsLOqNdAPIn43N2n5H','2022-05-26 04:04:28','2022-05-26 04:04:28');
+insert  into `applicant`(`id`,`job_vacancy_id`,`nama`,`no_ktp`,`tempat_lahir`,`tanggal_lahir`,`jenis_kelamin`,`alamat_domisili`,`usia`,`status_perkawinan`,`nomor_hp`,`email`,`pendidikan_terakhir`,`nama_sekolah`,`jurusan`,`posisi_dilamar`,`status`,`lampiran_drive_id`,`portofolio`,`createdAt`,`updatedAt`) values 
+(12,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','a@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'143FAFBvr_6a1tC1s4W9ad7VASyvcSB61','','2022-03-17 07:21:54','2022-03-17 13:23:22'),
+(13,13,'Lawrence Patrick','999999999','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','abc@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1MMPW3hUCusOQYf8HLSdGR399juV06c4U','','2022-03-17 13:11:11','2022-03-20 04:37:47'),
+(14,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1Hdy5R70jU25MILnVpMH-ctWDOtEjVokd','','2022-03-17 15:23:48','2022-03-17 15:23:48'),
+(15,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1VqZZdsffNkct9upM9ailqSmXc93CGV8a','','2022-03-20 03:55:30','2022-03-20 03:55:30'),
+(16,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1qyiDdQgcdPHRXdwJY0X7Vlo4jRPB3BQ4','','2022-03-20 04:37:29','2022-03-20 04:37:29'),
+(17,13,'lawrence patrick','12345667','Surabaya','2005-03-21','L','Jalan jalan',21,'sudah menikah','0821313211','contoh@gmail.com','sarjana','istts','informatika','Manager',1,'1jxvrXcm40ds3aPUBc9UsQ8h23uujnlEJ','','2022-03-21 06:15:14','2022-03-21 06:15:14'),
+(18,14,'Lawrence Patrick','1234567891011','Surabaya','2022-10-01','L','Jalan Pemangkas Rumput No 6',20,'Belum Menikah','08123456789','aaaaaaaa@gmail.com','SMA','SMA Ingin Berhasil','IPA','Web Designer',1,'1zCvLmRGtq7vZkEGsLOqNdAPIn43N2n5H','','2022-05-26 04:04:28','2022-05-26 04:04:28');
 
 /*Table structure for table `epps_data` */
 
@@ -131,7 +131,6 @@ insert  into `exam_session`(`id`,`email`,`start_date`,`finish_date`,`duration`,`
 (26,'b@b.com','2022-01-24 10:45:00','2022-05-31 11:10:00',182905,'1EiPkEPHaRggqBtKVnQg5c','pztqkoUnB1mGCNCnjC2v3i',0,0,0,1,'2022-05-24 07:36:21','2022-05-25 15:30:39'),
 (29,'b@b.com','2022-05-23 23:00:00','2022-06-29 23:00:00',53280,'7JwTKjcT8knfGPNLzHP8u5','513CjHcnyf8czxmzCVVCAc',0,0,0,1,'2022-05-24 09:31:18','2022-05-24 09:51:03'),
 (33,'c@c.com','2022-05-24 23:00:00','2022-05-31 23:00:00',10080,'9bHwhKxJdNNAKmAVhFRfCv','wY9eh8zhio5zKhYis7rmbc',0,0,17,1,'2022-05-25 15:35:54','2022-05-26 08:05:52');
-
 
 /*Table structure for table `exam_session_test` */
 
@@ -5029,6 +5028,5 @@ END */$$
 DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
