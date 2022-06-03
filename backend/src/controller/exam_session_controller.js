@@ -134,7 +134,7 @@ class ExamSessionController {
       // Send Token to Corresponding Email
       await sendEmail({
         recepients: emails[i],
-        subject: "Subject",
+        subject: "Token Test masuk website Adiputro Psikotes",
         html: htmlToSend,
       });
 
