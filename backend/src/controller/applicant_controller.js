@@ -9,10 +9,6 @@ const Applicant = require("../models/Applicant");
 const GoogleDriveService = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
-const driveClientId = process.env.GOOGLE_DRIVE_CLIENT_ID || "";
-const driveClientSecret = process.env.GOOGLE_DRIVE_CLIENT_SECRET || "";
-const driveRedirectUri = process.env.GOOGLE_DRIVE_REDIRECT_URI || "";
-const driveRefreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN || "";
 
 class ApplicantController {
   async getOne(req, res) {
@@ -110,12 +106,7 @@ class ApplicantController {
       }
 
       // Upload Lampiran
-      const googleDriveService = new GoogleDriveService(
-        driveClientId,
-        driveClientSecret,
-        driveRedirectUri,
-        driveRefreshToken
-      );
+      const googleDriveService = new GoogleDriveService();
 
       let file = await this.uploadLampiran(
         googleDriveService,
@@ -170,12 +161,7 @@ class ApplicantController {
         }
 
         // Upload Lampiran
-        const googleDriveService = new GoogleDriveService(
-          driveClientId,
-          driveClientSecret,
-          driveRedirectUri,
-          driveRefreshToken
-        );
+        const googleDriveService = new GoogleDriveService();
 
         if (req.file) {
           // Delete & Reupload Lampiran

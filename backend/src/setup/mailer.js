@@ -4,26 +4,31 @@ const OAuth2 = google.auth.OAuth2;
 
 const createMailer = async () => {
   const oauth2Client = new OAuth2(
-    process.env.MAILER_CLIENT_ID,
-    process.env.MAILER_CLIENT_SECRET,
+    process.env.OAUTH_CLIENT_ID,
+    process.env.OAUTH_CLIENT_SECRET,
     process.env.OAUTH_SCOPE_CALLBACK
   );
 
   // // generate a url that asks permissions for Gmail scopes
   // const url = oauth2Client.generateAuthUrl({
-  //   access_type: 'offline',
-  //   scope: 'https://mail.google.com/'
+  //   access_type: "offline",
+  //   scope: [
+  //     "https://www.googleapis.com/auth/drive",
+  //     "https://mail.google.com/",
+  //   ],
   // });
-  // console.log(url)
+  // console.log(url);
   // // Run this after you get code from callback url
-  // const {tokens} = await oauth2Client.getToken('token here')
-  // console.log(tokens)
-  // Save the refresh token
+  // const { tokens } = await oauth2Client.getToken(
+  //   "4/0AX4XfWjYMXbRY5EQv-lacPpSyuO3nKbjSkZI5ZnWJe7wjfBFbxCJMW7Hm-ucHW5ZCpyIEA"
+  // );
+  // console.log(tokens);
+  // //Save the refresh token
 
   oauth2Client.setCredentials({
-    refresh_token: process.env.MAILER_REFRESH_TOKEN,
+    refresh_token: process.env.OAUTH_REFRESH_TOKEN,
   });
-  oauth2Client.on('tokens', (tokens) => {
+  oauth2Client.on("tokens", (tokens) => {
     if (tokens.refresh_token) {
       // store the refresh_token in my database!
       console.log(tokens.refresh_token);
@@ -47,9 +52,9 @@ const createMailer = async () => {
       type: "OAuth2",
       user: process.env.MAILER_USER,
       accessToken,
-      clientId: process.env.MAILER_CLIENT_ID,
-      clientSecret: process.env.MAILER_CLIENT_SECRET,
-      refreshToken: process.env.MAILER_REFRESH_TOKEN,
+      clientId: process.env.OAUTH_CLIENT_ID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      refreshToken: process.env.OAUTH_REFRESH_TOKEN,
     },
     tls: {
       rejectUnauthorized: false,
