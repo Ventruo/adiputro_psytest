@@ -10,6 +10,9 @@ const TestResult = require("../models/TestResult");
 const ExamSessionTest = require("../models/ExamSessionTest");
 const Registrant = require("../models/Registrant");
 const { sendEmail } = require("../helpers/MailerMaker");
+const handlebars = require("handlebars");
+const fs = require("fs");
+const path = require("path");
 
 class ExamSessionController {
   async getOne(req, res) {
@@ -105,11 +108,34 @@ class ExamSessionController {
       });
       new_sessions.push(new_session);
 
+      const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      let start_date = new Date(req.body.start_date);
+      let f_start_date = start_date.getDate() + " " + months[start_date.getMonth()] + " " + start_date.getFullYear() + 
+                            " pukul " + start_date.getHours().toString().padStart(2, '0') + ":" + 
+                            start_date.getMinutes().toString().padStart(2, '0');
+      let finish_date = new Date(req.body.finish_date);
+      let f_finish_date = finish_date.getDate() + " " + months[finish_date.getMonth()] + " " + finish_date.getFullYear() + 
+                            " pukul " + finish_date.getHours().toString().padStart(2, '0') + ":" + 
+                            finish_date.getMinutes().toString().padStart(2, '0');
+
+      // Load html
+      const filePath = path.join(__dirname, "../helpers/test_token_mailer.html");
+      const source = fs.readFileSync(filePath, 'utf-8').toString();
+      var html_template = handlebars.compile(source);
+      var replacements = {
+         session_email: emails[i],
+         session_token: test_key,
+         start_date: f_start_date,
+         finish_date: f_finish_date,
+         website_url: process.env.CLIENT_URL
+      };
+      var htmlToSend = html_template(replacements);
+
       // Send Token to Corresponding Email
       await sendEmail({
         recepients: emails[i],
         subject: "Subject",
-        html: `<b>Here is your Test Token: ${test_key}</b>`,
+        html: htmlToSend,
       });
 
       for (let i = 0; i < req.body.tests.length; i++) {

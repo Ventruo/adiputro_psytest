@@ -6,11 +6,29 @@ const createMailer = async () => {
   const oauth2Client = new OAuth2(
     process.env.MAILER_CLIENT_ID,
     process.env.MAILER_CLIENT_SECRET,
-    "https://developers.google.com/oauthplayground"
+    process.env.OAUTH_SCOPE_CALLBACK
   );
+
+  // // generate a url that asks permissions for Gmail scopes
+  // const url = oauth2Client.generateAuthUrl({
+  //   access_type: 'offline',
+  //   scope: 'https://mail.google.com/'
+  // });
+  // console.log(url)
+  // // Run this after you get code from callback url
+  // const {tokens} = await oauth2Client.getToken('token here')
+  // console.log(tokens)
+  // Save the refresh token
 
   oauth2Client.setCredentials({
     refresh_token: process.env.MAILER_REFRESH_TOKEN,
+  });
+  oauth2Client.on('tokens', (tokens) => {
+    if (tokens.refresh_token) {
+      // store the refresh_token in my database!
+      console.log(tokens.refresh_token);
+    }
+    console.log(tokens.access_token);
   });
 
   const accessToken = await new Promise((resolve, reject) => {
