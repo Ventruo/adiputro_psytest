@@ -53,29 +53,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="mb-5 mt-3">
-                <p class="mt-2">PENDIDIKAN TERAKHIR :</p>
-                <div class="flex my-2">
-                    <div class="w-1/5"><Radio :values="'smea'" :names="'pendidikan'" :id="'SMEA'" :label="'SMEA'"/></div>
-                    <div class="w-1/5"><Radio :values="'stm-smk'" :names="'pendidikan'" :id="'SMK'" :label="'STM/SMK'"/></div>
-                    <div class="w-1/5"><Radio :values="'sma'" :names="'pendidikan'" :id="'SMA'" :label="'SMA'"/></div>
-                    <div class="w-1/5"><Radio :values="'sarjana muda'" :names="'pendidikan'" :id="'SARJANA MUDA'" :label="'SARJANA MUDA (D3)'"/></div>
-                    <div class="w-1/5"><Radio :values="'sarjana'" :names="'pendidikan'" :id="'SARJANA'" :label="'SARJANA (S1)'"/></div>
-                </div>
-
-                <p class="mt-4">JURUSAN :</p>
-                <div class="flex my-2">
-                    <div class="w-1/4"><Radio :values="'ipa'" :names="'jurusan'" :id="'ipa'" :label="'IPA'"/></div>
-                    <div class="w-1/4"><Radio :values="'ips'" :names="'jurusan'" :id="'ips'" :label="'IPS'"/></div>
-                </div>
-
-                <p class="mt-4">JENIS KELAMIN :</p>
-                <div class="flex my-2">
-                    <div class="w-1/4"><Radio :values="'L'" :names="'jenis_kelamin'" :id="'laki'" :label="'LAKI-LAKI'"/></div>
-                    <div class="w-1/4"><Radio :values="'P'" :names="'jenis_kelamin'" :id="'perempuan'" :label="'PEREMPUAN'"/></div>
-                </div>
-            </div> -->
-            
             <div class="text-right">
                 <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
                     Submit dan mulai
@@ -143,10 +120,11 @@ export default {
     data () {
         return {
             namaTes: 'Tes K',
-            judulHalaman: 'EPPS',
+            judulHalaman: '',
             kolom: 1,
-            jumKolom: 5,
-            detik: 1,
+            current_kolom: 1,
+            jumKolom: 50,
+            detik: 15,
             waktu: null,
             row1: [],
             row2: [],
@@ -184,7 +162,7 @@ export default {
                 if (this.pertanyaanFull && this.dataKraepelin){
                     this.detik--
                     if (this.detik<=0){
-                        this.detik = 1
+                        this.detik = 15
                         this.reset()
                     }
                 }
@@ -234,32 +212,36 @@ export default {
                 this.jawaban[this.kolom-1][this.currentRow-1] = value
                 this.currentRow += 1
             }
-            // if(this.kolom>this.jumKolom){
-            //     this.submitJawaban()
-            // }
+            if(this.current_kolom>this.kolom){
+                this.resetNext()
+            }
         },
         ngisi(event){
             var isi = event.target.value
             event.target.value = isi.substring(0,1)
             this.nextSoal(event.target.value)
         },
-        reset(){
-            for (let i = this.jawaban[this.kolom-1].length; i < 27; i++) {
-                this.jawaban[this.kolom-1][i]=-1
+        resetNext(){
+            let selisih = this.current_kolom - this.kolom
+            for (let i = 0; i < selisih; i++) {
+                for (let j = this.jawaban[this.kolom-1].length; j < 27; j++) {
+                    this.jawaban[this.kolom-1][j]=-1
+                }
+                this.kolom++
+                this.jawaban.push([])
             }
 
-            // console.log(this.jawaban[this.kolom-1])
-            
-            this.kolom++
-            if(this.kolom>this.jumKolom){
-                this.submitJawaban()
-            }
-            this.jawaban.push([])
             this.currentRow = 1
             this.pertanyaan = this.pertanyaanFull[this.kolom-1]
+            console.log(this.jawaban)
+        },
+        reset(){
+            this.current_kolom++
+            if(this.current_kolom > this.jumKolom){
+                this.submitJawaban()
+            }
         },
         jawabTombol(event){
-            // $('#baris'+this.currentRow).val(event.target.innerText)
             this.nextSoal(parseInt(event.target.innerText))
         },
 
@@ -404,40 +386,6 @@ export default {
 
     created () {
         this.$emit('updateJudul', this.judulHalaman)
-        // this.countdownTimer = setInterval(() => {
-        //     var element = document.getElementById("counter")
-        //     if(this.countdown<4 && this.countdown>0){
-        //         element.innerHTML = this.countdown
-        //     }else if(this.countdown==0){
-        //         element.innerHTML = "GO!!!"
-        //     }else if(this.countdown==-1){
-                
-        //         clearInterval(this.countdownTimer)
-                // this.waktu = setInterval(() => {
-                //     if (this.pertanyaanFull && this.dataKraepelin){
-                //         this.detik--
-                //         if (this.detik<=0){
-                //             this.detik = 1
-                //             this.reset()
-                //     //         console.log(this.jawaban)
-                //             // clearInterval(this.waktu)
-                            
-                //             // Swal.fire({
-                //             //     title: 'Waktu Habis...',
-                //             //     icon: 'warning',
-                //             //     confirmButtonColor: '#3085d6',
-                //             //     confirmButtonText: 'Kembali ke Dashboard'
-                //             // }).then((result) => {
-                //             //     if (result.isConfirmed) {
-                //             //         this.submitJawaban()
-                //             //     }
-                //             // });
-                //         } 
-                //     }
-                // }, 1000)
-        //     }
-        //     this.countdown--
-        // },1000)
     },
 
     beforeDestroy() {
