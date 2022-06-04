@@ -10,7 +10,7 @@
       </div>
     </div> -->
     <div class="absolute top-0 z-0 w-full h-full flex justify-center items-center">
-        <div class="w-3/4 h-3/4 rounded-xl overflow-hidden
+        <div class="w-3/4 h-3/4 rounded-xl
                     md:flex md:w-1/2">
             <div class="w-full md:w-5/12 flex justify-center items-center">
                 <div class="bg-foreground-4-100 h-56 w-56 md:w-full rounded-full p-5 flex justify-center items-center
