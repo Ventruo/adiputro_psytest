@@ -7,7 +7,7 @@ let usersSocket = {};
 // Listen from frontend
 io.on("connection", (socket) => {
   if (socket.auth) {
-    console.log("new client connected with id " + socket.id);
+    // console.log("new client connected with id " + socket.id);
     serverSocket = socket;
 
     usersSocket[socket.decoded.session_id] = socket.id;
