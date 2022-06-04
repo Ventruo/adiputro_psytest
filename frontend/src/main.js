@@ -11,3 +11,5 @@ const app = createApp(App)
     .use(store)
     .use(VueCookies)
     .mount('#app')
+
+    console.log('test');
