@@ -17,7 +17,7 @@ async function initService() {
 }
 
 async function update() {
-  console.log("Clock Ticking");
+  // console.log("Clock Ticking");
 
   // Search DB if theres an on-going test
   SectionOngoing.findAll({ 
@@ -50,7 +50,11 @@ async function update() {
       expiresIn: "10s",
     });
     
-    console.log('there are', data.length, 'tests running');
+    console.log('\nThere are', data.length, 'tests running');
+    for(let i = 0 ; i < data.length; i ++){
+      console.log(`{section:${data[i].section_id}, exam_session:${data[i].exam_session_id}}`)
+    }
+
     post(process.env.BACKEND_URL + "/test/tick", data, {
       headers: {
         Authorization: `Bearer ${token}`,

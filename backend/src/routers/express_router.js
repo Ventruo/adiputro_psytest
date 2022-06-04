@@ -16,14 +16,19 @@ const KreapelinDataRouter = require("./express_routers/kreapelin_data_route");
 const ISTDataRouter = require("./express_routers/ist_data_route");
 const EPPSDataRouter = require("./express_routers/epps_data_route");
 const SectionOngoingRouter = require("./express_routers/section_ongoing_route");
+const ExamSession = require("../models/ExamSession");
+const AuthController = require("../controller/auth_controller");
 
 const ClockRouter = require("./express_routers/clock_route");
 const AuthRouter = require("./express_routers/auth_route");
 
-// Middleware Before Route
+// Middleware After Route
 app.use(function (req, res, next) {
   res.on("finish", function () {
     // Logs Route Path and Method
+    if (req.path.includes('/tick')) return next();
+    if (!req.route) return next()
+
     let date_now = new Date();
     let date_string =
       date_now.getFullYear() +
@@ -37,15 +42,19 @@ app.use(function (req, res, next) {
       date_now.getMinutes() +
       ":" +
       date_now.getSeconds();
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
     console.log(
       "[" + date_string + "]",
+      "IP:",ip,
       req.route.stack[0].method.toUpperCase(),
       req.route.path
     );
   });
   next();
 });
+
+router.use(new AuthController().verifyToken);
 
 // Routers
 router.use("/exam_session", ExamSessionRouter);
