@@ -7,6 +7,11 @@ axios.defaults.withCredentials = true;
 
 let refresh = false;
 
+function clearCookie(){
+    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    document.cookie = "data_registrant=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+}
+
 axios.interceptors.response.use(resp => resp, async error => {
     if(error.response.status === 401 && !refresh) {
         refresh = true;
@@ -19,6 +24,7 @@ axios.interceptors.response.use(resp => resp, async error => {
 
             return axios(error.config);
         }else{
+            clearCookie();
             router.push('/');
         }
     }
@@ -26,6 +32,7 @@ axios.interceptors.response.use(resp => resp, async error => {
     if(error.response.data == "Admin Not Authenticated"){
         router.push('/dashboard')
     }else if(error.response.data == "Session Expired"){
+        clearCookie();
         router.push('/')
     }
 

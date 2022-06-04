@@ -1,13 +1,15 @@
 import axios from "axios";
 
 async function auth({ next, router }) {
-    await axios.get("/auth/user")
+    const {status, data} = await axios.get("/auth/user")
+    if (status != 200) router.push('/');
     
     return next();
 }
 
 async function adminAuth({ next, router }) {
-    await axios.get("/auth/admin")
+    const {status, data} = await axios.get("/auth/admin")
+    if (status != 200) router.push('/');
     
     return next();
 }
