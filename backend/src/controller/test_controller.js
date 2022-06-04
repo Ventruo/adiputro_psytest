@@ -144,7 +144,7 @@ class TestController {
       for (let key in userSocket) {
         if (clock_data[i].exam_session_id == key) {
           // Send to each Corresponding Socket Client
-          console.log("user socket", userSocket[key]);
+          // console.log("user socket", userSocket[key]);
           io.to(userSocket[key]).emit("test.tick", {
             countdown: clock_data[i].countdown,
             total_duration: clock_data[i].total_duration,
