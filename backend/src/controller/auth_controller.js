@@ -42,7 +42,7 @@ class AuthController {
     console.log("Login Attempt");
 
     if (!req.body.email || !req.body.test_token) {
-      res.status(401).send("Silahkan isi kolom terlebih dahulu")
+      res.status(401).send("Silahkan isi kolom terlebih dahulu");
       return;
     }
 
@@ -53,14 +53,14 @@ class AuthController {
         }
 
         let selected_session = "";
-        for(let i = 0; i < session.length; i++){
-          if(session[i].test_token == req.body.test_token)
+        for (let i = 0; i < session.length; i++) {
+          if (session[i].test_token == req.body.test_token)
             selected_session = session[i];
         }
         if (selected_session == "")
           return res.status(401).send("Email atau Token Tidak Sesuai");
 
-        session = selected_session
+        session = selected_session;
 
         // // Check Only 1 Device Can Logged In At Same Time
         // if (session.is_logged==1) {
@@ -108,7 +108,7 @@ class AuthController {
               }
 
               // let refresh_age = 1 * 24 * 60 * 60 * 1000; // 1 day
-              let refresh_age = 10 * 60 * 1000; // 10 mins
+              let refresh_age = 2 * 60 * 60 * 1000; // 2 hours
               res.cookie("refresh_token", refresh_token, {
                 httpOnly: true,
                 maxAge: refresh_age,
@@ -124,6 +124,7 @@ class AuthController {
                   token: refresh_token,
                   age: refresh_age / 1000,
                 },
+                auth_token: session.auth_token,
                 is_admin: session.is_admin,
               });
             }
@@ -159,7 +160,6 @@ class AuthController {
           let finish_date = this.convertToGMT(new Date(session.finish_date));
 
           if (date_now >= start_date && date_now < finish_date) {
-
             return res.status(200).send({
               email: session.email,
               start_date: session.start_date,
@@ -230,6 +230,13 @@ class AuthController {
         return;
       }
 
+      // Refresh max age
+      let refresh_age = 2 * 60 * 60 * 1000; // 2 hours
+      res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        maxAge: refresh_age,
+        secure: true,
+      });
       const access_token = this.createAccessToken(session, session.auth_token);
 
       return res.status(200).send({ token: access_token });
@@ -237,19 +244,18 @@ class AuthController {
   }
 
   verifyToken(req, res, next) {
-    console.log("Verifying Token");
+    if (req.path.includes("/auth") || req.path.includes("/tick")) return next();
 
     const authHeader = req.headers["authorization"];
     const access_token = authHeader && authHeader.split(" ")[1];
-    const refresh_token = authHeader && authHeader.split(" ")[2];
+    const refresh_token = req.cookies["refresh_token"];
     if (access_token == null || refresh_token == null)
-      return res.sendStatus(401);
+      return res.status(401).send("Unauthorized");
 
     const { session_id } = jwt.decode(refresh_token);
     ExamSession.findOne({ where: { id: session_id } }).then((session) => {
       if (!session) {
-        data_not_found_response(res);
-        return;
+        return res.status(401).send("Unauthorized");
       }
 
       jwt.verify(
@@ -258,7 +264,7 @@ class AuthController {
         (err, decoded) => {
           if (err) {
             console.log(err);
-            return res.sendStatus(401);
+            res.status(401).send("Unauthorized");
           }
 
           next();
@@ -268,19 +274,21 @@ class AuthController {
   }
 
   async logout(req, res) {
-    if (!req.body.session_id){
-      missing_param_response(res)
+    if (!req.body.session_id) {
+      missing_param_response(res);
       return;
     }
-    
-    ExamSession.findOne({ where: { id: req.body.session_id } }).then((session) => {
-      session.set({ is_logged: 0 });
-      session.save();
 
-      res.cookie("refresh_token", "", { maxAge: 0, secure: true });
+    ExamSession.findOne({ where: { id: req.body.session_id } }).then(
+      (session) => {
+        session.set({ is_logged: 0 });
+        session.save();
 
-      return res.status(200).send({ message: "success" });
-    })
+        res.cookie("refresh_token", "", { maxAge: 0, secure: true });
+
+        return res.status(200).send({ message: "success" });
+      }
+    );
   }
 }
 
