@@ -48,9 +48,9 @@ const routes = [
         path: '/',
         name: 'main',
         component: main,
-        meta: {
-            middleware: auth
-        },
+        // meta: {
+        //     middleware: auth
+        // },
         children: [
             {
                 path: '/biodata',
@@ -111,9 +111,9 @@ const routes = [
                 path: '/admin',
                 name: 'admin',
                 component: admin,
-                meta: {
-                    middleware: adminAuth
-                },
+                // meta: {
+                //     middleware: adminAuth
+                // },
                 children: [
                     {
                         path: '',

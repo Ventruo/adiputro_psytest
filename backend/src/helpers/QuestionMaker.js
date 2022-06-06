@@ -33,6 +33,8 @@ module.exports = {
       fs.unlinkSync(excel_path);
 
       success_response(res, questions, "Create Successful!");
+    }).catch(function (err) {
+      return res.status(400).send("Terjadi kesalahan saat membuat pertanyaan!");
     });
   },
 

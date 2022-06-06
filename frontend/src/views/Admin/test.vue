@@ -35,7 +35,7 @@
                     <tbody v-if="this.sectionList!=null && this.sectionList.length>0">
                         <tr class="text-center odd:bg-foreground-4-50 even:bg-foreground-4-10" v-for="i in this.sectionList" :key="i">
                             <td>{{i.section_number}}</td>
-                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-1" v-html="i.instruction"></td>
+                            <td class="text-justify overflow-hidden overflow-ellipsis instruksi py-2" v-html="i.instruction"></td>
                             <td>{{i.duration}} Menit</td>
                             <td>
                                 <span v-if="i.question_type==1">Teks</span>
@@ -185,15 +185,15 @@
                             <label for="duration"> Menit</label><br>
                         </div>
                         <div class="flex gap-2 mb-2">
-                            <input type="radio" :value="'2'" :name="'Question_Type'" id="question_text" v-model="this.tipePertanyaan" class="w-5 h-5 mr-2" />
+                            <input type="radio" :value="'1'" :name="'Question_Type'" id="question_text" v-model="this.tipePertanyaan" class="w-5 h-5 mr-2" />
                             <label for="question_text" class="mr-2">Teks</label>
-                            <input type="radio" :value="'1'" :name="'Question_Type'" id="question_image" v-model="this.tipePertanyaan" class="w-5 h-5 mr-2" />
+                            <input type="radio" :value="'2'" :name="'Question_Type'" id="question_image" v-model="this.tipePertanyaan" class="w-5 h-5 mr-2" />
                             <label for="question_image" class="mr-2">Gambar</label>
                         </div>
                         <div class="flex gap-2">
-                            <input type="radio" :value="'2'" :name="'Answer_Type'" v-model="this.tipeJawaban" id="text_answer" class="w-5 h-5 mr-2" @change="non_essay=false" />
+                            <input type="radio" :value="'1'" :name="'Answer_Type'" v-model="this.tipeJawaban" id="text_answer" class="w-5 h-5 mr-2" @change="non_essay=false" />
                             <label for="text_answer" class="mr-2">Teks</label>
-                            <input type="radio" :value="'1'" :name="'Answer_Type'" v-model="this.tipeJawaban" id="multiple_choice" class="w-5 h-5 mr-2" @change="non_essay=true" />
+                            <input type="radio" :value="'2'" :name="'Answer_Type'" v-model="this.tipeJawaban" id="multiple_choice" class="w-5 h-5 mr-2" @change="non_essay=true" />
                             <label for="multiple_choice" class="mr-2">Pilihan Ganda</label>
                             <!-- <Radio :values="'2'" v-model="this.tipeJawaban" :names="'Answer_Type'" :id="'answer_image'" :label="'Gambar'" @change="non_essay=true"/> -->
                         </div>
@@ -506,6 +506,7 @@ export default {
             .get(this.port+'/section/all/'+this.test_id)
             .then(({data}) => (
                 this.sectionList = data,
+                this.section_id = this.sectionList[0].id,
                 axios
                 .get(this.port+'/question/all?section_id='+this.sectionList[0].id)
                 .then(({data}) => (
@@ -518,7 +519,7 @@ export default {
             let banyak = question['option_a'].split(';')
             //jika ada banyak pilihan jawaban, maka akan ditaruh pada kolom option_a dengan format pilihan1;pilihan2;pilihan3;dst
             let rujukan = []
-            if(this.section_id==78) rujukan = this.angka
+            if([51,73,74,78,79].includes(this.section_id)) rujukan = this.angka
             else rujukan = this.alphabet
 
             if (banyak.length>1){
