@@ -371,6 +371,8 @@ export default {
             tipeInstruksi: 0,
             tipeOpsi: 0,
             headerModal: "Create A New Section",
+            alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            angka: ["1","2","3","4","5","6","7","8","9","10"],
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -512,12 +514,27 @@ export default {
             ))
         },
         optionToString(question){
-            var hasil = "-"
-            if(question.option_a!="-") hasil = "A. "+question.option_a
-            if(question.option_b!="-") hasil += ", B. "+question.option_b
-            if(question.option_c!="-") hasil += ", C. "+question.option_c
-            if(question.option_d!="-") hasil += ", D. "+question.option_d
-            if(question.option_e!="-") hasil += ", E. "+question.option_e
+            var hasil = ""
+            let banyak = question['option_a'].split(';')
+            //jika ada banyak pilihan jawaban, maka akan ditaruh pada kolom option_a dengan format pilihan1;pilihan2;pilihan3;dst
+            let rujukan = []
+            if(this.section_id==78) rujukan = this.angka
+            else rujukan = this.alphabet
+
+            if (banyak.length>1){
+                //maka apabila ternyata pilihannya banyak maka fungsi dibawah akan dijalankan
+                hasil+=rujukan[0]+". "+banyak[0]
+                for (let i = 1; i < banyak.length; i++) {
+                    hasil+=", "+rujukan[i]+". "+banyak[i]
+                }
+            }else{
+                if(question.option_num>=1) hasil += rujukan[0]+". "+question.option_a
+                if(question.option_num>=2) hasil += ", "+rujukan[1]+". "+question.option_b
+                if(question.option_num>=3) hasil += ", "+rujukan[2]+". "+question.option_c
+                if(question.option_num>=4) hasil += ", "+rujukan[3]+". "+question.option_d
+                if(question.option_num>=5) hasil += ", "+rujukan[4]+". "+question.option_e
+            }
+            
 
             return hasil
         },
