@@ -102,8 +102,7 @@ export default {
         axios
         .get(this.port+"/section_result/getLatest")
         .then(({data}) => (
-            this.section_result = data,
-            console.log(this.section_result)
+            this.section_result = data
         ))
     }
 }
