@@ -54,7 +54,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-router.use(new AuthController().verifyToken);
+// router.use(new AuthController().verifyToken);
 
 // Routers
 router.use("/exam_session", ExamSessionRouter);
