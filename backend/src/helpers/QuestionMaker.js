@@ -5,37 +5,47 @@ const xlsxFile = require("read-excel-file/node");
 
 module.exports = {
   populateQuestion(excel_path, section, Question, res) {
-    xlsxFile(excel_path, {
-      sheet: "soal",
-    }).then(async (rows) => {
-      let questions = [];
+    xlsxFile(excel_path)
+      .then(async (rows) => {
+        let questions = [];
 
-      let start_row = 1;
-      // if (rows[5][0] && rows[5][0].toUpperCase() == "ID (10)") start_row = 6;
-      for (let i = start_row; i < rows.length; i++) {
-        questions.push({
-          instruction: rows[i][1] ?? "-",
-          section_id: section,
-          option_num: rows[i][2] ?? 1,
-          option_a: rows[i][3] ?? "-",
-          option_b: rows[i][4] ?? "-",
-          option_c: rows[i][5] ?? "-",
-          option_d: rows[i][6] ?? "-",
-          option_e: rows[i][7] ?? "-",
-          answer: rows[i][8] ?? "-",
-          option_type: rows[i][9] ? (rows[i][9].toLowerCase() == "text" ? 1 : 2) : 1,
-          instruction_type: rows[i][10] ? (rows[i][10].toLowerCase() == "text" ? 1 : 2) : 1,
-        });
-      }
+        let start_row = 1;
+        // if (rows[5][0] && rows[5][0].toUpperCase() == "ID (10)") start_row = 6;
+        for (let i = start_row; i < rows.length; i++) {
+          questions.push({
+            instruction: rows[i][1] ?? "-",
+            section_id: section,
+            option_num: rows[i][2] ?? 1,
+            option_a: rows[i][3] ?? "-",
+            option_b: rows[i][4] ?? "-",
+            option_c: rows[i][5] ?? "-",
+            option_d: rows[i][6] ?? "-",
+            option_e: rows[i][7] ?? "-",
+            answer: rows[i][8] ?? "-",
+            option_type: rows[i][9]
+              ? rows[i][9].toLowerCase() == "text"
+                ? 1
+                : 2
+              : 1,
+            instruction_type: rows[i][10]
+              ? rows[i][10].toLowerCase() == "text"
+                ? 1
+                : 2
+              : 1,
+          });
+        }
 
-      await Question.bulkCreate(questions);
+        await Question.bulkCreate(questions);
 
-      fs.unlinkSync(excel_path);
+        fs.unlinkSync(excel_path);
 
-      success_response(res, questions, "Create Successful!");
-    }).catch(function (err) {
-      return res.status(400).send("Terjadi kesalahan saat membuat pertanyaan!");
-    });
+        success_response(res, questions, "Create Successful!");
+      })
+      .catch(function (err) {
+        return res
+          .status(400)
+          .send("Terjadi kesalahan saat membuat pertanyaan!");
+      });
   },
 
   async pupulateKreapelinQuestion(section, Question, res) {
