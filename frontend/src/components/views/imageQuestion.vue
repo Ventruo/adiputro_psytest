@@ -6,19 +6,18 @@
                 <input type="file" name="imgSoal" id="" class="mb-2" @change="soalChange"> <br>
             </div>
         </div>
-        <div class="text-center h-32 py-2 w-full flex justify-center items-center">
+        <div class="text-center h-auto py-2 w-full flex justify-center items-center">
             <img v-if="jenis === 'add'" :src="url" alt="" id="imgSoal" class="inline-block h-full">
-            <!-- <img v-else src="src/assets/soal1.png" alt="" id="imgSoal" class="inline-block h-full"> -->
-            <div v-else class="w-full py-3">
+            <div v-else class="w-full py-1">
                 <div v-if="this.pertanyaan!==''" class="flex text-white w-full">
                     <div class="w-1/2 flex justify-center">
-                        <img :src="img" alt="" id="imgSoal" class="inline-block h-full">
+                        <img :src="img" alt="" id="imgSoal" class="inline-block h-10">
                     </div>
                     <div class="w-1/2">
                         <p>{{this.pertanyaan}}</p>
                     </div>
                 </div>
-                <img v-else :src="img" alt="" id="imgSoal" class="inline-block h-full">
+                <img v-else :src="img" alt="" id="imgSoal" class="inline-block max-h-32">
             </div>
         </div>
     </div>

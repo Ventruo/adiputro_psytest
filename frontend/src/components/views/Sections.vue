@@ -35,7 +35,7 @@
                                 <div v-if="section.duration!=-1">{{section.duration}} Menit</div>
                                 <div v-else>Tidak ada batas waktu</div>
 
-                                <div v-if="section.section_type==2">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</div>
+                                <div v-if="section.section_type==2 && section.option_num>1">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</div>
                                 <div v-else>Esai</div>
                             </div>
                         </div>

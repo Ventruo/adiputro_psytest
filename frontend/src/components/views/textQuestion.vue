@@ -4,7 +4,7 @@
     <div v-if="this.cerita!==''" class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black p-3 my-2 flex justify-center items-center text-white">
         <p class="text-lg md:text-xl text-center">{{cerita}}</p>
     </div>
-    <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black p-3 my-5 h-56 flex justify-center items-center text-white kolom-soal">
+    <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black p-3 my-5 flex justify-center items-center text-white kolom-soal">
         <!-- <div v-if="jenis === 'add'">
             <textarea name="question" id="question" cols="100" rows="5"
                             class="w-full rounded-xl text-center text-xl bg-transparent outline-none resize-none overflow-x-hidden no-scrollbar

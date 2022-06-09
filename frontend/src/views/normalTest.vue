@@ -53,7 +53,7 @@
             <div id="soal" class="mb-5 h-full font-semibold" v-if="pertanyaan!=null">
             <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :pertanyaan="this.pertanyaanGambar" 
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola :'" :pertanyaan="this.pertanyaanGambar" 
                             :img="this.urlGambar" />
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :question2="this.pertanyaanTeks2" :cerita="this.cerita" />
                 
@@ -175,6 +175,7 @@ export default {
             // console.log(this.jawaban)
             console.log(this.changed)
             if (this.noSoal<this.jumSoal){
+                this.urlGambar = ""
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
@@ -225,6 +226,7 @@ export default {
         },
         prevSoal(){
             if (this.noSoal>1){
+                this.urlGambar = ""
                 this.noSoal--
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
                 if(this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')

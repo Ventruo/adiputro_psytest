@@ -251,7 +251,7 @@
         </form>
 
         <!-- Update Question Modal -->
-        <form id="modalUpdateQuestion" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg hidden" style="top: 5%; width: 50%; height: 90%;"
+        <form id="modalUpdateQuestion" class="fixed left-1/4 bg-foreground-4-200 text-primary-1000 rounded-lg overflow-y-scroll pb-10 hidden" style="top: 5%; width: 50%; height: 90%;"
             @submit.prevent="updateQuestion">
             <div class="bg-primary-300 h-12 rounded-t-lg px-5 py-2 flex items-center">
                 <p class="font-bold text-lg inline-block relative" style="width: 96%">Perbarui Pertanyaan</p>

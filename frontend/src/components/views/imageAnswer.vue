@@ -10,7 +10,7 @@
             <div class="text-center h-auto py-2 px-2">
                 <img v-if="jenis === 'add'" :src="urlJawaban" class="inline-block h-full" alt="" id="imgJawaban">
                 <!-- <img v-else src="../../assets/jawaban1.png" alt="" id="imgJawaban" class="inline-block h-full"> -->
-                <img v-else :src="this.choices" alt="" id="imgJawaban" class="inline-block h-auto">
+                <img v-else :src="this.choices" alt="" id="imgJawaban" class="inline-block max-h-32">
             </div>
         </div>
     </div>
