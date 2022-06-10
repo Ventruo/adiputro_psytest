@@ -120,7 +120,7 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes E',
+            namaTes: 'Tes J',
             judulHalaman: '',
             noSoal: 1,
             jumSoal: 19,

@@ -105,7 +105,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes N',
+            namaSection: "Tes ",
             jenis: '',
             noSoal: 1,
             jumSoal: 5,
@@ -132,6 +132,7 @@ export default {
             maxLength: 0,
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             angka: ["1","2","3","4","5","6","7","8","9","10"],
+            alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
             changed: false,
             pertanyaanGambar: "",
             urlGambar: "",
@@ -345,8 +346,6 @@ export default {
                         this.pertanyaanTeks2 = ""
                     }
                 }
-
-
             }
         },
         progress(maju){
@@ -536,12 +535,11 @@ export default {
         this.section_id = this.$cookies.get('current_section').id;
         let tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         let nama_tes = ""
+        this.namaSection = "TES "+this.alias[tes-1]
         axios
         .get(this.port+'/test/'+tes)
         .then(({data}) => {
-            nama_tes = data.name.split(" ")
-            nama_tes.splice(0,1)
-            this.jenis = nama_tes.join(" ")
+            this.jenis = data.name
         })
 
         axios

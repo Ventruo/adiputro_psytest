@@ -74,6 +74,7 @@ export default {
             showSidebar: false,
             showInside: false,
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
         }
     },
     async created() {
@@ -196,7 +197,7 @@ export default {
             await axios
             .get(this.port+`/test/${tes[i][0]}`)
             .then(({data}) => (
-                data.nama = "Tes "+this.abjad[i],
+                data.nama = "TES "+this.alias[tes[i][0]-1],
                 this.test_list.push(data)
             ))
         }
@@ -218,7 +219,7 @@ export default {
                     if(this.hasil[j].test_id==19)
                         this.hasil[j].nama = "Biodata"
                     else
-                        this.hasil[j].nama = "Tes "+this.abjad[i]
+                        this.hasil[j].nama = "TES "+this.alias[this.hasil[j].test_id-1]
                     break;
                 }
             }

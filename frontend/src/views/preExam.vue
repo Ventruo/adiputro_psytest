@@ -21,7 +21,7 @@
                 <div class="w-full h-full bg-foreground-3-500 rounded-lg overflow-hidden">
                     <div class="h-32 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
                     <div class="h-3/4 w-full px-10 py-5 text-black font-bold text-left" v-if="section!=null">
-                        <p class="mb-1 text-2xl md:text-3xl">Tes 1</p>
+                        <p class="mb-1 text-2xl md:text-3xl">{{namaTes}}</p>
                         <p class="mb-2 font-semibold md:text-lg" v-html="section.instruction"></p>
                         <div class="text-right">
                             <a href="https://drive.google.com/uc?export=download&id=1IxMggwjWTXpAQtYsN4ITw8XIEDiJ395z" 
@@ -83,7 +83,9 @@ export default {
             section: null,
             sectionId: null,
             testId: null,
+            namaTes: "",
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
             port: import.meta.env.VITE_BACKEND_URL
         }
     },
@@ -122,6 +124,8 @@ export default {
         .then(({data}) => (
             this.section = data
         ))
+        
+        this.namaTes = "TES "+this.alias[this.testId-1]
     },
 }
 </script>

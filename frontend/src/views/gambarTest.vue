@@ -67,7 +67,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes G',
+            namaSection: 'Tes P',
             section_id: null,
             test_id: null,
             email: null,
