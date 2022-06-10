@@ -67,7 +67,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes G',
+            namaSection: 'Tes P',
             section_id: null,
             test_id: null,
             email: null,
@@ -97,6 +97,7 @@ export default {
             }
         },
         submitJawaban(){
+            $('#spinner-modal').fadeIn("slow");
             let formData = new FormData()
             formData.append('test_result_id', this.test_result_id)
             formData.append('section_id', this.section_id)
@@ -121,6 +122,7 @@ export default {
                 .then((response) => {
                     this.$cookies.remove('current_section')
                     this.$cookies.remove("start_time")
+                    $('#spinner-modal').fadeOut("slow")
                     Swal.fire(
                         'Submitted!',
                         'Task Successfully Submitted.',

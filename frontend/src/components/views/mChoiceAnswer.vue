@@ -12,9 +12,16 @@
             <AnswerButton ref="answerD" v-if="numberOfChoices>3" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[3]" @setChangeds="setChangeds" />
             <AnswerButton ref="answerE" v-if="numberOfChoices>4" :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[4]" @setChangeds="setChangeds" />
         </div>
-        <div class="md:flex gap-3 w-full" v-else>
-            <div v-for="(i,idx) in numberOfChoices" :key="idx" class="w-full">
-                <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[idx]" @setChangeds="setChangeds" />
+        <div class="gap-3 w-full" v-else>
+            <div class="lg:flex gap-3">
+                <div v-for="(i,idx) in numberOfChoices/2" :key="idx" class="w-full">
+                    <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[idx]" @setChangeds="setChangeds" />
+                </div>
+            </div>
+            <div class="lg:flex gap-3">
+                <div v-for="(i,idx) in numberOfChoices/2" :key="idx" class="w-full">
+                    <AnswerButton :jenis="jenis" :jawaban = jawaban :noSoal = noSoal :label="choices[idx+(numberOfChoices/2)]" @setChangeds="setChangeds" />
+                </div>
             </div>
         </div>
     </div>

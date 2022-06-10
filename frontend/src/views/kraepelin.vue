@@ -119,7 +119,7 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes K',
+            namaTes: "Tes D",
             judulHalaman: '',
             kolom: 1,
             current_kolom: 1,

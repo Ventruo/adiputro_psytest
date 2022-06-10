@@ -196,7 +196,9 @@
                                 </div>
                                 <div v-if="idTes==20" class="w-full">
                                     <div v-for="i in this.dataRegistrant.length" :key="i" class="mb-2 mr-2 inline-block" style="width: 49%">
-                                        <img :src="getImg(this.dataRegistrant[i-1])" alt="" class="w-full">
+                                        <a :href="getImg(this.dataRegistrant[i-1],'download')">
+                                            <img :src="getImg(this.dataRegistrant[i-1],'view')" alt="" class="w-full">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -363,8 +365,8 @@ export default {
             const dateTime = date + ' ' + time
             return dateTime
         },
-        getImg(data){
-            return "https://drive.google.com/uc?export=view&id="+data
+        getImg(data, mode){
+            return `https://drive.google.com/uc?export=${mode}&id=${data}`
         },
         isKraepelin(){
             this.sectionList[0].question_num = 1350

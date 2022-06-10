@@ -53,7 +53,7 @@
             <div id="soal" class="mb-5 h-full font-semibold" v-if="pertanyaan!=null">
             <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola Terpisah :'" :pertanyaan="this.pertanyaanGambar" 
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola :'" :pertanyaan="this.pertanyaanGambar" 
                             :img="this.urlGambar" />
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :question2="this.pertanyaanTeks2" :cerita="this.cerita" />
                 
@@ -105,7 +105,7 @@ export default {
     },
     data () {
         return {
-            namaSection: 'Tes N',
+            namaSection: "Tes ",
             jenis: '',
             noSoal: 1,
             jumSoal: 5,
@@ -132,6 +132,7 @@ export default {
             maxLength: 0,
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             angka: ["1","2","3","4","5","6","7","8","9","10"],
+            alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
             changed: false,
             pertanyaanGambar: "",
             urlGambar: "",
@@ -175,6 +176,7 @@ export default {
             // console.log(this.jawaban)
             console.log(this.changed)
             if (this.noSoal<this.jumSoal){
+                this.urlGambar = ""
                 this.noSoal++
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
@@ -225,6 +227,7 @@ export default {
         },
         prevSoal(){
             if (this.noSoal>1){
+                this.urlGambar = ""
                 this.noSoal--
                 this.jumChoice = this.pertanyaan[this.noSoal-1]["option_num"]
                 if(this.noSoal<this.jumSoal) $('#nextBtn').text('Selanjutnya')
@@ -277,7 +280,7 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else if(this.section_id==9 && this.pertanyaan[this.noSoal-1]['option_type']==2){
+            }else if([9,10,44,46,48,49,50,51,52,67,68,79,80].includes(this.section_id) && this.pertanyaan[this.noSoal-1]['option_type']==2){
                 let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
                 let temp = tempSoal.split(";")
                 
@@ -289,7 +292,7 @@ export default {
                 }
                 
                 let url_opsi = this.pertanyaan[this.noSoal-1]['option_a']
-                if(url_opsi==="") this.pilihanJawaban = ""
+                if(["","-"].includes(url_opsi)) this.pilihanJawaban = ""
                 else this.pilihanJawaban = this.getImg(url_opsi)
             }else if(this.section_id==79){
                 this.pilihanJawaban = [
@@ -343,8 +346,6 @@ export default {
                         this.pertanyaanTeks2 = ""
                     }
                 }
-
-
             }
         },
         progress(maju){
@@ -534,12 +535,11 @@ export default {
         this.section_id = this.$cookies.get('current_section').id;
         let tes = await this.getCurrentTest(this.$cookies.get('data_registrant').exam_session)
         let nama_tes = ""
+        this.namaSection = "TES "+this.alias[tes-1]
         axios
         .get(this.port+'/test/'+tes)
         .then(({data}) => {
-            nama_tes = data.name.split(" ")
-            nama_tes.splice(0,1)
-            this.jenis = nama_tes.join(" ")
+            this.jenis = data.name
         })
 
         axios

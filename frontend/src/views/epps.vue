@@ -107,8 +107,8 @@ export default {
     },
     data () {
         return {
-            namaTes: 'Tes E',
-            judulHalaman: 'E',
+            namaTes: "Tes ",
+            judulHalaman: '',
             page: 1,
             jumHalaman: null,
             menit: 1,
@@ -356,6 +356,9 @@ export default {
         this.email = datas.email;
         this.exam_session = datas.exam_session;
         this.test_id = await this.getCurrentTest(this.exam_session);
+
+        if(this.test_id==2) this.namaTes = "TES B"
+        else if(this.test_id==18) this.namaTes = "TES R"
 
         let tests = datas.test;
         for (let i = 0; i < tests.length; i++) {
