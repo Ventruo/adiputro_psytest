@@ -1,7 +1,8 @@
 <template>
     <!-- <button id="label" class="duration-200 w-full h-40 py-2 text-xl rounded-lg bg-background-200 hover:bg-background-300 font-semibold  -->
     <button id="label" class="duration-200 w-full px-2 py-2 mb-3 text-lg text-white rounded-lg bg-foreground-4-100 hover:bg-foreground-4-200 font-semibold 
-                ring-1 ring-inset ring-black relative answer-btn md:text-xl" 
+                ring-1 ring-inset ring-black relative answer-btn md:text-xl
+                lg:min-h-[10rem]" 
                 :class="{
                     // 'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
                     // 'h-32': jenis=='ekspresi'

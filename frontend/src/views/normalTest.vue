@@ -279,7 +279,7 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else if(this.section_id==9 && this.pertanyaan[this.noSoal-1]['option_type']==2){
+            }else if([9,10,44,46,48,49,50,51,52,67,68,79,80].includes(this.section_id) && this.pertanyaan[this.noSoal-1]['option_type']==2){
                 let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
                 let temp = tempSoal.split(";")
                 
@@ -291,7 +291,7 @@ export default {
                 }
                 
                 let url_opsi = this.pertanyaan[this.noSoal-1]['option_a']
-                if(url_opsi==="") this.pilihanJawaban = ""
+                if(["","-"].includes(url_opsi)) this.pilihanJawaban = ""
                 else this.pilihanJawaban = this.getImg(url_opsi)
             }else if(this.section_id==79){
                 this.pilihanJawaban = [
