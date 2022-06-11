@@ -197,8 +197,8 @@ export default {
             await axios
             .get(this.port+`/test/${tes[i][0]}`)
             .then(({data}) => (
-                data.nama = "TES "+this.alias[tes[i][0]-1],
-                // data.nama = "TES "+data.name,
+                // data.nama = "TES "+this.alias[tes[i][0]-1],
+                data.nama = "TES "+data.name,
                 this.test_list.push(data)
             ))
         }
