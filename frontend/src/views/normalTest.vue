@@ -58,7 +58,7 @@
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :question2="this.pertanyaanTeks2" :cerita="this.cerita" />
                 
                 <ImageAnswer ref="imageAnswer" v-if="pertanyaan[noSoal-1]['option_type']==2" :judul="'Pilihan Jawaban :'"  :jawaban = jawaban 
-                                :noSoal = noSoal :numberOfChoices = 5 :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
+                                :noSoal = noSoal :numberOfChoices = jumChoice :choices = pilihanJawaban :section = section_id @setChanged="setChanged" />
                 <TextAnswer ref="textAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']=='-'" 
                                 :jawaban = jawaban :noSoal = noSoal :jumlahJawaban = jumChoice :maxLength="maxLength" :section="this.section_id" @setChanged="setChanged" />
                 <mChoiceAnswer ref="mChoiceAnswer" v-else-if="pertanyaan[noSoal-1]['option_type']==1 && pertanyaan[noSoal-1]['option_a']!='-'" :jenis="jenis" :jawaban = jawaban 

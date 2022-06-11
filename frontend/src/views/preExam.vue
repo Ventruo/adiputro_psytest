@@ -140,16 +140,18 @@ export default {
         this.namaTes = "TES "+this.alias[this.testId-1]
 
         if(this.testId==6) this.urlContoh = ["Berhitung1", "Berhitung2"]
-        else if(this.sectionId==67) this.urlContoh = ["IST71", "IST72", "IST73", "IST74"]
-        else if(this.sectionId==68) this.urlContoh = ["IST8"]
-        else if(this.testId==13) this.urlContoh = ["Komponen1", "Komponen2"]
         else if(this.testId==8) this.urlContoh = ["Penalaran1", "Penalaran2"]
         else if(this.testId==11) this.urlContoh = ["RuangBidang1", "RuangBidang2", "RuangBidang3", "RuangBidang4", "RuangBidang5"]
+        else if(this.testId==12) this.urlContoh = ["DPM"]
+        else if(this.testId==13) this.urlContoh = ["Komponen1", "Komponen2"]
+        else if(this.testId==14) this.urlContoh = ["Merakit1", "Merakit2"]
+        else if(this.testId==15) this.urlContoh = ["PenalaranMekanik"]
         else if(this.sectionId==9) this.urlContoh = ["Tintum9"]
         else if(this.sectionId==10) this.urlContoh = ["Tintum10"]
+        else if(this.sectionId==67) this.urlContoh = ["IST71", "IST72", "IST73", "IST74"]
+        else if(this.sectionId==68) this.urlContoh = ["IST8"]
+        else if(this.sectionId==79) this.urlContoh = ["TintumAnak81","TintumAnak82"]
         else if(this.sectionId==80) this.urlContoh = ["TintumAnak9"]
-
-        console.log('../assets/Contoh_Soal/'+this.urlContoh[this.noContoh]+'.gif')
     },
 }
 </script>
