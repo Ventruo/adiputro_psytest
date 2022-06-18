@@ -145,7 +145,7 @@ export default {
         else if(this.testId==12) this.urlContoh = ["DPM"]
         else if(this.testId==13) this.urlContoh = ["Komponen1", "Komponen2"]
         else if(this.testId==14) this.urlContoh = ["Merakit1", "Merakit2"]
-        else if(this.testId==15) this.urlContoh = ["PenalaranMekanik"]
+        else if(this.testId==15) this.urlContoh = ["PenalaranMekanik1","PenalaranMekanik2","PenalaranMekanik3"]
         else if(this.sectionId==9) this.urlContoh = ["Tintum9"]
         else if(this.sectionId==10) this.urlContoh = ["Tintum10"]
         else if(this.sectionId==67) this.urlContoh = ["IST71", "IST72", "IST73", "IST74"]

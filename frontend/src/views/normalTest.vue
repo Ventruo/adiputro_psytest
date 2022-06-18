@@ -149,6 +149,7 @@ export default {
         getImg(data){
             let id = data.split("d/")
             id = id[1].split("/")
+            console.log("https://drive.google.com/uc?export=view&id="+id[0])
             return "https://drive.google.com/uc?export=view&id="+id[0]
         },
         setChanged(state){
@@ -280,7 +281,7 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else if([9,10,46,48,49,50,51,52,67,68,79,80].includes(this.section_id) && this.pertanyaan[this.noSoal-1]['option_type']==2){
+            }else if([9,10,46,48,49,50,51,67,68,79,80].includes(this.section_id) && this.pertanyaan[this.noSoal-1]['option_type']==2){
                 let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
                 let temp = tempSoal.split(";")
                 
@@ -319,7 +320,7 @@ export default {
                     }else{ 
                         this.pertanyaanGambar = ""
                     }
-                }else if(this.section_id==44){
+                }else if([44,52].includes(this.section_id)){
                     this.urlGambar = this.getImg(this.pertanyaan[this.noSoal-1]['instruction'])
                 }
             }
