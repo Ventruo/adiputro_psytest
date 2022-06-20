@@ -4,6 +4,7 @@
                 ring-1 ring-inset ring-black relative answer-btn md:text-xl
                 lg:min-h-[10rem]" 
                 :class="{
+                    'lg:min-h-[5rem]': label.length==1
                     // 'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
                     // 'h-32': jenis=='ekspresi'
                         }"
@@ -41,7 +42,7 @@ export default {
         "noSoal": { type: Number, default: 1, required: true },
         "jenis": { type: String, default: '', required: true },
         "aksi": { type: String, default: 'x' },
-        "label": { default: "" },
+        "label": { type: String, required: true },
         "warna": { default: "" },
     },
     methods: {

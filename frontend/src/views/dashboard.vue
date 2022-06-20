@@ -197,7 +197,9 @@ export default {
             await axios
             .get(this.port+`/test/${tes[i][0]}`)
             .then(({data}) => (
-                data.nama = "TES "+this.alias[tes[i][0]-1],
+                // data.nama = "TES "+this.alias[tes[i][0]-1],
+                // data.nama = "TES "+data.name,
+                data.nama = "TES "+this.abjad[i],
                 this.test_list.push(data)
             ))
         }
@@ -216,14 +218,27 @@ export default {
             for (let j = 0; j < this.hasil.length; j++) {
                 if(this.test_list[i].id == this.hasil[j].test_id){
                     this.test_list.splice(i,1)
-                    if(this.hasil[j].test_id==19)
-                        this.hasil[j].nama = "Biodata"
-                    else
-                        this.hasil[j].nama = "TES "+this.alias[this.hasil[j].test_id-1]
                     break;
                 }
             }
         }
+
+        for (let i = 0; i < tes.length; i++) {
+            for (let j = 0; j < this.hasil.length; j++) {
+                if(tes[i][0] == this.hasil[j].test_id){
+                    if(this.hasil[j].test_id==19)
+                        this.hasil[j].nama = "Biodata"
+                    else
+                        this.hasil[j].nama = "TES "+this.abjad[i]
+                    break;
+                }
+            }
+        }
+
+        // for (let i = 0; i < array.length; i++) {
+        //     const element = array[i];
+            
+        // }
 
         this.hasil.sort((a, b) => {
             let da = new Date(a.finish_date),

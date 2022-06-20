@@ -48,6 +48,16 @@
                                 </div>
                             </div>
                             <img v-if="sectionId==6" src="../assets/gif_deret_bilangan.gif" alt="" class="w-full md:w-2/3 xl:w-1/2">
+                            <div v-else-if="urlContoh.length>0" class="w-full md:w-2/3 xl:w-1/2 relative">
+                                <div v-if="noContoh>0" class="bg-white rounded-full absolute cursor-pointer px-2 py-1 bg-opacity-0 hover:bg-opacity-75 duration-200" style="top: 42%; left: -8.5%;" @click="noContoh--">
+                                    <i class="fa fa-angle-left fa-2xl"></i>
+                                </div>
+                                <img :src="'./Contoh_Soal/'+this.urlContoh[this.noContoh]+'.gif'" alt="">
+                                <div v-if="noContoh<urlContoh.length-1" class="bg-white rounded-full absolute cursor-pointer px-2 py-1 bg-opacity-0 hover:bg-opacity-75 duration-200" style="top: 42%; right: -8.5%;" @click="noContoh++">
+                                    <i class="fa fa-angle-right fa-2xl"></i>
+                                </div>
+                            </div>
+                            <!-- <img v-else-if="urlContoh.length>0" :src=`../assets/Contoh_Soal/${}.gif` alt="" class="w-full md:w-2/3 xl:w-1/2"> -->
                         </div>
                         <div class="text-center">
                             <button class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white w-2/3 py-1 rounded-full" @click.prevent="doTest">
@@ -86,7 +96,9 @@ export default {
             namaTes: "",
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
-            port: import.meta.env.VITE_BACKEND_URL
+            port: import.meta.env.VITE_BACKEND_URL,
+            noContoh: 0,
+            urlContoh: []
         }
     },
     methods: {
@@ -126,6 +138,20 @@ export default {
         ))
         
         this.namaTes = "TES "+this.alias[this.testId-1]
+
+        if(this.testId==6) this.urlContoh = ["Berhitung1", "Berhitung2"]
+        else if(this.testId==8) this.urlContoh = ["Penalaran1", "Penalaran2"]
+        else if(this.testId==11) this.urlContoh = ["RuangBidang1", "RuangBidang2", "RuangBidang3", "RuangBidang4", "RuangBidang5"]
+        else if(this.testId==12) this.urlContoh = ["DPM"]
+        else if(this.testId==13) this.urlContoh = ["Komponen1", "Komponen2"]
+        else if(this.testId==14) this.urlContoh = ["Merakit1", "Merakit2"]
+        else if(this.testId==15) this.urlContoh = ["PenalaranMekanik1","PenalaranMekanik2","PenalaranMekanik3"]
+        else if(this.sectionId==9) this.urlContoh = ["Tintum9"]
+        else if(this.sectionId==10) this.urlContoh = ["Tintum10"]
+        else if(this.sectionId==67) this.urlContoh = ["IST71", "IST72", "IST73", "IST74"]
+        else if(this.sectionId==68) this.urlContoh = ["IST8"]
+        else if(this.sectionId==79) this.urlContoh = ["TintumAnak81","TintumAnak82"]
+        else if(this.sectionId==80) this.urlContoh = ["TintumAnak9"]
     },
 }
 </script>

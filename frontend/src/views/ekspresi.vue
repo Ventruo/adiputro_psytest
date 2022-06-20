@@ -61,7 +61,7 @@
             <div id="soal" class="" v-if="pertanyaan!=null">
             <!-- <div id="soal" class=""> -->
                 <!-- <TextQuestion :question="pertanyaan[noSoal-1]['instruction']" /> -->
-                <TextQuestion :question="this.pertanyaanTeks" :cerita="this.cerita" :jenis="'ekspresi'"/>
+                <!-- <TextQuestion :question="this.pertanyaanTeks" :cerita="this.cerita" :jenis="'ekspresi'"/> -->
                 <div class="w-full text-center mt-5 py-2">
                     <div class="inline-block w-full">
                         <div class="w-full mb-2" v-if="this.aksi=='x'">

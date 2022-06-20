@@ -1,8 +1,8 @@
 <template>
-    <div class="mb-2 md:flex rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black">
+    <div class="mb-2 rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black">
         <p class="text-lg text-white font-bold my-2 mx-3 md:w-1/12">{{label}}</p>
         <div class="text-center h-auto py-2 w-full flex justify-center items-center">
-            <div class="w-full py-1">
+            <div class="w-full py-1 mx-5">
                 <div v-if="this.pertanyaan!==''" class="flex text-white w-full">
                     <div class="w-1/2 flex justify-center">
                         <img :src="img" alt="" id="imgSoal" class="inline-block max-h-48">
