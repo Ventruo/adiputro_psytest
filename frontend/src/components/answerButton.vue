@@ -4,7 +4,7 @@
                 ring-1 ring-inset ring-black relative answer-btn md:text-xl
                 lg:min-h-[10rem]" 
                 :class="{
-                    'lg:min-h-[5rem]': label.length==1
+                    'lg:min-h-[2rem]': label.length==1
                     // 'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
                     // 'h-32': jenis=='ekspresi'
                         }"
@@ -22,8 +22,8 @@
         <div v-else-if="jenis === 'ekspresi'">
             <p>{{label}}</p>
             <div class="absolute bottom-3 right-3">
-                <i v-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[0]===label+'x'" class="fa fa-x pilihan"></i>
-                <i v-else-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split(',')[1]===label+'o'" class="far fa-circle pilihan"></i>
+                <i v-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split('|')[0]===label+'x'" class="fa fa-x pilihan"></i>
+                <i v-else-if="jawaban[noSoal-1]!=null && jawaban[noSoal-1].split('|')[1]===label+'o'" class="far fa-circle pilihan"></i>
             </div>
         </div>
         <div v-else>
@@ -49,12 +49,12 @@ export default {
         choose(id){
             if (this.jenis=="ekspresi"){
                 if(this.jawaban[this.noSoal-1]==null){
-                    if(this.aksi=='x') this.jawaban[this.noSoal-1] = id+'x,'
-                    else if(this.aksi=='o') this.jawaban[this.noSoal-1] = ','+id+'o'
+                    if(this.aksi=='x') this.jawaban[this.noSoal-1] = id+'x|'
+                    else if(this.aksi=='o') this.jawaban[this.noSoal-1] = '|'+id+'o'
                 }else{
-                    var temp = this.jawaban[this.noSoal-1].split(',')
-                    if(this.aksi=='x' && temp[1]!=id+'o') this.jawaban[this.noSoal-1] = id+'x,'+temp[1]
-                    else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+','+id+'o'
+                    var temp = this.jawaban[this.noSoal-1].split('|')
+                    if(this.aksi=='x' && temp[1]!=id+'o') this.jawaban[this.noSoal-1] = id+'x|'+temp[1]
+                    else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+'|'+id+'o'
                 }
             }
             // else if(this.jenis=="MMPI"){

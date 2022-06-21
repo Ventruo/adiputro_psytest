@@ -5,7 +5,7 @@
             <div class="w-full py-1 mx-5">
                 <div v-if="this.pertanyaan!==''" class="flex text-white w-full">
                     <div class="w-1/2 flex justify-center">
-                        <img :src="img" alt="" id="imgSoal" class="inline-block max-h-48">
+                        <img :src="img" alt="" id="imgSoal" class="inline-block max-h-[30rem]">
                     </div>
                     <div class="w-1/2">
                         <p>{{this.pertanyaan}}</p>

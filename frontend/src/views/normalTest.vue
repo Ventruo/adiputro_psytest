@@ -147,7 +147,7 @@ export default {
             return exam_session.data.current_test;
         },
         getImg(data){
-            let id = data.split("d/")
+            let id = data.split("file/d/")
             id = id[1].split("/")
             console.log("https://drive.google.com/uc?export=view&id="+id[0])
             return "https://drive.google.com/uc?export=view&id="+id[0]
