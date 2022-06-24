@@ -104,24 +104,24 @@
                 </div>
                 
                 <div id="soal" class="mb-10 h-full font-semibold" v-if="state==2 && pertanyaan1!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
-                    <TextQuestion :question="pertanyaan1[noSoal-1]['instruction']" />
+                    <TextQuestion :question="pertanyaan1[noSoal-1]['instruction']" :jenis="'hafalan'" />
                     <div class="flex gap-3 w-full">
                         <div v-for="(i,idx) in this.pilihanJawaban" :key="idx" class="w-full">
-                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" @setChangeds="setChanged" />
+                            <AnswerButton :jenis="'hafalan'" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx]" @setChangeds="setChanged" />
                         </div>
                     </div>
                 </div>
 
                 <div id="soal" class="mb-10 h-full font-semibold" v-if="state==4 && pertanyaan2!=null && pilihanJawaban!=null && pilihanJawaban.length>0">
-                    <TextQuestion :question="pertanyaan2[noSoal-1]['instruction']" />
+                    <TextQuestion :question="pertanyaan2[noSoal-1]['instruction']" :jenis="'hafalan'" />
                     <div class="flex gap-3 w-full mb-2">
                         <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
-                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1]" @setChangeds="setChanged" />
+                            <AnswerButton :jenis="'hafalan'" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1]" @setChangeds="setChanged" />
                         </div>
                     </div>
                     <div class="flex gap-3 w-full">
                         <div v-for="idx in this.pilihanJawaban.length/2" :key="idx" class="w-full">
-                            <AnswerButton :jenis="''" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1+(this.pilihanJawaban.length/2)]" @setChangeds="setChanged" />
+                            <AnswerButton :jenis="'hafalan'" :jawaban = jawaban :noSoal = noSoal :label="this.pilihanJawaban[idx-1+(this.pilihanJawaban.length/2)]" @setChangeds="setChanged" />
                         </div>
                     </div>
                 </div>
