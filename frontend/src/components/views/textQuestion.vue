@@ -4,9 +4,11 @@
     <div v-if="this.cerita!==''" class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black p-3 my-2 flex justify-center items-center text-white">
         <p class="text-lg md:text-xl text-center">{{cerita}}</p>
     </div>
-    <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black my-5 p-3 flex justify-center text-white kolom-soal h-56 overflow-y-auto"
+    <div class="rounded-lg bg-foreground-4-100 ring-1 ring-inset ring-black my-5 p-3 flex justify-center text-white kolom-soal overflow-y-auto"
             :class="{
-                'items-center': this.question.length<750
+                'items-center': this.question.length<750,
+                'h-32': this.jenis==='hafalan',
+                'h-56': this.jenis!=='hafalan'
             }">
         <!-- <div v-if="jenis === 'add'">
             <textarea name="question" id="question" cols="100" rows="5"
@@ -42,6 +44,7 @@ export default {
         },
     },
     mounted(){
+        console.log(this.jenis)
         if(this.jenis=="ekspresi") this.ekspresiStyle()
     }
 }

@@ -4,13 +4,10 @@
                 ring-1 ring-inset ring-black relative answer-btn md:text-xl
                 lg:min-h-[10rem]" 
                 :class="{
-                    'lg:min-h-[2rem]': label.length==1
-                    // 'h-40': jenis!=(jenis!='epps' && jenis!='ekspresi'),
-                    // 'h-32': jenis=='ekspresi'
+                    'lg:min-h-[2rem]': label.length==1,
+                    'lg:min-h-[5rem]': jenis!==null && jenis==='hafalan'
                         }"
                 @click.prevent="choose(label)">
-                    <!-- 'w-full': jenis!='epps', 
-                    'w-1/2 h-14': jenis=='epps' -->
         <div v-if="jenis === 'add'" class="flex justify-center px-4">
             <p>{{label}}.</p>
             <input type="text" name="question" id="question" class="w-full ml-2 text-xl bg-transparent outline-none
