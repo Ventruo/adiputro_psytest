@@ -4,7 +4,7 @@ const {
 } = require("../../helpers/ResponseHelper");
 
 const xlsxFile = require("read-excel-file/node");
-const formula = require("excel-formula");
+const FormulaParser = require('hot-formula-parser').Parser;
 const SectionResult = require("../../models/SectionResult");
 const Section = require("../../models/Section");
 const QuestionResult = require("../../models/QuestionResult");
@@ -36,12 +36,13 @@ async function q_result_ist(data, section_id, ctr_correct, secres, res) {
       formulaAnswer = formulaAnswer.replace(regex, '"' + kunci + '"');
       formulaAnswer = formulaAnswer.replace(/#REF!/g, '"' + d.answer + '"');
       formulaAnswer = formulaAnswer.toUpperCase();
+      formulaAnswer = formulaAnswer.substring(1, formulaAnswer.length)
 
       // console.log(kunci, formulaAnswer);
-      let formattedFormula = formula.toJavaScript(formulaAnswer);
-      let formulaResult = eval(formattedFormula);
-      // console.log(formulaResult);
-      ctr_correct += formulaResult;
+      var parser = new FormulaParser();
+      let parseResult = parser.parse(formulaAnswer);
+      console.log(parseResult);
+      ctr_correct += parseResult.result;
       if (formulaResult != 0) status_correct = true;
 
       const new_result = await QuestionResult.create({

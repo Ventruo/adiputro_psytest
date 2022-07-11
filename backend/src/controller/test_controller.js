@@ -9,7 +9,7 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
-const GoogleDriveService = require("../helpers/GoogleDriveService");
+const {driveService} = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
 
@@ -164,9 +164,7 @@ class TestController {
     }
 
     // Get Buram folder
-    const googleDriveService = new GoogleDriveService();
-
-    let subfolders = await googleDriveService
+    let subfolders = await driveService
       .searchInParent(driveStorageID)
       .catch((error) => {
         console.error(error);
@@ -177,7 +175,7 @@ class TestController {
     )[0];
 
     // Delete Buram
-    await googleDriveService.deleteFileFromFolder(
+    await driveService.deleteFileFromFolder(
       subfolder.id,
       "Buram_" + req.body.email
     );
@@ -188,7 +186,7 @@ class TestController {
       let ext = uploadFile.originalname.split(".");
       ext = ext[ext.length - 1];
 
-      let file = await googleDriveService
+      let file = await driveService
         .saveFile(
           "Buram_" + req.body.email + "_" + (i + 1),
           uploadFile.buffer,
@@ -199,7 +197,7 @@ class TestController {
           console.error(error);
         });
 
-      await googleDriveService
+      await driveService
         .updatePermission(file.data.id, "reader", "anyone")
         .catch((error) => {
           console.error(error);

@@ -6,7 +6,7 @@ const {
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
 const Applicant = require("../models/Applicant");
-const GoogleDriveService = require("../helpers/GoogleDriveService");
+const {driveService} = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
 
@@ -106,10 +106,7 @@ class ApplicantController {
       }
 
       // Upload Lampiran
-      const googleDriveService = new GoogleDriveService();
-
       let file = await this.uploadLampiran(
-        googleDriveService,
         req.file,
         req.body.email
       );
@@ -161,17 +158,14 @@ class ApplicantController {
         }
 
         // Upload Lampiran
-        const googleDriveService = new GoogleDriveService();
-
         if (req.file) {
           // Delete & Reupload Lampiran
-          await googleDriveService
+          await driveService
             .deleteFile(applicant.lampiran_drive_id)
             .catch((error) => {
               console.error(error);
             });
           let file = await this.uploadLampiran(
-            googleDriveService,
             req.file,
             req.body.email
           );
@@ -202,9 +196,9 @@ class ApplicantController {
     );
   }
 
-  async uploadLampiran(googleDriveService, uploadFile, email) {
+  async uploadLampiran(uploadFile, email) {
     // Get applicant folder
-    let subfolders = await googleDriveService
+    let subfolders = await driveService
       .searchInParent(driveStorageID)
       .catch((error) => {
         console.error(error);
@@ -217,7 +211,7 @@ class ApplicantController {
     let ext = uploadFile.originalname.split(".");
     ext = ext[ext.length - 1];
 
-    let file = await googleDriveService
+    let file = await driveService
       .saveFile(
         "Lampiran_Applicant_" + email,
         uploadFile.buffer,
@@ -228,7 +222,7 @@ class ApplicantController {
         console.error(error);
       });
 
-    await googleDriveService
+    await driveService
       .updatePermission(file.data.id, "reader", "anyone")
       .catch((error) => {
         console.error(error);

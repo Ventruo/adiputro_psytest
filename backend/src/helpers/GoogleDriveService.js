@@ -1,15 +1,12 @@
 const Readable = require("stream").Readable;
+const stream = require("stream");
 const { google } = require("googleapis");
 const fs = require("fs");
+const path = require("path");
 
 class GoogleDriveService {
   constructor() {
-    this.driveClient = this.createDriveClient(
-      process.env.OAUTH_CLIENT_ID,
-      process.env.OAUTH_CLIENT_SECRET,
-      process.env.OAUTH_SCOPE_CALLBACK,
-      process.env.OAUTH_REFRESH_TOKEN
-    );
+    this.driveClient;
   }
 
   createDriveClient(clientId, clientSecret, redirectUri, refreshToken) {
@@ -17,7 +14,7 @@ class GoogleDriveService {
 
     client.setCredentials({ refresh_token: refreshToken });
 
-    return google.drive({
+    this.driveClient = google.drive({
       version: "v3",
       auth: client,
     });
@@ -135,4 +132,14 @@ class GoogleDriveService {
   }
 }
 
-module.exports = GoogleDriveService;
+let driveService = new GoogleDriveService();
+const initDriveService = () => {
+  driveService.createDriveClient(
+    process.env.OAUTH_CLIENT_ID,
+    process.env.OAUTH_CLIENT_SECRET,
+    process.env.OAUTH_SCOPE_CALLBACK,
+    process.env.OAUTH_REFRESH_TOKEN
+  );
+};
+
+module.exports = {driveService, initDriveService};

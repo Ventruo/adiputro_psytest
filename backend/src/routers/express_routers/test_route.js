@@ -9,10 +9,10 @@ var storage = multer.diskStorage({
     callback(null, "./tmp");
   },
   filename: function (req, file, callback) {
-    callback(null, file.fieldname);
+    callback(null, file.originalname);
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer();
 
 let controller = new TestController();
 router.post(

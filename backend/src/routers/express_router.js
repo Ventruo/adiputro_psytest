@@ -16,7 +16,6 @@ const KreapelinDataRouter = require("./express_routers/kreapelin_data_route");
 const ISTDataRouter = require("./express_routers/ist_data_route");
 const EPPSDataRouter = require("./express_routers/epps_data_route");
 const SectionOngoingRouter = require("./express_routers/section_ongoing_route");
-const ExamSession = require("../models/ExamSession");
 const AuthController = require("../controller/auth_controller");
 
 const ClockRouter = require("./express_routers/clock_route");
