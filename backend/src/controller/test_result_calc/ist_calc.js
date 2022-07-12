@@ -43,7 +43,7 @@ async function q_result_ist(data, section_id, ctr_correct, secres, res) {
       let parseResult = parser.parse(formulaAnswer);
       console.log(parseResult);
       ctr_correct += parseResult.result;
-      if (formulaResult != 0) status_correct = true;
+      if (parseResult != 0) status_correct = true;
 
       const new_result = await QuestionResult.create({
         section_result_id: secres.id,
