@@ -208,6 +208,12 @@ class ApplicantController {
       (subfolder) => subfolder.name == "APPLICANT"
     )[0];
 
+    // Delete Lampiran Applicant
+    await driveService.deleteFileFromFolder(
+      subfolder.id,
+      "Lampiran_Applicant_" + email
+    );
+
     let ext = uploadFile.originalname.split(".");
     ext = ext[ext.length - 1];
 

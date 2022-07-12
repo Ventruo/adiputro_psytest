@@ -218,6 +218,12 @@ class JobVacancyController {
       (subfolder) => subfolder.name == "VACANCY"
     )[0];
 
+    // Delete File
+    await driveService.deleteFileFromFolder(
+      subfolder.id,
+      "VACANCY_" + id
+    );
+
     let file = await driveService
       .saveFileFromLocal(
         "VACANCY_" + id,

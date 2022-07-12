@@ -631,7 +631,12 @@ class QuestionResultController {
       (subfolder) => subfolder.name == "TES_GAMBAR"
     )[0];
 
-    console.log(uploadFile);
+    // Delete File
+    await driveService.deleteFileFromFolder(
+      subfolder.id,
+      "GAMBAR_" + section_result_id + "_" + question_id
+    );
+
     let ext = uploadFile.originalname.split(".");
     ext = ext[ext.length - 1];
     let finalFileName = "GAMBAR_" + section_result_id + "_" + question_id;
