@@ -14,9 +14,7 @@ const KreapelinData = require("../models/KreapelinData");
 const { q_result_ist } = require("./test_result_calc/ist_calc");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
-const GoogleDriveService = require("../helpers/GoogleDriveService");
-const fs = require("fs");
-const path = require("path");
+const {driveService} = require("../helpers/GoogleDriveService");
 
 class QuestionResultController {
   async getOne(req, res) {
@@ -569,10 +567,7 @@ class QuestionResultController {
       },
     }).then(async (secres) => {
       // Upload Lampiran
-      const googleDriveService = new GoogleDriveService();
-
       let file = await this.uploadToDrive(
-        googleDriveService,
         req.file,
         secres.id,
         req.body.question_id
@@ -621,13 +616,12 @@ class QuestionResultController {
   }
 
   async uploadToDrive(
-    googleDriveService,
     uploadFile,
     section_result_id,
     question_id
   ) {
     // Get gambar folder
-    let subfolders = await googleDriveService
+    let subfolders = await driveService
       .searchInParent(driveStorageID)
       .catch((error) => {
         console.error(error);
@@ -637,7 +631,12 @@ class QuestionResultController {
       (subfolder) => subfolder.name == "TES_GAMBAR"
     )[0];
 
-    console.log(uploadFile);
+    // Delete File
+    await driveService.deleteFileFromFolder(
+      subfolder.id,
+      "GAMBAR_" + section_result_id + "_" + question_id
+    );
+
     let ext = uploadFile.originalname.split(".");
     ext = ext[ext.length - 1];
     let finalFileName = "GAMBAR_" + section_result_id + "_" + question_id;
@@ -650,7 +649,7 @@ class QuestionResultController {
     //   throw new Error("File not found!");
     // }
 
-    let file = await googleDriveService
+    let file = await driveService
       .saveFile(
         finalFileName,
         uploadFile.buffer,
@@ -662,7 +661,7 @@ class QuestionResultController {
       });
     // fs.unlinkSync(finalPath);
 
-    await googleDriveService
+    await driveService
       .updatePermission(file.data.id, "reader", "anyone")
       .catch((error) => {
         console.error(error);

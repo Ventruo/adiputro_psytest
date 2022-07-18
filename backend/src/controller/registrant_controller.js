@@ -6,7 +6,7 @@ const {
   success_response,
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
-const GoogleDriveService = require("../helpers/GoogleDriveService");
+const {driveService} = require("../helpers/GoogleDriveService");
 
 const driveStorageID = process.env.GOOGLE_DRIVE_STORAGE_ID || "";
 
@@ -102,10 +102,7 @@ class RegistrantController {
         }
 
         // Upload Tanda_Tangan
-        const googleDriveService = new GoogleDriveService();
-
         let file = await this.uploadTandaTangan(
-          googleDriveService,
           req.file,
           req.body.updating_email
         );
@@ -154,9 +151,9 @@ class RegistrantController {
     });
   }
 
-  async uploadTandaTangan(googleDriveService, uploadFile, email) {
+  async uploadTandaTangan(uploadFile, email) {
     // Get applicant folder
-    let subfolders = await googleDriveService
+    let subfolders = await driveService
       .searchInParent(driveStorageID)
       .catch((error) => {
         console.error(error);
@@ -170,13 +167,13 @@ class RegistrantController {
     ext = ext[ext.length - 1];
 
     // Delete Applicant if any
-    await googleDriveService.deleteFileFromFolder(
+    await driveService.deleteFileFromFolder(
       subfolder.id,
       "Registrant_" + email
     );
 
     // Send File
-    let file = await googleDriveService
+    let file = await driveService
       .saveFile(
         "Registrant_" + email,
         uploadFile.buffer,
@@ -187,7 +184,7 @@ class RegistrantController {
         console.error(error);
       });
 
-    await googleDriveService
+    await driveService
       .updatePermission(file.data.id, "reader", "anyone")
       .catch((error) => {
         console.error(error);

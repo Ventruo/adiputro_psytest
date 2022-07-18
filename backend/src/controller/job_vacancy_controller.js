@@ -6,7 +6,7 @@ const {
 } = require("../helpers/ResponseHelper");
 const { validate_required_columns } = require("../helpers/ValidationHelper");
 const JobVacancy = require("../models/JobVacancy");
-const GoogleDriveService = require("../helpers/GoogleDriveService");
+const {driveService} = require("../helpers/GoogleDriveService");
 const QRImage = require("qr-image");
 const fs = require("fs");
 
@@ -87,9 +87,7 @@ class JobVacancyController {
     await this.createQR(req.body.url);
 
     // Upload QR
-    const googleDriveService = new GoogleDriveService();
-
-    let qr_link = await this.uploadQR(googleDriveService, new_vacancy.id);
+    let qr_link = await this.uploadQR(new_vacancy.id);
     qr_link = "https://drive.google.com/file/d/" + qr_link.data.id;
 
     new_vacancy.set({
@@ -119,8 +117,6 @@ class JobVacancyController {
       }
 
       // Upload QR
-      const googleDriveService = new GoogleDriveService();
-
       let qr_link = vacancy.qr_link;
       if (req.body.url) {
         // Delete & Reupload QR Code
@@ -128,14 +124,14 @@ class JobVacancyController {
           "https://drive.google.com/file/d/"
         )[1];
 
-        await googleDriveService.deleteFile(fileId).catch((error) => {
+        await driveService.deleteFile(fileId).catch((error) => {
           console.error(error);
         });
 
         // Create QR File
         await this.createQR(req.body.url);
 
-        let link = await this.uploadQR(googleDriveService, vacancy.id);
+        let link = await this.uploadQR(vacancy.id);
         link = "https://drive.google.com/file/d/" + link.data.id;
         qr_link = link;
       }
@@ -187,19 +183,17 @@ class JobVacancyController {
       }
 
       // Upload QR
-      const googleDriveService = new GoogleDriveService();
-
       // Delete & Reupload QR Code
       let fileId = vacancy.qr_link.split("https://drive.google.com/file/d/")[1];
 
-      await googleDriveService.deleteFile(fileId).catch((error) => {
+      await driveService.deleteFile(fileId).catch((error) => {
         console.error(error);
       });
 
       // Create QR File
       await this.createQR(req.body.url);
 
-      let link = await this.uploadQR(googleDriveService, vacancy.id);
+      let link = await this.uploadQR(vacancy.id);
       link = "https://drive.google.com/file/d/" + link.data.id;
       let qr_link = link;
 
@@ -212,9 +206,9 @@ class JobVacancyController {
     });
   }
 
-  async uploadQR(googleDriveService, id) {
+  async uploadQR(id) {
     // Get vacancy folder
-    let subfolders = await googleDriveService
+    let subfolders = await driveService
       .searchInParent(driveStorageID)
       .catch((error) => {
         console.error(error);
@@ -224,7 +218,13 @@ class JobVacancyController {
       (subfolder) => subfolder.name == "VACANCY"
     )[0];
 
-    let file = await googleDriveService
+    // Delete File
+    await driveService.deleteFileFromFolder(
+      subfolder.id,
+      "VACANCY_" + id
+    );
+
+    let file = await driveService
       .saveFileFromLocal(
         "VACANCY_" + id,
         "qr_temp.png",
@@ -235,7 +235,7 @@ class JobVacancyController {
         console.error(error);
       });
 
-    await googleDriveService
+    await driveService
       .updatePermission(file.data.id, "reader", "anyone")
       .catch((error) => {
         console.error(error);
