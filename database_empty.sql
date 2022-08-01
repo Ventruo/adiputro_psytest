@@ -42,7 +42,7 @@ CREATE TABLE `applicant` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `applicant` */
 
@@ -82,7 +82,7 @@ CREATE TABLE `exam_session` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `exam_session` */
 
@@ -134,7 +134,7 @@ CREATE TABLE `job_vacancy` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `job_vacancy` */
 
@@ -195,7 +195,7 @@ CREATE TABLE `question_result` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `question_result` */
 
@@ -236,29 +236,29 @@ CREATE TABLE `section` (
 /*Data for the table `section` */
 
 insert  into `section`(`id`,`test_id`,`section_number`,`instruction`,`duration`,`section_type`,`question_type`,`option_num`,`status`,`createdAt`,`updatedAt`) values 
-(1,1,1,'Di persoalan pertama sudah terdapat 10 nomer. Tugas anda adalah menjawab dengan JELAS, SINGKAT, TETAPI LENGKAP. silahkan jabawannya anda tuliskan di lembar jawaban yang sudah disediakan',10,'1','1',1,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
+(1,1,1,'Di persoalan pertama sudah terdapat 10 nomor. Tugas anda adalah menjawab dengan JELAS, SINGKAT, TETAPI LENGKAP. silahkan jawabannya anda tuliskan di lembar jawaban yang sudah disediakan',10,'1','1',1,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
 (2,1,2,'Untuk persoalan berikutnya. sudah terdapat 40 soal. Di tiap soal sudah disediakan pilihan jawabannya. Tugas anda tinggal memilih satu yang paling benar',7,'2','1',4,1,'2022-01-23 14:06:16','2022-01-23 16:06:32'),
 (3,1,3,'Di persoalan ke 3 sudah terdapat 40 soal. Di tiap soal juga sudah disediakan pilihan jawabannya. Tugas anda adalah memilih PASANGAN KATA YANG SESUAI DENGAN POLA PASANGAN KATA YANG ADA DI DEPANNYA.',5,'2','1',4,1,'2022-01-17 16:51:30','2022-01-17 16:51:30'),
 (4,1,4,'Di persoalan berikutnya, sudah terdapat 20 soal. Di tiap soal sudah di sediakan pilihan jawabannya. Tugas anda tinggal memilih 1 yang paling benar.',3,'2','1',3,1,'2022-01-23 07:32:48','2022-01-23 07:32:48'),
-(5,1,5,'Di persoalan ke 5 merupakan soal cerita hitungan. Nanti silahkan di baca, dihitung, dan di tulis jawbannya di lembar jawaban yang sudah disediakan. silahkan di tulis angkanya saja, satuannya tidak perlu.',7,'1','1',1,1,'2022-01-23 07:33:13','2022-01-23 07:33:13'),
+(5,1,5,'Di persoalan ke 5 merupakan soal cerita hitungan. Nanti silahkan di baca, dihitung, dan ditulis jawabannya di lembar jawaban yang sudah disediakan. silahkan di tulis angkanya saja, satuannya tidak perlu.',7,'1','1',1,1,'2022-01-23 07:33:13','2022-01-23 07:33:13'),
 (6,1,6,'Sudah terdapat 30 soal deret hitung. Dimana setiap soal terdiri dari deretan angka. Tugas anda adalah melanjutkan angka tersebut akan menjadi angka berapa dan berapa.',10,'1','1',2,1,'2022-01-23 07:36:53','2022-01-23 07:36:53'),
 (7,1,7,'Di persoalan berikutnya sudah terdapat 20 soal. Di setiap soal sudah disediakan pilihan jawabannya. Tugas anda tinggal memilih 1 yang paling benar',5,'2','1',5,1,'2022-01-23 14:40:14','2022-01-23 14:40:14'),
-(8,1,8,'Di tiap nomer sudah terdapat 5 kata. Tugas anda adalah memilih 1 kata yang artinya paling berbeda. kita ke contoh no 1. di sana sudah terdpaat jurusan, timur, perjalanan, arah dan selatan. 1 kata yang artinya paling berbeda yang mana? ya benar jawabannya adalah PERJALANAN. karena jurusan, timur, arah dan selatan menunjukkan suatu arah.',6,'2','1',5,1,'2022-01-23 14:40:22','2022-01-23 14:40:22'),
+(8,1,8,'Di tiap nomor sudah terdapat 5 kata. Tugas anda adalah memilih 1 kata yang artinya paling berbeda. kita ke contoh no 1. di sana sudah terdapat jurusan, timur, perjalanan, arah dan selatan. 1 kata yang artinya paling berbeda yang mana? ya benar jawabannya adalah PERJALANAN. karena jurusan, timur, arah dan selatan menunjukkan suatu arah.',6,'2','1',5,1,'2022-01-23 14:40:22','2022-01-23 14:40:22'),
 (9,1,9,'Nanti di atas sudah terdapat 5 gambar, itu merupakan pilihan jawabannya. Sedangkan pola pola yang terpisah di dalam kotak merupakan soalnya.',6,'2','2',5,1,'2022-02-01 18:03:14','2022-02-01 18:03:14'),
-(10,1,10,'Nanti di setiap nomer sudah terdapat 2 gambar. Tugas anda adalah membandingkan apakah keduanya sama persis atau tidak. silahkan di liat dari bentuknya, arsirannya, maupun bila posisinya di ubah.',7,'2','2',2,1,'2022-02-01 18:03:42','2022-02-01 18:03:42'),
-(11,2,1,'ini test EPPS',60,'2','1',2,1,'2022-02-19 10:17:06','2022-02-19 10:17:06'),
-(44,6,1,'Ini Section Tes Berhitung',30,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(45,7,1,'Ini Section Tes Ekspresi',35,'2','1',3,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(46,8,1,'Ini Section Tes Penalaran',25,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(47,9,1,'Ini Section Tes Pemahaman',40,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(48,11,1,'Ini Section Tes Ruang Bidang',8,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(49,12,1,'Ini Section Tes DPM',20,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(50,13,1,'Ini Section Tes Komponen',24,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(51,14,1,'Ini Section Tes Merakit',20,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(52,15,1,'Ini Section Tes Penalaran Mekanik',20,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
-(53,5,1,'Tes ini merukapan tes penjumlahan sederhana. Tulislah angka satuannya saja. Misalnya penjumlahan 5+9 adalah 14, maka yang Anda tulis cukup angka 4 nya saja.',13,'2','1',0,1,'2022-03-12 20:32:57','2022-03-12 20:32:57'),
-(54,3,1,'Ini Section Tes SDI',-1,'2','1',2,1,'2022-04-06 10:12:03','2022-04-06 10:12:03'),
-(55,4,1,'Ini Section Tes MMPI',-1,'2','1',2,1,'2022-04-06 10:12:03','2022-04-06 10:12:03'),
+(10,1,10,'Nanti di setiap nomor sudah terdapat 2 gambar. Tugas anda adalah membandingkan apakah keduanya sama persis atau tidak. silahkan dilihat dari bentuknya, arsiran nya, maupun bila posisinya di ubah.',7,'2','2',2,1,'2022-02-01 18:03:42','2022-02-01 18:03:42'),
+(11,2,1,'Di test ini anda akan diperhadapkan dengan 225 butir pernyataan, dimana masing-masing nomor terdapat 2 pernyataan. Tugas Anda adalah memilih satu pernyataan yang paling menggambarkan diri anda pada masing-masing nomor.',60,'2','1',2,1,'2022-02-19 10:17:06','2022-02-19 10:17:06'),
+(44,6,1,'Sudah terdapat 40 soal hitungan. Setiap soal sudah diberi keterangan harus diapakan, silahkan dibaca dan di hitung, kemudian pilihlah 1 jawaban yang paling benar. JANGAN MENGGUNAKAN KALKULATOR. DAN KERTAS BURAM BISA D UPLOAD DI KOLOM YANG NANTI TELAH DISEDIAKAN. ',30,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(45,7,1,'Setiap soal dalam tes ini telah menyajikan 3 macam susunan kalimat untuk menyatakan isi pikiran yang sama. <b>Tugas anda adalah memilih 1 pernyataan yang paling baik yaitu pernyataan yang paling kena, jelas dan lancar</b>.  Klik lah tanda O terlebih dahulu dan pilihlah pernyataan mana yang baik. <b>Kemudian pilihlah 1 lagi pernyataan yang paling jelek yaitu pernyataan yang paling tidak kena, paling tidak jelas, dan paling kurang lancar</b>. Klik lah tanda X dan pilihlah pernyataan yang jelek. <b>Jadi nanti di tiap nomer akan ada 2 jawaban, yaitu satu lingkaran dan satu silang.</b>',35,'2','1',3,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(46,8,1,'Dalam tes ini anda akan melihat satu deretan pola atau gambar. Tiap-tiap deret merupakan suatu soal yang terdiri atas 4 gambar. 4 gambar ini merupakan suatu rangkaian yang telah tersusun menurut pedoman tertentu. Tugas anda adalah mencari gambar kelima yang merupakan kelanjutan dari rangkaian pola yang ada di depannya. Pilihlah 1 jawaban yang paling tepat. ',25,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(47,9,1,'Dalam tes ini tiap-tiap soal didahului oleh suatu naskah/ bacaan singkat. Bacalah baik-baik dan fahami dahulu naskah itu, kemudian pilihlah satu jawaban yang cocok dengan isi naskah di atasnya. ',40,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(48,11,1,'Pada persoalan berikutnya, Di tiap soal sudah ada 2 gambar. Gambar di sebelah kiri yang merupakan gambar soal, dan di sebelah kanan yang merupakan gambar pilihan jawaban. Tugas anda adalah memilih 1 jawaban yang paling tepat bilamana pola di sebelah kiri dilipat/disatukan. ',8,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(49,12,1,'Di tiap soal terdiri dari gambar dan pertanyaan. Bacalah dulu pertanyaannya dengan teliti dan periksalah gambarnya dengan hati-hati, kemudian pilihlah 1 jawaban yang paling benar. ',20,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(50,13,1,'Dalam tes ini telah diketahui sejumlah lima buah gambar yang sederhana dan sejumlah gambar yang lebih kompleks. Periksalah tiap-tiap gambar yang kompleks itu, kemudian carilah gambar sederhana mana yang terdapat dalam gambar yang kompleks itu. <b>Gambar sederhana yang telah anda temukan itu harus sama bentuknya, sama luasnya dan sama letak posisinya seperti dalam gambar sederhana yang diketahui. Pilihlah 1 gambar yang paling benar.</b>',24,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(51,14,1,'Ini adalah tes tentang kecakapan membayangkan merakit bagian-bagian mesin. Bagian-bagian mesin yang masih terpisah-pisah ditunjukkan di bagian kiri dari tiap-tiap soal. <b>Tugas anda adalah memilih rakitan yang tepat bilamana bagian-bagian mesin itu sudah dirakit.</b> Dalam tes ini ada beberapa bagian yang harus dirakit tempat-tempat yang ditandai dengan huruf yang sama harus dirakit berimpit. <b>Bagian-bagian yang akan dirakit boleh diputar-putar atau dibolak-balik. Kemudian pilihlah 1 jawaban yang paling tepat bilamana bagian mesin itu telah dirakit.</b>',20,'2','1',5,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(52,15,1,'Di tiap soal terdiri dari gambar dan pertanyaan. Bacalah dulu pertanyaannya dengan teliti dan periksalah gambarnya dengan hati-hati, kemudian pilihlah 1 jawaban yang paling benar. ',20,'2','1',4,1,'2022-02-23 14:19:44','2022-02-23 14:19:44'),
+(53,5,1,'Tes ini merupakan tes penjumlahan sederhana. Tulislah angka satuannya saja. Misalnya penjumlahan 5+9 adalah 14, maka yang Anda tulis cukup angka 4 nya saja.',13,'2','1',0,1,'2022-03-12 20:32:57','2022-03-12 20:32:57'),
+(54,3,1,'Rangkaian pertanyaan berikut ini adalah untuk mengetahui pendapat anda tentang hal-hal tertentu. Tidak ada jawaban yang salah ataupun yang benar. Anda harus menjawab pertanyaan-pertanyaan tersebut dengan menggunakan tanggapan pertama anda.  Jawablah pertanyaan-pertanyaan tersebut dengan melingkari \" YA\", \" TIDAK\". Jawablah semua pertanyaan yang ada. ',-1,'2','1',2,1,'2022-04-06 10:12:03','2022-04-06 10:12:03'),
+(55,4,1,'Jawablah pernyataan dibawah ini dengan memilih positif (+) bila pernyataan tersebut sesuai dengan diri anda, atau jawablah negatif (-) bila pernyataan tersebut tidak sesuai dengan diri anda',-1,'2','1',2,1,'2022-04-06 10:12:03','2022-04-06 10:12:03'),
 (56,10,1,'Ada 150 soal. Tugas anda adalah memperhatikan setiap pernyataan di sebelah kiri dan kanan sama persis atau tidak. Jika sama pilihlah O. Jika tidak sama pilih X',6,'2','1',2,1,'2022-04-09 03:53:15','2022-04-09 03:53:15'),
 (57,10,2,'Ada 50 soal hitungan.  Di tiap soal sudah ada perintah tentang apa yang harus dikerjakan.  Pilihlah 1 jawaban yang paling benar. <b>NB: Tidak Boleh menggunakan kalkulator.</b>',6,'2','1',5,1,'2022-04-09 03:55:03','2022-04-09 03:55:03'),
 (58,10,3,'Sudah tersedia 25 soal cerita hitungan.  Silahkan di baca dan di hitung. Silahkan tuliskan jawabannya di tempat yang sudah disediakan. <b>NB: Tidak Boleh menggunakan kalkulator.</b>',6,'1','1',0,1,'2022-04-09 03:59:37','2022-04-09 03:59:37'),
@@ -270,10 +270,10 @@ insert  into `section`(`id`,`test_id`,`section_number`,`instruction`,`duration`,
 (64,17,4,'Sudah ditentukan 2 kata. Tugas Anda adalah mencari 1 perkataan yang meliputi pengertian kedua kata tersebut.',8,'1','1',1,1,'2022-04-09 08:11:38','2022-04-09 08:11:38'),
 (65,17,5,'Persoalan berikutnya merupakan soal hitungan cerita. Tulislah jawaban di kolom yang sudah disediakan.',10,'1','1',1,1,'2022-04-09 08:12:04','2022-04-09 08:12:04'),
 (66,17,6,'Pada persoalan berikutnya akan diberikan deret angka. Setiap deret tersusun menurut suatu aturan yang tertentu dan dapat dilanjutkan menurut aturan itu.',10,'1','1',1,1,'2022-04-09 08:12:31','2022-04-09 08:12:31'),
-(67,17,7,'Pada persoalan berikutnya, setiap soal memperlihatkan sesuatu bentuk tertentu yang terpotong menjadi beberapa bagian. Bila bentuk yang terpotong itu di satukan akan menjadi yang mana.',7,'2','2',5,1,'2022-04-09 08:12:57','2022-04-09 08:12:57'),
+(67,17,7,'Pada persoalan berikutnya, setiap soal memperlihatkan sesuatu bentuk tertentu yang terpotong menjadi beberapa bagian. Bila bentuk yang terpotong itu disatukan akan menjadi yang mana.',7,'2','2',5,1,'2022-04-09 08:12:57','2022-04-09 08:12:57'),
 (68,17,8,'Ditentukan 5 buah kubus a,b,c,d,e. Pada tiap-tiap kubus terdapat enam tanda yang berlainan pada setiap sisinya. Tiga dari tanda itu dapat dilihat. Tiap kubus dapat mempunyai tanda-tanda yang sama, akan tetapi susunannya berlainan. Pilihlah pasangan kubus yang bila diputar/digulingkan akan menunjukkan kesamaan tanda dan posisinya.',9,'2','2',5,1,'2022-04-09 08:13:27','2022-04-09 08:13:27'),
 (69,17,9,'Disediakan waktu 3 menit untuk menghafalkan kata-kata. Pada persoalan berikutnya, terdapat sejumlah pertanyaan mengenai kata-kata yang anda hafalkan. Tugas anda adalah menjawab soal sesuai dengan yang anda hafalkan.',3,'2','1',5,1,'2022-04-09 08:14:03','2022-04-09 08:14:03'),
-(70,21,1,'Perhatikan nanti di atas sudah terdapat 5 kotak yaitu Kotak Rokok, Penerbangan, Juru Bayar, Nomor Telepon, dan Buku Gudang. Nanti di setiap kotak sudah terdapat nama anggota beserta kodenya. Di setiap nomot sudah terdapat namanya apa. Tugas Anda adalah mencari kodenya berapa. Kita ke contoh no.1. Di situ ada sabun, kodenya berapa? kodenya 2B. Di depan 2B ada kotak kecil, silahkan di silang di dalam kotak.',3,'2','1',3,1,'2022-04-09 12:24:15','2022-04-09 12:24:15'),
+(70,21,1,'Perhatikan nanti di atas sudah terdapat 5 kotak yaitu Kotak Rokok, Penerbangan, Juru Bayar, Nomor Telepon, dan Buku Gudang. Nanti di setiap kotak sudah terdapat nama anggota beserta kodenya. Di setiap nomor sudah terdapat namanya apa. Tugas Anda adalah mencari kodenya berapa. Kita ke contoh no.1. Di situ ada sabun, kodenya berapa? kodenya 2B. Di depan 2B ada kotak kecil, silahkan di silang di dalam kotak.',3,'2','1',3,1,'2022-04-09 12:24:15','2022-04-09 12:24:15'),
 (71,21,2,'Cara mengerjakannya sama seperti tadi, hanya kotak yang di atas sekarang dihilangkan. Silahkan dikerjakan seingatnya saja.',3,'2','1',10,1,'2022-04-09 12:25:01','2022-04-09 12:25:01'),
 (72,16,1,'Tersedia 10 soal, tugas Anda adalah menjawab dengan jelas, singkat tetapi lengkap. Silahkan tulis jawabannya di kolom yang sudah disediakan.',10,'1','1',1,1,'2022-04-09 15:20:26','2022-04-09 15:20:26'),
 (73,16,2,'Di setiap soal sudah disediakan pilihan jawabannya. Tugas Anda memilih 1 yang paling benar.',5,'2','1',4,1,'2022-04-09 15:21:13','2022-04-09 15:21:13'),
@@ -284,9 +284,9 @@ insert  into `section`(`id`,`test_id`,`section_number`,`instruction`,`duration`,
 (78,16,7,'Di tiap soal sudah terdiri dari 1 kata yang diikuti dengan beberapa kata sebagai pilihan jawabannya. Tugas anda mencari persamaan katanya. Contoh soal : Terbahak-bahak, a.  Terbalik-balik, b.  Tertahan-tahan, c.  Tertawa, d. Sakit, e.  Menurut, f.  Menarik. Jawaban yang benar adalah C',5,'2','1',6,1,'2022-04-09 15:25:58','2022-04-09 15:25:58'),
 (79,16,8,'Tersedia 20 soal yang terdiri dari gambar yang bertandakan A, B, C yang merupakan soalnya. Sedangkan gambar yang di sebelah kanan yang bernomor 1, 2, 3, 4 merupakan pilihan jawabannya. Tugas Anda adalah mencari kelanjutan dari 3 gambar yang berhurufkan A, B, dan C. Perhatikan lah pola  masing-masing gambar.',5,'2','2',4,1,'2022-04-09 15:27:02','2022-04-09 15:27:02'),
 (80,16,9,'Di setiap soal sudah terdapat 2 gambar, tugas Anda adalah membandingkan kedua gambar tersebut sama persis atau tidak.',4,'2','2',2,1,'2022-04-09 15:27:44','2022-04-09 15:27:44'),
-(81,18,1,'Sudah terdapat 90 pasang pernyataan. Anda harus memilih satu dari setiap pasang pernyataan yang menurut Anda paling mencerminkan diri Anda atau yang paling menunjukkan bagaimana perasaan Anda.',-1,'2','1',2,1,'2022-04-09 16:56:42','2022-04-09 16:56:42'),
-(82,20,1,'Gambar lah manusia lengkap dari ujung kepala sampai ujung kakinya. Setelah digambar, silahkan gambarnya diberi nama, usia, jenis kelamin, dan aktivitasnya sedang apa. Setelah di gambar di kertas, silahkan di upload ke sini. NB: kertas folio dengan posisi kertas <b>PORTRAIT</b>. Gambar mengunakan <b>PENSIL</b>',-1,'2','2',1,1,'2022-04-09 17:04:42','2022-04-09 17:04:42'),
-(83,20,2,'Silahkan gambar pohon yang bisa dipanjat dan pohonnya harus bercabang. Nama-nama yang disebutkan di bawah ini <b>TIDAK BOLEH DIGAMBAR</b>: beringin, cemara / pinus, kelapa, pisang, pepaya, randu, perdu, bambu, bunga. Tugas Anda adalah menggambar pohon yang bisa dipanjat dan pohonnya harus bercabang. Setelah digambar, berikan keterangan itu gambar pohon apa. NB: kertas folio dengan posisi kertas <b>PORTRAIT</b>. Gambar mengunakan <b>PENSIL</b>',-1,'2','2',1,1,'2022-04-09 17:07:23','2022-04-09 17:07:23'),
+(81,18,1,'Sudah terdapat 90 soal. Setiap soal sudah terdapat 2 pernyataan. Tugas Anda adalah memilih satu pernyataan yang paling menggambarkan diri anda pada masing-masing nomor.',-1,'2','1',2,1,'2022-04-09 16:56:42','2022-04-09 16:56:42'),
+(82,20,1,'Gambar lah manusia lengkap dari ujung kepala sampai ujung kakinya. Setelah digambar, silahkan gambarnya diberi nama, usia, jenis kelamin, dan aktivitasnya sedang apa. Setelah di gambar di kertas, silahkan di upload ke sini. NB: kertas folio dengan posisi kertas <b>PORTRAIT</b>. Gambar menggunakan <b>PENSIL</b>',-1,'2','2',1,1,'2022-04-09 17:04:42','2022-04-09 17:04:42'),
+(83,20,2,'Silahkan gambar pohon yang bisa dipanjat dan pohonnya harus bercabang. Nama-nama yang disebutkan di bawah ini <b>TIDAK BOLEH DIGAMBAR</b>: beringin, cemara / pinus, kelapa, pisang, pepaya, randu, perdu, bambu, bunga. Tugas Anda adalah menggambar pohon yang bisa dipanjat dan pohonnya harus bercabang. Setelah digambar, berikan keterangan itu gambar pohon apa. NB: kertas folio dengan posisi kertas <b>PORTRAIT</b>. Gambar menggunakan <b>PENSIL</b>',-1,'2','2',1,1,'2022-04-09 17:07:23','2022-04-09 17:07:23'),
 (84,20,3,'Di lembar berikutnya ini, tugas Anda menggambar rumah, orang dan pohon. Terserah letaknya bagaimana, asalkan dalam 1 kertas muat 3 gambar tersebut. NB: kertas folio posisi <b>LANDSCAPE</b>. Gambarlah menggunakan <b>PENSIL</b> Setelah di gambar di kertas, silahkan di upload ke sini.',-1,'2','2',1,1,'2022-04-09 17:09:02','2022-04-09 17:09:02'),
 (85,20,4,'Unduh dan cetaklah file template dibawah ini. Nanti di sini sudah terdapat 8 kotak. Di tiap kotak sudah terdapat gambarnya masing-masing. Tugas Anda adalah melanjutkan gambar tersebut. Terserah mau menggambar apa, gambar yang terlintas di pikiran pertama kali itu saja yang di gambar. Cara mengerjakannya, boleh dimulai dari kotak manapun asalkan ditulis nomor pengerjaannya. Yang pertama diberi no 1, no 2 dan seterusnya sampai nomer ke 8. Setelah semuanya selesai di gambar, berilah keterangan di lembar putih di bawah gambar no 1-8 itu gambar apa. Setelah itu pilihlah 1 gambar yang paling disukai, 1 gambar yang paling tidak disukai, 1 gambar yang paling mudah, dan 1 gambar yang paling susah. NB: Gambar Menggunakan <b>PENSIL</b> Setelah di gambar di kertas, silahkan di upload ke sini.',-1,'2','2',1,1,'2022-04-09 17:10:16','2022-04-09 17:10:16');
 
@@ -343,7 +343,7 @@ CREATE TABLE `test` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `test` */
 
@@ -357,7 +357,7 @@ insert  into `test`(`id`,`name`,`test_order`,`test_type`,`status`,`createdAt`,`u
 (7,'Ekspresi','2','7',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (8,'Penalaran','2','8',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (9,'Pemahaman','2','9',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
-(10,'Adkudag','2','10',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
+(10,'Akudak','2','10',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (11,'Ruang Bidang','2','11',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (12,'DPM','2','12',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (13,'Komponen','2','13',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
@@ -365,7 +365,7 @@ insert  into `test`(`id`,`name`,`test_order`,`test_type`,`status`,`createdAt`,`u
 (15,'Penalaran Mekanik','2','15',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (16,'Tintum Anak','2','16',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (17,'IST','2','17',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
-(18,'Papi Kostick','2','18',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
+(18,'Papi Kostik','2','18',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (19,'Biodata','2','19',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (20,'Gambar','2','20',1,'2022-02-23 14:10:51','2022-02-23 14:10:51'),
 (21,'Hafalan','2','21',1,'2022-04-09 15:55:38','2022-04-09 15:55:38');

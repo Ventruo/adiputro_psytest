@@ -53,7 +53,7 @@
             <div id="soal" class="mb-5 h-full font-semibold" v-if="pertanyaan!=null">
             <!-- <div id="soal" class="hidden" v-if="pertanyaan!=null"> -->
             <!-- <div id="soal" class="" v-if="pertanyaan!=null"> -->
-                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="'Pola :'" :pertanyaan="this.pertanyaanGambar" 
+                <ImageQuestion v-if="pertanyaan[noSoal-1]['instruction_type']==2" :label="''" :pertanyaan="this.pertanyaanGambar" 
                             :img="this.urlGambar" />
                 <TextQuestion v-else-if="pertanyaan[noSoal-1]['instruction_type']==1" :question="this.pertanyaanTeks" :question2="this.pertanyaanTeks2" :cerita="this.cerita" />
                 
@@ -149,7 +149,8 @@ export default {
         getImg(data){
             let id = data.split("file/d/")
             id = id[1].split("/")
-            console.log("https://drive.google.com/uc?export=view&id="+id[0])
+            console.log(data)
+            // console.log("https://drive.google.com/uc?export=view&id="+id[0])
             return "https://drive.google.com/uc?export=view&id="+id[0]
         },
         setChanged(state){
@@ -175,7 +176,7 @@ export default {
         nextSoal(){
             // console.log(this.noSoal, this.jumSoal)
             // console.log(this.jawaban)
-            console.log(this.changed)
+            // console.log(this.changed)
             if (this.noSoal<this.jumSoal){
                 this.urlGambar = ""
                 this.noSoal++
@@ -320,7 +321,7 @@ export default {
                     }else{ 
                         this.pertanyaanGambar = ""
                     }
-                }else if([44,52].includes(this.section_id)){
+                }else if([44,52,57].includes(this.section_id)){
                     this.urlGambar = this.getImg(this.pertanyaan[this.noSoal-1]['instruction'])
                 }
             }
