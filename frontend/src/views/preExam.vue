@@ -24,7 +24,8 @@
                         <p class="mb-1 text-2xl md:text-3xl">{{namaTes}}</p>
                         <p class="mb-2 font-semibold md:text-lg" v-html="section.instruction"></p>
                         <div class="text-right">
-                            <a href="https://drive.google.com/uc?export=download&id=1IxMggwjWTXpAQtYsN4ITw8XIEDiJ395z" 
+                            <!-- <a href="https://drive.google.com/uc?export=download&id=1IxMggwjWTXpAQtYsN4ITw8XIEDiJ395z"  -->
+                            <a href="https://drive.google.com/uc?export=download&id=15SVSr0ujhjaXeD_3KIxrFfzDFS8ZqHcg" 
                                 v-show="this.sectionId==85"
                                 class="bg-foreground-4-100 hover:bg-foreground-4-200 text-white px-3 py-1 rounded-md cursor-pointer">
                                 <span class="font-bold text-xl">Unduh Template</span>
