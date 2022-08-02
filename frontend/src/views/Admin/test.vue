@@ -384,8 +384,8 @@ export default {
         openModal(data){
             this.instruksi = data.instruction
             this.durasi = data.duration
-            this.tipePertanyaan = data.question_type
-            this.tipeJawaban = data.section_type
+            this.tipePertanyaan = data.section_type
+            this.tipeJawaban = data.question_type
             this.jumJawaban = data.option_num
             this.section_number = data.section_number
             this.section_id = data.id
@@ -540,7 +540,7 @@ export default {
             return hasil
         },
         createSection(){
-            if(this.instruksi=="" || this.durasi=="" ||this.tipePertanyaan==null||this.tipeJawaban==null|| this.jumJawaban=="")
+            if(this.instruksi=="" || this.durasi=="" ||this.tipePertanyaan==null||this.tipeJawaban==null|| parseInt(this.jumJawaban)<0)
                 Swal.fire({
                     title: 'Mohon Isi Semua Field!',
                     icon: 'warning',
