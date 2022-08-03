@@ -32,7 +32,7 @@
                 <div class="h-2/3 w-full px-5 py-2 text-black flex items-center justify-center" v-else>
                     <div class="text-3xl">
                         <i class="fas fa-file-alt mr-2"></i>
-                        <span class="font-bold">Isi Biodata</span>
+                        <span class="font-bold">{{tes.nama}}</span>
                     </div>
                 </div>
             </div>

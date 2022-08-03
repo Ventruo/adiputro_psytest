@@ -44,7 +44,7 @@
                                     <p v-if="section.duration!=-1">{{section.duration}} Menit</p>
                                     <p v-else>Tidak ada batas waktu</p>
                                     
-                                    <p v-if="section.section_type==2" class="text-xl">Pilihan Ganda (A - {{alphabet[section.option_num-1]}})</p>
+                                    <p v-if="section.section_type==2" class="text-xl">Pilihan Ganda (A - {{abjad[section.option_num-1]}})</p>
                                     <p v-else class="mb-5">Esai</p>
                                 </div>
                             </div>
@@ -95,8 +95,8 @@ export default {
             sectionId: null,
             testId: null,
             namaTes: "",
-            alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
-            alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
+            abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            alias: [1,2,21,5,8,6,10,7,9,11,12,15,13,14,18,16,17,3,4,20,19],
             port: import.meta.env.VITE_BACKEND_URL,
             noContoh: 0,
             urlContoh: []
@@ -138,7 +138,28 @@ export default {
             this.section = data
         ))
         
-        this.namaTes = "TES "+this.alias[this.testId-1]
+        let tes = this.$cookies.get('data_registrant').test
+        let test_list = []
+        for (let i = 0; i < tes.length; i++) {
+            test_list.push(tes[i][0])
+        }
+
+        let counter = 0
+        for (let i = 0; i < this.alias.length; i++) {
+            const id = this.alias[i];
+            for (let j = 0; j < test_list.length; j++) {
+                const tempTest = test_list[j];
+                if(tempTest==id){
+                    if(id==this.testId)
+                        this.namaTes = "TES "+this.abjad[counter]
+                    else{
+                        counter++
+                    }
+                    break;
+                }
+            }
+        }
+        // this.namaTes = "TES "+this.alias[this.testId-1]
 
         if(this.testId==6) this.urlContoh = ["Berhitung1", "Berhitung2"]
         else if(this.testId==8) this.urlContoh = ["Penalaran1", "Penalaran2"]

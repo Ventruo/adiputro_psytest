@@ -145,7 +145,9 @@ export default {
             section_result_id: null,
             dataKraepelin: null,
             port: import.meta.env.VITE_BACKEND_URL,
-            isStarted: 0
+            isStarted: 0,
+            abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            alias: [1,2,21,5,8,6,10,7,9,11,12,15,13,14,18,16,17,3,4,20,19],
         }
     },
     methods: {
@@ -454,6 +456,29 @@ export default {
     },
 
     mounted(){
+        let tes = this.$cookies.get('data_registrant').test
+        let test_list = []
+        for (let i = 0; i < tes.length; i++) {
+            test_list.push(tes[i][0])
+        }
+
+        let counter = 0
+        for (let i = 0; i < this.alias.length; i++) {
+            const id = this.alias[i];
+            for (let j = 0; j < test_list.length; j++) {
+                const tempTest = test_list[j];
+
+                if(tempTest==id){
+                    if(id==5)
+                        this.namaTes = "TES "+this.abjad[counter]
+                    else{
+                        counter++
+                    }
+                    break;
+                }
+            }
+        }
+
         axios
         .get(this.port+'/question/all?section_id='+this.section_id)
         .then(({data}) => (
@@ -470,6 +495,7 @@ export default {
         this.email = datas.email;
         this.exam_session = datas.exam_session;
         let tests = datas.test;
+        
         for (let i = 0; i < tests.length; i++) {
             if (tests[i][0]==5)
                 this.test_result_id = tests[i][1]
