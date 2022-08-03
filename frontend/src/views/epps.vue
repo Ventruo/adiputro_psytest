@@ -129,7 +129,9 @@ export default {
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
             tampilDaftarSoal: false,
-            changed: false
+            changed: false,
+            abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+            alias: [1,2,21,5,8,6,10,7,9,11,12,15,13,14,18,16,17,3,4,20,19],
         }
     },
     methods: {
@@ -355,10 +357,31 @@ export default {
         let datas = this.$cookies.get("data_registrant");
         this.email = datas.email;
         this.exam_session = datas.exam_session;
+        let tes = this.$cookies.get('data_registrant').test
         this.test_id = await this.getCurrentTest(this.exam_session);
+        let test_list = []
+        for (let i = 0; i < tes.length; i++) {
+            test_list.push(tes[i][0])
+        }
 
-        if(this.test_id==2) this.namaTes = "TES B"
-        else if(this.test_id==18) this.namaTes = "TES R"
+        let counter = 0
+        for (let i = 0; i < this.alias.length; i++) {
+            const id = this.alias[i];
+            for (let j = 0; j < test_list.length; j++) {
+                const tempTest = test_list[j];
+                if(tempTest==id){
+                    if(id==this.test_id)
+                        this.namaTes = "TES "+this.abjad[counter]
+                    else{
+                        counter++
+                    }
+                    break;
+                }
+            }
+        }
+
+        // if(this.test_id==2) this.namaTes = "TES B"
+        // else if(this.test_id==18) this.namaTes = "TES R"
 
         let tests = datas.test;
         for (let i = 0; i < tests.length; i++) {

@@ -74,7 +74,7 @@ export default {
             showSidebar: false,
             showInside: false,
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
-            alias: ["A","B","E","F","D","H","J","G","I","U","M","G","Q","K","L","S","T","R","Q","P","C"],
+            alias: [1,2,21,5,8,6,10,7,9,11,12,15,13,14,18,16,17,3,4,20,19],
         }
     },
     async created() {
@@ -197,12 +197,26 @@ export default {
             await axios
             .get(this.port+`/test/${tes[i][0]}`)
             .then(({data}) => (
-                // data.nama = "TES "+this.alias[tes[i][0]-1],
-                // data.nama = "TES "+data.name,
-                data.nama = "TES "+this.abjad[i],
                 this.test_list.push(data)
             ))
         }
+
+        let test_list_temp = []
+        let counter = 0
+        for (let i = 0; i < this.alias.length; i++) {
+            const id = this.alias[i];
+            for (let j = 0; j < this.test_list.length; j++) {
+                const tempTest = this.test_list[j];
+                if(tempTest.id==id){
+                    if (tempTest.id==19) tempTest.nama = "Biodata"
+                    else tempTest.nama = "TES "+this.abjad[counter]
+                    test_list_temp.push(tempTest)
+                    counter++
+                    break;
+                }
+            }
+        }
+        this.test_list = test_list_temp
 
         this.hasil  = []
         await axios
@@ -217,28 +231,12 @@ export default {
         for (let i = len; i >= 0 ; i--) {
             for (let j = 0; j < this.hasil.length; j++) {
                 if(this.test_list[i].id == this.hasil[j].test_id){
+                    this.hasil[j].nama = this.test_list[i].nama
                     this.test_list.splice(i,1)
                     break;
                 }
             }
         }
-
-        for (let i = 0; i < tes.length; i++) {
-            for (let j = 0; j < this.hasil.length; j++) {
-                if(tes[i][0] == this.hasil[j].test_id){
-                    if(this.hasil[j].test_id==19)
-                        this.hasil[j].nama = "Biodata"
-                    else
-                        this.hasil[j].nama = "TES "+this.abjad[i]
-                    break;
-                }
-            }
-        }
-
-        // for (let i = 0; i < array.length; i++) {
-        //     const element = array[i];
-            
-        // }
 
         this.hasil.sort((a, b) => {
             let da = new Date(a.finish_date),
