@@ -107,36 +107,46 @@ export default {
             formData.append('question_id', this.pertanyaan[0].id)
 
             var fileGambar = document.forms['gambarForm']['gambar'].files[0]
-            if (fileGambar!=undefined)
-                fileGambar.originalname = fileGambar.name
             
-            formData.append('gambar', fileGambar)
+            if (fileGambar!=undefined){
+                fileGambar.originalname = fileGambar.name
 
-            axios.post(this.port+'/section_result/create',{
-                "test_result_id": this.test_result_id,
-                "section_id": this.section_id,
-                "exam_session": this.exam_session,
-                "start_date": parseInt(this.$cookies.get("start_time")),
-                "finish_date": Date.now()
-            })
-            .then((response) => {
-                axios.post(this.port+'/question_result/uploadimage', formData)
-                .then((response) => {
-                    this.$cookies.remove('current_section')
-                    this.$cookies.remove("start_time")
-                    $('#spinner-modal').fadeOut("slow")
-                    Swal.fire(
-                        'Submitted!',
-                        'Task Successfully Submitted.',
-                        'success'
-                    )
-                    .then(function(){
-                        window.location = '/section'
-                    })
+                formData.append('gambar', fileGambar)
+
+                axios.post(this.port+'/section_result/create',{
+                    "test_result_id": this.test_result_id,
+                    "section_id": this.section_id,
+                    "exam_session": this.exam_session,
+                    "start_date": parseInt(this.$cookies.get("start_time")),
+                    "finish_date": Date.now()
                 })
-            }).catch( error => { 
-                console.log('error: ' + error) 
-            });
+                .then((response) => {
+                    axios.post(this.port+'/question_result/uploadimage', formData)
+                    .then((response) => {
+                        this.$cookies.remove('current_section')
+                        this.$cookies.remove("start_time")
+                        $('#spinner-modal').fadeOut("slow")
+                        Swal.fire(
+                            'Submitted!',
+                            'Task Successfully Submitted.',
+                            'success'
+                        )
+                        .then(function(){
+                            window.location = '/section'
+                        })
+                    })
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }else{
+                $('#spinner-modal').fadeOut("slow")
+                Swal.fire(
+                    'Error!',
+                    'Gambar belum dimasukkan.',
+                    'error'
+                )
+                .then(function(){})
+            }
         }
     },
 
