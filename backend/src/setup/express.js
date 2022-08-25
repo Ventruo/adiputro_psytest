@@ -19,21 +19,22 @@ let regexopt = new RegExp(
   `((ap\.ngrok\.io)|(127\.0\.0\.1)|(${process.env.CLIENT_URL}))`
 );
 
+
+let host = "localhost";
+if (process.env.NODE_ENV != "dev") {
+  host = process.env.EXPRESS_URL;
+}
+
 app.use(
   cors({
-    origin: regexopt,
+    origin: `http://${host}:${PORT}`,
     credentials: true,
   })
 );
 
-let host = "localhost";
-if (process.env.NODE_ENV != "dev") {
-  host = "0.0.0.0";
-}
-
 const initExpress = () => {
   app.listen(PORT, host, () => {
-    console.log(`Server started on ${process.env.EXPRESS_URL}`);
+    console.log(`Server started on http://${host}:${PORT}`);
   });
 };
 

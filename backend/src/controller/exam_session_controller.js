@@ -162,11 +162,11 @@ class ExamSessionController {
       var htmlToSend = html_template(replacements);
 
       // Send Token to Corresponding Email
-      // await sendEmail({
-      //   recepients: emails[i],
-      //   subject: "Token Test masuk website Adiputro Psikotes",
-      //   html: htmlToSend,
-      // });
+      await sendEmail({
+        recepients: emails[i],
+        subject: "Token Test masuk website Adiputro Psikotes",
+        html: htmlToSend,
+      });
 
       for (let i = 0; i < req.body.tests.length; i++) {
         const test = req.body.tests[i];
