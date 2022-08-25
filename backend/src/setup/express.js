@@ -27,14 +27,14 @@ if (process.env.NODE_ENV != "dev") {
 
 app.use(
   cors({
-    origin: `${host}:${PORT}`,
+    origin: `http://${host}:${PORT}`,
     credentials: true,
   })
 );
 
 const initExpress = () => {
   app.listen(PORT, host, () => {
-    console.log(`Server started on ${host}:${PORT}`);
+    console.log(`Server started on http://${host}:${PORT}`);
   });
 };
 
