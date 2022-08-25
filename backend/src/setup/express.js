@@ -3,7 +3,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-const PORT = process.env.EXPRESS_PORT || 3000;
+const EXPRESS_PORT = process.env.EXPRESS_PORT || 8888;
+const CLIENT_PORT = process.env.CLIENT_PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,14 +28,14 @@ if (process.env.NODE_ENV != "dev") {
 
 app.use(
   cors({
-    origin: `http://${host}:${PORT}`,
+    origin: `http://${host}:${CLIENT_PORT}`,
     credentials: true,
   })
 );
 
 const initExpress = () => {
-  app.listen(PORT, host, () => {
-    console.log(`Server started on http://${host}:${PORT}`);
+  app.listen(EXPRESS_PORT, host, () => {
+    console.log(`Server started on http://${host}:${EXPRESS_PORT}`);
   });
 };
 
