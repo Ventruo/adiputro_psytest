@@ -161,7 +161,6 @@ export default {
         },
         mulai(){
             this.isStarted = true
-
             // Create Section Ongoing to indicate Ongoing Section
             axios.post(this.port+'/section_ongoing/create',{
                 "section_id": this.section_id,
@@ -592,14 +591,14 @@ export default {
             this.email = datas.email;
             this.exam_session = datas.exam_session;
 
+            this.getTempAnswers();
+            
             // console.log(this.test_id)
             // console.log(this.email)
             // console.log(this.exam_session)
             // console.log(this.section_id)
             // console.log(this.test_result_id)
         })
-
-        this.getTempAnswers();
 
         // Build socket
         const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
@@ -608,9 +607,9 @@ export default {
         // console.log(user_key)
         buildSocket(access_token, user_key).then((socket) => {
             socket.on("test.tick", (data) => {
+                // console.log(data)
                 if(data.section_id == this.section_id){
                     // console.log("socket", socket)
-                    // console.log(data);
                     this.isStarted = true
                     this.duarsi = data.total_duration;
                     var minutes = Math.floor(data.countdown / 60);
