@@ -108,7 +108,7 @@ export default {
 
             var fileGambar = document.forms['gambarForm']['gambar'].files[0]
             
-            if (fileGambar!=undefined){
+            if (fileGambar){
                 fileGambar.originalname = fileGambar.name
 
                 formData.append('gambar', fileGambar)
