@@ -19,7 +19,10 @@
             <div class="h-full w-full mt-5 mr-2 inline-block align-top relative
                         md:w-9/12">
                 <div class="w-full h-full bg-foreground-3-500 rounded-lg overflow-hidden">
-                    <div class="h-32 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div>
+                    <!-- <div class="h-32 w-full bg-no-repeat bg-center" style="background-image: url('https://i.pinimg.com/originals/34/25/ba/3425baae5208366016cecb54cc16da61.jpg');"></div> -->
+                    <div class="h-full w-full">
+                        <img src="../../../src/assets/banner_cropped.jpeg" alt="">
+                    </div>
                     <div class="h-3/4 w-full px-10 py-5 text-black font-bold text-left" v-if="section!=null">
                         <p class="mb-1 text-2xl md:text-3xl">{{namaTes}}</p>
                         <p class="mb-2 font-semibold md:text-lg" v-html="section.instruction"></p>
@@ -169,7 +172,7 @@ export default {
         else if(this.testId==14) this.urlContoh = ["Merakit1", "Merakit2"]
         else if(this.testId==15) this.urlContoh = ["PenalaranMekanik1","PenalaranMekanik2","PenalaranMekanik3"]
         else if(this.sectionId==9) this.urlContoh = ["Tintum9"]
-        else if(this.sectionId==10) this.urlContoh = ["Tintum10"]
+        else if(this.sectionId==10) this.urlContoh = ["Tintum101","Tintum102"]
         else if(this.sectionId==67) this.urlContoh = ["IST71", "IST72", "IST73", "IST74"]
         else if(this.sectionId==68) this.urlContoh = ["IST8"]
         else if(this.sectionId==79) this.urlContoh = ["TintumAnak81","TintumAnak82"]
