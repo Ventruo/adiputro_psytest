@@ -81,7 +81,7 @@ export default {
                             "email": e.data.email,
                             "exam_session": e.data.exam_session
                         };
-                        this.$cookies.set('refresh_token', token, age);
+                        // this.$cookies.set('refresh_token', token, age);
                         this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
                         
                         setAccessToken(e.data.token);

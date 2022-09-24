@@ -27,10 +27,14 @@ const publicClient = axios.create({
 });
 
 axios.interceptors.request.use(async (req) => {
-    if (!accessToken) {
-        console.log("refreshing token")
-        const {status, data} = await publicClient.post('/auth/refresh');
-        setAccessToken(data.token);
+    if (!accessToken) { 
+        try {
+            const {status, data} = await publicClient.post('/auth/refresh');
+            setAccessToken(data.token);
+        } catch (error) {
+            clearCookie();
+            router.push('/');
+        }
     }
 
     if (req.headers) {
@@ -43,13 +47,11 @@ axios.interceptors.response.use(resp => resp, async error => {
     const request = error.config;
     if(error.response.status === 401 && !request._retry) {
         request._retry = true;
-        console.log("refreshing token")
-        const {status, data} = await publicClient.post('/auth/refresh');
-
-        if (status == 200) {
+        try {
+            const {status, data} = await publicClient.post('/auth/refresh');
             setAccessToken(data.token);
-            return axios(error.config);
-        }else{
+            return Promise.reject(error)
+        } catch (error) {
             clearCookie();
             router.push('/');
         }
