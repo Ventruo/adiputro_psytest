@@ -6,12 +6,12 @@ const clock_key = process.env.CLOCK_TOKEN || "ini clock key";
 function authenticateSocketToken(socket, next) {
   if (
     socket.handshake.query &&
-    socket.handshake.query.token &&
-    socket.handshake.query.user_key
+    socket.handshake.query.token 
+    // && socket.handshake.query.user_key
   ) {
-    const { session_id } = jwt.decode(socket.handshake.query.user_key);
+    // const { session_id } = jwt.decode(socket.handshake.query.user_key);
     // console.log(session_id);
-    ExamSession.findOne({ where: { id: session_id } }).then((session) => {
+    // ExamSession.findOne({ where: { id: session_id } }).then((session) => {
       // console.log(session);
       jwt.verify(
         socket.handshake.query.token, //access
@@ -28,7 +28,7 @@ function authenticateSocketToken(socket, next) {
           next();
         }
       );
-    });
+    // });
   } else {
     socket.auth = false;
     socket.emit("unauthorized", {});

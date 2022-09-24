@@ -111,8 +111,7 @@ class AuthController {
               let refresh_age = 2 * 60 * 60 * 1000; // 2 hours
               res.cookie("refresh_token", refresh_token, {
                 httpOnly: true,
-                maxAge: refresh_age,
-                secure: true,
+                expires: DateTime.now().plus({ week: 1 }).toJSDate(),
               });
 
               res.status(200).send({
@@ -218,10 +217,13 @@ class AuthController {
   refresh(req, res) {
     console.log("Refreshing Access Token");
 
+    console.log(req.cookies)
     const refresh_token = req.cookies["refresh_token"];
+    console.log(refresh_token);
     if (refresh_token == null) return res.status(401).send("Not Authenticated");
 
     const { session_id } = jwt.verify(refresh_token, process.env.REFRESH_KEY);
+    console.log(session_id)
     if (!session_id) return res.status(401).send("Not Authenticated");
 
     ExamSession.findOne({ where: { id: session_id } }).then((session) => {
@@ -235,7 +237,6 @@ class AuthController {
       res.cookie("refresh_token", refresh_token, {
         httpOnly: true,
         maxAge: refresh_age,
-        secure: true,
       });
       const access_token = this.createAccessToken(session, session.auth_token);
 
@@ -284,7 +285,7 @@ class AuthController {
         session.set({ is_logged: 0 });
         session.save();
 
-        res.cookie("refresh_token", "", { maxAge: 0, secure: true });
+        res.cookie("refresh_token", "", { maxAge: 0, secure: true, expires: new Date(0) });
 
         return res.status(200).send({ message: "success" });
       }
