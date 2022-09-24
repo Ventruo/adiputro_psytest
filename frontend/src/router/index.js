@@ -49,7 +49,7 @@ const routes = [
         name: 'main',
         component: main,
         meta: {
-            middleware: auth
+            // middleware: auth
         },
         children: [
             {
@@ -112,7 +112,7 @@ const routes = [
                 name: 'admin',
                 component: admin,
                 meta: {
-                    middleware: adminAuth
+                    // middleware: adminAuth
                 },
                 children: [
                     {

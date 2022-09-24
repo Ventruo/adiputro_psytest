@@ -44,6 +44,7 @@
 
 <script>
 import axios from 'axios'
+import {publicClient, setAccessToken} from '../utilities/axios'
 export default {
     components: {
         axios
@@ -60,12 +61,9 @@ export default {
             let elements = submitEvent.target.elements;
 
             (async() => {
-                axios.post('/auth/login', {
+                publicClient.post('/auth/login', {
                             email: elements.email.value,
                             test_token: elements.test_token.value
-                        },
-                        {
-                            withCredentials: true
                         })
                 .then((e) => {
                     if(e.response && e.response.status != 200){
@@ -85,9 +83,10 @@ export default {
                         };
                         this.$cookies.set('refresh_token', token, age);
                         this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
-
-                        localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
-                        localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
+                        
+                        setAccessToken(e.data.token);
+                        // localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
+                        // localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
 
                         
                         if(e.data.is_admin) this.$router.push('/admin')

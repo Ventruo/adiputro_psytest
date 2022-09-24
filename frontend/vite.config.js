@@ -14,8 +14,8 @@ export default defineConfig({
   },
   server: {
 	hmr: {
-	   clientPort: 222
+	   clientPort: 3000
 	},
-	host: '36.66.215.27'
+	host: '10.10.16.250'
   }
 })
