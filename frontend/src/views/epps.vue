@@ -251,7 +251,7 @@ export default {
                 this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
-            console.log(this.jawabanFinal)
+            // console.log(this.jawabanFinal)
 
             let formData = {
                 exam_session: this.exam_session,

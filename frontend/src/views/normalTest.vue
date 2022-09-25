@@ -152,7 +152,7 @@ export default {
             var id = data.match(/[-\w]{25,}/);
             // let id = data.split("file/d/")
             // id = id[1].split("/")
-            console.log(data)
+            // console.log(data)
             // console.log("https://drive.google.com/uc?export=view&id="+id[0])
             return "https://drive.google.com/uc?export=view&id="+id
         },

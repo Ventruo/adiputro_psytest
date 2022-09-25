@@ -1002,7 +1002,7 @@ export default {
                             "result": formData
                         })
                         .then((response) => {
-                            console.log(response)
+                            // console.log(response)
                             $('#spinner-modal').fadeOut("slow");
                             
                             Swal.fire(

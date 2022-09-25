@@ -235,7 +235,7 @@ export default {
 
             this.currentRow = 1
             this.pertanyaan = this.pertanyaanFull[this.kolom-1]
-            console.log(this.jawaban)
+            // console.log(this.jawaban)
         },
         reset(){
             this.current_kolom++
@@ -405,7 +405,7 @@ export default {
                 "finish_date": Date.now()
             }
 
-            console.log(x)
+            // console.log(x)
             // console.log(formData)
 
             axios.post(this.port+'/section_result/update',{

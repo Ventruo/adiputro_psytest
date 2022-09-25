@@ -396,7 +396,7 @@ export default {
                     daftarTes.push(t.id)
                 });
                 if (this.statusAdd){
-                    console.log("create")
+                    // console.log("create")
                     axios.post(this.port+'/exam_session/create',{
                         "email": this.emails,
                         "start_date": dateStart,
@@ -433,7 +433,7 @@ export default {
                         )
                     });
                 }else{
-                    console.log("update")
+                    // console.log("update")
                     let addTest = this.tests.filter(n => !this.current_test_list.includes(n))
                     let addingTest = []
                     addTest.forEach(at => { addingTest.push(at.id) });

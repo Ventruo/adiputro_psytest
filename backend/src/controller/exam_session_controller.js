@@ -222,7 +222,7 @@ class ExamSessionController {
           data_not_found_response(res);
           return;
         }
-        console.log(req.body.start_date);
+        // console.log(req.body.start_date);
         session.set({
           email: req.body.email,
           start_date: req.body.start_date,

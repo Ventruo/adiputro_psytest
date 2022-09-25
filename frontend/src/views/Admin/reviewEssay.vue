@@ -191,21 +191,21 @@ export default {
             this.pertanyaan = data,
             this.jumSoal = this.pertanyaan.length,
             this.progress(true),
-            console.log(this.pertanyaan)
+            // console.log(this.pertanyaan)
         ))
 
         axios
         .get(this.port+`/question_result/getbysection/${this.section_id}?email=${this.email}`)
         .then(({data}) => (
             this.jawaban = data,
-            console.log(this.jawaban)
+            // console.log(this.jawaban)
         ))
 
         axios
         .get(this.port+`/section_result/getbysection/${this.section_id}?email=${this.email}`)
         .then(({data}) => (
             this.section_result = data,
-            console.log(this.section_result)
+            // console.log(this.section_result)
         ))
 
         let thi = this

@@ -52,7 +52,7 @@ class ApplicantController {
   async getByVacancy(req, res) {
     console.log("Getting Applicant By Vacancy...");
 
-    console.log(req.params.id_vacancy);
+    // console.log(req.params.id_vacancy);
     if (!req.params.id_vacancy) {
       missing_param_response(res);
       return;

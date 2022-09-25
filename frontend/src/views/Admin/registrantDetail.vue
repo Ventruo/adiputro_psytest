@@ -544,7 +544,7 @@ export default {
                         }
                         
                         ctr++
-                        console.log("ctr : "+ctr+" full: "+fullReport.length)
+                        // console.log("ctr : "+ctr+" full: "+fullReport.length)
                         if(ctr == fullReport.length){
                             doc.deletePage(doc.internal.getNumberOfPages())
                             

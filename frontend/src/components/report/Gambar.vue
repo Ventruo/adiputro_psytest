@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         loaded(){
-            console.log("asd")
+            // console.log("asd")
         }
     },
     mounted() {

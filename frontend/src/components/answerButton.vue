@@ -55,7 +55,7 @@ export default {
                     else if(this.aksi=='x' && temp[1]!=id+'o') this.jawaban[this.noSoal-1] = id+'x|'+temp[1]
                     else if(this.aksi=='o' && temp[0]!=id+'x') this.jawaban[this.noSoal-1] = temp[0]+'|'+id+'o'
                 }
-                console.log(this.jawaban[this.noSoal-1])
+                // console.log(this.jawaban[this.noSoal-1])
             }
             // else if(this.jenis=="MMPI"){
             //     if (id=="A. +") this.jawaban[this.noSoal-1] = 1

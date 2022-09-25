@@ -44,7 +44,7 @@ export default {
         },
     },
     mounted(){
-        console.log(this.jenis)
+        // console.log(this.jenis)
         if(this.jenis=="ekspresi") this.ekspresiStyle()
     }
 }

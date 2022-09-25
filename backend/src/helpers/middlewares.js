@@ -4,7 +4,7 @@ const access_key = process.env.ACCESS_KEY || "ini access key";
 const clock_key = process.env.CLOCK_TOKEN || "ini clock key";
 
 function authenticateSocketToken(socket, next) {
-  console.log("acc token ",socket.handshake.query.acctoken)
+  // console.log("acc token ",socket.handshake.query.acctoken)
   if (
     socket.handshake.query 
     && socket.handshake.query.acctoken 

@@ -45,7 +45,6 @@ class SectionController {
           return;
         }
 
-        console.log("heee");
         success_response(res, sections, "Get All Data Successful!");
       });
     } else {

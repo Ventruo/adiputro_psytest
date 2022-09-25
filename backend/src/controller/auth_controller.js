@@ -113,7 +113,7 @@ class AuthController {
                 httpOnly: true,
                 maxAge: refresh_age,
               });
-              console.log(res.cookie);
+              // console.log(res.cookie);
 
               res.status(200).send({
                 tests: tests,
