@@ -15,10 +15,10 @@ function clearCookie(){
 
 let accessToken = undefined;
 
-function setAccessToken(token) {
-    accessToken = token;
+function setAccessToken(accToken) {
+    accessToken = accToken;
     _Socket.disconnect();
-    _Socket.io.opts.query = { token: accessToken };
+    _Socket.io.opts.query = { acctoken: accessToken };
 }
 
 const publicClient = axios.create({
@@ -50,7 +50,7 @@ axios.interceptors.response.use(resp => resp, async error => {
         try {
             const {status, data} = await publicClient.post('/auth/refresh');
             setAccessToken(data.token);
-            return Promise.reject(error)
+            return error
         } catch (error) {
             clearCookie();
             router.push('/');
@@ -63,7 +63,7 @@ axios.interceptors.response.use(resp => resp, async error => {
         clearCookie();
         router.push('/')
     }
-    return Promise.reject(error);
+    return error;
 
     // if(error.response.status === 401 && !refresh) {
     //     refresh = true;

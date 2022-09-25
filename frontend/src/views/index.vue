@@ -61,38 +61,35 @@ export default {
             let elements = submitEvent.target.elements;
 
             (async() => {
-                publicClient.post('/auth/login', {
+                try {
+                    let resp = await publicClient.post('/auth/login', {
                             email: elements.email.value,
                             test_token: elements.test_token.value
-                        })
-                .then((e) => {
-                    if(e.response && e.response.status != 200){
-                        Swal.fire({
-                            title: e.response.data,
+                        });
+                    let {token, age} = resp.data.refresh_token;
+                    let data_user = {
+                        "test": resp.data.tests, 
+                        "email": resp.data.email,
+                        "exam_session": resp.data.exam_session
+                    };
+                    // this.$cookies.set('refresh_token', token, age);
+                    this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
+                    
+                    setAccessToken(resp.data.token);
+                    // localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
+                    // localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
+
+                    if(resp.data.is_admin) this.$router.push('/admin')
+                    else this.$router.push('/dashboard')
+                } catch (error) {
+                    Swal.fire({
+                            title: error.response.data,
                             icon: 'error',
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
                             confirmButtonText: 'OK'
                         });
-                    }else{
-                        let {token, age} = e.data.refresh_token;
-                        let data_user = {
-                            "test": e.data.tests, 
-                            "email": e.data.email,
-                            "exam_session": e.data.exam_session
-                        };
-                        // this.$cookies.set('refresh_token', token, age);
-                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
-                        
-                        setAccessToken(e.data.token);
-                        // localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
-                        // localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
-
-                        
-                        if(e.data.is_admin) this.$router.push('/admin')
-                        else this.$router.push('/dashboard')
-                    }
-                });
+                }
             })();
         }
     },
