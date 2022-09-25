@@ -14,12 +14,12 @@ class AuthController {
     this.refresh = this.refresh.bind(this);
   }
 
-  createAccessToken(session, user_key) {
+  createAccessToken(session) {
     return jwt.sign(
       {
         session_id: session.id,
       },
-      process.env.ACCESS_KEY + user_key,
+      process.env.ACCESS_KEY,
       {
         expiresIn: "5m",
       }
@@ -78,7 +78,7 @@ class AuthController {
         const refresh_token = this.createRefreshToken(session);
 
         const user_key = short.generate();
-        const access_token = this.createAccessToken(session, user_key);
+        const access_token = this.createAccessToken(session);
 
         session.set({
           auth_token: user_key,
@@ -251,25 +251,38 @@ class AuthController {
     if (access_token == null || refresh_token == null)
       return res.status(401).send("Unauthorized");
 
-    const { session_id } = jwt.decode(refresh_token);
-    ExamSession.findOne({ where: { id: session_id } }).then((session) => {
-      if (!session) {
-        return res.status(401).send("Unauthorized");
-      }
-
-      jwt.verify(
-        access_token,
-        process.env.ACCESS_KEY + session.auth_token,
-        (err, decoded) => {
-          if (err) {
-            console.log(err);
-            res.status(401).send("Unauthorized");
-          }
-
-          next();
+    jwt.verify(
+      access_token,
+      process.env.ACCESS_KEY,
+      (err, decoded) => {
+        if (err) {
+          console.log(err);
+          res.status(401).send("Unauthorized");
         }
-      );
-    });
+
+        next();
+      }
+    );
+
+    // const { session_id } = jwt.decode(refresh_token);
+    // ExamSession.findOne({ where: { id: session_id } }).then((session) => {
+    //   if (!session) {
+    //     return res.status(401).send("Unauthorized");
+    //   }
+
+    //   jwt.verify(
+    //     access_token,
+    //     process.env.ACCESS_KEY + session.auth_token,
+    //     (err, decoded) => {
+    //       if (err) {
+    //         console.log(err);
+    //         res.status(401).send("Unauthorized");
+    //       }
+
+    //       next();
+    //     }
+    //   );
+    // });
   }
 
   async logout(req, res) {
