@@ -5,7 +5,10 @@
                 lg:min-h-[10rem]" 
                 :class="{
                     'lg:min-h-[2rem]': label.length==1,
-                    'lg:min-h-[5rem]': jenis!==null && jenis==='hafalan'
+                    'lg:min-h-[5rem]': jenis!==null && jenis==='hafalan',
+                    'overflow-y-auto': jenis!==null & jenis==='ekspresi',
+                    'lg:max-h-[16rem]': jenis!==null & jenis==='ekspresi',
+                    'no-scrollbar': jenis!==null & jenis==='ekspresi'
                         }"
                 @click.prevent="choose(label)">
         <div v-if="jenis === 'add'" class="flex justify-center px-4">
