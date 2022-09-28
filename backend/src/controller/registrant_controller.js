@@ -102,13 +102,15 @@ class RegistrantController {
         }
 
         // Upload Tanda_Tangan
-        let file = await this.uploadTandaTangan(
-          req.file,
-          req.body.updating_email
-        );
-
-        req.body["tanda_tangan"] = file.data.id;
-
+        if(req.file){
+          let file = await this.uploadTandaTangan(
+            req.file,
+            req.body.updating_email
+          );
+  
+          req.body["tanda_tangan"] = file.data.id;
+        }
+        
         let biodata = req.body;
         biodata.kesehatan = JSON.parse(biodata.kesehatan ?? '""');
         biodata.status_nikah = JSON.parse(biodata.status_nikah ?? '""');
