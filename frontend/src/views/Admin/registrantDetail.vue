@@ -97,14 +97,14 @@
                     </table>
                 </div>
 
-                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl mb-10" v-show="tesKraepelin">
+                <div class="overflow-auto w-full h-auto max-h-[30rem] no-scrollbar mt-5 rounded-lg shadow-xl mb-10" v-show="tesKraepelin || tesEPPS">
                     <div class="bg-foreground-4-100 text-white text-2xl font-bold px-5 py-3">
                         Biodata
                     </div>
 
                     <form class="bg-foreground-4-50 px-5 py-3"
                         @submit.prevent="submitKraepelinData"
-                        v-if="this.biodata!=null">
+                        v-if="this.biodata!=null" v-show="tesKraepelin">
                         <div class="mb-5 mt-3 flex gap-10">
                             <div class="w-1/2">
                                 <div class="flex gap-3">
@@ -148,6 +148,44 @@
                             </button>
                         </div>
                     </form>
+
+                    <form v-if="this.eppsdata!=null" 
+                            v-show="tesEPPS" 
+                            class="bg-foreground-4-50 px-5 py-3"
+                        @submit.prevent="submitEPPSData">
+                        <h1 class="text-3xl font-bold mb-2">Biodata</h1>
+                        <div class="mb-5 mt-3">
+                            <label for="pend" class="font-bold text-lg">Pendidikan :</label><br>
+                            <div class="mb-2 flex gap-10">
+                                <div>
+                                    <input type="radio" value="sma" name="pendidikan" id="smasmk" class="w-5 h-5 mr-2" :checked="this.eppsdata.pendidikan=='sma'"/>
+                                    <label for="smasmk">SMA / SMK</label>
+                                </div>
+                                <div>
+                                    <input type="radio" value="s1" name="pendidikan" id="s1d3" class="w-5 h-5 mr-2" :checked="this.eppsdata.pendidikan=='s1'"/>
+                                    <label for="s1d3">S1 / D3</label>
+                                </div>
+                            </div>
+                            
+                            <label for="jk" class="font-bold text-lg">Jenis Kelamin :</label>
+                            <div class="mb-2 flex gap-10">
+                                <div>
+                                    <input type="radio" value="l" name="jenisKelamin" id="laki" class="w-5 h-5 mr-2" :checked="this.eppsdata.jenis_kelamin=='l'"/>
+                                    <label for="laki">Laki - Laki</label>
+                                </div>
+                                <div>
+                                    <input type="radio" value="p" name="jenisKelamin" id="perempuan" class="w-5 h-5 mr-2" :checked="this.eppsdata.jenis_kelamin=='p'"/>
+                                    <label for="perempuan">Perempuan</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center md:text-right">
+                            <button type="submit" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-full text-lg font-bold px-10 py-2">
+                                Update
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="text-right mb-2">
@@ -182,7 +220,7 @@
                                     'bg-white': idTes!=20
                                 }">
                                 <Tintum v-if="idTes==1" :data="dataRegistrant" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'no'"/>
-                                <Epps v-if="idTes==2" :data="dataRegistrant" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :print="'no'"/>
+                                <Epps v-if="idTes==2" :data="this.dataRegistrant" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :kode="this.kode" :print="'no'"/>
                                 <SDI v-if="idTes==3" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                                 <MMPI v-if="idTes==4" :data="dataRegistrant" :nama="this.nama" :print="'no'"/>
                                 <Kecil v-if="[6,7,8,9,11,12,13,14,15].includes(Number(idTes))" :data="dataTesKecil" :nama="this.nama" :jk="this.jk" :pendidikan="this.pendidikan" :print="'no'"/>
@@ -338,11 +376,13 @@ export default {
             test: null,
             idTes: null,
             testResult: null,
+            test_result_id: null,
             sectionList: null,
             sectionResult: null,
             loaded: 0,
             fullLoaded: 0,
             tesKraepelin: false,
+            tesEPPS: false,
             keyData: null,
             email: this.$route.query.registrant,
             exam_session: null,
@@ -355,6 +395,7 @@ export default {
             kode: "",
             routerBiodata: "",
             registrantBio: {},
+            eppsdata: null,
         }
     },
     methods:{
@@ -377,6 +418,29 @@ export default {
                 this.dataFull = data,
                 this.tesKraepelin = true,
                 this.fullLoaded = 1
+            ))
+        },
+        async isEPPS(){
+            await axios
+            .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
+            .then(({data}) => (
+                this.checkTest(2, data),
+                this.dataFull = data,
+                this.tesEPPS = true,
+                this.fullLoaded = 1
+            ))
+
+            this.dataFull.forEach(data => {
+                if(data.test_id==2) this.test_result_id = data.id
+            });
+
+            axios
+            .get(this.port+'/epps_data/?test_result_id='+this.test_result_id)
+            .then(({data}) => (
+                this.eppsdata = data,
+                this.kode = this.eppsdata.kode_epps+"",
+                this.pendidikan = this.eppsdata.pendidikan.toUpperCase(),
+                this.jk = this.eppsdata.jenis_kelamin.toUpperCase()
             ))
         },
         async dataInit(){
@@ -423,6 +487,7 @@ export default {
                 .then(({data}) => {
                     this.processSectionResult(data)
                     if(this.test[0].id == 5) this.isKraepelin()
+                    else if(this.test[0].id == 2) this.isEPPS()
                     else{
                         axios
                         .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
@@ -470,6 +535,8 @@ export default {
             this.sectionResult = []
             this.loaded = 0
             this.tesKraepelin = false
+            this.tesEPPS = false
+            this.eppsdata = null
             for (let i = 0; i < this.test.length; i++) {
                 if (this.test[i].id == id){
                     this.dataNow.tes = this.test[i].name
@@ -487,6 +554,7 @@ export default {
                 .then(({data}) => {
                     this.processSectionResult(data)
                     if(id == 5) this.isKraepelin()
+                    else if(id==2) this.isEPPS()
                     else{
                         axios
                         .get(this.port+'/test_result/getbyemail/'+this.$route.query.registrant)
@@ -599,7 +667,7 @@ export default {
                     this.loaded = 1
                 }
             }
-
+            
             if([6,7,8,9,11,12,13,14,15].includes(Number(this.idTes)))
                 this.loaded = 1
         },
@@ -628,6 +696,36 @@ export default {
                     .then(({data}) => {
                         this.processSectionResult(data)
                         this.isKraepelin()
+                    })
+                })
+            }).catch( error => { 
+                console.log('error: ' + error) 
+            });
+        },
+        
+        submitEPPSData(e){
+            let pendidikan = e.target["pendidikan"].value
+            let jk = e.target["jenisKelamin"].value
+
+            $('#spinner-modal').fadeIn("slow");
+
+            axios.post(this.port+'/epps_data/update',{
+                "test_result_id": this.test_result_id,
+                "jenis_kelamin": jk,
+                "pendidikan": pendidikan
+            })
+            .then((dataResponse) => {
+                axios.post(this.port+'/test_result/calculateresult',{
+                    test_id: 2,
+                    email: this.email
+                })
+                .then((response) => {
+                    $('#spinner-modal').fadeOut("slow"),
+                    axios
+                    .get(`${this.port}/section_result/getbytest/2?email=${this.email}`)
+                    .then(({data}) => {
+                        this.processSectionResult(data)
+                        this.isEPPS()
                     })
                 })
             }).catch( error => { 
