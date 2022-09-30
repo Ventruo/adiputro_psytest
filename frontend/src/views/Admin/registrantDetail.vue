@@ -59,6 +59,11 @@
                                 <td>{{this.sectionResult[0]==undefined? "-" : toDate(this.sectionResult[0].finish_date)}}</td>
                                 <td>{{this.sectionResult[0]==undefined? "-" : this.sectionResult[0].num_correct}}/{{this.sectionList[1]==undefined? 0:this.sectionList[1].question_num}}</td>
                                 <td class="h-12">
+                                    <button class="bg-foreground-4-100 text-white hover:bg-red-500 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click="this.$router.push({path: '/admin/answerDetail', query: {registrant: this.email, section: i.id}})">
+                                        <i class="fa-solid fa-info-circle mr-2"></i>
+                                        <span>Detail</span>
+                                    </button>
                                     <button v-if="this.sectionResult[0]!=undefined" class="bg-foreground-4-100 text-white hover:bg-red-500 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click.prevent="resetHasil(i.id)"> 
                                         <i class="fa-solid fa-circle-exclamation mr-2"></i>
@@ -78,8 +83,13 @@
                                 <td class="h-12">
                                     <button v-if="(i.id==1 || i.id==72) && this.sectionResult[idx]!=undefined && this.sectionResult[idx].num_correct==0" class="bg-foreground-4-100 text-white hover:bg-foreground-4-200 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click="keReview(this.sectionResult[idx])"> 
-                                        <i class="fa fa-info-circle mr-2"></i>
+                                        <i class="fa-solid fa-info-circle mr-2"></i>
                                         <span>Review</span>
+                                    </button>
+                                    <button class="bg-foreground-4-100 text-white hover:bg-red-500 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
+                                        @click="this.$router.push({path: '/admin/answerDetail', query: {registrant: this.email, section: i.id}})">
+                                        <i class="fa-solid fa-info-circle mr-2"></i>
+                                        <span>Detail</span>
                                     </button>
                                     <button v-if="this.sectionResult[idx]!=undefined" class="bg-foreground-4-100 text-white hover:bg-red-500 duration-200 rounded-md h-auto w-auto text-base px-5 py-1 mr-1" 
                                         @click.prevent="resetHasil(i.id)"> 

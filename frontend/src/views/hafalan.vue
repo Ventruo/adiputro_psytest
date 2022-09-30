@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div v-show="state>0 && state<4" class="mb-2">
+        <div v-show="state>0 && state<3" class="mb-2">
             <div class="mt-5 font-semibold md:text-lg flex gap-1 mx-1">
                 <div class="w-1/5 ring-2 ring-inset ring-black p-2 rounded-md" v-for="p in pedoman" :key="p">
                     <div class="flex justify-between" v-for="i in p" :key="i"><span>{{i[0]}}</span><span>{{i[1]}}</span></div>
@@ -48,7 +48,7 @@
 
             <div v-show="state==3">
                 <div class="rounded-lg bg-foreground-4-100 text-white ring-1 ring-inset ring-stroke-100
-                            p-5 mt-5 mb-2 font-semibold md:text-lg">
+                            p-5 mt-5 mb-2 font-semibold md:text-lg mt-20">
                             Cara mengerjakannya sama seperti tadi, hanya kotak yang di atas sekarang dihilangkan. Silahkan dikerjakan seingatnya saja.
                 </div>
                 <div class="flex justify-center mb-3">
