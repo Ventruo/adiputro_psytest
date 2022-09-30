@@ -62,11 +62,11 @@ class EPPSDataController {
         req.body.pendidikan.toLowerCase() == "sma" ||
         req.body.pendidikan.toLowerCase() == "smk"
       ) {
-        if (req.body.jenis_kelamin.toLowerCase() == "l") kode_epps = 1;
-        else if (req.body.jenis_kelamin.toLowerCase() == "p") kode_epps = 2;
-      } else if (req.body.pendidikan.toLowerCase() == "s1") {
         if (req.body.jenis_kelamin.toLowerCase() == "l") kode_epps = 3;
         else if (req.body.jenis_kelamin.toLowerCase() == "p") kode_epps = 4;
+      } else if (req.body.pendidikan.toLowerCase() == "s1") {
+        if (req.body.jenis_kelamin.toLowerCase() == "l") kode_epps = 1;
+        else if (req.body.jenis_kelamin.toLowerCase() == "p") kode_epps = 2;
       } else {
         return res.status(401).send("Pendidikan tidak dikenali");
       }
@@ -105,11 +105,11 @@ class EPPSDataController {
         req.body.pendidikan.toLowerCase() == "sma" ||
         req.body.pendidikan.toLowerCase() == "smk"
       ) {
-        if (req.body.jenis_kelamin.toLowerCase() == "l") kode_epps = 1;
-        else if (req.body.jenis_kelamin.toLowerCase() == "p") kode_epps = 2;
-      } else if (req.body.pendidikan.toLowerCase() == "s1") {
         if (req.body.jenis_kelamin.toLowerCase() == "l") kode_epps = 3;
         else if (req.body.jenis_kelamin.toLowerCase() == "p") kode_epps = 4;
+      } else if (req.body.pendidikan.toLowerCase() == "s1") {
+        if (req.body.jenis_kelamin.toLowerCase() == "l") kode_epps = 1;
+        else if (req.body.jenis_kelamin.toLowerCase() == "p") kode_epps = 2;
       }
 
       epps_data.set({

@@ -369,6 +369,7 @@ export default {
             }
         },
         submitJawaban(){
+            
             $('#spinner-modal').fadeIn("slow");
             for (let i = 0; i < this.jumSoal; i++) {
                 this.jawabanFinal[i] = []
@@ -377,11 +378,15 @@ export default {
                     this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
                 else if (this.jenis=="MMPI"){
                     let ans = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
-                    this.jawabanFinal[i]["answer"] = ans=="+"?1:0
+                    if(ans=="+") this.jawabanFinal[i]["answer"] = 1
+                    else if(ans=="-") this.jawabanFinal[i]["answer"] = 0
+                    else this.jawabanFinal[i]["answer"] = -1
                 }
                 else if (this.jenis=="SDI"){
                     let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
-                    this.jawabanFinal[i]["answer"] = ans[1]=="Ya"?1:0
+                    if(ans=="Ya") this.jawabanFinal[i]["answer"] = 1
+                    else if(ans=="Tidak") this.jawabanFinal[i]["answer"] = 0
+                    else this.jawabanFinal[i]["answer"] = -1
                 }
                 else if(this.section_id==9 || this.section_id==10 || this.section_id==80){
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=undefined ? this.jawaban[i]:''
