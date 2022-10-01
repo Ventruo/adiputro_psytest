@@ -222,6 +222,7 @@ export default {
             });
         },
         async mulai2(){
+            this.jawaban = []
             this.jumSoal = this.pertanyaan2.length
             this.state = 4
             this.noSoal = 1
@@ -243,7 +244,7 @@ export default {
             });
         },
         nextSoal(){
-            console.log(this.changed)
+            // console.log(this.changed)
             // console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
