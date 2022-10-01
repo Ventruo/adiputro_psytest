@@ -171,6 +171,7 @@ export default {
             });
         },
         nextSoal(){
+            console.log(this.jawaban)
             if (this.noSoal<this.jumSoal){
                 this.noSoal++
                 if(this.noSoal==this.jumSoal) $('#nextBtn').text('Submit')
@@ -266,7 +267,7 @@ export default {
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
                 if(this.jawaban[i]==undefined) this.jawabanFinal[i]["answer"] = ''
                 else{
-                    var temp = this.jawaban[i].split(',')
+                    var temp = this.jawaban[i].split('|')
                     var salah = temp[0]==null ? '' : temp[0].substring(0,1)
                     var benar = temp[1]==null ? '' : temp[1].substring(0,1)
                     this.jawabanFinal[i]["answer"] = benar+"&"+salah

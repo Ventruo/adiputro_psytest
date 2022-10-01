@@ -53,6 +53,9 @@ export default {
                     else if(this.aksi=='o') this.jawaban[this.noSoal-1] = '|'+id+'o'
                 }else{
                     var temp = this.jawaban[this.noSoal-1].split('|')
+                    if(temp[0]==undefined) temp[0]=""
+                    if(temp[1]==undefined) temp[1]=""
+
                     if(temp[0]!='' && (id.substring(0,1)==temp[0].substring(0,1))) this.jawaban[this.noSoal-1] = '|'+temp[1]
                     else if(temp[1]!='' && (id.substring(0,1)==temp[1].substring(0,1))) this.jawaban[this.noSoal-1] = temp[0]+'|'
                     else if(this.aksi=='x' && temp[1]!=id+'o') this.jawaban[this.noSoal-1] = id+'x|'+temp[1]
