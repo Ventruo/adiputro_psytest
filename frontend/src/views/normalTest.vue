@@ -377,16 +377,16 @@ export default {
                 this.jawabanFinal[i]["question_id"] = this.pertanyaan[i]['id']
                 if(this.pertanyaan[this.noSoal-1]['option_type']==1 && this.pertanyaan[this.noSoal-1]['option_a']=='-')
                     this.jawabanFinal[i]["answer"] = this.jawaban[i] != undefined ? this.jawaban[i] : '';
-                else if (this.jenis=="MMPI"){
+                else if (this.jenis=="MMPI" || this.jenis=="Tes MMPI"){
                     let ans = this.jawaban[i]!=undefined ? this.jawaban[i].substring(3,4):''
                     if(ans=="+") this.jawabanFinal[i]["answer"] = 1
                     else if(ans=="-") this.jawabanFinal[i]["answer"] = 0
                     else this.jawabanFinal[i]["answer"] = -1
                 }
-                else if (this.jenis=="SDI"){
-                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" "):['']
-                    if(ans=="Ya") this.jawabanFinal[i]["answer"] = 1
-                    else if(ans=="Tidak") this.jawabanFinal[i]["answer"] = 0
+                else if (this.jenis=="SDI" || this.jenis=="Tes SDI"){
+                    let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" ")[1]:""
+                    if(ans=="Ya" || ans=="Y") this.jawabanFinal[i]["answer"] = 1
+                    else if(ans=="Tidak" || ans=="T") this.jawabanFinal[i]["answer"] = 0
                     else this.jawabanFinal[i]["answer"] = -1
                 }
                 else if(this.section_id==9 || this.section_id==10 || this.section_id==80){
@@ -406,7 +406,8 @@ export default {
                     this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1):'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
-            // console.log(this.jawabanFinal)
+
+            // console.log(this.jawabanFinal);
 
             let formData = {
                 exam_session: this.exam_session,
