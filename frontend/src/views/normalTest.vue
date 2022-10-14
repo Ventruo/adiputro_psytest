@@ -285,7 +285,7 @@ export default {
                     '4. '+this.pertanyaan[this.noSoal-1]['option_d'],
                     '5. '+this.pertanyaan[this.noSoal-1]['option_e'],
                 ]
-            }else if([9,10,46,48,49,50,51,67,68,79,80].includes(this.section_id) && this.pertanyaan[this.noSoal-1]['option_type']==2){
+            }else if([9,10,46,48,50,51,67,68,79,80].includes(this.section_id) && this.pertanyaan[this.noSoal-1]['option_type']==2){
                 let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
                 let temp = tempSoal.split(";")
                 
@@ -299,7 +299,26 @@ export default {
                 let url_opsi = this.pertanyaan[this.noSoal-1]['option_a']
                 if(["","-"].includes(url_opsi)) this.pilihanJawaban = ""
                 else this.pilihanJawaban = this.getImg(url_opsi)
-            }else if (this.section_id==10 || this.section_id==80){
+            }else if([49,52].includes(this.section_id)){
+                let tempSoal = this.pertanyaan[this.noSoal-1]['instruction']
+                let temp = tempSoal.split(";")
+                
+                this.urlGambar = this.getImg(temp[0])
+                
+                if(temp.length>1){
+                    this.pertanyaanGambar = temp[1]
+                }else{ 
+                    this.pertanyaanGambar = ""
+                }
+                this.pilihanJawaban = [
+                    'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
+                    'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
+                    'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
+                    'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
+                    'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
+                ]
+            }
+            else if (this.section_id==10 || this.section_id==80){
                 this.urlGambar = this.getImg(this.pertanyaan[this.noSoal-1]['instruction'])
                 this.pilihanJawaban = [
                     "O", "X"
@@ -324,7 +343,7 @@ export default {
                     }else{ 
                         this.pertanyaanGambar = ""
                     }
-                }else if([44,52,57].includes(this.section_id)){
+                }else if([44,57].includes(this.section_id)){
                     this.urlGambar = this.getImg(this.pertanyaan[this.noSoal-1]['instruction'])
                 }
             }
