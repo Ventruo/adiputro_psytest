@@ -310,12 +310,13 @@ export default {
                 }else{ 
                     this.pertanyaanGambar = ""
                 }
+                let pertanyaanNow = this.pertanyaan[this.noSoal-1]; 
                 this.pilihanJawaban = [
-                    'A. '+this.pertanyaan[this.noSoal-1]['option_a'],
-                    'B. '+this.pertanyaan[this.noSoal-1]['option_b'],
-                    'C. '+this.pertanyaan[this.noSoal-1]['option_c'],
-                    'D. '+this.pertanyaan[this.noSoal-1]['option_d'],
-                    'E. '+this.pertanyaan[this.noSoal-1]['option_e'],
+                    pertanyaanNow['option_a']=='A'?"A":'A. '+pertanyaanNow['option_a'],
+                    pertanyaanNow['option_b']=='B'?"B":'B. '+pertanyaanNow['option_b'],
+                    pertanyaanNow['option_c']=='C'?"C":'C. '+pertanyaanNow['option_c'],
+                    pertanyaanNow['option_d']=='D'?"D":'D. '+pertanyaanNow['option_d'],
+                    pertanyaanNow['option_e']=='E'?"E":'E. '+pertanyaanNow['option_e'],
                 ]
             }
             else if (this.section_id==10 || this.section_id==80){
