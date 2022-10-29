@@ -405,8 +405,9 @@ export default {
                 }
                 else if (this.jenis=="SDI" || this.jenis=="Tes SDI"){
                     let ans = this.jawaban[i]!=undefined ? this.jawaban[i].split(" ")[1]:""
-                    if(ans=="Ya" || ans=="Y") this.jawabanFinal[i]["answer"] = 1
-                    else if(ans=="Tidak" || ans=="T") this.jawabanFinal[i]["answer"] = 0
+                    ans = ans.toLowerCase();
+                    if(ans=="ya" || ans=="y") this.jawabanFinal[i]["answer"] = 1
+                    else if(ans=="tidak" || ans=="t") this.jawabanFinal[i]["answer"] = 0
                     else this.jawabanFinal[i]["answer"] = -1
                 }
                 else if(this.section_id==9 || this.section_id==10 || this.section_id==80){
@@ -428,6 +429,7 @@ export default {
             }
 
             // console.log(this.jawabanFinal);
+            // console.log(this.jawaban);
 
             let formData = {
                 exam_session: this.exam_session,

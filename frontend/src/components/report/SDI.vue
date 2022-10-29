@@ -68,7 +68,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y-[1px] divide-black">
-                        <tr class="text-center" v-for="idx in 26" :key="idx">
+                        <tr class="text-center" v-for="idx in 29" :key="idx">
                             <td class="border-black border-r-[0.5px] text-xs font-bold">{{this.arrTabel.numbers[idx+25]}}</td>
                             <td class="border-black border-r-[0.5px] text-xs">{{this.arrTabel.answers[idx+25]==1?"Ya":this.arrTabel.answers[idx+25]==0?"Tidak":"-"}}</td>
                             <td class="border-black border-r-[0.5px] text-xs">{{this.arrTabel.correct_data[idx+25]}}</td>
@@ -89,7 +89,7 @@
                     <tbody class="divide-y-[1px] divide-black">
                         <tr class="text-center" v-for="idx in 26" :key="idx">
                             <td class="border-black border-r-[0.5px] text-xs font-bold"><span class="relative bottom-2">{{this.arrTabel.numbers[idx-1]}}</span></td>
-                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx-1]==1?"Ya":"Tidak"}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx-1]==1?"Ya":this.arrTabel.answers[idx-1]==0?"Tidak":"-"}}</span></td>
                             <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel.correct_data[idx-1]}}</span></td>
                         </tr>
                     </tbody>
@@ -105,7 +105,7 @@
                     <tbody class="divide-y-[1px] divide-black">
                         <tr class="text-center" v-for="idx in 26" :key="idx">
                             <td class="border-black border-r-[0.5px] text-xs font-bold"><span class="relative bottom-2">{{this.arrTabel.numbers[idx+25]}}</span></td>
-                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+25]==1?"Ya":"Tidak"}}</span></td>
+                            <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel.answers[idx+25]==1?"Ya":this.arrTabel.answers[idx+25]==0?"Tidak":"-"}}</span></td>
                             <td class="border-black border-r-[0.5px] text-xs"><span class="relative bottom-2">{{this.arrTabel.correct_data[idx+25]}}</span></td>
                         </tr>
                     </tbody>
