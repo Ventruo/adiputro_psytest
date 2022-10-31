@@ -202,9 +202,8 @@ export default {
     },
     methods: {
         getImg(data){
-            let id = data.split("d/")
-            id = id[1].split("/")
-            return "https://drive.google.com/uc?export=view&id="+id[0]
+            var id = data.match(/[-\w]{25,}/);
+            return "https://drive.google.com/uc?export=view&id="+id
         },
     },
     mounted() {

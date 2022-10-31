@@ -450,10 +450,11 @@ class QuestionResultController {
               return;
             }
 
-            let status_correct = false;
+            // let status_correct = false;
+            let status_correct = req.body.status_correct;
             // if (question.answer == req.body.answer) status_correct = true;
-            if (req.body.status_correct == 1 || req.body.status_correct == 2)
-              status_correct = true;
+            // if (req.body.status_correct == 1 || req.body.status_correct == 2)
+            //   status_correct = true;
             console.log(req.body.section_result_id);
             console.log(req.body.question_id);
             console.log(req.body.answer);
