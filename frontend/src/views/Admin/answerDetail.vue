@@ -10,6 +10,7 @@
                                 <th class="w-2/12 py-2">No.</th>
                                 <th class="w-8/12">Jawaban</th>
                                 <th class="w-2/12">Hasil</th>
+                                <th class="w-2/12">Skor</th>
                             </tr>
                         </thead>
                         <tbody v-if="this.dataJawaban!=null && this.question!=null">
@@ -18,6 +19,7 @@
                                 <td>{{tampilJawaban(i.answer, i.question_id)}}</td>
                                 <!-- <td>{{i.answer==""?"-":i.answer.toUpperCase()}}</td> -->
                                 <td>{{i.status_correct==0?"Salah":"Benar"}}</td>
+                                <td>{{i.status_correct}}</td>
                             </tr>
                         </tbody>
                         <tbody v-else>

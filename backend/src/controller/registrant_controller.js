@@ -171,13 +171,13 @@ class RegistrantController {
     // Delete Applicant if any
     await driveService.deleteFileFromFolder(
       subfolder.id,
-      "Registrant_" + email
+      "Registrant_" + email + ".jpg"
     );
 
     // Send File
     let file = await driveService
       .saveFile(
-        "Registrant_" + email,
+        "Registrant_" + email + ".jpg",
         uploadFile.buffer,
         uploadFile.mimetype,
         subfolder.id
