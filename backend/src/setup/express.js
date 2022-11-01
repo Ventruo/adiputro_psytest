@@ -29,8 +29,8 @@ let regexopt = new RegExp(
 );
 app.use(
   cors({
-    // origin: `http://36.66.215.27:222`,
-    origin: `http://10.10.16.250:3000`,
+    origin: `http://36.66.215.27:222`,
+    //origin: `http://10.10.16.250:3000`,
     credentials: true,
   })
 );
