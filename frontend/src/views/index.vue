@@ -27,14 +27,17 @@
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
                         <label for="userEmail">E-Mail</label>
                         <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
-                                    mt-1 mb-5 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Email Here">
+                                    mt-1 mb-5 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Email Here"
+                                    :disabled="isDisabled">
 
                         <label for="userToken">Token Tes</label>
                         <input type="text" name="test_token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
-                                    mt-1 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Test Token Here">
+                                    mt-1 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Test Token Here"
+                                    :disabled="isDisabled">
 
                         <button type="submit" class="w-full mt-5 px-3 py-2 text-white font-bold bg-foreground-4-100 rounded-full ring-1 ring-inset ring-stroke
-                                                    hover:bg-foreground-4-200 duration-300">Login</button>
+                                                    hover:bg-foreground-4-200 duration-300"
+                                                :disabled="isDisabled">Login</button>
                     </form>
                 </div>
             </div>
@@ -48,6 +51,17 @@ import {publicClient, setAccessToken} from '../utilities/axios'
 export default {
     components: {
         axios
+    },
+    computed: {
+        isDisabled() {
+            let details = navigator.userAgent;
+            console.log(details);
+            let regex = /android|iphone|kindle|ipad/i;
+            let isMobile = regex.test(details);
+            console.log(isMobile);
+
+            return isMobile;
+        }
     },
     data(){
         return {
