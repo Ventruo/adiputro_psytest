@@ -31,6 +31,7 @@
                 <i v-if="hasil[noSoal-1]===i-1" class="far fa-dot-circle fa-xs absolute right-5 top-1/2"></i>
             </button>
         </div>
+        <div class="h-32"></div>
     </div>
 </template>
 
