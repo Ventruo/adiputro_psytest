@@ -130,6 +130,13 @@
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
+
+        <!-- Something Went Wrong -->
+        <div id="bgSomethingWrong" v-show="somethingWrong" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-red-100 bg-opacity-60 z-40"></div>
+        <div id="somethingWrong" v-show="somethingWrong" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50">
+            Something Went Wrong. Please refresh or login again.
+        </div>
+
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
             <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
@@ -166,6 +173,7 @@ export default {
             exam_session: null,
             test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
+            somethingWrong: false,
             state: 0,
             tampilDaftarSoal: false,
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
@@ -181,23 +189,26 @@ export default {
             this.changed = state
         },
         mulai(){
-            // this.jumSoal = this.pertanyaan.length
-            this.state = 1
-            this.gantiPilihanJawaban()
+            if(!this.section_id || !this.exam_session) this.somethingWrong = true;
+            else{
+                // this.jumSoal = this.pertanyaan.length
+                this.state = 1
+                this.gantiPilihanJawaban()
 
-            // Create Section Ongoing to indicate Ongoing Section
-            axios.post(this.port+'/section_ongoing/create',{
-                "section_id": parseInt(this.section_id)+1000,
-                "exam_session_id": this.exam_session,
-                "start_status": 1,
-                "start_time": Date.now(),
-                "duration": 3,
-            })
-            .then((response) => {
-                
-            }).catch( error => { 
-                console.log('error: ' + error) 
-            });
+                // Create Section Ongoing to indicate Ongoing Section
+                axios.post(this.port+'/section_ongoing/create',{
+                    "section_id": parseInt(this.section_id)+1000,
+                    "exam_session_id": this.exam_session,
+                    "start_status": 1,
+                    "start_time": Date.now(),
+                    "duration": 3,
+                })
+                .then((response) => {
+                    
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }
         },
         nextSoal(){
             // console.log(this.jawaban)
