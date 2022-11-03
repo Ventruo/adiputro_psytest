@@ -108,7 +108,7 @@ class AuthController {
               }
 
               // let refresh_age = 1 * 24 * 60 * 60 * 1000; // 1 day
-              let refresh_age = 2 * 60 * 60 * 1000; // 2 hours
+              let refresh_age = 24 * 60 * 60 * 1000; // 24 hours
               res.cookie("refresh_token", refresh_token, {
                 httpOnly: true,
                 maxAge: refresh_age,
@@ -231,7 +231,7 @@ class AuthController {
       }
 
       // Refresh max age
-      let refresh_age = 2 * 60 * 60 * 1000; // 2 hours
+      let refresh_age = 24 * 60 * 60 * 1000; // 24 hours
       res.cookie("refresh_token", refresh_token, {
         httpOnly: true,
         maxAge: refresh_age,
