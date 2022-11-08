@@ -75,7 +75,7 @@
                         <p class="mt-4">GOLONGAN DARAH :</p>
                         <InputBio :type="'text'" v-model="data_old.golongan_darah" :nama="'golongan_darah'" :placeHolder="'A / B / AB / O'" />
 
-                        <p class="mt-4">NO NPWP :</p>
+                        <p class="mt-4">NO NPWP (OPSIONAL) :</p>
                         <InputBio :type="'number'" v-model="data_old.no_npwp" :nama="'no_npwp'" :placeHolder="'01234567890'" />
 
                         <p class="mt-4">E-MAIL :</p>
@@ -125,8 +125,12 @@
                             <p class="mb-1 text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
                         </div>
                         <div class="flex">
-                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.cacat" :values="'Ya'" :names="'cacat'" :id="'cacatYa'" :label="'YA'" /></div>
-                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.cacat" :values="'Tidak'" :names="'cacat'" :id="'cacatTidak'" :label="'TIDAK'"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.cacat" :values="'Ya'" :names="'cacat'" :id="'cacatYa'" :label="'YA'" @change="changeCacat(1)"/></div>
+                            <div class="w-1/2"><Radio v-model="data_old.kesehatan.cacat" :values="'Tidak'" :names="'cacat'" :id="'cacatTidak'" :label="'TIDAK'" @change="changeCacat(0)"/></div>
+                        </div>
+                        <div>
+                            <p>Tuliskan apabila ada </p>
+                            <InputBio :type="'text'" v-model="data_old.kesehatan.cacat_desc" :nama="'cacat_desc'" :placeHolder="'Cacat'"  :readonly="!adaCacat" />
                         </div>
 
                         <div v-show="sakitKeras">
@@ -827,6 +831,7 @@ export default {
             sudahMenikah: false,
             sakitKeras: false,
             adaKenalan: false,
+            adaCacat: false,
             pendidikan: [{tingkat:'', jurusan:'', nama_sekolah:'', kota:'', tahun_lulus:''}],
             keluarga:[[{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
                             [{nama:'', ttl:'', alamat:'', pendidikan:'', pekerjaan:''}],
@@ -848,6 +853,13 @@ export default {
         }
     },
     methods: {
+        changeCacat(stat){
+            if(stat) this.adaCacat=true
+            else {
+                this.adaCacat=false
+                this.data_old.kesehatan.cacat_desc = ""
+            }
+        },
         kembali(){
             this.$router.go(-1) 
         },
@@ -885,7 +897,7 @@ export default {
 
             let res = []
             let res2 = {}
-            let notInclude = ["imgSign","keadaan","sakit_keras","cacat","kapan","menikah","nama_suami_istri","nama_anak","gaji_diperoleh",
+            let notInclude = ["imgSign","keadaan","sakit_keras","cacat","cacat_desc","kapan","menikah","nama_suami_istri","nama_anak","gaji_diperoleh",
                                 "alasan_berhenti","lama_berhenti_kerja","bisa_mulai_kerja","kenalan_perusahaan","kenalan_nama","kenalan_alamat",
                                 "kenalan_jabatan","kendaraan_ket","kendaraan_milik","seniDikuasai","kota_ttd"]
             Object.entries(data).map(d => {
@@ -905,6 +917,7 @@ export default {
             let kesehatan = JSON.stringify({
                 "keadaan": res2.keadaan,
                 "cacat": res2.cacat,
+                "cacat_desc": res2.cacat_desc,
                 "sakit_keras": res2.sakit_keras,
                 "kapan": res2.kapan,
             })
@@ -1056,6 +1069,7 @@ export default {
             this.alamat = this.data_old.alamat_skg
             this.usia = this.data_old.usia
             this.noHp = this.data_old.no_hp
+            this.noHp = this.data_old.no_hp
 
             this.status_perkawinan = this.data_old.status_nikah.menikah
             this.sudahMenikah = false
@@ -1064,6 +1078,9 @@ export default {
     
             this.sakitKeras = false            
             if (this.data_old.kesehatan.cacat == "Ya") this.sakitKeras = true
+
+            if(this.data_old.kesehatan.cacat_desc != "") this.adaCacat = true;
+            console.log(this.data_old.kesehatan.cacat_desc != "")
             
             this.adaKenalan = false
             if (this.data_old.keterangan_kerja.kenalan_perusahaan == "Ya") this.adaKenalan = true

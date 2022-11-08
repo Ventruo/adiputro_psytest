@@ -224,6 +224,10 @@
                                 <p>{{biodata.kesehatan.cacat}}</p>
                             </div>
                             <p class="text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
+                            <div>
+                                <p class="font-bold">Keterangan Cacat: </p>
+                                <p>{{biodata.kesehatan.cacat_desc}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

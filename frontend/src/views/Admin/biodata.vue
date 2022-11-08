@@ -29,14 +29,14 @@
                         <p class="mt-4" v-for="i in 7" :key="i">:</p>
                     </div>
                     <div>
-                        <p class="mt-2">{{biodata.nama_lengkap}}</p>
-                        <p class="mt-4">{{biodata.nama_panggilan}}</p>
-                        <p class="mt-4">{{biodata.alamat_ktp}}</p>
-                        <p class="mt-4">{{biodata.alamat_skg}}</p>
-                        <p class="mt-4">{{biodata.no_hp}}</p>
-                        <p class="mt-4">{{biodata.ttl}}</p>
-                        <p class="mt-4">{{biodata.kewarganegaraan}}</p>
-                        <p class="mt-4">{{biodata.suku}}</p>
+                        <p class="mt-2">{{biodata.nama_lengkap == "" ? "-" : biodata.nama_lengkap}}</p>
+                        <p class="mt-4">{{biodata.nama_panggilan == "" ? "-" : biodata.nama_panggilan }}</p>
+                        <p class="mt-4">{{biodata.alamat_ktp == "" ? "-" : biodata.alamat_ktp }}</p>
+                        <p class="mt-4">{{biodata.alamat_skg == "" ? "-" : biodata.alamat_skg }}</p>
+                        <p class="mt-4">{{biodata.no_hp == "" ? "-" : biodata.no_hp }}</p>
+                        <p class="mt-4">{{biodata.ttl == "" ? "-" : biodata.ttl }}</p>
+                        <p class="mt-4">{{biodata.kewarganegaraan == "" ? "-" : biodata.kewarganegaraan }}</p>
+                        <p class="mt-4">{{biodata.suku == "" ? "-" : biodata.suku }}</p>
                     </div>
                 </div>
 
@@ -61,14 +61,14 @@
                         <p class="mt-4" v-for="i in 7" :key="i">:</p>
                     </div>
                     <div>
-                        <p class="mt-2">{{biodata.agama}}</p>
-                        <p class="mt-4">{{biodata.usia}} Tahun</p>
-                        <p class="mt-4">{{biodata.tinggi_badan}} cm</p>
-                        <p class="mt-4">{{biodata.berat_badan}} kg</p>
-                        <p class="mt-4">{{biodata.no_identitas}}</p>
-                        <p class="mt-4">{{biodata.golongan_darah}}</p>
-                        <p class="mt-4">{{biodata.no_npwp}}</p>
-                        <p class="mt-4">{{biodata.email}}</p>
+                        <p class="mt-2">{{biodata.agama == "" ? "-" : biodata.agama }}</p>
+                        <p class="mt-4">{{biodata.usia == "" ? "-" : biodata.usia }} Tahun</p>
+                        <p class="mt-4">{{biodata.tinggi_badan == "" ? "-" : biodata.tinggi_badan }} cm</p>
+                        <p class="mt-4">{{biodata.berat_badan == "" ? "-" : biodata.berat_badan }} kg</p>
+                        <p class="mt-4">{{biodata.no_identitas == "" ? "-" : biodata.no_identitas }}</p>
+                        <p class="mt-4">{{biodata.golongan_darah == "" ? "-" : biodata.golongan_darah }}</p>
+                        <p class="mt-4">{{biodata.no_npwp == "" ? "-" : biodata.no_npwp }}</p>
+                        <p class="mt-4">{{biodata.email == "" ? "-" : biodata.email }}</p>
                     </div>
                 </div>
             </div>
@@ -86,20 +86,25 @@
                     <div class="w-1/2">
                         <div class="mr-4 flex gap-2">
                             <p class="mb-1 font-bold">Keadaan Kesehatan pada saat ini : </p>
-                            <p>{{biodata.kesehatan.keadaan}}</p>
+                            <p>{{biodata.kesehatan.keadaan == "" ? "-" : biodata.kesehatan.keadaan}}</p>
                         </div>
                         <div class="mt-2">
                             <p id="sakitKeras" class="mb-1 font-bold">Apakah anda pernah sakit keras/kecelakaan?</p>
-                            <p>{{biodata.kesehatan.sakit_keras}}, {{biodata.kesehatan.kapan}}</p>
+                            <p>{{biodata.kesehatan.sakit_keras == "" ? "-" : biodata.kesehatan.sakit_keras}}, 
+                                {{biodata.kesehatan.kapan == "" ? "-" : biodata.kesehatan.kapan}}</p>
                         </div>
                     </div>
                     <div class="w-1/2">
                         <div>
                             <div class="flex gap-2">
                                 <p class="font-bold">Apakah ada cacat tubuh? </p>
-                                <p>{{biodata.kesehatan.cacat}}</p>
+                                <p>{{biodata.kesehatan.cacat == "" ? "-" : biodata.kesehatan.cacat}}</p>
                             </div>
                             <p class="mb-1 text-gray-400 italic">(Misal: penglihatan / pendengaran / pengucapan / jantung / dll.)</p>
+                            <div>
+                                <p class="font-bold">Keterangan Cacat: </p>
+                                <p>{{biodata.kesehatan.cacat_desc == "" ? "-" : biodata.kesehatan.cacat_desc}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +115,7 @@
                     <div>
                         <div class="flex w-full gap-2">
                             <p class="mb-1 font-bold">Apakah anda belum menikah/menikah? </p>
-                            <p>{{biodata.status_nikah.menikah}}</p>
+                            <p>{{biodata.status_nikah.menikah == "" ? "-" : biodata.status_nikah.menikah}}</p>
                         </div>
                         <div class="flex gap-2">
                             <div class="font-bold">
@@ -121,8 +126,8 @@
                                 <p class="mt-2" v-for="i in 2" :key="i">:</p>
                             </div>
                             <div>
-                                <p class="mt-2">{{biodata.status_nikah.nama_suami_istri}}</p>
-                                <p class="mt-2">{{biodata.status_nikah.nama_anak}}</p>
+                                <p class="mt-2">{{biodata.status_nikah.nama_suami_istri== "" ? "-" : biodata.status_nikah.nama_suami_istri}}</p>
+                                <p class="mt-2">{{biodata.status_nikah.nama_anak== "" ? "-" : biodata.status_nikah.nama_anak}}</p>
                             </div>
                         </div>
                     </div>
@@ -164,7 +169,7 @@
                     <p>Mengapa Anda ingin bekerja di perusahaan kami? Jelaskan secara singkat:</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.alasan_bekerja}}
+                    {{biodata.alasan_bekerja == "" ? "-" : biodata.alasan_bekerja}}
                 </div>
             </div>
 
@@ -303,12 +308,12 @@
                 <div class="ml-7">
                     <p class="font-bold mb-1 mt-3">Apabila Anda pernah bekerja di tempat lain coba sebutkan gaji yang anda peroleh? </p>
                     <p class="mb-2">
-                        {{biodata.riwayat_pekerjaan.gaji_diperoleh}}
+                        {{biodata.riwayat_pekerjaan.gaji_diperoleh  == "" ? "-" : biodata.riwayat_pekerjaan.gaji_diperoleh}}
                     </p>
 
                     <p class="mb-1 font-bold">Mengapa Anda berhenti dari pekerjaan yang lama, jelaskan secara singkat:</p>
                     <p>
-                        {{biodata.riwayat_pekerjaan.alasan_berhenti}}
+                        {{biodata.riwayat_pekerjaan.alasan_berhenti  == "" ? "-" : biodata.riwayat_pekerjaan.alasan_berhenti}}
                     </p>
                 </div>
             </div>
@@ -403,17 +408,17 @@
                 <div class="flex">
                     <p class="mr-2 font-bold">27.</p>
                     <p class="font-bold mr-2">Berapa lama Anda harus memberitahu pada perusahaan lama untuk berhenti bekerja :</p>
-                    <p>{{biodata.keterangan_kerja.lama_berhenti_kerja}}</p>
+                    <p>{{biodata.keterangan_kerja.lama_berhenti_kerja == "" ? "-" : biodata.keterangan_kerja.lama_berhenti_kerja }}</p>
                 </div>
                 <div class="ml-7">
                     <div class="mt-2 flex gap-2">
                         <p class="font-bold">Dan mulai kapan Anda dapat mulai bekerja jika Anda di terima di PT. Adiputro Wirasejati :</p>
-                        <p>{{biodata.keterangan_kerja.bisa_mulai_kerja}}</p>
+                        <p>{{biodata.keterangan_kerja.bisa_mulai_kerja == "" ? "-" : biodata.keterangan_kerja.bisa_mulai_kerja }}</p>
                     </div>
 
                     <div class="mt-2 flex gap-2">
                         <p class="mb-1 font-bold">Apakah Anda memiliki saudara / kenalan di perusahaan ini: </p>
-                        <p>{{biodata.keterangan_kerja.kenalan_perusahaan}}</p>
+                        <p>{{biodata.keterangan_kerja.kenalan_perusahaan == "" ? "-" : biodata.keterangan_kerja.kenalan_perusahaan }}</p>
                     </div>
                     
                     <div>
@@ -441,7 +446,7 @@
                 <p class="mr-2 font-bold">28.</p>
                 <div class="flex gap-2">
                     <p class="font-bold">Bersediakah Anda menjalani Pelatihan kerja  selama 6 (enam) bulan di PT. Adiputro Wirasejati: </p>
-                    <p>{{biodata.pelatihan_kerja}}</p>
+                    <p>{{biodata.pelatihan_kerja == "" ? "-" : biodata.pelatihan_kerja}}</p>
                 </div>
             </div>
 
@@ -451,7 +456,7 @@
                     <p>Apakah tujuan Anda bekerja, Jelaskan: </p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.tujuan_kerja}}
+                    {{biodata.tujuan_kerja == "" ? "-" : biodata.tujuan_kerja}}
                 </div>
             </div>
             
@@ -461,14 +466,14 @@
                     <p>Apakah anda memiliki kendaraan (sebutkan jenis kendaraan dan nomer kendaraan):</p>
                 </div>
                 <div class="ml-7 mb-2">
-                    {{biodata.kendaraan.keterangan}}                
+                    {{biodata.kendaraan.keterangan == "" ? "-" : biodata.kendaraan.keterangan}}                
                 </div>
             </div>
 
             <div>
                 <div class="mb-2 ml-7 flex gap-2">
                     <p class="font-bold">Kendaraan tersebut milik :</p>
-                    <p>{{biodata.kendaraan.kepemilikan}} </p>
+                    <p>{{biodata.kendaraan.kepemilikan == "" ? "-" : biodata.kendaraan.kepemilikan}} </p>
                 </div>
             </div>
 
@@ -478,7 +483,7 @@
                     <p>Apa Hobby Anda? </p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.hobi}}               
+                    {{biodata.hobi == "" ? "-" : biodata.hobi}}               
                 </div>
             </div>
 
@@ -488,7 +493,7 @@
                     <p>Apabila Anda diterima sebagai karyawan, gaji berapa yang Anda harapkan untuk tiap bulannya?</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.harapan_gaji}}                    
+                    {{biodata.harapan_gaji == "" ? "-" : biodata.harapan_gaji}}                    
                 </div>
             </div>
 
@@ -498,7 +503,7 @@
                     <p>Apakah Anda pernah bermasalah dengan Hukum?</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.masalah_hukum}}                
+                    {{biodata.masalah_hukum == "" ? "-" : biodata.masalah_hukum}}                
                 </div>
             </div>
 
@@ -508,7 +513,7 @@
                     <p>Apakah yang menjadi kelebihan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.kelebihan}} 
+                    {{biodata.kelebihan == "" ? "-" : biodata.kelebihan}} 
                 </div>
             </div>
 
@@ -518,7 +523,7 @@
                     <p>Apakah yang menjadi kekurangan dalam diri anda?</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.kekurangan}}                   
+                    {{biodata.kekurangan == "" ? "-" : biodata.kekurangan}}                   
                 </div>
             </div>
 
@@ -528,7 +533,7 @@
                     <p>Apakah anda puas dengan keadaan diri anda saat ini? Jelaskan</p>
                 </div>
                 <div class="ml-7">
-                    {{biodata.kepuasan_keadaan_diri}}               
+                    {{biodata.kepuasan_keadaan_diri == "" ? "-" : biodata.kepuasan_keadaan_diri}}               
                 </div>
             </div>
 
