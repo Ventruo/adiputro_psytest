@@ -211,7 +211,7 @@ export default {
             this.exam_session = datas.exam_session;
         })
         
-        if(!this.section_id || !this.exam_session) this.somethingWrong = true;
+        // if(!this.section_id || !this.exam_session) this.somethingWrong = true;
     }
 }
     
