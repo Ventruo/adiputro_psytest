@@ -16,9 +16,6 @@ app.use(cookieParser());
 // } else {
 //   url = process.env.EXPRESS_URL || "http://127.0.0.1:3000";
 // }
-let regexopt = new RegExp(
-  `((ap\.ngrok\.io)|(127\.0\.0\.1)|(${process.env.CLIENT_URL}))`
-);
 
 
 let host = "localhost";
@@ -26,9 +23,14 @@ if (process.env.NODE_ENV != "dev") {
   host = process.env.EXPRESS_URL;
 }
 
+// Set Cors Middleware
+let regexopt = new RegExp(
+  `((36\.66\.215\.27))`
+);
 app.use(
   cors({
-    origin: `http://${host}:${CLIENT_PORT}`,
+    origin: `http://36.66.215.27:222`,
+    //origin: `http://10.10.16.250:3000`,
     credentials: true,
   })
 );

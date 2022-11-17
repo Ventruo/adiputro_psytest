@@ -20,7 +20,7 @@ const createMailer = async () => {
   // console.log(url);
   // // Run this after you get code from callback url
   // const { tokens } = await oauth2Client.getToken(
-  //   "4/0AX4XfWjYMXbRY5EQv-lacPpSyuO3nKbjSkZI5ZnWJe7wjfBFbxCJMW7Hm-ucHW5ZCpyIEA"
+  //   "4/0AdQt8qiT3XFreWxv0hGA42KvRMTwNRc2iskq47SZk64zmrdJ86QkKuN3TZgJ_LHbjCixbA"
   // );
   // console.log(tokens);
   // //Save the refresh token

@@ -231,7 +231,7 @@ export default {
             else{
                 $('#spinner-modal').fadeIn("slow");
                 if(this.statusAdd){
-                    console.log("create")
+                    // console.log("create")
                     let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+(this.recruitment[this.recruitment.length-1].id+1)
                     axios.post(this.port+'/job_vacancy/create',{
                         "name": this.nama,
@@ -261,7 +261,7 @@ export default {
                         console.log('error: ' + error) 
                     });
                 }else{
-                    console.log("update")
+                    // console.log("update")
                     let url = import.meta.env.VITE_FRONTEND_URL+"/recruitment?id="+this.updating
                     axios.post(this.port+'/job_vacancy/update',{
                         "name": this.nama,

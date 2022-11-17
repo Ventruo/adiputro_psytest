@@ -27,14 +27,17 @@
                     <form @submit.prevent="login" class="text-left px-5 mt-5">
                         <label for="userEmail">E-Mail</label>
                         <input type="email" name="email" id="userEmail" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke 
-                                    mt-1 mb-5 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Email Here">
+                                    mt-1 mb-5 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Email Here"
+                                    :disabled="isDisabled">
 
                         <label for="userToken">Token Tes</label>
                         <input type="text" name="test_token" id="userToken" class="w-full bg-background-300 ring-1 ring inset ring-stroke-100 placeholder-stroke
-                                    mt-1 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Test Token Here">
+                                    mt-1 px-3 py-1.5 rounded-lg text-black" placeholder="Enter Your Test Token Here"
+                                    :disabled="isDisabled">
 
                         <button type="submit" class="w-full mt-5 px-3 py-2 text-white font-bold bg-foreground-4-100 rounded-full ring-1 ring-inset ring-stroke
-                                                    hover:bg-foreground-4-200 duration-300">Login</button>
+                                                    hover:bg-foreground-4-200 duration-300"
+                                                :disabled="isDisabled">Login</button>
                     </form>
                 </div>
             </div>
@@ -44,9 +47,21 @@
 
 <script>
 import axios from 'axios'
+import {publicClient, setAccessToken} from '../utilities/axios'
 export default {
     components: {
         axios
+    },
+    computed: {
+        isDisabled() {
+            let details = navigator.userAgent;
+            console.log(details);
+            let regex = /android|iphone|kindle|ipad/i;
+            let isMobile = regex.test(details);
+            console.log(isMobile);
+
+            return isMobile;
+        }
     },
     data(){
         return {
@@ -60,40 +75,35 @@ export default {
             let elements = submitEvent.target.elements;
 
             (async() => {
-                axios.post('/auth/login', {
+                try {
+                    let resp = await publicClient.post('/auth/login', {
                             email: elements.email.value,
                             test_token: elements.test_token.value
-                        },
-                        {
-                            withCredentials: true
-                        })
-                .then((e) => {
-                    if(e.response && e.response.status != 200){
-                        Swal.fire({
-                            title: e.response.data,
+                        });
+                    let {token, age} = resp.data.refresh_token;
+                    let data_user = {
+                        "test": resp.data.tests, 
+                        "email": resp.data.email,
+                        "exam_session": resp.data.exam_session
+                    };
+                    // this.$cookies.set('refresh_token', token, age);
+                    this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
+                    
+                    setAccessToken(resp.data.token);
+                    // localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
+                    // localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
+
+                    if(resp.data.is_admin) this.$router.push('/admin')
+                    else this.$router.push('/dashboard')
+                } catch (error) {
+                    Swal.fire({
+                            title: error.response.data,
                             icon: 'error',
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
                             confirmButtonText: 'OK'
                         });
-                    }else{
-                        let {token, age} = e.data.refresh_token;
-                        let data_user = {
-                            "test": e.data.tests, 
-                            "email": e.data.email,
-                            "exam_session": e.data.exam_session
-                        };
-                        this.$cookies.set('refresh_token', token, age);
-                        this.$cookies.set('data_registrant', JSON.stringify(data_user), age*10);
-
-                        localStorage.setItem('LS_ACCESS_KEY_VAR', `Bearer ${e.data.token}`)
-                        localStorage.setItem('LS_USER_KEY_VAR', `${token}`)
-
-                        
-                        if(e.data.is_admin) this.$router.push('/admin')
-                        else this.$router.push('/dashboard')
-                    }
-                });
+                }
             })();
         }
     },

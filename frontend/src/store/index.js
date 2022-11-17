@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+import { publicClient } from '../utilities/axios';
 
 export default createStore({
     data(){
@@ -17,7 +18,7 @@ export default createStore({
             state.access_token = access_token;
         },
         refresh_access_token (state, refresh_token) {
-            axios.post(this.port+'/auth/refresh',{
+            publicClient.post(this.port+'/auth/refresh',{
                 refresh_token: refresh_token,
             })
             .then((response) => {

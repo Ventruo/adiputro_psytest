@@ -11,5 +11,12 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit:1500,
     outDir: "./dist"
+  },
+  server: {
+	hmr: {
+	   clientPort: 222
+	},
+	//host: '10.10.16.250'
+  host: '36.66.215.27'
   }
 })

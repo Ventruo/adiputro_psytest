@@ -91,6 +91,13 @@
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
+
+        <!-- Something Went Wrong -->
+        <div id="bgSomethingWrong" v-show="somethingWrong" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-red-100 bg-opacity-60 z-40"></div>
+        <div id="somethingWrong" v-show="somethingWrong" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50">
+            Something Went Wrong. Please refresh or login again.
+        </div>
+
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
             <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
@@ -99,7 +106,7 @@
 <script>
 import axios from 'axios'
 import AnswerButton from '../components/answerButton.vue'
-import { socket, buildSocket } from '../utilities/network.js'
+import _Socket from '../utilities/_Socket'
 
 export default {
     components: {
@@ -128,6 +135,7 @@ export default {
             test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
+            somethingWrong: false,
             tampilDaftarSoal: false,
             changed: false,
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
@@ -143,21 +151,24 @@ export default {
             this.changed = state
         },
         mulai(){
-            this.isStarted = true
-            
-            // Create Section Ongoing to indicate Ongoing Section
-            axios.post(this.port+'/section_ongoing/create',{
-                "section_id": this.section_id,
-                "exam_session_id": this.exam_session,
-                "start_status": 1,
-                "start_time": Date.now(),
-                "duration": this.durasi,
-            })
-            .then((response) => {
+            if(!this.section_id || !this.exam_session)this.somethingWrong = true;
+            else{
+                this.isStarted = true
                 
-            }).catch( error => { 
-                console.log('error: ' + error) 
-            });
+                // Create Section Ongoing to indicate Ongoing Section
+                axios.post(this.port+'/section_ongoing/create',{
+                    "section_id": this.section_id,
+                    "exam_session_id": this.exam_session,
+                    "start_status": 1,
+                    "start_time": Date.now(),
+                    "duration": this.durasi,
+                })
+                .then((response) => {
+                    
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }
         },
         nextSoal(){
             if (this.page<this.jumHalaman){
@@ -251,7 +262,7 @@ export default {
                 this.jawabanFinal[i]["answer"] = this.jawaban[i]!=null ? this.jawaban[i].substring(0,1).toLowerCase():'';
                 this.jawabanFinal[i] = Object.assign({}, this.jawabanFinal[i]);
             }
-            console.log(this.jawabanFinal)
+            // console.log(this.jawabanFinal)
 
             let formData = {
                 exam_session: this.exam_session,

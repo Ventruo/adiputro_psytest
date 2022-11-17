@@ -548,7 +548,7 @@ export default {
                 });
             else{
                 if (this.statusAdd){
-                    console.log("create")
+                    // console.log("create")
                     axios.post(this.port+'/section/create',{
                         "test_id": this.test_id,
                         "section_number": this.section_number,
@@ -588,7 +588,7 @@ export default {
                         )
                     });
                 }else{
-                    console.log("update")
+                    // console.log("update")
                     axios.post(this.port+'/section/update',{
                         "updating_id": this.section_id,
                         "test_id": this.test_id,

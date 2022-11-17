@@ -55,12 +55,13 @@ async function update() {
       console.log(`{section:${data[i].section_id}, exam_session:${data[i].exam_session_id}}`)
     }
 
+    console.log(new Date());
     post(process.env.BACKEND_URL + "/test/tick", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).catch((error) => {
-      console.log(error)
+      console.log(error.code)
     });
   })
 }

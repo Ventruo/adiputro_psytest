@@ -140,17 +140,23 @@ class SectionOngoingController {
       start_time.getTime() + req.body.duration * 60000
     );
 
-    const new_data = await SectionOngoing.create({
-      section_id: req.body.section_id,
-      exam_session_id: req.body.exam_session_id,
-      start_status: req.body.start_status,
-      temp_answers: req.body.temp_answers ?? "",
-      start_time: req.body.start_time,
-      finish_time: finish_time,
-      duration: req.body.duration,
-    });
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    console.log("Created by: "+req.body.exam_session_id);
 
-    success_response(res, new_data.toJSON(), "Create Successful!");
+    try {
+      const new_data = await SectionOngoing.create({
+        section_id: req.body.section_id,
+        exam_session_id: req.body.exam_session_id,
+        start_status: req.body.start_status,
+        temp_answers: req.body.temp_answers ?? "",
+        start_time: req.body.start_time,
+        finish_time: finish_time,
+        duration: req.body.duration,
+      });
+      success_response(res, new_data.toJSON(), "Create Successful!");
+    } catch (error) {
+      data_not_found_response(res);
+    }
   }
 
   async update(req, res) {

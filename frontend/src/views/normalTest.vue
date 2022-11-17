@@ -85,6 +85,13 @@
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
+
+        <!-- Something Went Wrong -->
+        <div id="bgSomethingWrong" v-show="somethingWrong" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-red-100 bg-opacity-60 z-40"></div>
+        <div id="somethingWrong" v-show="somethingWrong" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50">
+            Something Went Wrong. Please refresh or login again.
+        </div>
+        
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
             <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
@@ -97,7 +104,7 @@ import ImageAnswer from '../components/views/imageAnswer.vue'
 import TextQuestion from '../components/views/textQuestion.vue'
 import TextAnswer from '../components/views/textAnswer.vue'
 import mChoiceAnswer from '../components/views/mChoiceAnswer.vue'
-import { socket, buildSocket } from '../utilities/network.js'
+import _Socket from '../utilities/_Socket'
 
 export default {
     components: {
@@ -128,6 +135,7 @@ export default {
             test_result_id: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: false,
+            somethingWrong: false,
             tampilDaftarSoal: false,
             maxLength: 0,
             alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
@@ -152,7 +160,7 @@ export default {
             var id = data.match(/[-\w]{25,}/);
             // let id = data.split("file/d/")
             // id = id[1].split("/")
-            console.log(data)
+            // console.log(data)
             // console.log("https://drive.google.com/uc?export=view&id="+id[0])
             return "https://drive.google.com/uc?export=view&id="+id
         },
@@ -160,21 +168,23 @@ export default {
             this.changed = state
         },
         mulai(){
-            this.isStarted = true
-
-            // Create Section Ongoing to indicate Ongoing Section
-            axios.post(this.port+'/section_ongoing/create',{
-                "section_id": this.section_id,
-                "exam_session_id": this.exam_session,
-                "start_status": 1,
-                "start_time": Date.now(),
-                "duration": this.durasi,
-            })
-            .then((response) => {
-                
-            }).catch( error => { 
-                console.log('error: ' + error) 
-            });
+            if(!this.section_id || !this.exam_session)this.somethingWrong = true;
+            else{
+                this.isStarted = true
+                // Create Section Ongoing to indicate Ongoing Section
+                axios.post(this.port+'/section_ongoing/create',{
+                    "section_id": this.section_id,
+                    "exam_session_id": this.exam_session,
+                    "start_status": 1,
+                    "start_time": Date.now(),
+                    "duration": this.durasi,
+                })
+                .then((response) => {
+                    
+                }).catch( error => { 
+                    console.log('error: ' + error) 
+                });
+            }
         },
         nextSoal(){
             // console.log(this.noSoal, this.jumSoal)
@@ -620,6 +630,8 @@ export default {
             this.email = datas.email;
             this.exam_session = datas.exam_session;
 
+            this.getTempAnswers();
+            
             // console.log(this.test_id)
             // console.log(this.email)
             // console.log(this.exam_session)
@@ -627,40 +639,37 @@ export default {
             // console.log(this.test_result_id)
         })
 
-        this.getTempAnswers();
-
         // Build socket
-        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
-        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        // const user_key = localStorage.getItem('LS_USER_KEY_VAR')
         // console.log(access_token);
         // console.log(user_key)
-        buildSocket(access_token, user_key).then((socket) => {
-            socket.on("test.tick", (data) => {
-                if(data.section_id == this.section_id){
-                    // console.log("socket", socket)
-                    // console.log(data);
-                    this.isStarted = true
-                    this.duarsi = data.total_duration;
-                    var minutes = Math.floor(data.countdown / 60);
-                    var seconds = data.countdown - minutes * 60;
+        _Socket.connect();
+        _Socket.on("test.tick", (data) => {
+            // console.log(data)
+            if(data.section_id == this.section_id){
+                // console.log("socket", socket)
+                this.isStarted = true
+                this.duarsi = data.total_duration;
+                var minutes = Math.floor(data.countdown / 60);
+                var seconds = data.countdown - minutes * 60;
 
-                    this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
-                    this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
-                    if(data.countdown <= 0){
-                        Swal.fire({
-                            title: 'Waktu Habis...',
-                            icon: 'warning',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Kembali ke Dashboard',
-                            allowOutsideClick: false,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.submitJawaban()
-                            }
-                        });
-                    }
+                this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+                this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+                if(data.countdown <= 0){
+                    Swal.fire({
+                        title: 'Waktu Habis...',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Kembali ke Dashboard',
+                        allowOutsideClick: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submitJawaban()
+                        }
+                    });
                 }
-            });
+            }
         });
 
         let thi = this

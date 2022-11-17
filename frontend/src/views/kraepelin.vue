@@ -103,6 +103,13 @@
             @click.prevent="mulai">
             Klik dimanapun untuk memulai
         </div>
+
+        <!-- Something Went Wrong -->
+        <div id="bgSomethingWrong" v-show="somethingWrong" class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-red-100 bg-opacity-60 z-40"></div>
+        <div id="somethingWrong" v-show="somethingWrong" class="fixed inset-x-0 w-full h-full flex justify-center items-center top-0 text-white text-center text-5xl font-bold z-50">
+            Something Went Wrong. Please refresh or login again.
+        </div>
+        
         <div id="spinner-modal" class="fixed top-0 left-0 w-screen h-screen flex items-center bg-foreground-3-500 bg-opacity-70 justify-center z-20" style="display: none">
             <i class="fas fa-spinner animate-spin fa-7x inline-block text-foreground-4-100"></i>
         </div>
@@ -146,6 +153,7 @@ export default {
             dataKraepelin: null,
             port: import.meta.env.VITE_BACKEND_URL,
             isStarted: 0,
+            somethingWrong: false,
             abjad: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
             alias: [1,2,21,5,8,6,10,7,9,11,12,15,13,14,18,16,17,3,4,20,19],
         }
@@ -235,7 +243,7 @@ export default {
 
             this.currentRow = 1
             this.pertanyaan = this.pertanyaanFull[this.kolom-1]
-            console.log(this.jawaban)
+            // console.log(this.jawaban)
         },
         reset(){
             this.current_kolom++
@@ -405,7 +413,7 @@ export default {
                 "finish_date": Date.now()
             }
 
-            console.log(x)
+            // console.log(x)
             // console.log(formData)
 
             axios.post(this.port+'/section_result/update',{
