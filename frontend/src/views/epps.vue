@@ -394,7 +394,8 @@ export default {
         .then(({data}) => (
             this.pertanyaan = data,
             // console.log(data),
-            this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
+            // this.menit = this.pertanyaan[0]["section"]["duration"]==-1?-99:this.pertanyaan[0]["section"]["duration"],
+            this.menit = -99,
             this.durasi = this.menit,
             this.jumSoal = this.pertanyaan.length,
             this.jumHalaman = this.jumSoal/5,
@@ -411,39 +412,39 @@ export default {
 
         this.getTempAnswers();
 
-        // Build socket
-        const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
-        const user_key = localStorage.getItem('LS_USER_KEY_VAR')
-        // console.log(access_token);
-        // console.log(user_key)
-        buildSocket(access_token, user_key).then((socket) => {
-            socket.on("test.tick", (data) => {
-                if(data.section_id == this.section_id){
-                    // console.log("socket", socket)
-                    // console.log(data);
-                    this.isStarted = true
-                    this.duarsi = data.total_duration;
-                    var minutes = Math.floor(data.countdown / 60);
-                    var seconds = data.countdown - minutes * 60;
+        // // Build socket
+        // const access_token = localStorage.getItem('LS_ACCESS_KEY_VAR').split(' ')[1]
+        // const user_key = localStorage.getItem('LS_USER_KEY_VAR')
+        // // console.log(access_token);
+        // // console.log(user_key)
+        // buildSocket(access_token, user_key).then((socket) => {
+        //     socket.on("test.tick", (data) => {
+        //         if(data.section_id == this.section_id){
+        //             // console.log("socket", socket)
+        //             // console.log(data);
+        //             this.isStarted = true
+        //             this.duarsi = data.total_duration;
+        //             var minutes = Math.floor(data.countdown / 60);
+        //             var seconds = data.countdown - minutes * 60;
 
-                    this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
-                    this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
-                    if(data.countdown <= 0){
-                        Swal.fire({
-                            title: 'Waktu Habis...',
-                            icon: 'warning',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Kembali ke Dashboard',
-                            allowOutsideClick: false,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.submitJawaban()
-                            }
-                        });
-                    }
-                }
-            });
-        });
+        //             this.menit = (new Array(2+1).join('0')+minutes).slice(-2);
+        //             this.detik = (new Array(2+1).join('0')+seconds).slice(-2);
+        //             if(data.countdown <= 0){
+        //                 Swal.fire({
+        //                     title: 'Waktu Habis...',
+        //                     icon: 'warning',
+        //                     confirmButtonColor: '#3085d6',
+        //                     confirmButtonText: 'Kembali ke Dashboard',
+        //                     allowOutsideClick: false,
+        //                 }).then((result) => {
+        //                     if (result.isConfirmed) {
+        //                         this.submitJawaban()
+        //                     }
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
         
         let thi = this
         $('body').keydown(function(event) {
