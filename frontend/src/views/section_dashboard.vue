@@ -220,6 +220,7 @@ export default {
             if(this.id_tes==21){
                 this.sectionList.pop()
             }
+
             if(result!=null){
                 result.sort((a, b) => {
                     let da = a.section_id,
@@ -233,7 +234,7 @@ export default {
                         unfinished_section.push(this.sectionList[i].id)
                     }
                 }
-                this.now = unfinished_section[0]
+                this.now = unfinished_section[0] ?? result[0].section_id
 
                 this.hasil = []
                 for (let i = 0; i < this.sectionList.length ; i++) {
@@ -258,47 +259,53 @@ export default {
             }else{
                 if(this.sectionList)this.now = this.sectionList[0].id
             }
+
+            // Move to dashboard
             if(this.sectionList && 
                 this.now==this.sectionList[this.sectionList.length-1].id){
-                //update test result
-                let dataReg = this.$cookies.get('data_registrant')
-                let res = -1
-                dataReg.test.forEach(t => {
-                    if(t[0]==this.id_tes){
-                        res = t[1]
-                    }
-                });
-                let data_result = null
+                if(result==null && this.now == this.sectionList[0].id){
 
-                axios
-                .get(this.port+`/test_result/${res}`)
-                .then(({data}) => (
-                    data_result = data,
-                    axios.post(this.port+'/test_result/update',{
-                        "updating_id": data_result.id,
-                        "test_id": this.id_tes,
-                        "exam_session": dataReg.exam_session,
-                        "start_date": data_result.start_date,
-                        "finish_date": Date.now(),
-                        "status": 1,
-                        "result": data_result.result
-                    })
-                    .then((response) => {
-                        axios.post(this.port+'/exam_session/updateCurrentTest',{
-                            "id": dataReg.exam_session,
-                            "test_id": 0
+                }else{
+                    //update test result
+                    let dataReg = this.$cookies.get('data_registrant')
+                    let res = -1
+                    dataReg.test.forEach(t => {
+                        if(t[0]==this.id_tes){
+                            res = t[1]
+                        }
+                    });
+                    let data_result = null
+
+                    axios
+                    .get(this.port+`/test_result/${res}`)
+                    .then(({data}) => (
+                        data_result = data,
+                        axios.post(this.port+'/test_result/update',{
+                            "updating_id": data_result.id,
+                            "test_id": this.id_tes,
+                            "exam_session": dataReg.exam_session,
+                            "start_date": data_result.start_date,
+                            "finish_date": Date.now(),
+                            "status": 1,
+                            "result": data_result.result
                         })
                         .then((response) => {
-                            window.location = '/dashboard'
+                            axios.post(this.port+'/exam_session/updateCurrentTest',{
+                                "id": dataReg.exam_session,
+                                "test_id": 0
+                            })
+                            .then((response) => {
+                                window.location = '/dashboard'
+                            }).catch( error => { 
+                                console.log('error: ' + error) 
+                            });
                         }).catch( error => { 
                             console.log('error: ' + error) 
-                        });
-                    }).catch( error => { 
+                        })
+                    )).catch( error => { 
                         console.log('error: ' + error) 
                     })
-                )).catch( error => { 
-                    console.log('error: ' + error) 
-                })
+                }
             }
         },
         submitIstData(e){
