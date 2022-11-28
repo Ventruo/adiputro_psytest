@@ -42,13 +42,13 @@
                     </div>
                     
                     <div class="text-xl mt-3 px-10 text-center">
-                        <div v-if="section.id<=this.now" class="w-full ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block
+                        <div v-if="section.id<this.now" class="w-full ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block
                                                                 md:w-1/3">
                             <span>Persoalan sudah selesai</span>
                             <i class="fa fa-check ml-5"></i>
                         </div>
 
-                        <button v-if="section.id==this.now+1" class="w-full ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
+                        <button v-if="section.id==this.now" class="w-full ring-2 ring-inset ring-white hover:bg-primary-200 hover:text-primary-900 hover:ring-primary-900 
                                     duration-300 px-5 py-2.5 rounded-full cursor-pointer
                                     md:w-1/3"
                                     @click="kePreExam(section.id)">
@@ -56,7 +56,7 @@
                             <i class="fa fa-feather ml-5"></i>
                         </button>
                                     
-                        <div v-if="section.id>this.now+1" class="w-full md:w-1/2 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
+                        <div v-if="section.id>this.now" class="w-full md:w-1/2 ring-2 ring-inset ring-white duration-300 px-5 py-2.5 rounded-full cursor-pointer inline-block">
                             <span>Selesaikan persoalan sebelumnya dahulu</span>
                             <i class="fa fa-lock ml-5"></i>
                         </div>
@@ -161,7 +161,7 @@ export default {
         persoalanSekarang(){
             let idx = 0;
             for (let i = 0; i < this.sectionList.length; i++) {
-                if (this.sectionList[i].id == this.now+1){
+                if (this.sectionList[i].id == this.now){
                     idx = i
                 }
             }

@@ -226,7 +226,14 @@ export default {
                         db = b.section_id;
                     return db - da;
                 });
-                this.now = result[0].section_id
+
+                let unfinished_section = [];
+                for(let i = 0 ; i < this.sectionList.length; i++){
+                    if(result.filter(r => r.section_id == this.sectionList[i].id).length <= 0){
+                        unfinished_section.push(this.sectionList[i].id)
+                    }
+                }
+                this.now = unfinished_section[0]
 
                 this.hasil = []
                 for (let i = 0; i < this.sectionList.length ; i++) {
@@ -249,9 +256,10 @@ export default {
                     return db - da;
                 });
             }else{
-                if(this.sectionList)this.now = this.sectionList[0].id-1
+                if(this.sectionList)this.now = this.sectionList[0].id
             }
-            if(this.sectionList && this.now==this.sectionList[this.sectionList.length-1].id){
+            if(this.sectionList && 
+                this.now==this.sectionList[this.sectionList.length-1].id){
                 //update test result
                 let dataReg = this.$cookies.get('data_registrant')
                 let res = -1
