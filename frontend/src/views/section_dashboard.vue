@@ -221,14 +221,14 @@ export default {
                 this.sectionList.pop()
             }
 
+            let unfinished_section = [];
             if(result!=null){
                 result.sort((a, b) => {
                     let da = a.section_id,
                         db = b.section_id;
                     return db - da;
                 });
-
-                let unfinished_section = [];
+                
                 for(let i = 0 ; i < this.sectionList.length; i++){
                     if(result.filter(r => r.section_id == this.sectionList[i].id).length <= 0){
                         unfinished_section.push(this.sectionList[i].id)
@@ -262,50 +262,47 @@ export default {
 
             // Move to dashboard
             if(this.sectionList && 
-                this.now==this.sectionList[this.sectionList.length-1].id){
-                if(result==null && this.now == this.sectionList[0].id){
+                unfinished_section.length == 0 &&
+                result!=null){
+                //update test result
+                let dataReg = this.$cookies.get('data_registrant')
+                let res = -1
+                dataReg.test.forEach(t => {
+                    if(t[0]==this.id_tes){
+                        res = t[1]
+                    }
+                });
+                let data_result = null
 
-                }else{
-                    //update test result
-                    let dataReg = this.$cookies.get('data_registrant')
-                    let res = -1
-                    dataReg.test.forEach(t => {
-                        if(t[0]==this.id_tes){
-                            res = t[1]
-                        }
-                    });
-                    let data_result = null
-
-                    axios
-                    .get(this.port+`/test_result/${res}`)
-                    .then(({data}) => (
-                        data_result = data,
-                        axios.post(this.port+'/test_result/update',{
-                            "updating_id": data_result.id,
-                            "test_id": this.id_tes,
-                            "exam_session": dataReg.exam_session,
-                            "start_date": data_result.start_date,
-                            "finish_date": Date.now(),
-                            "status": 1,
-                            "result": data_result.result
+                axios
+                .get(this.port+`/test_result/${res}`)
+                .then(({data}) => (
+                    data_result = data,
+                    axios.post(this.port+'/test_result/update',{
+                        "updating_id": data_result.id,
+                        "test_id": this.id_tes,
+                        "exam_session": dataReg.exam_session,
+                        "start_date": data_result.start_date,
+                        "finish_date": Date.now(),
+                        "status": 1,
+                        "result": data_result.result
+                    })
+                    .then((response) => {
+                        axios.post(this.port+'/exam_session/updateCurrentTest',{
+                            "id": dataReg.exam_session,
+                            "test_id": 0
                         })
                         .then((response) => {
-                            axios.post(this.port+'/exam_session/updateCurrentTest',{
-                                "id": dataReg.exam_session,
-                                "test_id": 0
-                            })
-                            .then((response) => {
-                                window.location = '/dashboard'
-                            }).catch( error => { 
-                                console.log('error: ' + error) 
-                            });
+                            window.location = '/dashboard'
                         }).catch( error => { 
                             console.log('error: ' + error) 
-                        })
-                    )).catch( error => { 
+                        });
+                    }).catch( error => { 
                         console.log('error: ' + error) 
                     })
-                }
+                )).catch( error => { 
+                    console.log('error: ' + error) 
+                })
             }
         },
         submitIstData(e){
